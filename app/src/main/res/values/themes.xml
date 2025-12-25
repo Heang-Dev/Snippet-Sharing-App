@@ -64,6 +64,7 @@
         <item name="boxCornerRadiusBottomStart">12dp</item>
         <item name="boxCornerRadiusBottomEnd">12dp</item>
         <item name="boxStrokeColor">@color/text_input_box_stroke</item>
+        <item name="boxStrokeErrorColor">@color/error</item>
         <item name="hintTextColor">@color/text_secondary</item>
         <item name="android:textColorHint">@color/text_hint</item>
     </style>

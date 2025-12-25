@@ -15,7 +15,9 @@
     <string name="login_title">Welcome Back</string>
     <string name="login_subtitle">Sign in to continue to SnippetShare</string>
     <string name="login_email_username">Email or Username</string>
+    <string name="login_email_username_required">Email or Username *</string>
     <string name="login_password">Password</string>
+    <string name="login_password_required">Password *</string>
     <string name="login_button">Sign In</string>
     <string name="login_forgot_password">Forgot Password?</string>
     <string name="login_no_account">Don\'t have an account?</string>
@@ -27,9 +29,13 @@
     <string name="register_title">Create Account</string>
     <string name="register_subtitle">Join SnippetShare to share your code</string>
     <string name="register_username">Username</string>
+    <string name="register_username_required">Username *</string>
     <string name="register_email">Email</string>
+    <string name="register_email_required">Email *</string>
     <string name="register_password">Password</string>
+    <string name="register_password_required">Password *</string>
     <string name="register_confirm_password">Confirm Password</string>
+    <string name="register_confirm_password_required">Confirm Password *</string>
     <string name="register_button">Create Account</string>
     <string name="register_have_account">Already have an account?</string>
     <string name="register_sign_in">Sign In</string>
@@ -43,6 +49,7 @@
     <string name="forgot_password_title">Forgot Password?</string>
     <string name="forgot_password_subtitle">Enter your email and we\'ll send you a code to reset your password</string>
     <string name="forgot_password_email">Email Address</string>
+    <string name="forgot_password_email_required">Email Address *</string>
     <string name="forgot_password_button">Send Reset Code</string>
     <string name="forgot_password_back_to_login">Back to Login</string>
     <string name="forgot_password_success">Reset code sent to your email</string>
@@ -50,6 +57,7 @@
     <!-- OTP Verification Screen -->
     <string name="otp_title">Verify Your Email</string>
     <string name="otp_subtitle">Enter the 6-digit code sent to</string>
+    <string name="otp_hint">Enter 6-digit code *</string>
     <string name="otp_button">Verify Code</string>
     <string name="otp_resend">Didn\'t receive code?</string>
     <string name="otp_resend_button">Resend Code</string>
@@ -62,7 +70,9 @@
     <string name="reset_password_title">Reset Password</string>
     <string name="reset_password_subtitle">Create a new password for your account</string>
     <string name="reset_password_new">New Password</string>
+    <string name="reset_password_new_required">New Password *</string>
     <string name="reset_password_confirm">Confirm New Password</string>
+    <string name="reset_password_confirm_required">Confirm New Password *</string>
     <string name="reset_password_button">Reset Password</string>
     <string name="reset_password_success">Password reset successfully!</string>
 
@@ -86,6 +96,7 @@
     <string name="validation_password_short">Password must be at least 8 characters</string>
     <string name="validation_passwords_not_match">Passwords do not match</string>
     <string name="validation_username_invalid">Username can only contain letters, numbers, underscores, and hyphens</string>
+    <string name="validation_otp_invalid">Please enter a valid 6-digit code</string>
 
     <!-- Network Errors -->
     <string name="error_network">Network error. Please check your connection.</string>

@@ -2,8 +2,6 @@ package group.eleven.snippet_sharing_app.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityForgotPasswordBinding;
+import group.eleven.snippet_sharing_app.utils.FormValidator;
 
 /**
  * Forgot Password Activity - sends OTP to user's email
@@ -26,6 +25,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private ActivityForgotPasswordBinding binding;
     private AuthRepository authRepository;
+    private FormValidator formValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         authRepository = new AuthRepository(this);
 
+        setupFormValidation();
         setupClickListeners();
+    }
+
+    private void setupFormValidation() {
+        formValidator = new FormValidator()
+                .addEmailField(binding.tilEmail, binding.etEmail,
+                        getString(R.string.validation_required),
+                        getString(R.string.validation_email_invalid))
+                .setSubmitButton(binding.btnSendCode);
     }
 
     private void setupClickListeners() {
@@ -58,21 +67,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void sendResetCode() {
-        // Reset errors
-        binding.tilEmail.setError(null);
+        // Validate all fields and show errors
+        if (!formValidator.validateAll()) {
+            return;
+        }
 
         String email = binding.etEmail.getText().toString().trim().toLowerCase();
-
-        // Validate email
-        if (TextUtils.isEmpty(email)) {
-            binding.tilEmail.setError(getString(R.string.validation_required));
-            return;
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.tilEmail.setError(getString(R.string.validation_email_invalid));
-            return;
-        }
 
         // Show loading state
         setLoading(true);
@@ -100,9 +100,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void setLoading(boolean isLoading) {
-        binding.btnSendCode.setEnabled(!isLoading);
+        if (isLoading) {
+            binding.btnSendCode.setEnabled(false);
+            binding.btnSendCode.setText("");
+        } else {
+            binding.btnSendCode.setEnabled(formValidator.isFormValid());
+            binding.btnSendCode.setText(getString(R.string.forgot_password_button));
+        }
         binding.progressIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        binding.btnSendCode.setText(isLoading ? "" : getString(R.string.forgot_password_button));
     }
 
     private void showError(String message) {

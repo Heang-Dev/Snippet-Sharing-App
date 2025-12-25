@@ -62,14 +62,15 @@
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_email_username"
             app:startIconDrawable="@drawable/ic_email"
-            app:startIconTint="@color/text_secondary">
+            app:startIconTint="@color/text_secondary"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/login_email_username_required"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:imeOptions="actionNext" />
@@ -81,17 +82,18 @@
             style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/login_password"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_lock"
             app:startIconTint="@color/text_secondary"
             app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_secondary">
+            app:endIconTint="@color/text_secondary"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/login_password_required"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:imeOptions="actionDone" />
@@ -106,7 +108,7 @@
             android:textColor="@color/primary"
             android:textSize="14sp"
             android:layout_gravity="end"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
             android:padding="4dp" />
 
         <!-- Login Button -->
@@ -116,7 +118,9 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:text="@string/login_button"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"
+            android:enabled="false"
+            android:alpha="0.6" />
 
         <!-- Progress Indicator -->
         <com.google.android.material.progressindicator.CircularProgressIndicator

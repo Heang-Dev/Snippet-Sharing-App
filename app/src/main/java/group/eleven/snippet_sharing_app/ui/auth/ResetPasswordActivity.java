@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityResetPasswordBinding;
+import group.eleven.snippet_sharing_app.utils.FormValidator;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -27,6 +28,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private ActivityResetPasswordBinding binding;
     private AuthRepository authRepository;
     private SessionManager sessionManager;
+    private FormValidator formValidator;
 
     private String email;
     private String token;
@@ -65,7 +67,20 @@ public class ResetPasswordActivity extends AppCompatActivity {
             return;
         }
 
+        setupFormValidation();
         setupClickListeners();
+    }
+
+    private void setupFormValidation() {
+        formValidator = new FormValidator()
+                .addPasswordField(binding.tilPassword, binding.etPassword,
+                        getString(R.string.validation_required),
+                        getString(R.string.validation_password_short))
+                .addConfirmPasswordField(binding.tilConfirmPassword, binding.etConfirmPassword,
+                        binding.etPassword,
+                        getString(R.string.validation_required),
+                        getString(R.string.validation_passwords_not_match))
+                .setSubmitButton(binding.btnReset);
     }
 
     private void setupClickListeners() {
@@ -77,35 +92,13 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private void resetPassword() {
-        // Reset errors
-        binding.tilPassword.setError(null);
-        binding.tilConfirmPassword.setError(null);
+        // Validate all fields and show errors
+        if (!formValidator.validateAll()) {
+            return;
+        }
 
         String password = binding.etPassword.getText().toString();
         String confirmPassword = binding.etConfirmPassword.getText().toString();
-
-        // Validate inputs
-        boolean hasError = false;
-
-        if (TextUtils.isEmpty(password)) {
-            binding.tilPassword.setError(getString(R.string.validation_required));
-            hasError = true;
-        } else if (password.length() < 8) {
-            binding.tilPassword.setError(getString(R.string.validation_password_short));
-            hasError = true;
-        }
-
-        if (TextUtils.isEmpty(confirmPassword)) {
-            binding.tilConfirmPassword.setError(getString(R.string.validation_required));
-            hasError = true;
-        } else if (!password.equals(confirmPassword)) {
-            binding.tilConfirmPassword.setError(getString(R.string.validation_passwords_not_match));
-            hasError = true;
-        }
-
-        if (hasError) {
-            return;
-        }
 
         setLoading(true);
 
@@ -129,9 +122,14 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private void setLoading(boolean isLoading) {
-        binding.btnReset.setEnabled(!isLoading);
+        if (isLoading) {
+            binding.btnReset.setEnabled(false);
+            binding.btnReset.setText("");
+        } else {
+            binding.btnReset.setEnabled(formValidator.isFormValid());
+            binding.btnReset.setText(getString(R.string.reset_password_button));
+        }
         binding.progressIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        binding.btnReset.setText(isLoading ? "" : getString(R.string.reset_password_button));
     }
 
     private void showError(String message) {

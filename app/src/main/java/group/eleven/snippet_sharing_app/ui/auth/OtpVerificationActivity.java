@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityOtpVerificationBinding;
+import group.eleven.snippet_sharing_app.utils.FormValidator;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 import java.util.Locale;
@@ -30,6 +31,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
     private ActivityOtpVerificationBinding binding;
     private AuthRepository authRepository;
     private SessionManager sessionManager;
+    private FormValidator formValidator;
 
     private String email;
     private String token;
@@ -75,8 +77,17 @@ public class OtpVerificationActivity extends AppCompatActivity {
         // Display email
         binding.tvEmail.setText(email);
 
+        setupFormValidation();
         setupClickListeners();
         startTimer();
+    }
+
+    private void setupFormValidation() {
+        formValidator = new FormValidator()
+                .addOtpField(binding.tilOtp, binding.etOtp,
+                        getString(R.string.validation_required),
+                        getString(R.string.validation_otp_invalid))
+                .setSubmitButton(binding.btnVerify);
     }
 
     private void setupClickListeners() {
@@ -119,19 +130,12 @@ public class OtpVerificationActivity extends AppCompatActivity {
     }
 
     private void verifyOtp() {
-        binding.tilOtp.setError(null);
+        // Validate all fields and show errors
+        if (!formValidator.validateAll()) {
+            return;
+        }
 
         String otp = binding.etOtp.getText().toString().trim();
-
-        if (TextUtils.isEmpty(otp)) {
-            binding.tilOtp.setError(getString(R.string.validation_required));
-            return;
-        }
-
-        if (otp.length() != 6) {
-            binding.tilOtp.setError("Please enter a 6-digit code");
-            return;
-        }
 
         setLoading(true);
 
@@ -187,9 +191,14 @@ public class OtpVerificationActivity extends AppCompatActivity {
     }
 
     private void setLoading(boolean isLoading) {
-        binding.btnVerify.setEnabled(!isLoading);
+        if (isLoading) {
+            binding.btnVerify.setEnabled(false);
+            binding.btnVerify.setText("");
+        } else {
+            binding.btnVerify.setEnabled(formValidator.isFormValid());
+            binding.btnVerify.setText(getString(R.string.otp_button));
+        }
         binding.progressIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        binding.btnVerify.setText(isLoading ? "" : getString(R.string.otp_button));
     }
 
     private void showError(String message) {

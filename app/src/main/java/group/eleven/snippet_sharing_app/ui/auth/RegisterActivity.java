@@ -3,8 +3,6 @@ package group.eleven.snippet_sharing_app.ui.auth;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,8 +19,7 @@ import group.eleven.snippet_sharing_app.data.model.AuthResponse;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityRegisterBinding;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
-
-import java.util.regex.Pattern;
+import group.eleven.snippet_sharing_app.utils.FormValidator;
 
 /**
  * Register Activity - handles user registration
@@ -31,9 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;
     private AuthRepository authRepository;
-
-    // Username regex pattern
-    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]+$");
+    private FormValidator formValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +46,26 @@ public class RegisterActivity extends AppCompatActivity {
 
         authRepository = new AuthRepository(this);
 
+        setupFormValidation();
         setupClickListeners();
+    }
+
+    private void setupFormValidation() {
+        formValidator = new FormValidator()
+                .addUsernameField(binding.tilUsername, binding.etUsername,
+                        getString(R.string.validation_required),
+                        getString(R.string.register_error_username))
+                .addEmailField(binding.tilEmail, binding.etEmail,
+                        getString(R.string.validation_required),
+                        getString(R.string.validation_email_invalid))
+                .addPasswordField(binding.tilPassword, binding.etPassword,
+                        getString(R.string.validation_required),
+                        getString(R.string.validation_password_short))
+                .addConfirmPasswordField(binding.tilConfirmPassword, binding.etConfirmPassword,
+                        binding.etPassword,
+                        getString(R.string.validation_required),
+                        getString(R.string.validation_passwords_not_match))
+                .setSubmitButton(binding.btnRegister);
     }
 
     private void setupClickListeners() {
@@ -66,62 +80,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        // Reset errors
-        binding.tilUsername.setError(null);
-        binding.tilEmail.setError(null);
-        binding.tilPassword.setError(null);
-        binding.tilConfirmPassword.setError(null);
+        // Validate all fields and show errors
+        if (!formValidator.validateAll()) {
+            return;
+        }
 
         String username = binding.etUsername.getText().toString().trim();
         String email = binding.etEmail.getText().toString().trim().toLowerCase();
         String password = binding.etPassword.getText().toString();
         String confirmPassword = binding.etConfirmPassword.getText().toString();
-
-        // Validate inputs
-        boolean hasError = false;
-
-        // Username validation
-        if (TextUtils.isEmpty(username)) {
-            binding.tilUsername.setError(getString(R.string.validation_required));
-            hasError = true;
-        } else if (username.length() < 3 || username.length() > 30) {
-            binding.tilUsername.setError(getString(R.string.register_error_username));
-            hasError = true;
-        } else if (!USERNAME_PATTERN.matcher(username).matches()) {
-            binding.tilUsername.setError(getString(R.string.validation_username_invalid));
-            hasError = true;
-        }
-
-        // Email validation
-        if (TextUtils.isEmpty(email)) {
-            binding.tilEmail.setError(getString(R.string.validation_required));
-            hasError = true;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.tilEmail.setError(getString(R.string.validation_email_invalid));
-            hasError = true;
-        }
-
-        // Password validation
-        if (TextUtils.isEmpty(password)) {
-            binding.tilPassword.setError(getString(R.string.validation_required));
-            hasError = true;
-        } else if (password.length() < 8) {
-            binding.tilPassword.setError(getString(R.string.validation_password_short));
-            hasError = true;
-        }
-
-        // Confirm password validation
-        if (TextUtils.isEmpty(confirmPassword)) {
-            binding.tilConfirmPassword.setError(getString(R.string.validation_required));
-            hasError = true;
-        } else if (!password.equals(confirmPassword)) {
-            binding.tilConfirmPassword.setError(getString(R.string.validation_passwords_not_match));
-            hasError = true;
-        }
-
-        if (hasError) {
-            return;
-        }
 
         // Show loading state
         setLoading(true);
@@ -149,9 +116,14 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void setLoading(boolean isLoading) {
-        binding.btnRegister.setEnabled(!isLoading);
+        if (isLoading) {
+            binding.btnRegister.setEnabled(false);
+            binding.btnRegister.setText("");
+        } else {
+            binding.btnRegister.setEnabled(formValidator.isFormValid());
+            binding.btnRegister.setText(getString(R.string.register_button));
+        }
         binding.progressIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        binding.btnRegister.setText(isLoading ? "" : getString(R.string.register_button));
     }
 
     private void showError(String message) {

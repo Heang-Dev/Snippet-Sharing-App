@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import group.eleven.snippet_sharing_app.data.model.AuthResponse;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityLoginBinding;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
+import group.eleven.snippet_sharing_app.utils.FormValidator;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -27,9 +29,12 @@ import group.eleven.snippet_sharing_app.utils.SessionManager;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
+
     private ActivityLoginBinding binding;
     private AuthRepository authRepository;
     private SessionManager sessionManager;
+    private FormValidator formValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,17 @@ public class LoginActivity extends AppCompatActivity {
             binding.etLogin.setText(rememberedEmail);
         }
 
+        setupFormValidation();
         setupClickListeners();
+    }
+
+    private void setupFormValidation() {
+        formValidator = new FormValidator()
+                .addLoginField(binding.tilLogin, binding.etLogin,
+                        getString(R.string.validation_required))
+                .addRequiredField(binding.tilPassword, binding.etPassword,
+                        getString(R.string.validation_required))
+                .setSubmitButton(binding.btnLogin);
     }
 
     private void setupClickListeners() {
@@ -82,66 +97,85 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        // Reset errors
-        binding.tilLogin.setError(null);
-        binding.tilPassword.setError(null);
-
-        String login = binding.etLogin.getText().toString().trim();
-        String password = binding.etPassword.getText().toString();
-
-        // Validate inputs
-        boolean hasError = false;
-
-        if (TextUtils.isEmpty(login)) {
-            binding.tilLogin.setError(getString(R.string.validation_required));
-            hasError = true;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            binding.tilPassword.setError(getString(R.string.validation_required));
-            hasError = true;
-        }
-
-        if (hasError) {
-            return;
-        }
-
-        // Show loading state
-        setLoading(true);
-
-        // Get device name for token
-        String deviceName = Build.MANUFACTURER + " " + Build.MODEL;
-
-        // Call API
-        authRepository.login(login, password, deviceName).observe(this, resource -> {
-            if (resource.isLoading()) {
+        try {
+            // Validate all fields and show errors
+            if (formValidator == null || !formValidator.validateAll()) {
                 return;
             }
 
-            setLoading(false);
+            String login = binding.etLogin.getText() != null
+                    ? binding.etLogin.getText().toString().trim() : "";
+            String password = binding.etPassword.getText() != null
+                    ? binding.etPassword.getText().toString() : "";
 
-            if (resource.isSuccess()) {
-                AuthResponse response = resource.getData();
-                // Save email for remember me
-                sessionManager.setRememberEmail(login);
-
-                Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-                navigateToHome();
-            } else {
-                // Show error
-                showError(resource.getMessage());
+            if (TextUtils.isEmpty(login) || TextUtils.isEmpty(password)) {
+                showError("Please fill in all fields");
+                return;
             }
-        });
+
+            // Show loading state
+            setLoading(true);
+
+            // Get device name for token
+            String deviceName = Build.MANUFACTURER + " " + Build.MODEL;
+
+            Log.d(TAG, "Attempting login with: " + login);
+
+            // Call API
+            authRepository.login(login, password, deviceName).observe(this, resource -> {
+                if (resource == null) {
+                    setLoading(false);
+                    showError("An unexpected error occurred");
+                    return;
+                }
+
+                if (resource.isLoading()) {
+                    return;
+                }
+
+                setLoading(false);
+
+                if (resource.isSuccess()) {
+                    AuthResponse response = resource.getData();
+                    Log.d(TAG, "Login successful");
+                    // Save email for remember me
+                    sessionManager.setRememberEmail(login);
+
+                    Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                    navigateToHome();
+                } else {
+                    // Show error
+                    String errorMessage = resource.getMessage();
+                    Log.e(TAG, "Login failed: " + errorMessage);
+                    showError(errorMessage != null ? errorMessage : "Login failed");
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Exception during login", e);
+            setLoading(false);
+            showError("An error occurred: " + e.getMessage());
+        }
     }
 
     private void setLoading(boolean isLoading) {
-        binding.btnLogin.setEnabled(!isLoading);
+        if (binding == null) return;
+
+        if (isLoading) {
+            binding.btnLogin.setEnabled(false);
+            binding.btnLogin.setText("");
+        } else {
+            // Re-enable based on form validity
+            boolean formValid = formValidator != null && formValidator.isFormValid();
+            binding.btnLogin.setEnabled(formValid);
+            binding.btnLogin.setText(getString(R.string.login_button));
+        }
         binding.progressIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        binding.btnLogin.setText(isLoading ? "" : getString(R.string.login_button));
     }
 
     private void showError(String message) {
-        Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_LONG)
+        if (binding == null) return;
+
+        Snackbar.make(binding.getRoot(), message != null ? message : "An error occurred", Snackbar.LENGTH_LONG)
                 .setBackgroundTint(getColor(R.color.error))
                 .setTextColor(getColor(R.color.white))
                 .show();
