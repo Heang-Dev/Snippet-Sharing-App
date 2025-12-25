@@ -1,3 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Snippet_Sharing_App</string>
+    <string name="app_name">SnippetShare</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="success">Success</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="or">or</string>
+
+    <!-- Login Screen -->
+    <string name="login_title">Welcome Back</string>
+    <string name="login_subtitle">Sign in to continue to SnippetShare</string>
+    <string name="login_email_username">Email or Username</string>
+    <string name="login_password">Password</string>
+    <string name="login_button">Sign In</string>
+    <string name="login_forgot_password">Forgot Password?</string>
+    <string name="login_no_account">Don\'t have an account?</string>
+    <string name="login_sign_up">Sign Up</string>
+    <string name="login_success">Login successful!</string>
+    <string name="login_error_credentials">Invalid email/username or password</string>
+
+    <!-- Register Screen -->
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Join SnippetShare to share your code</string>
+    <string name="register_username">Username</string>
+    <string name="register_email">Email</string>
+    <string name="register_password">Password</string>
+    <string name="register_confirm_password">Confirm Password</string>
+    <string name="register_button">Create Account</string>
+    <string name="register_have_account">Already have an account?</string>
+    <string name="register_sign_in">Sign In</string>
+    <string name="register_success">Registration successful!</string>
+    <string name="register_error_username">Username must be 3-30 characters (letters, numbers, _ or -)</string>
+    <string name="register_error_email">Please enter a valid email address</string>
+    <string name="register_error_password">Password must be at least 8 characters</string>
+    <string name="register_error_password_match">Passwords do not match</string>
+
+    <!-- Forgot Password Screen -->
+    <string name="forgot_password_title">Forgot Password?</string>
+    <string name="forgot_password_subtitle">Enter your email and we\'ll send you a code to reset your password</string>
+    <string name="forgot_password_email">Email Address</string>
+    <string name="forgot_password_button">Send Reset Code</string>
+    <string name="forgot_password_back_to_login">Back to Login</string>
+    <string name="forgot_password_success">Reset code sent to your email</string>
+
+    <!-- OTP Verification Screen -->
+    <string name="otp_title">Verify Your Email</string>
+    <string name="otp_subtitle">Enter the 6-digit code sent to</string>
+    <string name="otp_button">Verify Code</string>
+    <string name="otp_resend">Didn\'t receive code?</string>
+    <string name="otp_resend_button">Resend Code</string>
+    <string name="otp_expires_in">Code expires in %1$s</string>
+    <string name="otp_success">Code verified successfully</string>
+    <string name="otp_error">Invalid or expired code</string>
+    <string name="otp_resend_success">New code sent to your email</string>
+
+    <!-- Reset Password Screen -->
+    <string name="reset_password_title">Reset Password</string>
+    <string name="reset_password_subtitle">Create a new password for your account</string>
+    <string name="reset_password_new">New Password</string>
+    <string name="reset_password_confirm">Confirm New Password</string>
+    <string name="reset_password_button">Reset Password</string>
+    <string name="reset_password_success">Password reset successfully!</string>
+
+    <!-- Home Screen -->
+    <string name="home_title">Home</string>
+    <string name="home_welcome">Welcome, %1$s!</string>
+    <string name="home_explore">Explore Snippets</string>
+    <string name="home_my_snippets">My Snippets</string>
+    <string name="home_favorites">Favorites</string>
+    <string name="home_collections">Collections</string>
+
+    <!-- Profile -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_logout">Logout</string>
+    <string name="profile_logout_confirm">Are you sure you want to logout?</string>
+    <string name="profile_logout_success">Logged out successfully</string>
+
+    <!-- Validation Messages -->
+    <string name="validation_required">This field is required</string>
+    <string name="validation_email_invalid">Please enter a valid email</string>
+    <string name="validation_password_short">Password must be at least 8 characters</string>
+    <string name="validation_passwords_not_match">Passwords do not match</string>
+    <string name="validation_username_invalid">Username can only contain letters, numbers, underscores, and hyphens</string>
+
+    <!-- Network Errors -->
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_server">Server error. Please try again later.</string>
+    <string name="error_unknown">An error occurred. Please try again.</string>
 </resources>
