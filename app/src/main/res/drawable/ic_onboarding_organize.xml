@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Folder shape -->
+    <path
+        android:pathData="M50,70 L50,140 Q50,150 60,150 L140,150 Q150,150 150,140 L150,80 Q150,70 140,70 L100,70 L90,60 L60,60 Q50,60 50,70 Z"
+        android:strokeWidth="6"
+        android:strokeColor="#10B981"
+        android:fillColor="#D1FAE5"/>
+
+    <!-- Files inside folder -->
+    <path
+        android:pathData="M70,95 L130,95"
+        android:strokeWidth="5"
+        android:strokeColor="#10B981"
+        android:strokeLineCap="round"/>
+
+    <path
+        android:pathData="M70,110 L110,110"
+        android:strokeWidth="5"
+        android:strokeColor="#34D399"
+        android:strokeLineCap="round"/>
+
+    <path
+        android:pathData="M70,125 L120,125"
+        android:strokeWidth="5"
+        android:strokeColor="#6EE7B7"
+        android:strokeLineCap="round"/>
+
+    <!-- Star/favorite -->
+    <path
+        android:pathData="M160,50 L163,59 L172,59 L165,65 L168,74 L160,69 L152,74 L155,65 L148,59 L157,59 Z"
+        android:fillColor="#10B981"/>
+
+    <!-- Heart -->
+    <path
+        android:pathData="M45,85 C40,80 40,70 50,70 C55,70 55,75 55,75 C55,75 55,70 60,70 C70,70 70,80 65,85 L55,95 L45,85 Z"
+        android:fillColor="#34D399"/>
+
+    <!-- Circle decoration -->
+    <path
+        android:pathData="M30,100 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0"
+        android:strokeWidth="3"
+        android:strokeColor="#D1FAE5"
+        android:fillColor="#00000000"/>
+</vector>

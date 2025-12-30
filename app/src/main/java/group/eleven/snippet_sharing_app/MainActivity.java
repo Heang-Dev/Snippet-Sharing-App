@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
+import group.eleven.snippet_sharing_app.ui.onboarding.OnboardingActivity;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -21,6 +22,8 @@ import group.eleven.snippet_sharing_app.utils.SessionManager;
 public class MainActivity extends AppCompatActivity {
 
     private static final long SPLASH_DELAY = 1500; // 1.5 seconds
+    private static final String PREF_NAME = "onboarding_pref";
+    private static final String KEY_ONBOARDING_COMPLETED = "onboarding_completed";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +42,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigateToNextScreen() {
-        SessionManager sessionManager = new SessionManager(this);
+        // Check if onboarding is completed
+        boolean onboardingCompleted = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                .getBoolean(KEY_ONBOARDING_COMPLETED, false);
 
         Intent intent;
-        if (sessionManager.isLoggedIn()) {
-            // User is logged in, go to Home
-            intent = new Intent(this, HomeActivity.class);
+        if (!onboardingCompleted) {
+            // First time user, show onboarding
+            intent = new Intent(this, OnboardingActivity.class);
         } else {
-            // User is not logged in, go to Login
-            intent = new Intent(this, LoginActivity.class);
+            SessionManager sessionManager = new SessionManager(this);
+            if (sessionManager.isLoggedIn()) {
+                // User is logged in, go to Home
+                intent = new Intent(this, HomeActivity.class);
+            } else {
+                // User is not logged in, go to Login
+                intent = new Intent(this, LoginActivity.class);
+            }
         }
 
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

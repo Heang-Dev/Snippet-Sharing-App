@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Magnifying glass -->
+    <path
+        android:pathData="M50,90 a40,40 0 1,0 80,0 a40,40 0 1,0 -80,0"
+        android:strokeWidth="8"
+        android:strokeColor="#10B981"
+        android:fillColor="#00000000"/>
+
+    <path
+        android:pathData="M120,120 L150,150"
+        android:strokeWidth="10"
+        android:strokeColor="#10B981"
+        android:strokeLineCap="round"/>
+
+    <!-- Code lines inside magnifier -->
+    <path
+        android:pathData="M65,80 L95,80"
+        android:strokeWidth="5"
+        android:strokeColor="#34D399"
+        android:strokeLineCap="round"/>
+
+    <path
+        android:pathData="M70,92 L110,92"
+        android:strokeWidth="5"
+        android:strokeColor="#6EE7B7"
+        android:strokeLineCap="round"/>
+
+    <path
+        android:pathData="M65,104 L90,104"
+        android:strokeWidth="5"
+        android:strokeColor="#34D399"
+        android:strokeLineCap="round"/>
+
+    <!-- Sparkles -->
+    <path
+        android:pathData="M155,55 L155,45 M150,50 L160,50"
+        android:strokeWidth="4"
+        android:strokeColor="#10B981"
+        android:strokeLineCap="round"/>
+
+    <path
+        android:pathData="M45,140 L45,130 M40,135 L50,135"
+        android:strokeWidth="3"
+        android:strokeColor="#34D399"
+        android:strokeLineCap="round"/>
+
+    <!-- Circle decoration -->
+    <path
+        android:pathData="M30,100 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0"
+        android:strokeWidth="3"
+        android:strokeColor="#D1FAE5"
+        android:fillColor="#00000000"/>
+</vector>
