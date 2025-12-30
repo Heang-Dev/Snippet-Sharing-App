@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background"
+    android:background="@color/background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -20,13 +20,13 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_icon_circle">
+            android:background="@drawable/bg_icon_circle_light">
 
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_auth_code"
+                android:src="@drawable/ic_code_logo"
                 tools:ignore="ContentDescription" />
         </FrameLayout>
 
@@ -38,7 +38,9 @@
             android:layout_marginTop="24dp"
             android:gravity="center"
             android:text="@string/login_title"
-            style="@style/DarkHeadingLarge" />
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium" />
 
         <!-- Subtitle -->
         <TextView
@@ -47,33 +49,39 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             android:text="@string/login_subtitle"
-            style="@style/DarkBodyText" />
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
 
         <!-- Email/Username Label -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@string/login_email_username"
-            style="@style/DarkInputLabel" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" *"
-            android:textColor="@color/error"
-            android:textSize="14sp"
-            android:layout_marginTop="-22dp"
-            android:layout_marginStart="115dp" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_email_username"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <!-- Email/Username Input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilLogin"
-            style="@style/DarkTextInputLayout"
+            style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="@color/text_secondary"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -85,36 +93,42 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_on_dark"
-                android:textColorHint="@color/text_on_dark_hint" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Label -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/login_password"
-            style="@style/DarkInputLabel" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" *"
-            android:textColor="@color/error"
-            android:textSize="14sp"
-            android:layout_marginTop="-22dp"
-            android:layout_marginStart="62dp" />
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_password"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error"
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <!-- Password Input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
-            style="@style/DarkTextInputLayout"
+            style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="@color/text_secondary"
             app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_secondary"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -126,8 +140,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
-                android:textColor="@color/text_on_dark"
-                android:textColorHint="@color/text_on_dark_hint" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Remember Me & Forgot Password Row -->
@@ -140,10 +154,12 @@
 
             <CheckBox
                 android:id="@+id/cbRememberMe"
-                style="@style/DarkCheckbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_remember_me" />
+                android:text="@string/login_remember_me"
+                android:textColor="@color/text_secondary"
+                android:textSize="14sp"
+                android:buttonTint="@color/primary" />
 
             <View
                 android:layout_width="0dp"
@@ -156,20 +172,22 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/login_forgot_password"
-                style="@style/DarkLinkText" />
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
         <!-- Login Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogin"
-            style="@style/DarkPrimaryButton"
+            style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
             android:text="@string/login_button"
             app:icon="@drawable/ic_arrow_forward"
             app:iconGravity="end"
-            app:iconTint="@color/dark_background" />
+            app:iconTint="@color/white" />
 
         <!-- Progress Indicator -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -194,14 +212,14 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="@color/dark_divider" />
+                android:background="@color/border" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
                 android:text="@string/login_or_continue_with"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="12sp"
                 android:textAllCaps="true" />
 
@@ -209,7 +227,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="@color/dark_divider" />
+                android:background="@color/border" />
         </LinearLayout>
 
         <!-- Social Login Buttons -->
@@ -222,24 +240,36 @@
             <!-- Google Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGoogle"
-                style="@style/DarkSocialButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:text="@string/login_google"
-                app:icon="@drawable/ic_google" />
+                android:textColor="@color/text_primary"
+                android:textAllCaps="false"
+                app:icon="@drawable/ic_google"
+                app:iconTint="@null"
+                app:iconPadding="8dp"
+                app:strokeColor="@color/border"
+                app:cornerRadius="12dp" />
 
             <!-- GitHub Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnGithub"
-                style="@style/DarkSocialButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:text="@string/login_github"
-                app:icon="@drawable/ic_github" />
+                android:textColor="@color/text_primary"
+                android:textAllCaps="false"
+                app:icon="@drawable/ic_github_dark"
+                app:iconTint="@null"
+                app:iconPadding="8dp"
+                app:strokeColor="@color/border"
+                app:cornerRadius="12dp" />
         </LinearLayout>
 
         <!-- Spacer -->
@@ -261,7 +291,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/login_no_account"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
             <TextView
@@ -271,7 +301,9 @@
                 android:layout_marginStart="4dp"
                 android:padding="8dp"
                 android:text="@string/login_sign_up"
-                style="@style/DarkLinkText" />
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
     </LinearLayout>

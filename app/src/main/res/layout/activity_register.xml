@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background"
+    android:background="@color/background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -15,55 +15,29 @@
         android:paddingTop="16dp"
         android:paddingBottom="24dp">
 
-        <!-- Header with Back Button and Title -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/btnBack"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_arrow_back"
-                android:contentDescription="@string/cancel"
-                app:tint="@color/text_on_dark" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/register_initialize_user"
-                android:textColor="@color/text_on_dark"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-medium" />
-
-            <ImageButton
-                android:id="@+id/btnHelp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_help"
-                android:contentDescription="Help"
-                app:tint="@color/primary" />
-        </LinearLayout>
+        <!-- Header with Back Button -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/cancel"
+            app:tint="@color/text_primary" />
 
         <!-- Icon Circle -->
         <FrameLayout
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_icon_circle">
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_icon_circle_light">
 
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_auth_code"
+                android:src="@drawable/ic_code_logo"
                 tools:ignore="ContentDescription" />
         </FrameLayout>
 
@@ -74,7 +48,9 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/register_title"
-            style="@style/DarkHeadingLarge" />
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium" />
 
         <!-- Subtitle -->
         <TextView
@@ -84,28 +60,27 @@
             android:gravity="center"
             android:paddingHorizontal="16dp"
             android:text="@string/register_subtitle"
-            style="@style/DarkBodyText" />
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
 
         <!-- Full Name Label & Input -->
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/register_full_name"
-                style="@style/DarkInputLabel" />
-        </LinearLayout>
+            android:text="@string/register_full_name"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:fontFamily="sans-serif-medium" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilFullName"
-            style="@style/DarkTextInputLayout"
+            style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_person"
+            app:startIconTint="@color/text_secondary"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -117,8 +92,8 @@
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_on_dark"
-                android:textColorHint="@color/text_on_dark_hint" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Email Label & Input -->
@@ -131,7 +106,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_email"
-                style="@style/DarkInputLabel" />
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -142,11 +119,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
-            style="@style/DarkTextInputLayout"
+            style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="@color/text_secondary"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -158,8 +136,8 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_on_dark"
-                android:textColorHint="@color/text_on_dark_hint" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Username Label & Input -->
@@ -172,7 +150,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_username"
-                style="@style/DarkInputLabel" />
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -183,11 +163,12 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilUsername"
-            style="@style/DarkTextInputLayout"
+            style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_person"
+            app:startIconTint="@color/text_secondary"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -199,8 +180,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_on_dark"
-                android:textColorHint="@color/text_on_dark_hint" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Label & Input -->
@@ -213,7 +194,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_password"
-                style="@style/DarkInputLabel" />
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -224,12 +207,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
-            style="@style/DarkTextInputLayout"
+            style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="@color/text_secondary"
             app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_secondary"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -241,8 +226,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_on_dark"
-                android:textColorHint="@color/text_on_dark_hint" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -250,7 +235,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@string/register_password_requirement"
-            android:textColor="@color/text_on_dark_hint"
+            android:textColor="@color/text_hint"
             android:textSize="12sp" />
 
         <!-- Confirm Password Label & Input -->
@@ -263,7 +248,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_confirm_password"
-                style="@style/DarkInputLabel" />
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -274,12 +261,14 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilConfirmPassword"
-            style="@style/DarkTextInputLayout"
+            style="@style/TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="@color/text_secondary"
             app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_secondary"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -291,8 +280,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
-                android:textColor="@color/text_on_dark"
-                android:textColorHint="@color/text_on_dark_hint" />
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Terms and Conditions Checkbox -->
@@ -313,7 +302,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_terms_agree"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="13sp" />
 
             <TextView
@@ -328,7 +317,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_and"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="13sp" />
 
             <TextView
@@ -338,19 +327,12 @@
                 android:text="@string/register_privacy_policy"
                 android:textColor="@color/primary"
                 android:textSize="13sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="."
-                android:textColor="@color/text_on_dark_secondary"
-                android:textSize="13sp" />
         </LinearLayout>
 
         <!-- Register Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
-            style="@style/DarkPrimaryButton"
+            style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="24dp"
@@ -386,7 +368,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_have_account"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
             <TextView
@@ -396,7 +378,9 @@
                 android:layout_marginStart="4dp"
                 android:padding="8dp"
                 android:text="@string/register_sign_in"
-                style="@style/DarkLinkText" />
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
     </LinearLayout>

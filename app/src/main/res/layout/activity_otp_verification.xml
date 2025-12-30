@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background"
+    android:background="@color/background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -23,20 +23,21 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="@string/cancel"
-            app:tint="@color/text_on_dark" />
+            app:tint="@color/text_primary" />
 
         <!-- Icon Circle -->
         <FrameLayout
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center"
-            android:background="@drawable/bg_icon_circle">
+            android:layout_marginTop="32dp"
+            android:background="@drawable/bg_icon_circle_light">
 
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_auth_email"
+                android:src="@drawable/ic_email_verify"
                 tools:ignore="ContentDescription" />
         </FrameLayout>
 
@@ -47,7 +48,9 @@
             android:layout_marginTop="24dp"
             android:gravity="center"
             android:text="@string/otp_title"
-            style="@style/DarkHeadingLarge" />
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:fontFamily="sans-serif-medium" />
 
         <!-- Subtitle -->
         <TextView
@@ -57,7 +60,8 @@
             android:gravity="center"
             android:paddingHorizontal="16dp"
             android:text="@string/otp_subtitle"
-            style="@style/DarkBodyText" />
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
 
         <!-- Email Display -->
         <TextView
@@ -83,11 +87,11 @@
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input"
+                android:background="@drawable/bg_otp_input_light"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_on_dark"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -98,11 +102,11 @@
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input"
+                android:background="@drawable/bg_otp_input_light"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_on_dark"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -113,11 +117,11 @@
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input"
+                android:background="@drawable/bg_otp_input_light"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_on_dark"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -128,11 +132,11 @@
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input"
+                android:background="@drawable/bg_otp_input_light"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_on_dark"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -143,11 +147,11 @@
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input"
+                android:background="@drawable/bg_otp_input_light"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_on_dark"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -158,11 +162,11 @@
                 android:layout_width="48dp"
                 android:layout_height="56dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input"
+                android:background="@drawable/bg_otp_input_light"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_on_dark"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -189,14 +193,14 @@
         <!-- Verify Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVerify"
-            style="@style/DarkPrimaryButton"
+            style="@style/PrimaryButton"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_marginTop="32dp"
             android:text="@string/otp_button"
             app:icon="@drawable/ic_arrow_forward"
             app:iconGravity="end"
-            app:iconTint="@color/dark_background" />
+            app:iconTint="@color/white" />
 
         <!-- Progress Indicator -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -221,7 +225,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/otp_resend"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
             <TextView
@@ -231,7 +235,9 @@
                 android:layout_marginStart="4dp"
                 android:padding="8dp"
                 android:text="@string/otp_resend_button"
-                style="@style/DarkLinkText" />
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
         <!-- Timer -->
@@ -241,7 +247,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginTop="8dp"
-            android:textColor="@color/text_on_dark_hint"
+            android:textColor="@color/text_hint"
             android:textSize="12sp" />
 
         <!-- Spacer -->
@@ -263,7 +269,7 @@
                 android:layout_height="16dp"
                 android:src="@drawable/ic_arrow_back"
                 android:layout_marginEnd="8dp"
-                app:tint="@color/text_on_dark_secondary"
+                app:tint="@color/text_secondary"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -272,7 +278,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/otp_back_to_login"
-                android:textColor="@color/text_on_dark_secondary"
+                android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
         </LinearLayout>
 

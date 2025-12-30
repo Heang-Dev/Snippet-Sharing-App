@@ -35,35 +35,30 @@
             android:name=".ui.onboarding.OnboardingActivity"
             android:exported="false" />
 
-        <!-- Auth Activities - Dark Theme -->
+        <!-- Auth Activities -->
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="false"
-            android:theme="@style/Theme.Snippet_Sharing_App.DarkAuth"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.auth.RegisterActivity"
             android:exported="false"
-            android:theme="@style/Theme.Snippet_Sharing_App.DarkAuth"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.auth.ForgotPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.Snippet_Sharing_App.DarkAuth"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.auth.OtpVerificationActivity"
             android:exported="false"
-            android:theme="@style/Theme.Snippet_Sharing_App.DarkAuth"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.auth.ResetPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.Snippet_Sharing_App.DarkAuth"
             android:windowSoftInputMode="adjustResize" />
 
         <!-- Home Activity -->
