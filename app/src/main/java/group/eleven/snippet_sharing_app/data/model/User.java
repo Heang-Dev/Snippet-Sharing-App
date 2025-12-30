@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class User {
     @SerializedName("id")
-    private int id;
+    private String id;
 
     @SerializedName("username")
     private String username;
@@ -49,7 +49,7 @@ public class User {
     private String updatedAt;
 
     // Getters
-    public int getId() {
+    public String getId() {
         return id;
     }
 
@@ -110,7 +110,7 @@ public class User {
     }
 
     // Setters
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -169,7 +169,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", fullName='" + fullName + '\'' +

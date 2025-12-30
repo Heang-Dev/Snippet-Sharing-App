@@ -61,11 +61,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Load remembered email if any
-        String rememberedEmail = sessionManager.getRememberEmail();
-        if (!TextUtils.isEmpty(rememberedEmail)) {
-            binding.etLogin.setText(rememberedEmail);
-        }
+        // Auto-fill for development (remove in production)
+        binding.etLogin.setText("chhunmengheang5@gmail.com");
+        binding.etPassword.setText("12345678");
 
         setupFormValidation();
         setupClickListeners();
