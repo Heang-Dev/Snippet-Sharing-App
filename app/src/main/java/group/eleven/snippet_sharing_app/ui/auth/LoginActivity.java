@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.AuthResponse;
+import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityLoginBinding;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
@@ -97,8 +98,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
+        Log.d(TAG, "attemptLogin: Starting login process");
+
         try {
-            // Validate all fields and show errors
+            // Validate fields
             if (formValidator == null || !formValidator.validateAll()) {
                 return;
             }
@@ -113,47 +116,75 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            // Show loading state
+            // Show loading
             setLoading(true);
 
-            // Get device name for token
             String deviceName = Build.MANUFACTURER + " " + Build.MODEL;
-
-            Log.d(TAG, "Attempting login with: " + login);
+            Log.d(TAG, "attemptLogin: Calling API with login: " + login);
 
             // Call API
             authRepository.login(login, password, deviceName).observe(this, resource -> {
-                if (resource == null) {
+                try {
+                    if (resource == null) {
+                        setLoading(false);
+                        showError("An unexpected error occurred");
+                        return;
+                    }
+
+                    if (resource.isLoading()) {
+                        return;
+                    }
+
                     setLoading(false);
-                    showError("An unexpected error occurred");
-                    return;
-                }
 
-                if (resource.isLoading()) {
-                    return;
-                }
+                    if (resource.isSuccess()) {
+                        Log.d(TAG, "attemptLogin: API returned success");
 
-                setLoading(false);
+                        // CRITICAL: Verify session was saved correctly with valid data
+                        String savedToken = sessionManager.getAuthToken();
+                        User savedUser = sessionManager.getUser();
 
-                if (resource.isSuccess()) {
-                    AuthResponse response = resource.getData();
-                    Log.d(TAG, "Login successful");
-                    // Save email for remember me
-                    sessionManager.setRememberEmail(login);
+                        Log.d(TAG, "attemptLogin: Verifying - Token: " + (savedToken != null ? "present" : "NULL"));
+                        Log.d(TAG, "attemptLogin: Verifying - User: " + (savedUser != null ? savedUser.getUsername() : "NULL"));
 
-                    Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-                    navigateToHome();
-                } else {
-                    // Show error
-                    String errorMessage = resource.getMessage();
-                    Log.e(TAG, "Login failed: " + errorMessage);
-                    showError(errorMessage != null ? errorMessage : "Login failed");
+                        if (savedToken == null || savedToken.isEmpty()) {
+                            Log.e(TAG, "attemptLogin: Session verification FAILED - no token");
+                            showError("Login error: Session not saved properly");
+                            return;
+                        }
+
+                        if (savedUser == null) {
+                            Log.e(TAG, "attemptLogin: Session verification FAILED - no user");
+                            showError("Login error: User data not saved properly");
+                            return;
+                        }
+
+                        if (!sessionManager.isLoggedIn()) {
+                            Log.e(TAG, "attemptLogin: Session verification FAILED - not logged in");
+                            showError("Login error: Session state invalid");
+                            return;
+                        }
+
+                        // All checks passed - navigate to home
+                        Log.d(TAG, "attemptLogin: All verifications passed - navigating to home");
+                        Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                        navigateToHome();
+
+                    } else {
+                        String errorMessage = resource.getMessage();
+                        Log.e(TAG, "attemptLogin: Login failed - " + errorMessage);
+                        showError(errorMessage != null ? errorMessage : "Login failed");
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "attemptLogin: CRASH in callback", e);
+                    setLoading(false);
+                    showError("Error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
                 }
             });
         } catch (Exception e) {
-            Log.e(TAG, "Exception during login", e);
+            Log.e(TAG, "attemptLogin: CRASH", e);
             setLoading(false);
-            showError("An error occurred: " + e.getMessage());
+            showError("Error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
         }
     }
 
@@ -182,9 +213,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void navigateToHome() {
+        Log.d(TAG, "navigateToHome: Creating intent for HomeActivity");
         Intent intent = new Intent(this, HomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        Log.d(TAG, "navigateToHome: Starting HomeActivity");
         startActivity(intent);
+        Log.d(TAG, "navigateToHome: Finishing LoginActivity");
         finish();
     }
 

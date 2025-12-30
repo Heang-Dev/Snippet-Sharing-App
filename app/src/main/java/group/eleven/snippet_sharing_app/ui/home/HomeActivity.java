@@ -2,9 +2,9 @@ package group.eleven.snippet_sharing_app.ui.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -13,7 +13,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.User;
-import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityHomeBinding;
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
@@ -23,47 +22,74 @@ import group.eleven.snippet_sharing_app.utils.SessionManager;
  */
 public class HomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "HomeActivity";
+
     private ActivityHomeBinding binding;
-    private AuthRepository authRepository;
     private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        Log.d(TAG, "onCreate: Starting HomeActivity");
 
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        try {
+            // Inflate the layout
+            binding = ActivityHomeBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
+            Log.d(TAG, "onCreate: Layout inflated");
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.coordinatorLayout, (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+            // Handle window insets
+            ViewCompat.setOnApplyWindowInsetsListener(binding.coordinatorLayout, (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
 
-        authRepository = new AuthRepository(this);
-        sessionManager = new SessionManager(this);
+            // Initialize session manager
+            sessionManager = new SessionManager(this);
 
-        // Check if logged in
-        if (!sessionManager.isLoggedIn()) {
-            navigateToLogin();
-            return;
+            // Check if logged in
+            if (!sessionManager.isLoggedIn()) {
+                Log.w(TAG, "User not logged in, redirecting...");
+                navigateToLogin();
+                return;
+            }
+
+            // Setup UI
+            setupUserInfo();
+            setupClickListeners();
+
+            Log.d(TAG, "onCreate: Setup completed successfully");
+            Toast.makeText(this, "Welcome to Home!", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            Log.e(TAG, "onCreate: Error", e);
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-
-        setupUserInfo();
-        setupClickListeners();
     }
 
     private void setupUserInfo() {
         User user = sessionManager.getUser();
+
+        String displayName = "User";
+        String email = "";
+
         if (user != null) {
-            String displayName = user.getFullName();
-            if (displayName == null || displayName.isEmpty()) {
+            // Get display name
+            if (user.getFullName() != null && !user.getFullName().isEmpty()) {
+                displayName = user.getFullName();
+            } else if (user.getUsername() != null && !user.getUsername().isEmpty()) {
                 displayName = user.getUsername();
             }
-            binding.tvWelcome.setText(getString(R.string.home_welcome, displayName));
-            binding.tvEmail.setText(user.getEmail());
+
+            // Get email
+            if (user.getEmail() != null) {
+                email = user.getEmail();
+            }
         }
+
+        binding.tvWelcome.setText(getString(R.string.home_welcome, displayName));
+        binding.tvEmail.setText(email);
     }
 
     private void setupClickListeners() {
@@ -98,14 +124,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        authRepository.logout().observe(this, resource -> {
-            if (resource.isLoading()) {
-                return;
-            }
-
-            Toast.makeText(this, getString(R.string.profile_logout_success), Toast.LENGTH_SHORT).show();
-            navigateToLogin();
-        });
+        sessionManager.logout();
+        Toast.makeText(this, getString(R.string.profile_logout_success), Toast.LENGTH_SHORT).show();
+        navigateToLogin();
     }
 
     private void navigateToLogin() {

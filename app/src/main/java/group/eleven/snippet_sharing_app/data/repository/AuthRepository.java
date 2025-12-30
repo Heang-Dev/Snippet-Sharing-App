@@ -12,6 +12,7 @@ import group.eleven.snippet_sharing_app.data.model.ErrorResponse;
 import group.eleven.snippet_sharing_app.data.model.ForgotPasswordResponse;
 import group.eleven.snippet_sharing_app.data.model.MessageResponse;
 import group.eleven.snippet_sharing_app.data.model.OtpVerifyResponse;
+import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.data.model.UserResponse;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -54,25 +55,47 @@ public class AuthRepository {
         apiService.login(credentials).enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AuthResponse authResponse = response.body();
-                    if (authResponse.isSuccess()) {
-                        // Save session
-                        sessionManager.createLoginSession(
-                                authResponse.getToken(),
-                                authResponse.getUser()
-                        );
-                        result.setValue(Resource.success(authResponse));
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        AuthResponse authResponse = response.body();
+                        if (authResponse.isSuccess()) {
+                            // CRITICAL: Validate token and user before saving
+                            String token = authResponse.getToken();
+                            User user = authResponse.getUser();
+
+                            if (token == null || token.isEmpty()) {
+                                result.setValue(Resource.error("Login failed: No token received from server"));
+                                return;
+                            }
+
+                            if (user == null) {
+                                result.setValue(Resource.error("Login failed: No user data received from server"));
+                                return;
+                            }
+
+                            // Save session only if we have valid data
+                            boolean saved = sessionManager.createLoginSession(token, user);
+                            if (saved) {
+                                result.setValue(Resource.success(authResponse));
+                            } else {
+                                result.setValue(Resource.error("Login failed: Could not save session"));
+                            }
+                        } else {
+                            String message = authResponse.getMessage();
+                            result.setValue(Resource.error(message != null ? message : "Login failed"));
+                        }
                     } else {
-                        result.setValue(Resource.error(authResponse.getMessage()));
+                        result.setValue(Resource.error(parseError(response)));
                     }
-                } else {
-                    result.setValue(Resource.error(parseError(response)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result.setValue(Resource.error("Login error: " + e.getMessage()));
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
+                t.printStackTrace();
                 result.setValue(Resource.error(getNetworkError(t)));
             }
         });
@@ -98,25 +121,47 @@ public class AuthRepository {
         apiService.register(userData).enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AuthResponse authResponse = response.body();
-                    if (authResponse.isSuccess()) {
-                        // Save session
-                        sessionManager.createLoginSession(
-                                authResponse.getToken(),
-                                authResponse.getUser()
-                        );
-                        result.setValue(Resource.success(authResponse));
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        AuthResponse authResponse = response.body();
+                        if (authResponse.isSuccess()) {
+                            // CRITICAL: Validate token and user before saving
+                            String token = authResponse.getToken();
+                            User user = authResponse.getUser();
+
+                            if (token == null || token.isEmpty()) {
+                                result.setValue(Resource.error("Registration failed: No token received"));
+                                return;
+                            }
+
+                            if (user == null) {
+                                result.setValue(Resource.error("Registration failed: No user data received"));
+                                return;
+                            }
+
+                            // Save session only if we have valid data
+                            boolean saved = sessionManager.createLoginSession(token, user);
+                            if (saved) {
+                                result.setValue(Resource.success(authResponse));
+                            } else {
+                                result.setValue(Resource.error("Registration failed: Could not save session"));
+                            }
+                        } else {
+                            String message = authResponse.getMessage();
+                            result.setValue(Resource.error(message != null ? message : "Registration failed"));
+                        }
                     } else {
-                        result.setValue(Resource.error(authResponse.getMessage()));
+                        result.setValue(Resource.error(parseError(response)));
                     }
-                } else {
-                    result.setValue(Resource.error(parseError(response)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result.setValue(Resource.error("Registration error: " + e.getMessage()));
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
+                t.printStackTrace();
                 result.setValue(Resource.error(getNetworkError(t)));
             }
         });

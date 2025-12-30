@@ -2,21 +2,18 @@ package group.eleven.snippet_sharing_app.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKey;
+import android.util.Log;
 
 import group.eleven.snippet_sharing_app.data.model.User;
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 /**
  * Session manager for storing and retrieving user session data securely
+ * NOTE: Temporarily using regular SharedPreferences for debugging
  */
 public class SessionManager {
+    private static final String TAG = "SessionManager";
     private static final String PREF_NAME = "SnippetAppSession";
     private static final String KEY_AUTH_TOKEN = "auth_token";
     private static final String KEY_USER = "user";
@@ -26,41 +23,59 @@ public class SessionManager {
     private static final String KEY_PASSWORD_RESET_EMAIL = "password_reset_email";
 
     private final SharedPreferences sharedPreferences;
-    private final SharedPreferences.Editor editor;
     private final Gson gson;
 
     public SessionManager(Context context) {
-        SharedPreferences prefs;
-        try {
-            MasterKey masterKey = new MasterKey.Builder(context)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .build();
-
-            prefs = EncryptedSharedPreferences.create(
-                    context,
-                    PREF_NAME,
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (GeneralSecurityException | IOException e) {
-            // Fallback to regular SharedPreferences if encryption fails
-            prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        }
-
-        this.sharedPreferences = prefs;
-        this.editor = sharedPreferences.edit();
+        Log.d(TAG, "Initializing SessionManager");
+        // Using regular SharedPreferences for debugging (temporarily disabled encryption)
+        this.sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         this.gson = new Gson();
+        Log.d(TAG, "SessionManager initialized successfully");
     }
 
     /**
      * Save login session
+     * @return true if session was saved successfully, false if data was invalid
      */
-    public void createLoginSession(String token, User user) {
+    public boolean createLoginSession(String token, User user) {
+        Log.d(TAG, "createLoginSession: Attempting to save session");
+
+        // CRITICAL: Validate inputs before saving
+        if (token == null || token.isEmpty()) {
+            Log.e(TAG, "createLoginSession: FAILED - Token is null or empty!");
+            return false;
+        }
+
+        if (user == null) {
+            Log.e(TAG, "createLoginSession: FAILED - User is null!");
+            return false;
+        }
+
+        Log.d(TAG, "createLoginSession: Token length = " + token.length());
+        Log.d(TAG, "createLoginSession: User = " + user.getUsername());
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_AUTH_TOKEN, token);
         editor.putString(KEY_USER, gson.toJson(user));
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
-        editor.apply();
+        boolean success = editor.commit();
+
+        Log.d(TAG, "createLoginSession: Commit result = " + success);
+
+        // Verify the save worked
+        if (success) {
+            String savedToken = getAuthToken();
+            User savedUser = getUser();
+            if (savedToken != null && savedUser != null) {
+                Log.d(TAG, "createLoginSession: SUCCESS - Session saved and verified");
+                return true;
+            } else {
+                Log.e(TAG, "createLoginSession: FAILED - Could not verify saved data");
+                return false;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -85,6 +100,7 @@ public class SessionManager {
      * Update user data
      */
     public void updateUser(User user) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_USER, gson.toJson(user));
         editor.apply();
     }
@@ -100,6 +116,7 @@ public class SessionManager {
      * Clear session (logout)
      */
     public void logout() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_AUTH_TOKEN);
         editor.remove(KEY_USER);
         editor.putBoolean(KEY_IS_LOGGED_IN, false);
@@ -110,6 +127,7 @@ public class SessionManager {
      * Save remembered email
      */
     public void setRememberEmail(String email) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_REMEMBER_EMAIL, email);
         editor.apply();
     }
@@ -125,6 +143,7 @@ public class SessionManager {
      * Clear remembered email
      */
     public void clearRememberEmail() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_REMEMBER_EMAIL);
         editor.apply();
     }
@@ -133,6 +152,7 @@ public class SessionManager {
      * Save password reset token and email
      */
     public void savePasswordResetData(String token, String email) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_PASSWORD_RESET_TOKEN, token);
         editor.putString(KEY_PASSWORD_RESET_EMAIL, email);
         editor.apply();
@@ -156,6 +176,7 @@ public class SessionManager {
      * Clear password reset data
      */
     public void clearPasswordResetData() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_PASSWORD_RESET_TOKEN);
         editor.remove(KEY_PASSWORD_RESET_EMAIL);
         editor.apply();
@@ -165,6 +186,7 @@ public class SessionManager {
      * Clear all data
      */
     public void clearAll() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
     }
