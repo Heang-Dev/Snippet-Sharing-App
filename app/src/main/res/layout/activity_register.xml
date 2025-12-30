@@ -4,138 +4,357 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/dark_background"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp">
 
-        <!-- Back Button -->
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Back"
-            android:layout_marginBottom="16dp"
-            app:tint="@color/text_primary" />
+        <!-- Header with Back Button and Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="@string/cancel"
+                app:tint="@color/text_on_dark" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/register_initialize_user"
+                android:textColor="@color/text_on_dark"
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-medium" />
+
+            <ImageButton
+                android:id="@+id/btnHelp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_help"
+                android:contentDescription="Help"
+                app:tint="@color/primary" />
+        </LinearLayout>
+
+        <!-- Icon Circle -->
+        <FrameLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_icon_circle">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_auth_code"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
 
         <!-- Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text="@string/register_title"
-            style="@style/HeadingLarge" />
+            style="@style/DarkHeadingLarge" />
 
+        <!-- Subtitle -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/register_subtitle"
-            style="@style/BodyText"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="32dp" />
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:text="@string/register_subtitle"
+            style="@style/DarkBodyText" />
 
-        <!-- Username Input -->
+        <!-- Full Name Label & Input -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_full_name"
+                style="@style/DarkInputLabel" />
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilUsername"
-            style="@style/TextInputLayout"
+            android:id="@+id/tilFullName"
+            style="@style/DarkTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_person"
-            app:startIconTint="@color/text_secondary"
+            app:hintEnabled="false"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etUsername"
+                android:id="@+id/etFullName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_username_required"
-                android:inputType="text"
+                android:hint="@string/register_full_name_hint"
+                android:inputType="textPersonName"
                 android:maxLines="1"
-                android:imeOptions="actionNext" />
+                android:imeOptions="actionNext"
+                android:textColor="@color/text_on_dark"
+                android:textColorHint="@color/text_on_dark_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Email Input -->
+        <!-- Email Label & Input -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_email"
+                style="@style/DarkInputLabel" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
-            style="@style/TextInputLayout"
+            style="@style/DarkTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_email"
-            app:startIconTint="@color/text_secondary"
+            app:hintEnabled="false"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_email_required"
+                android:hint="@string/register_email_hint"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:imeOptions="actionNext" />
+                android:imeOptions="actionNext"
+                android:textColor="@color/text_on_dark"
+                android:textColorHint="@color/text_on_dark_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password Input -->
+        <!-- Username Label & Input -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_username"
+                style="@style/DarkInputLabel" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilUsername"
+            style="@style/DarkTextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:startIconDrawable="@drawable/ic_person"
+            app:hintEnabled="false"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/register_username_hint"
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:textColor="@color/text_on_dark"
+                android:textColorHint="@color/text_on_dark_hint" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Label & Input -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_password"
+                style="@style/DarkInputLabel" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
-            style="@style/TextInputLayout"
+            style="@style/DarkTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_lock"
-            app:startIconTint="@color/text_secondary"
             app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_secondary"
+            app:hintEnabled="false"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_password_required"
+                android:hint="@string/register_password_hint"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:imeOptions="actionNext" />
+                android:imeOptions="actionNext"
+                android:textColor="@color/text_on_dark"
+                android:textColorHint="@color/text_on_dark_hint" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Confirm Password Input -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/register_password_requirement"
+            android:textColor="@color/text_on_dark_hint"
+            android:textSize="12sp" />
+
+        <!-- Confirm Password Label & Input -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_confirm_password"
+                style="@style/DarkInputLabel" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" *"
+                android:textColor="@color/error"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilConfirmPassword"
-            style="@style/TextInputLayout"
+            style="@style/DarkTextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             app:startIconDrawable="@drawable/ic_lock"
-            app:startIconTint="@color/text_secondary"
             app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_secondary"
+            app:hintEnabled="false"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etConfirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/register_confirm_password_required"
+                android:hint="@string/register_confirm_password_hint"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:imeOptions="actionDone" />
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_on_dark"
+                android:textColorHint="@color/text_on_dark_hint" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Terms and Conditions Checkbox -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cbTerms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_terms_agree"
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tvTermsOfService"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_terms_of_service"
+                android:textColor="@color/primary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_and"
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/tvPrivacyPolicy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register_privacy_policy"
+                android:textColor="@color/primary"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="."
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
 
         <!-- Register Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
-            style="@style/PrimaryButton"
+            style="@style/DarkPrimaryButton"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="@string/register_button"
+            android:layout_height="52dp"
             android:layout_marginTop="24dp"
-            android:enabled="false"
-            android:alpha="0.6" />
+            android:text="@string/register_button" />
 
         <!-- Progress Indicator -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -152,34 +371,32 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:minHeight="16dp" />
 
         <!-- Sign In Link -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/register_have_account"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/text_on_dark_secondary"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvSignIn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/register_sign_in"
-                android:textColor="@color/primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
+                android:layout_marginStart="4dp"
                 android:padding="8dp"
-                android:layout_marginStart="4dp" />
+                android:text="@string/register_sign_in"
+                style="@style/DarkLinkText" />
         </LinearLayout>
 
     </LinearLayout>

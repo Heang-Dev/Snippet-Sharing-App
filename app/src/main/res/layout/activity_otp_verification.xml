@@ -1,106 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/dark_background"
     android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingHorizontal="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp">
 
         <!-- Back Button -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Back"
-            android:layout_marginBottom="16dp"
-            app:tint="@color/text_primary" />
+            android:contentDescription="@string/cancel"
+            app:tint="@color/text_on_dark" />
 
-        <!-- Icon -->
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_email_verify"
+        <!-- Icon Circle -->
+        <FrameLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:contentDescription="Verify Email" />
+            android:background="@drawable/bg_icon_circle">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_auth_email"
+                tools:ignore="ContentDescription" />
+        </FrameLayout>
 
         <!-- Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/otp_title"
-            style="@style/HeadingLarge"
+            android:layout_marginTop="24dp"
             android:gravity="center"
-            android:layout_marginTop="24dp" />
+            android:text="@string/otp_title"
+            style="@style/DarkHeadingLarge" />
 
+        <!-- Subtitle -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/otp_subtitle"
-            style="@style/BodyText"
+            android:layout_marginTop="8dp"
             android:gravity="center"
-            android:layout_marginTop="8dp" />
+            android:paddingHorizontal="16dp"
+            android:text="@string/otp_subtitle"
+            style="@style/DarkBodyText" />
 
+        <!-- Email Display -->
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginTop="4dp"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-        <!-- OTP Input -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilOtp"
-            style="@style/TextInputLayout"
+        <!-- OTP Input Boxes -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etOtp1"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_otp_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/text_on_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/etOtp2"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_otp_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/text_on_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/etOtp3"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_otp_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/text_on_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/etOtp4"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_otp_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/text_on_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/etOtp5"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_otp_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/text_on_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
+
+            <EditText
+                android:id="@+id/etOtp6"
+                android:layout_width="48dp"
+                android:layout_height="56dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@drawable/bg_otp_input"
+                android:gravity="center"
+                android:inputType="number"
+                android:maxLength="1"
+                android:textColor="@color/text_on_dark"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
+        </LinearLayout>
+
+        <!-- Hidden OTP field for backwards compatibility -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilOtp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etOtp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/otp_hint"
                 android:inputType="number"
                 android:maxLength="6"
-                android:maxLines="1"
-                android:gravity="center"
-                android:textSize="24sp"
-                android:letterSpacing="0.5"
-                android:imeOptions="actionDone" />
+                android:importantForAutofill="no" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <!-- Timer -->
-        <TextView
-            android:id="@+id/tvTimer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
 
         <!-- Verify Button -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnVerify"
-            style="@style/PrimaryButton"
+            style="@style/DarkPrimaryButton"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="32dp"
             android:text="@string/otp_button"
-            android:layout_marginTop="24dp"
-            android:enabled="false"
-            android:alpha="0.6" />
+            app:icon="@drawable/ic_arrow_forward"
+            app:iconGravity="end"
+            app:iconTint="@color/dark_background" />
 
         <!-- Progress Indicator -->
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -113,38 +209,71 @@
             android:visibility="gone"
             app:indicatorColor="@color/primary" />
 
-        <!-- Spacer -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <!-- Resend Code Link -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
             android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/otp_resend"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/text_on_dark_secondary"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvResendCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/otp_resend_button"
-                android:textColor="@color/primary"
-                android:textSize="14sp"
-                android:textStyle="bold"
+                android:layout_marginStart="4dp"
                 android:padding="8dp"
-                android:layout_marginStart="4dp" />
+                android:text="@string/otp_resend_button"
+                style="@style/DarkLinkText" />
+        </LinearLayout>
+
+        <!-- Timer -->
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/text_on_dark_hint"
+            android:textSize="12sp" />
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="32dp" />
+
+        <!-- Back to Login Link -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_back"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/text_on_dark_secondary"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvBackToLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/otp_back_to_login"
+                android:textColor="@color/text_on_dark_secondary"
+                android:textSize="14sp" />
         </LinearLayout>
 
     </LinearLayout>
