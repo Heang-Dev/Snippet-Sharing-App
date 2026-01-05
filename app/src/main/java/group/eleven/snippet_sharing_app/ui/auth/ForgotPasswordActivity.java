@@ -61,9 +61,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         // Send code button
         binding.btnSendCode.setOnClickListener(v -> sendResetCode());
-
-        // Back to login link
-        binding.tvBackToLogin.setOnClickListener(v -> finish());
     }
 
     private void sendResetCode() {

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -12,32 +11,27 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
-        android:paddingTop="48dp"
-        android:paddingBottom="24dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="32dp">
 
-        <!-- Icon Circle -->
-        <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_icon_circle_light">
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back"
+            android:layout_marginStart="-8dp"
+            app:tint="@color/text_primary" />
 
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_code_logo"
-                tools:ignore="ContentDescription" />
-        </FrameLayout>
-
-        <!-- Welcome Title -->
+        <!-- Title -->
         <TextView
-            android:id="@+id/tvWelcomeTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:gravity="center"
-            android:text="@string/login_title"
+            android:text="Login Now"
             android:textColor="@color/text_primary"
             android:textSize="26sp"
             android:fontFamily="sans-serif-medium" />
@@ -46,42 +40,35 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="24dp"
             android:gravity="center"
-            android:text="@string/login_subtitle"
+            android:text="Welcome back! Please enter your\ncredentials to access your account."
             android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.4" />
 
-        <!-- Email/Username Label -->
-        <LinearLayout
+        <!-- Email Label -->
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_email_username"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" *"
-                android:textColor="@color/error"
-                android:textSize="14sp" />
-        </LinearLayout>
+            android:text="Email"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
 
-        <!-- Email/Username Input -->
+        <!-- Email Input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilLogin"
-            style="@style/TextInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:startIconDrawable="@drawable/ic_email"
-            app:startIconTint="@color/text_secondary"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxStrokeColor="@color/text_input_box_stroke"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -89,44 +76,36 @@
                 android:id="@+id/etLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_email_hint"
+                android:hint="Email Address"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
                 android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint" />
+                android:textColorHint="@color/text_hint"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Password Label -->
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/login_password"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" *"
-                android:textColor="@color/error"
-                android:textSize="14sp" />
-        </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:text="Password"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
 
         <!-- Password Input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilPassword"
-            style="@style/TextInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:startIconDrawable="@drawable/ic_lock"
-            app:startIconTint="@color/text_secondary"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp"
+            app:boxStrokeColor="@color/text_input_box_stroke"
             app:endIconMode="password_toggle"
             app:endIconTint="@color/text_secondary"
             app:hintEnabled="false"
@@ -136,19 +115,20 @@
                 android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/login_password_hint"
+                android:hint="Your Password"
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
                 android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint" />
+                android:textColorHint="@color/text_hint"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Remember Me & Forgot Password Row -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -156,9 +136,9 @@
                 android:id="@+id/cbRememberMe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_remember_me"
+                android:text="Remember me"
                 android:textColor="@color/text_secondary"
-                android:textSize="14sp"
+                android:textSize="13sp"
                 android:buttonTint="@color/primary" />
 
             <View
@@ -171,126 +151,97 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:text="@string/login_forgot_password"
+                android:text="Forgot Password?"
                 android:textColor="@color/primary"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium" />
+                android:textSize="13sp" />
         </LinearLayout>
 
-        <!-- Login Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnLogin"
-            style="@style/PrimaryButton"
+        <!-- Login Button with Progress -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="24dp"
-            android:text="@string/login_button"
-            app:icon="@drawable/ic_arrow_forward"
-            app:iconGravity="end"
-            app:iconTint="@color/white" />
+            android:layout_marginTop="24dp">
 
-        <!-- Progress Indicator -->
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progressIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:indicatorColor="@color/primary" />
-
-        <!-- Divider with "OR CONTINUE WITH" -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@color/border" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="16dp"
-                android:text="@string/login_or_continue_with"
-                android:textColor="@color/text_secondary"
-                android:textSize="12sp"
-                android:textAllCaps="true" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@color/border" />
-        </LinearLayout>
-
-        <!-- Social Login Buttons -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:orientation="horizontal">
-
-            <!-- Google Button -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGoogle"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="8dp"
-                android:text="@string/login_google"
-                android:textColor="@color/text_primary"
+                android:id="@+id/btnLogin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Log In"
+                android:textColor="@color/white"
+                android:textSize="16sp"
                 android:textAllCaps="false"
-                app:icon="@drawable/ic_google"
-                app:iconTint="@null"
-                app:iconPadding="8dp"
-                app:strokeColor="@color/border"
-                app:cornerRadius="12dp" />
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="8dp" />
 
-            <!-- GitHub Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGithub"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_weight="1"
-                android:layout_marginStart="8dp"
-                android:text="@string/login_github"
-                android:textColor="@color/text_primary"
-                android:textAllCaps="false"
-                app:icon="@drawable/ic_github_dark"
-                app:iconTint="@null"
-                app:iconPadding="8dp"
-                app:strokeColor="@color/border"
-                app:cornerRadius="12dp" />
-        </LinearLayout>
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressIndicator"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorSize="24dp"
+                app:trackThickness="3dp"
+                app:indicatorColor="@color/white" />
+        </FrameLayout>
 
         <!-- Spacer -->
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:minHeight="24dp" />
+            android:minHeight="32dp" />
+
+        <!-- Social Login Icons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btnGoogle"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/bg_social_button"
+                android:src="@drawable/ic_google"
+                android:scaleType="center"
+                android:contentDescription="Google" />
+
+            <ImageButton
+                android:id="@+id/btnApple"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/bg_social_button"
+                android:src="@drawable/ic_apple"
+                android:scaleType="center"
+                android:contentDescription="Apple" />
+
+            <ImageButton
+                android:id="@+id/btnGithub"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/bg_social_button"
+                android:src="@drawable/ic_facebook"
+                android:scaleType="center"
+                android:contentDescription="Facebook" />
+        </LinearLayout>
 
         <!-- Sign Up Link -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_no_account"
+                android:text="Don't Have An Account?"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
 
@@ -299,8 +250,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:padding="8dp"
-                android:text="@string/login_sign_up"
+                android:padding="4dp"
+                android:text="Register"
                 android:textColor="@color/primary"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-medium" />

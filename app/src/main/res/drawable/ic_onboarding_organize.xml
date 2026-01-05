@@ -1,50 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="200dp"
-    android:height="200dp"
-    android:viewportWidth="200"
-    android:viewportHeight="200">
+    android:width="160dp"
+    android:height="160dp"
+    android:viewportWidth="160"
+    android:viewportHeight="160">
+
+    <!-- Background circle -->
+    <path
+        android:pathData="M80,80m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"
+        android:fillColor="#D1FAE5"/>
 
     <!-- Folder shape -->
     <path
-        android:pathData="M50,70 L50,140 Q50,150 60,150 L140,150 Q150,150 150,140 L150,80 Q150,70 140,70 L100,70 L90,60 L60,60 Q50,60 50,70 Z"
-        android:strokeWidth="6"
-        android:strokeColor="#10B981"
-        android:fillColor="#D1FAE5"/>
+        android:pathData="M40,55 L65,55 L72,45 L120,45 L120,115 L40,115 Z"
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="3"
+        android:strokeColor="#10B981"/>
 
-    <!-- Files inside folder -->
+    <!-- Folder tab -->
     <path
-        android:pathData="M70,95 L130,95"
-        android:strokeWidth="5"
+        android:pathData="M40,55 L65,55 L72,45"
+        android:strokeWidth="3"
         android:strokeColor="#10B981"
-        android:strokeLineCap="round"/>
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000"/>
 
+    <!-- Folder top edge -->
     <path
-        android:pathData="M70,110 L110,110"
-        android:strokeWidth="5"
+        android:pathData="M40,55 L120,55"
+        android:strokeWidth="3"
+        android:strokeColor="#10B981"/>
+
+    <!-- Code file 1 -->
+    <path
+        android:pathData="M55,70 L90,70"
+        android:strokeWidth="3"
         android:strokeColor="#34D399"
         android:strokeLineCap="round"/>
 
+    <!-- Code file 2 -->
     <path
-        android:pathData="M70,125 L120,125"
-        android:strokeWidth="5"
+        android:pathData="M55,82 L105,82"
+        android:strokeWidth="3"
+        android:strokeColor="#10B981"
+        android:strokeLineCap="round"/>
+
+    <!-- Code file 3 -->
+    <path
+        android:pathData="M55,94 L75,94"
+        android:strokeWidth="3"
         android:strokeColor="#6EE7B7"
         android:strokeLineCap="round"/>
 
-    <!-- Star/favorite -->
+    <!-- Checkmark badge -->
     <path
-        android:pathData="M160,50 L163,59 L172,59 L165,65 L168,74 L160,69 L152,74 L155,65 L148,59 L157,59 Z"
+        android:pathData="M110,35m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0"
         android:fillColor="#10B981"/>
 
-    <!-- Heart -->
     <path
-        android:pathData="M45,85 C40,80 40,70 50,70 C55,70 55,75 55,75 C55,75 55,70 60,70 C70,70 70,80 65,85 L55,95 L45,85 Z"
-        android:fillColor="#34D399"/>
-
-    <!-- Circle decoration -->
-    <path
-        android:pathData="M30,100 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0"
-        android:strokeWidth="3"
-        android:strokeColor="#D1FAE5"
+        android:pathData="M104,35 L108,39 L116,31"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
         android:fillColor="#00000000"/>
+
 </vector>

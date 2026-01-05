@@ -79,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
+        // Back button
+        binding.btnBack.setOnClickListener(v -> finish());
+
         // Login button
         binding.btnLogin.setOnClickListener(v -> attemptLogin());
 

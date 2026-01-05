@@ -111,10 +111,8 @@ public class OnboardingActivity extends AppCompatActivity {
     private void updateButtonText(int position) {
         if (position == adapter.getItemCount() - 1) {
             binding.btnNext.setText(R.string.onboarding_get_started);
-            binding.btnNext.setIconResource(0);
         } else {
             binding.btnNext.setText(R.string.onboarding_next);
-            binding.btnNext.setIconResource(R.drawable.ic_arrow_forward);
         }
     }
 

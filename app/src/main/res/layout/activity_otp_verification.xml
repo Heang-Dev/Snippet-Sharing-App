@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:paddingTop="16dp"
-        android:paddingBottom="24dp">
+        android:paddingBottom="32dp">
 
         <!-- Back Button -->
         <ImageButton
@@ -22,32 +22,17 @@
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
-            android:contentDescription="@string/cancel"
+            android:contentDescription="Back"
+            android:layout_marginStart="-8dp"
             app:tint="@color/text_primary" />
-
-        <!-- Icon Circle -->
-        <FrameLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/bg_icon_circle_light">
-
-            <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_email_verify"
-                tools:ignore="ContentDescription" />
-        </FrameLayout>
 
         <!-- Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:gravity="center"
-            android:text="@string/otp_title"
+            android:text="Enter Your OTP"
             android:textColor="@color/text_primary"
             android:textSize="26sp"
             android:fontFamily="sans-serif-medium" />
@@ -56,38 +41,50 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="24dp"
             android:gravity="center"
-            android:paddingHorizontal="16dp"
-            android:text="@string/otp_subtitle"
+            android:text="We've sent a 6-digit verification code\nto your email. Enter the code below."
             android:textColor="@color/text_secondary"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:lineSpacingMultiplier="1.4" />
 
         <!-- Email Display -->
         <TextView
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:gravity="center"
-            android:layout_marginTop="4dp"
             android:textColor="@color/primary"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="example@email.com" />
+
+        <!-- Resend Timer -->
+        <TextView
+            android:id="@+id/tvTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Resend Code In 01:30s"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp" />
 
         <!-- OTP Input Boxes -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="12dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/etOtp1"
                 android:layout_width="48dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input_light"
+                android:background="@drawable/bg_otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
@@ -100,9 +97,9 @@
             <EditText
                 android:id="@+id/etOtp2"
                 android:layout_width="48dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input_light"
+                android:background="@drawable/bg_otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
@@ -115,9 +112,9 @@
             <EditText
                 android:id="@+id/etOtp3"
                 android:layout_width="48dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input_light"
+                android:background="@drawable/bg_otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
@@ -130,9 +127,9 @@
             <EditText
                 android:id="@+id/etOtp4"
                 android:layout_width="48dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input_light"
+                android:background="@drawable/bg_otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
@@ -145,9 +142,9 @@
             <EditText
                 android:id="@+id/etOtp5"
                 android:layout_width="48dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input_light"
+                android:background="@drawable/bg_otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
@@ -160,9 +157,9 @@
             <EditText
                 android:id="@+id/etOtp6"
                 android:layout_width="48dp"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_input_light"
+                android:background="@drawable/bg_otp_box"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
@@ -190,65 +187,34 @@
                 android:importantForAutofill="no" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Verify Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnVerify"
-            style="@style/PrimaryButton"
+        <!-- Verify Button with Progress -->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:layout_marginTop="32dp"
-            android:text="@string/otp_button"
-            app:icon="@drawable/ic_arrow_forward"
-            app:iconGravity="end"
-            app:iconTint="@color/white" />
+            android:layout_marginTop="28dp">
 
-        <!-- Progress Indicator -->
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progressIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:indeterminate="true"
-            android:visibility="gone"
-            app:indicatorColor="@color/primary" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVerify"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Verify"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textAllCaps="false"
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="8dp" />
 
-        <!-- Resend Code Link -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/otp_resend"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvResendCode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:padding="8dp"
-                android:text="@string/otp_resend_button"
-                android:textColor="@color/primary"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium" />
-        </LinearLayout>
-
-        <!-- Timer -->
-        <TextView
-            android:id="@+id/tvTimer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/text_hint"
-            android:textSize="12sp" />
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/progressIndicator"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:indicatorSize="24dp"
+                app:trackThickness="3dp"
+                app:indicatorColor="@color/white" />
+        </FrameLayout>
 
         <!-- Spacer -->
         <View
@@ -257,29 +223,30 @@
             android:layout_weight="1"
             android:minHeight="32dp" />
 
-        <!-- Back to Login Link -->
+        <!-- Resend Code Link -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_arrow_back"
-                android:layout_marginEnd="8dp"
-                app:tint="@color/text_secondary"
-                tools:ignore="ContentDescription" />
-
             <TextView
-                android:id="@+id/tvBackToLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@string/otp_back_to_login"
+                android:text="Didn't receive the email?"
                 android:textColor="@color/text_secondary"
                 android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tvResendCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:padding="4dp"
+                android:text="Click to resend"
+                android:textColor="@color/primary"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
     </LinearLayout>

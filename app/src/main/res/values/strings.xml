@@ -65,14 +65,14 @@
     <string name="register_error_terms">Please accept the terms and conditions</string>
 
     <!-- Forgot Password Screen -->
-    <string name="forgot_password_title">Forgot password?</string>
-    <string name="forgot_password_subtitle">Enter the email associated with your account and we\'ll send you a reset link.</string>
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="forgot_password_subtitle">Enter the email associated with your account and we\'ll send you an OTP code.</string>
     <string name="forgot_password_email">Email Address</string>
     <string name="forgot_password_email_required">Email Address *</string>
     <string name="forgot_password_email_hint">Enter your email</string>
-    <string name="forgot_password_button">Send Reset Link</string>
+    <string name="forgot_password_button">Send OTP</string>
     <string name="forgot_password_back_to_login">Back to log in</string>
-    <string name="forgot_password_success">Reset code sent to your email</string>
+    <string name="forgot_password_success">OTP code sent to your email</string>
 
     <!-- OTP Verification Screen -->
     <string name="otp_title">Check your email</string>
