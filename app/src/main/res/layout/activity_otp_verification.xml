@@ -170,23 +170,6 @@
                 tools:ignore="LabelFor" />
         </LinearLayout>
 
-        <!-- Hidden OTP field for backwards compatibility -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilOtp"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            app:errorEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etOtp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:maxLength="6"
-                android:importantForAutofill="no" />
-        </com.google.android.material.textfield.TextInputLayout>
-
         <!-- Verify Button with Progress -->
         <FrameLayout
             android:layout_width="match_parent"

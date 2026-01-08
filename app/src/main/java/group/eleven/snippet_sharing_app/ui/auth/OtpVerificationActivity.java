@@ -3,8 +3,12 @@ package group.eleven.snippet_sharing_app.ui.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,7 +22,6 @@ import com.google.android.material.snackbar.Snackbar;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityOtpVerificationBinding;
-import group.eleven.snippet_sharing_app.utils.FormValidator;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 import java.util.Locale;
@@ -31,12 +34,13 @@ public class OtpVerificationActivity extends AppCompatActivity {
     private ActivityOtpVerificationBinding binding;
     private AuthRepository authRepository;
     private SessionManager sessionManager;
-    private FormValidator formValidator;
 
     private String email;
     private String token;
     private CountDownTimer countDownTimer;
     private boolean canResend = false;
+
+    private EditText[] otpBoxes;
 
     private static final long TIMER_DURATION = 600000; // 10 minutes in milliseconds
 
@@ -77,17 +81,76 @@ public class OtpVerificationActivity extends AppCompatActivity {
         // Display email
         binding.tvEmail.setText(email);
 
-        setupFormValidation();
+        setupOtpInputs();
         setupClickListeners();
         startTimer();
+
+        // Initially disable verify button
+        binding.btnVerify.setEnabled(false);
+
+        // Focus on first OTP box
+        binding.etOtp1.requestFocus();
     }
 
-    private void setupFormValidation() {
-        formValidator = new FormValidator()
-                .addOtpField(binding.tilOtp, binding.etOtp,
-                        getString(R.string.validation_required),
-                        getString(R.string.validation_otp_invalid))
-                .setSubmitButton(binding.btnVerify);
+    private void setupOtpInputs() {
+        otpBoxes = new EditText[]{
+                binding.etOtp1,
+                binding.etOtp2,
+                binding.etOtp3,
+                binding.etOtp4,
+                binding.etOtp5,
+                binding.etOtp6
+        };
+
+        for (int i = 0; i < otpBoxes.length; i++) {
+            final int index = i;
+            EditText currentBox = otpBoxes[i];
+
+            // Add TextWatcher for auto-focus to next input
+            currentBox.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.length() == 1 && index < otpBoxes.length - 1) {
+                        // Move to next box
+                        otpBoxes[index + 1].requestFocus();
+                    }
+                    // Update verify button state
+                    updateVerifyButtonState();
+                }
+            });
+
+            // Handle backspace to move to previous input
+            currentBox.setOnKeyListener((v, keyCode, event) -> {
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (currentBox.getText().toString().isEmpty() && index > 0) {
+                        // Move to previous box and clear it
+                        otpBoxes[index - 1].requestFocus();
+                        otpBoxes[index - 1].setText("");
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
+    }
+
+    private void updateVerifyButtonState() {
+        String otp = getOtpFromBoxes();
+        binding.btnVerify.setEnabled(otp.length() == 6);
+    }
+
+    private String getOtpFromBoxes() {
+        StringBuilder otp = new StringBuilder();
+        for (EditText box : otpBoxes) {
+            otp.append(box.getText().toString());
+        }
+        return otp.toString();
     }
 
     private void setupClickListeners() {
@@ -130,12 +193,13 @@ public class OtpVerificationActivity extends AppCompatActivity {
     }
 
     private void verifyOtp() {
-        // Validate all fields and show errors
-        if (!formValidator.validateAll()) {
+        String otp = getOtpFromBoxes();
+
+        // Validate OTP length
+        if (otp.length() != 6) {
+            showError(getString(R.string.validation_otp_invalid));
             return;
         }
-
-        String otp = binding.etOtp.getText().toString().trim();
 
         setLoading(true);
 
@@ -182,12 +246,20 @@ public class OtpVerificationActivity extends AppCompatActivity {
                 }
                 startTimer();
 
-                // Clear OTP field
-                binding.etOtp.setText("");
+                // Clear all OTP boxes
+                clearOtpBoxes();
             } else {
                 showError(resource.getMessage());
             }
         });
+    }
+
+    private void clearOtpBoxes() {
+        for (EditText box : otpBoxes) {
+            box.setText("");
+        }
+        // Focus on first box
+        binding.etOtp1.requestFocus();
     }
 
     private void setLoading(boolean isLoading) {
@@ -195,7 +267,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
             binding.btnVerify.setEnabled(false);
             binding.btnVerify.setText("");
         } else {
-            binding.btnVerify.setEnabled(formValidator.isFormValid());
+            binding.btnVerify.setEnabled(getOtpFromBoxes().length() == 6);
             binding.btnVerify.setText(getString(R.string.otp_button));
         }
         binding.progressIndicator.setVisibility(isLoading ? View.VISIBLE : View.GONE);
