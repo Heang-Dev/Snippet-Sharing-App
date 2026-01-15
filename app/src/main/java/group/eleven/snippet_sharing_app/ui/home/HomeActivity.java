@@ -83,6 +83,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             // Setup navigation drawer
             setupNavigationDrawer();
             
+            // Setup bottom navigation
+            setupBottomNavigation();
+            
             // Setup UI components
             setupUserInfo();
             setupStatsCards();
@@ -127,6 +130,33 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvSnippetsCount.setText("142");
         tvForksCount.setText("89");
         tvViewsCount.setText("1.2k");
+    }
+
+    private void setupBottomNavigation() {
+        binding.bottomNavigation.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            
+            if (id == R.id.nav_bottom_home) {
+                // Already on home, maybe scroll to top
+                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.nav_bottom_explore) {
+                Toast.makeText(this, "Explore - Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.nav_bottom_create) {
+                // Same as FAB - create snippet
+                Toast.makeText(this, "Create Snippet - Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.nav_bottom_profile) {
+                Toast.makeText(this, "Profile - Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            
+            return false;
+        });
+        
+        // Set Home as selected by default
+        binding.bottomNavigation.setSelectedItemId(R.id.nav_bottom_home);
     }
 
     private void setupUserInfo() {
