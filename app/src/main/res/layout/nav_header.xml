@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@color/primary"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <!-- User Avatar -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="0dp"
+        android:layout_marginBottom="12dp">
+
+        <ImageView
+            android:id="@+id/ivUserAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_person"
+            android:contentDescription="@string/profile_title" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- User Name -->
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alex Dev"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- User Plan -->
+    <TextView
+        android:id="@+id/tvUserPlan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_plan"
+        android:textColor="@color/white"
+        android:alpha="0.8"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- User Stats -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Snippets Count -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvSnippetsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="142"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stats_snippets"
+                android:textColor="@color/white"
+                android:alpha="0.7"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!-- Forks Count -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvForksCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="89"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stats_forks"
+                android:textColor="@color/white"
+                android:alpha="0.7"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!-- Views Count -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvViewsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1.2k"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stats_views"
+                android:textColor="@color/white"
+                android:alpha="0.7"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation Drawer -->
+    <dimen name="nav_header_height">220dp</dimen>
+    
+    <!-- Stats Cards -->
+    <dimen name="stat_card_height">120dp</dimen>
+    
+    <!-- Snippet Cards -->
+    <dimen name="snippet_card_corner">12dp</dimen>
+    <dimen name="code_preview_height">100dp</dimen>
+    
+    <!-- FAB -->
+    <dimen name="fab_margin">16dp</dimen>
+    
+    <!-- Spacing -->
+    <dimen name="section_spacing">24dp</dimen>
+    <dimen name="card_spacing">12dp</dimen>
+</resources>

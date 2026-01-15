@@ -115,6 +115,32 @@
     <string name="home_my_snippets">My Snippets</string>
     <string name="home_favorites">Favorites</string>
     <string name="home_collections">Collections</string>
+    
+    <!-- New Home Screen -->
+    <string name="search_hint">Search snippets, tags, teams...</string>
+    <string name="stats_snippets">SNIPPETS</string>
+    <string name="stats_views">VIEWS</string>
+    <string name="stats_forks">FORKS</string>
+    <string name="activity_feed">Activity Feed</string>
+    <string name="recent_snippets">Recent Snippets</string>
+    <string name="view_all">View All</string>
+    <string name="updated_time">Updated %1$s</string>
+    <string name="user_plan">Pro Plan · Team Lead</string>
+    
+    <!-- Navigation Drawer -->
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_snippets">Snippets</string>
+    <string name="nav_all_snippets">All Snippets</string>
+    <string name="nav_favorites">Favorites</string>
+    <string name="nav_shared">Shared with me</string>
+    <string name="nav_teams">Teams</string>
+    <string name="nav_main">MAIN</string>
+    <string name="nav_settings">SETTINGS</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_preferences">Preferences</string>
+    <string name="nav_help">Help &amp; Support</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <!-- Profile -->
     <string name="profile_title">Profile</string>

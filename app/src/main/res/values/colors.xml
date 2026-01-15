@@ -65,4 +65,16 @@
     <!-- Gradient colors for splash -->
     <color name="gradient_start">#10B981</color>
     <color name="gradient_end">#059669</color>
+    
+    <!-- Home Screen Colors -->
+    <color name="surface_elevated">#FFFFFF</color>
+    <color name="code_background">#1E293B</color>
+    <color name="code_text">#E2E8F0</color>
+    <color name="stat_positive">#10B981</color>
+    <color name="stat_negative">#EF4444</color>
+    <color name="badge_background">#E0E7FF</color>
+    <color name="badge_text">#4F46E5</color>
+    <color name="activity_icon_bg">#F3F4F6</color>
+    <color name="drawer_selected">#ECFDF5</color>
+    <color name="drawer_selected_text">#10B981</color>
 </resources>
