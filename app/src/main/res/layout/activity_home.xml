@@ -272,25 +272,28 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="72dp"
+            android:layout_marginBottom="88dp"
             android:src="@drawable/ic_code"
             app:tint="@color/white"
             app:backgroundTint="@color/primary"
             android:contentDescription="Add snippet" />
 
-        <!-- Bottom Navigation Bar -->
+        <!-- Bottom Navigation Bar (Floating) -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/surface"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_bottom_nav"
             app:menu="@menu/bottom_nav_menu"
             app:itemIconTint="@color/bottom_nav_color"
             app:itemTextColor="@color/bottom_nav_color"
             app:itemActiveIndicatorStyle="@null"
             app:labelVisibilityMode="labeled"
-            app:elevation="8dp" />
+            app:elevation="12dp" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
