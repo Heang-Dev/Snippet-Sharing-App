@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -132,31 +133,153 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvViewsCount.setText("1.2k");
     }
 
+    private LinearLayout navItemsContainer;
+    private int currentSelectedIndex = 0;
+    
+    private static final int[] NAV_ICONS = {
+        R.drawable.ic_explore,      // Home
+        R.drawable.ic_collections,  // Wallet  
+        R.drawable.ic_code,         // Membership
+        R.drawable.ic_favorite      // Loyalty
+    };
+    
+    private static final String[] NAV_LABELS = {
+        "Home", "Wallet", "Membership", "Loyalty"
+    };
+    
     private void setupBottomNavigation() {
-        binding.bottomNavigation.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            
-            if (id == R.id.nav_bottom_home) {
-                // Already on home, maybe scroll to top
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (id == R.id.nav_bottom_explore) {
-                Toast.makeText(this, "Explore - Coming Soon", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (id == R.id.nav_bottom_create) {
-                // Same as FAB - create snippet
-                Toast.makeText(this, "Create Snippet - Coming Soon", Toast.LENGTH_SHORT).show();
-                return true;
-            } else if (id == R.id.nav_bottom_profile) {
-                Toast.makeText(this, "Profile - Coming Soon", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-            
-            return false;
-        });
+        navItemsContainer = findViewById(R.id.navItemsContainer);
         
-        // Set Home as selected by default
-        binding.bottomNavigation.setSelectedItemId(R.id.nav_bottom_home);
+        // Create navigation items
+        for (int i = 0; i < NAV_ICONS.length; i++) {
+            View navItem = createNavItem(i, NAV_ICONS[i], NAV_LABELS[i]);
+            navItemsContainer.addView(navItem);
+        }
+        
+        // Set initial selection
+        selectNavItem(0, false);
+    }
+    
+    private View createNavItem(int index, int iconRes, String label) {
+        View item = getLayoutInflater().inflate(R.layout.item_glass_nav, navItemsContainer, false);
+        
+        View activeBackground = item.findViewById(R.id.activeBackground);
+        ImageView icon = item.findViewById(R.id.navIcon);
+        TextView labelView = item.findViewById(R.id.navLabel);
+        
+        icon.setImageResource(iconRes);
+        labelView.setText(label);
+        
+        // Set initial inactive colors with proper tint mode
+        icon.setColorFilter(getColor(R.color.nav_inactive_icon), android.graphics.PorterDuff.Mode.SRC_IN);
+        labelView.setTextColor(getColor(R.color.nav_inactive_text));
+        
+        // Set click listener
+        item.setOnClickListener(v -> selectNavItem(index, true));
+        
+        return item;
+    }
+    
+    private void selectNavItem(int index, boolean animate) {
+        if (index == currentSelectedIndex) return;
+        
+        // Deselect previous
+        View previousItem = navItemsContainer.getChildAt(currentSelectedIndex);
+        animateDeselection(previousItem, animate);
+        
+        // Select new
+        View newItem = navItemsContainer.getChildAt(index);
+        animateSelection(newItem, animate);
+        
+        currentSelectedIndex = index;
+        
+        // Handle navigation
+        handleNavigation(index);
+    }
+    
+    private void animateSelection(View item, boolean animate) {
+        View activeBackground = item.findViewById(R.id.activeBackground);
+        ImageView icon = item.findViewById(R.id.navIcon);
+        TextView label = item.findViewById(R.id.navLabel);
+        
+        if (animate) {
+            // Fade in gold background with spring effect
+            activeBackground.setVisibility(View.VISIBLE);
+            activeBackground.setAlpha(0f);
+            activeBackground.setScaleX(0.8f);
+            activeBackground.setScaleY(0.8f);
+            activeBackground.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(300)
+                .setInterpolator(new android.view.animation.OvershootInterpolator(1.2f))
+                .start();
+            
+            // Scale up icon slightly
+            icon.animate()
+                .scaleX(1.1f)
+                .scaleY(1.1f)
+                .setDuration(200)
+                .start();
+        } else {
+            activeBackground.setVisibility(View.VISIBLE);
+            icon.setScaleX(1.1f);
+            icon.setScaleY(1.1f);
+        }
+        
+        // Change colors to gold
+        icon.setColorFilter(getColor(R.color.nav_active_icon), android.graphics.PorterDuff.Mode.SRC_IN);
+        label.setTextColor(getColor(R.color.nav_active_text));
+    }
+    
+    private void animateDeselection(View item, boolean animate) {
+        View activeBackground = item.findViewById(R.id.activeBackground);
+        ImageView icon = item.findViewById(R.id.navIcon);
+        TextView label = item.findViewById(R.id.navLabel);
+        
+        if (animate) {
+            // Fade out gold background
+            activeBackground.animate()
+                .alpha(0f)
+                .scaleX(0.8f)
+                .scaleY(0.8f)
+                .setDuration(200)
+                .withEndAction(() -> activeBackground.setVisibility(View.GONE))
+                .start();
+            
+            // Scale down icon
+            icon.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(200)
+                .start();
+        } else {
+            activeBackground.setVisibility(View.GONE);
+            icon.setScaleX(1f);
+            icon.setScaleY(1f);
+        }
+        
+        // Change colors to gray
+        icon.setColorFilter(getColor(R.color.nav_inactive_icon), android.graphics.PorterDuff.Mode.SRC_IN);
+        label.setTextColor(getColor(R.color.nav_inactive_text));
+    }
+    
+    private void handleNavigation(int index) {
+        switch (index) {
+            case 0: // Home
+                // Already on home
+                break;
+            case 1: // Wallet
+                Toast.makeText(this, "Wallet - Coming Soon", Toast.LENGTH_SHORT).show();
+                break;
+            case 2: // Membership
+                Toast.makeText(this, "Membership - Coming Soon", Toast.LENGTH_SHORT).show();
+                break;
+            case 3: // Loyalty
+                Toast.makeText(this, "Loyalty - Coming Soon", Toast.LENGTH_SHORT).show();
+                break;
+        }
     }
 
     private void setupUserInfo() {
@@ -272,11 +395,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         binding.ivListView.setOnClickListener(v -> {
             Toast.makeText(this, "List View Active", Toast.LENGTH_SHORT).show();
-        });
-
-        // FAB click
-        binding.fabAddSnippet.setOnClickListener(v -> {
-            Toast.makeText(this, "Create Snippet - Coming Soon", Toast.LENGTH_SHORT).show();
         });
     }
 

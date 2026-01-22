@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingVertical="8dp"
+    android:clickable="true"
+    android:focusable="true">
+    
+    <!-- Icon Container -->
+    <FrameLayout
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center">
+        
+        <!-- Active Background (Gold Circle) -->
+        <View
+            android:id="@+id/activeBackground"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_nav_active_gold"
+            android:visibility="gone" />
+        
+        <!-- Icon -->
+        <ImageView
+            android:id="@+id/navIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter" />
+    </FrameLayout>
+    
+    <!-- Label -->
+    <TextView
+        android:id="@+id/navLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="11sp"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="-0.01" />
+</LinearLayout>

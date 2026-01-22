@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Selected: Primary green -->
     <item android:color="@color/primary" android:state_checked="true" />
-    <item android:color="@color/text_secondary" />
+    
+    <!-- Unselected: iOS gray -->
+    <item android:color="#8E8E93" />
 </selector>

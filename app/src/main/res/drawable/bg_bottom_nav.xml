@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@color/surface" />
-    <corners android:radius="24dp" />
+    <!-- More opaque for better readability (85% white) -->
+    <solid android:color="#D9FFFFFF" />
+    
+    <!-- Reduced corner radius to prevent icon clipping -->
+    <corners android:radius="20dp" />
+    
+    <!-- Subtle dark border for definition -->
+    <stroke
+        android:width="0.5dp"
+        android:color="#1A000000" />
 </shape>

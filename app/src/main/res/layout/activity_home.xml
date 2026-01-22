@@ -83,7 +83,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:paddingBottom="120dp">
 
                 <!-- Search Bar -->
                 <com.google.android.material.card.MaterialCardView
@@ -265,35 +266,35 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <!-- Floating Action Button -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fabAddSnippet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="88dp"
-            android:src="@drawable/ic_code"
-            app:tint="@color/white"
-            app:backgroundTint="@color/primary"
-            android:contentDescription="Add snippet" />
-
-        <!-- Bottom Navigation Bar (Floating) -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigation"
+        <!-- Custom Glass Navigation Bar (iOS-Style) -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/glassNavContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_gravity="bottom"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_bottom_nav"
-            app:menu="@menu/bottom_nav_menu"
-            app:itemIconTint="@color/bottom_nav_color"
-            app:itemTextColor="@color/bottom_nav_color"
-            app:itemActiveIndicatorStyle="@null"
-            app:labelVisibilityMode="labeled"
-            app:elevation="12dp" />
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_glass_nav_pill"
+            android:elevation="8dp">
+            
+            <!-- Navigation Items Container -->
+            <LinearLayout
+                android:id="@+id/navItemsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+                
+                <!-- Nav items will be added programmatically -->
+                
+            </LinearLayout>
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
