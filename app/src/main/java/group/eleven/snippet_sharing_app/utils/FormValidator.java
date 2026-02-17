@@ -22,6 +22,7 @@ public class FormValidator {
     private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]{3,30}$");
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^.{8,}$");
     private static final Pattern OTP_PATTERN = Pattern.compile("^[0-9]{6}$");
+    private static final Pattern TEAM_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_ -]{3,50}$");
 
     private final List<FieldValidator> fieldValidators = new ArrayList<>();
     private Button submitButton;
@@ -46,6 +47,13 @@ public class FormValidator {
     public FormValidator setOnValidationChangeListener(OnValidationChangeListener listener) {
         this.validationChangeListener = listener;
         return this;
+    }
+
+    /**
+     * Check if team name is valid
+     */
+    public static boolean isTeamNameValid(String teamName) {
+        return TEAM_NAME_PATTERN.matcher(teamName).matches();
     }
 
     /**

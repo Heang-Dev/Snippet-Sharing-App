@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".ui.team.settings.TeamSettingsPermissionsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/tv_permissions_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Role-Based Permissions"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_permissions_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Define what each role can do within the team. Note: Owner has full control and cannot be restricted."
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_permissions_header" />
+
+        <!-- Role Selection Spinner (e.g., Owner, Admin, Member) -->
+        <TextView
+            android:id="@+id/tv_select_role_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Select Role to Edit Permissions"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_permissions_description" />
+
+        <Spinner
+            android:id="@+id/spinner_roles"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_spinner_outline"
+            android:minHeight="48dp"
+            android:padding="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_select_role_label" />
+
+        <!-- Permissions Checkboxes/Switches (Dynamic) -->
+        <LinearLayout
+            android:id="@+id/ll_permissions_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_roles">
+
+            <!-- Example permission item (will be dynamically added) -->
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Snippets"
+                android:paddingVertical="8dp"
+                android:textSize="16sp"
+                tools:checked="true" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Edit All Snippets"
+                android:paddingVertical="8dp"
+                android:textSize="16sp"
+                tools:checked="false" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Invite Members"
+                android:paddingVertical="8dp"
+                android:textSize="16sp"
+                tools:checked="true" />
+            <!-- More permissions... -->
+
+        </LinearLayout>
+
+        <!-- Default Snippet Privacy for Team -->
+        <TextView
+            android:id="@+id/tv_default_snippet_privacy_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Default Snippet Privacy for Team"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ll_permissions_container" />
+
+        <RadioGroup
+            android:id="@+id/rg_default_snippet_privacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_default_snippet_privacy_header">
+
+            <RadioButton
+                android:id="@+id/rb_snippet_public"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Public - Visible to everyone." />
+
+            <RadioButton
+                android:id="@+id/rb_snippet_team_only"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Team Only - Visible only to team members." />
+
+            <RadioButton
+                android:id="@+id/rb_snippet_private"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Private - Visible only to the snippet author." />
+        </RadioGroup>
+
+        <!-- Save Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_permissions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Save Permissions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rg_default_snippet_privacy" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

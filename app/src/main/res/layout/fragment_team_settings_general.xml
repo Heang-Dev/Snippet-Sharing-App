@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor"
+    tools:context=".ui.team.settings.TeamSettingsGeneralFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Team Avatar Upload -->
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_team_avatar_preview"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/ic_collections"
+                        app:civ_border_color="?attr/colorPrimary"
+                        app:civ_border_width="2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_upload_avatar"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_team_avatar_preview" />
+
+        <!-- Team Name Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_team_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_upload_avatar">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_team_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Team Name"
+                android:inputType="textCapWords"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Team Description Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_team_description"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_team_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_team_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:hint="Team Description (Optional)"
+                android:inputType="textMultiLine"
+                android:lines="4" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Privacy Settings Header -->
+        <TextView
+            android:id="@+id/tv_privacy_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Privacy Settings"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_team_description" />
+
+        <!-- Privacy Radio Buttons -->
+        <RadioGroup
+            android:id="@+id/rg_privacy_settings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_privacy_header">
+
+            <RadioButton
+                android:id="@+id/rb_public"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Public - Anyone can find and join this team." />
+
+            <RadioButton
+                android:id="@+id/rb_private"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Private - Only invited members can join." />
+
+            <RadioButton
+                android:id="@+id/rb_invite_only"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Invite-Only - Members must be invited and approved." />
+        </RadioGroup>
+
+        <!-- Save Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save_changes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Save Changes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rg_privacy_settings" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
