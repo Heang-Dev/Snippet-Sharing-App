@@ -62,16 +62,33 @@
                 android:textColor="@color/profile_text_muted"
                 android:textSize="14sp" />
 
-            <EditText
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:hint="••••••••"
-                android:inputType="textPassword"
-                android:paddingHorizontal="16dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted" />
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/etCurrentPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edit_text_dark"
+                    android:hint="••••••••"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/profile_text_muted" />
+
+                <ImageView
+                    android:id="@+id/ivCurrentPasswordToggle"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_visibility_off"
+                    app:tint="@color/profile_text_muted" />
+            </FrameLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,6 +104,7 @@
                 android:layout_marginTop="8dp">
 
                 <EditText
+                    android:id="@+id/etNewPassword"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_edit_text_dark"
@@ -97,10 +115,13 @@
                     android:textColorHint="@color/profile_text_muted" />
 
                 <ImageView
+                    android:id="@+id/ivNewPasswordToggle"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:src="@drawable/ic_visibility_off"
                     app:tint="@color/profile_text_muted" />
             </FrameLayout>
@@ -113,16 +134,33 @@
                 android:textColor="@color/profile_text_muted"
                 android:textSize="14sp" />
 
-            <EditText
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:hint="Confirm new password"
-                android:inputType="textPassword"
-                android:paddingHorizontal="16dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted" />
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/etConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_edit_text_dark"
+                    android:hint="Confirm new password"
+                    android:inputType="textPassword"
+                    android:paddingHorizontal="16dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/profile_text_muted" />
+
+                <ImageView
+                    android:id="@+id/ivConfirmPasswordToggle"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_visibility_off"
+                    app:tint="@color/profile_text_muted" />
+            </FrameLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -162,6 +200,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swTwoFactor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -233,19 +272,20 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvGoogleEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="alex@gmail.com"
+                            android:text="Not connected"
                             android:textColor="@color/profile_text_muted"
                             android:textSize="13sp" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnDisconnectGoogle"
+                        android:id="@+id/btnConnectGoogle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:minWidth="0dp"
-                        android:text="Disconnect"
+                        android:text="Connect"
                         android:textAllCaps="false"
                         android:textSize="12sp"
                         android:textColor="@color/profile_text_muted"
@@ -303,24 +343,26 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvGithubUsername"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="alexcodes"
+                            android:text="Not connected"
                             android:textColor="@color/profile_text_muted"
                             android:textSize="13sp" />
                     </LinearLayout>
 
-                    <TextView
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnConnectGithub"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_pill_badge"
-                        android:backgroundTint="#064E3B"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="6dp"
-                        android:text="Connected"
-                        android:textColor="@color/profile_primary"
+                        android:minWidth="0dp"
+                        android:text="Connect"
+                        android:textAllCaps="false"
                         android:textSize="12sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/profile_text_muted"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        app:strokeColor="#1A231C"
+                        app:cornerRadius="20dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

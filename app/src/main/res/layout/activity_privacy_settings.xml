@@ -44,7 +44,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Profile Visibility Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,18 +67,17 @@
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
-                <!-- Public Visibility Card -->
+                <!-- Public Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardPublic"
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_weight="1"
                     android:layout_marginEnd="8dp"
-                    app:cardBackgroundColor="#111B13"
+                    app:cardBackgroundColor="@color/profile_card"
                     app:cardCornerRadius="40dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="2dp"
-                    app:strokeColor="@color/profile_primary">
+                    app:strokeWidth="0dp">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -98,35 +96,39 @@
                                 app:cardCornerRadius="24dp"
                                 app:cardElevation="0dp">
                                 <ImageView
+                                    android:id="@+id/ivGlobe"
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
                                     android:layout_gravity="center"
                                     android:src="@drawable/ic_globe"
-                                    app:tint="@color/profile_primary" />
+                                    app:tint="@color/profile_text_muted" />
                             </com.google.android.material.card.MaterialCardView>
 
                             <TextView
+                                android:id="@+id/tvPublicLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:text="Public"
-                                android:textColor="@color/profile_primary"
+                                android:textColor="@color/profile_text_muted"
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 
                         <ImageView
+                            android:id="@+id/ivCheckPublic"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_gravity="top|end"
                             android:layout_marginTop="12dp"
                             android:layout_marginEnd="12dp"
                             android:src="@drawable/ic_check_circle"
-                            app:tint="@color/profile_primary" />
+                            app:tint="@color/profile_primary"
+                            android:visibility="gone" />
                     </FrameLayout>
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Private Visibility Card -->
+                <!-- Private Card -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardPrivate"
                     android:layout_width="0dp"
@@ -138,35 +140,53 @@
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
 
-                    <LinearLayout
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="vertical">
+                        android:layout_height="match_parent">
 
-                        <com.google.android.material.card.MaterialCardView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            app:cardBackgroundColor="#0D110D"
-                            app:cardCornerRadius="24dp"
-                            app:cardElevation="0dp">
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:layout_gravity="center"
-                                android:src="@drawable/ic_lock"
-                                app:tint="@color/profile_text_muted" />
-                        </com.google.android.material.card.MaterialCardView>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Private"
-                            android:textColor="@color/profile_text_muted"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:cardBackgroundColor="#0D110D"
+                                app:cardCornerRadius="24dp"
+                                app:cardElevation="0dp">
+                                <ImageView
+                                    android:id="@+id/ivLock"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_lock"
+                                    app:tint="@color/profile_text_muted" />
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <TextView
+                                android:id="@+id/tvPrivateLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:text="Private"
+                                android:textColor="@color/profile_text_muted"
+                                android:textSize="16sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/ivCheckPrivate"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="top|end"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:src="@drawable/ic_check_circle"
+                            app:tint="@color/profile_primary"
+                            android:visibility="gone" />
+                    </FrameLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
 
@@ -176,7 +196,6 @@
                 android:layout_marginTop="32dp"
                 android:background="#1A231C" />
 
-            <!-- Profile Details Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -237,9 +256,9 @@
                     </LinearLayout>
 
                     <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swShowEmail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         app:trackTint="@color/switch_track_selector"
                         app:thumbTint="@color/white" />
                 </LinearLayout>
@@ -287,9 +306,9 @@
                     </LinearLayout>
 
                     <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swShowActivity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         app:trackTint="@color/switch_track_selector"
                         app:thumbTint="@color/white" />
                 </LinearLayout>
@@ -337,15 +356,14 @@
                     </LinearLayout>
 
                     <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swAllowForking"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checked="true"
                         app:trackTint="@color/switch_track_selector"
                         app:thumbTint="@color/white" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Snippet Defaults Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

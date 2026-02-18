@@ -65,6 +65,7 @@
                     app:shapeAppearanceOverlay="@style/CircleImage" />
 
                 <View
+                    android:id="@+id/vStatusIndicator"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:layout_gravity="bottom|end"
@@ -100,6 +101,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tvBadgeCore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_pill_badge"
@@ -113,6 +115,7 @@
                     android:layout_marginEnd="8dp" />
 
                 <TextView
+                    android:id="@+id/tvBadgePro"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_pill_badge"
@@ -122,9 +125,11 @@
                     android:text="Pro Member"
                     android:textColor="@color/white"
                     android:textSize="11sp"
-                    android:textStyle="bold" android:layout_marginEnd="8dp" />
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp" />
 
                 <TextView
+                    android:id="@+id/tvBadgeTop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_pill_badge"
@@ -177,14 +182,17 @@
                     android:layout_marginStart="12dp"
                     app:cardBackgroundColor="@color/profile_card"
                     app:cardCornerRadius="28dp"
-                    app:cardElevation="0dp">
+                    app:cardElevation="0dp"
+                    app:strokeWidth="1dp"
+                    app:strokeColor="#1A231C">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_email"
+                        android:src="@drawable/ic_notifications"
                         app:tint="@color/white" />
+
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
@@ -198,6 +206,7 @@
                 android:gravity="center">
 
                 <TextView
+                    android:id="@+id/tvJoinedDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_help"
@@ -208,6 +217,7 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tvLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -219,6 +229,7 @@
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/tvWebsite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"

@@ -8,16 +8,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import group.eleven.snippet_sharing_app.R;
 
+import java.io.File;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private TextView tabSnippets, tabStars, tabCollections;
-    private TextView tvName, tvUsername, tvBio;
+    private TextView tvName, tvUsername, tvBio, tvLocation, tvWebsite;
     private ImageView ivProfile;
     private LinearLayout llContentList;
     private static final String PREFS_NAME = "UserProfile";
@@ -51,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvUsername = findViewById(R.id.tvUsername);
         tvBio = findViewById(R.id.tvBio);
+        tvLocation = findViewById(R.id.tvLocation);
+        tvWebsite = findViewById(R.id.tvWebsite);
         ivProfile = findViewById(R.id.ivProfile);
     }
 
@@ -60,13 +63,14 @@ public class ProfileActivity extends AppCompatActivity {
         if (tvName != null) tvName.setText(prefs.getString("full_name", "Alex Dev"));
         if (tvUsername != null) tvUsername.setText(prefs.getString("username", "@alexcodes"));
         if (tvBio != null) tvBio.setText(prefs.getString("bio", "Full-stack wizard building tools for builders. Love React, Python, and dark coffee."));
+        if (tvLocation != null) tvLocation.setText(prefs.getString("location", "Seattle, WA"));
+        if (tvWebsite != null) tvWebsite.setText(prefs.getString("website", "alex.dev"));
         
-        String imageUriStr = prefs.getString("profile_image", null);
-        if (imageUriStr != null && ivProfile != null) {
-            try {
-                ivProfile.setImageURI(Uri.parse(imageUriStr));
-            } catch (Exception e) {
-                ivProfile.setImageResource(R.drawable.ic_person);
+        String imagePath = prefs.getString("profile_image_path", null);
+        if (imagePath != null && ivProfile != null) {
+            File imgFile = new File(imagePath);
+            if (imgFile.exists()) {
+                ivProfile.setImageURI(Uri.fromFile(imgFile));
             }
         }
     }

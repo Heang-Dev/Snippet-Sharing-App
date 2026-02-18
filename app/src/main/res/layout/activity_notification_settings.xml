@@ -80,10 +80,13 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/bg_online_indicator" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swNewFollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        app:trackTint="@color/switch_track_selector"
+                        app:thumbTint="@color/white" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -129,10 +132,13 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/bg_online_indicator" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swTeamInvites"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        app:trackTint="@color/switch_track_selector"
+                        app:thumbTint="@color/white" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -178,10 +184,13 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/bg_online_indicator" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swComments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        app:trackTint="@color/switch_track_selector"
+                        app:thumbTint="@color/white" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -227,12 +236,13 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:alpha="0.3"
-                        android:background="@drawable/bg_online_indicator"
-                        android:backgroundTint="@color/profile_text_muted" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swForks"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        app:trackTint="@color/switch_track_selector"
+                        app:thumbTint="@color/white" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -278,10 +288,13 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <View
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/bg_online_indicator" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swWeeklyDigest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        app:trackTint="@color/switch_track_selector"
+                        app:thumbTint="@color/white" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -348,6 +361,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swInApp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
@@ -398,6 +412,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swMentions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -449,6 +464,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swCodeReviews"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="true"
@@ -500,6 +516,7 @@
                         android:textStyle="bold" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/swSecurity"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checked="false"
