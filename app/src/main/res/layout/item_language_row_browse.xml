@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <!-- Row Layout -->
+    <LinearLayout
+        android:id="@+id/llLanguageRow"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="#15231c"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:backgroundTint="#0F1A15"
+        android:backgroundTintMode="src_over"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!-- Language Icon Container -->
+        <FrameLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_icon_circle"
+            android:backgroundTint="#080e0b">
+
+            <TextView
+                android:id="@+id/tvLangIcon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="C"
+                android:textColor="#3DD68C"
+                android:fontFamily="sans-serif-black"
+                android:textSize="14sp" />
+        </FrameLayout>
+
+        <!-- Language Name -->
+        <TextView
+            android:id="@+id/tvLangName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="C / C++"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Count -->
+        <TextView
+            android:id="@+id/tvSnippetCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="450"
+            android:textColor="#889990"
+            android:textSize="12sp"
+            android:layout_marginEnd="12dp"/>
+
+        <!-- Arrow -->
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_arrow_forward"
+            app:tint="#889990"
+            android:rotation="0"/>
+    </LinearLayout>
+
+</LinearLayout>

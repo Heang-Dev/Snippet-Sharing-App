@@ -1,5 +1,6 @@
 package group.eleven.snippet_sharing_app.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -26,11 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.data.SnippetManager;
 import group.eleven.snippet_sharing_app.data.model.ActivityFeedItem;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.databinding.ActivityHomeBinding;
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
+import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -43,9 +49,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private ActivityHomeBinding binding;
     private SessionManager sessionManager;
     private ActionBarDrawerToggle drawerToggle;
-    
+
     private ActivityFeedAdapter activityFeedAdapter;
     private SnippetCardAdapter snippetCardAdapter;
+    private List<SnippetCard> masterSnippetList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,21 +63,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             // Inflate the layout
             binding = ActivityHomeBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
-            Log.d(TAG, "onCreate: Layout inflated");
 
-            // Handle window insets
-            ViewCompat.setOnApplyWindowInsetsListener(binding.coordinatorLayout, (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
+            // ... (window insets code) ...
 
             // Initialize session manager
             sessionManager = new SessionManager(this);
 
-            // Check if logged in
             if (!sessionManager.isLoggedIn()) {
-                Log.w(TAG, "User not logged in, redirecting...");
                 navigateToLogin();
                 return;
             }
@@ -83,15 +82,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             // Setup navigation drawer
             setupNavigationDrawer();
-            
-            // Setup bottom navigation
-            setupBottomNavigation();
-            
+
             // Setup UI components
             setupUserInfo();
             setupStatsCards();
             setupActivityFeed();
             setupRecentSnippets();
+            setupSearch(); // Initialize search listener
             setupClickListeners();
 
             Log.d(TAG, "onCreate: Setup completed successfully");
@@ -99,6 +96,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             Log.e(TAG, "onCreate: Error", e);
             Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: Refreshing snippets list");
+        if (snippetCardAdapter != null) {
+            snippetCardAdapter.notifyDataSetChanged();
         }
     }
 
@@ -122,8 +128,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         User user = sessionManager.getUser();
         if (user != null) {
-            String displayName = user.getFullName() != null && !user.getFullName().isEmpty() 
-                    ? user.getFullName() : user.getUsername();
+            String displayName = user.getFullName() != null && !user.getFullName().isEmpty()
+                    ? user.getFullName()
+                    : user.getUsername();
             tvUserName.setText(displayName);
         }
 
@@ -133,205 +140,45 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvViewsCount.setText("1.2k");
     }
 
-    private LinearLayout navItemsContainer;
-    private int currentSelectedIndex = 0;
-    
-    private static final int[] NAV_ICONS = {
-        R.drawable.ic_explore,      // Home
-        R.drawable.ic_collections,  // Wallet  
-        R.drawable.ic_code,         // Membership
-        R.drawable.ic_favorite      // Loyalty
-    };
-    
-    private static final String[] NAV_LABELS = {
-        "Home", "Wallet", "Membership", "Loyalty"
-    };
-    
-    private void setupBottomNavigation() {
-        navItemsContainer = findViewById(R.id.navItemsContainer);
-        
-        // Create navigation items
-        for (int i = 0; i < NAV_ICONS.length; i++) {
-            View navItem = createNavItem(i, NAV_ICONS[i], NAV_LABELS[i]);
-            navItemsContainer.addView(navItem);
-        }
-        
-        // Set initial selection
-        selectNavItem(0, false);
-    }
-    
-    private View createNavItem(int index, int iconRes, String label) {
-        View item = getLayoutInflater().inflate(R.layout.item_glass_nav, navItemsContainer, false);
-        
-        View activeBackground = item.findViewById(R.id.activeBackground);
-        ImageView icon = item.findViewById(R.id.navIcon);
-        TextView labelView = item.findViewById(R.id.navLabel);
-        
-        icon.setImageResource(iconRes);
-        labelView.setText(label);
-        
-        // Set initial inactive colors with proper tint mode
-        icon.setColorFilter(getColor(R.color.nav_inactive_icon), android.graphics.PorterDuff.Mode.SRC_IN);
-        labelView.setTextColor(getColor(R.color.nav_inactive_text));
-        
-        // Set click listener
-        item.setOnClickListener(v -> selectNavItem(index, true));
-        
-        return item;
-    }
-    
-    private void selectNavItem(int index, boolean animate) {
-        if (index == currentSelectedIndex) return;
-        
-        // Deselect previous
-        View previousItem = navItemsContainer.getChildAt(currentSelectedIndex);
-        animateDeselection(previousItem, animate);
-        
-        // Select new
-        View newItem = navItemsContainer.getChildAt(index);
-        animateSelection(newItem, animate);
-        
-        currentSelectedIndex = index;
-        
-        // Handle navigation
-        handleNavigation(index);
-    }
-    
-    private void animateSelection(View item, boolean animate) {
-        View activeBackground = item.findViewById(R.id.activeBackground);
-        ImageView icon = item.findViewById(R.id.navIcon);
-        TextView label = item.findViewById(R.id.navLabel);
-        
-        if (animate) {
-            // Fade in gold background with spring effect
-            activeBackground.setVisibility(View.VISIBLE);
-            activeBackground.setAlpha(0f);
-            activeBackground.setScaleX(0.8f);
-            activeBackground.setScaleY(0.8f);
-            activeBackground.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(300)
-                .setInterpolator(new android.view.animation.OvershootInterpolator(1.2f))
-                .start();
-            
-            // Scale up icon slightly
-            icon.animate()
-                .scaleX(1.1f)
-                .scaleY(1.1f)
-                .setDuration(200)
-                .start();
-        } else {
-            activeBackground.setVisibility(View.VISIBLE);
-            icon.setScaleX(1.1f);
-            icon.setScaleY(1.1f);
-        }
-        
-        // Change colors to gold
-        icon.setColorFilter(getColor(R.color.nav_active_icon), android.graphics.PorterDuff.Mode.SRC_IN);
-        label.setTextColor(getColor(R.color.nav_active_text));
-    }
-    
-    private void animateDeselection(View item, boolean animate) {
-        View activeBackground = item.findViewById(R.id.activeBackground);
-        ImageView icon = item.findViewById(R.id.navIcon);
-        TextView label = item.findViewById(R.id.navLabel);
-        
-        if (animate) {
-            // Fade out gold background
-            activeBackground.animate()
-                .alpha(0f)
-                .scaleX(0.8f)
-                .scaleY(0.8f)
-                .setDuration(200)
-                .withEndAction(() -> activeBackground.setVisibility(View.GONE))
-                .start();
-            
-            // Scale down icon
-            icon.animate()
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(200)
-                .start();
-        } else {
-            activeBackground.setVisibility(View.GONE);
-            icon.setScaleX(1f);
-            icon.setScaleY(1f);
-        }
-        
-        // Change colors to gray
-        icon.setColorFilter(getColor(R.color.nav_inactive_icon), android.graphics.PorterDuff.Mode.SRC_IN);
-        label.setTextColor(getColor(R.color.nav_inactive_text));
-    }
-    
-    private void handleNavigation(int index) {
-        switch (index) {
-            case 0: // Home
-                // Already on home
-                break;
-            case 1: // Wallet
-                Toast.makeText(this, "Wallet - Coming Soon", Toast.LENGTH_SHORT).show();
-                break;
-            case 2: // Membership
-                Toast.makeText(this, "Membership - Coming Soon", Toast.LENGTH_SHORT).show();
-                break;
-            case 3: // Loyalty
-                Toast.makeText(this, "Loyalty - Coming Soon", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
-
     private void setupUserInfo() {
-        // User avatar click opens drawer
+        // User avatar click navigates to My Snippets
         binding.ivUserAvatar.setOnClickListener(v -> {
-            binding.drawerLayout.openDrawer(GravityCompat.START);
+            Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+            startActivity(intent);
         });
     }
 
     private void setupStatsCards() {
         // Setup Snippets stat card
-        View snippetsCard = binding.statSnippets.getRoot();
-        ImageView ivSnippetsIcon = snippetsCard.findViewById(R.id.ivStatIcon);
-        TextView tvSnippetsLabel = snippetsCard.findViewById(R.id.tvStatLabel);
-        TextView tvSnippetsCount = snippetsCard.findViewById(R.id.tvStatCount);
-        TextView tvSnippetsPercentage = snippetsCard.findViewById(R.id.tvStatPercentage);
-        ImageView ivSnippetsArrow = snippetsCard.findViewById(R.id.ivStatArrow);
+        View snippetsCard = binding.statSnippets;
+        ImageView ivSnippetsIcon = snippetsCard.findViewById(R.id.ivStatIconSnippets);
+        TextView tvSnippetsLabel = snippetsCard.findViewById(R.id.tvStatLabelSnippets);
+        TextView tvSnippetsCount = snippetsCard.findViewById(R.id.tvStatCountSnippets);
+        // Arrow and percentage removed in design update
 
         ivSnippetsIcon.setImageResource(R.drawable.ic_code);
         tvSnippetsLabel.setText(R.string.stats_snippets);
         tvSnippetsCount.setText("142");
-        tvSnippetsPercentage.setText("+5%");
-        ivSnippetsArrow.setRotation(-90); // Up arrow
 
         // Setup Views stat card
-        View viewsCard = binding.statViews.getRoot();
-        ImageView ivViewsIcon = viewsCard.findViewById(R.id.ivStatIcon);
-        TextView tvViewsLabel = viewsCard.findViewById(R.id.tvStatLabel);
-        TextView tvViewsCount = viewsCard.findViewById(R.id.tvStatCount);
-        TextView tvViewsPercentage = viewsCard.findViewById(R.id.tvStatPercentage);
-        ImageView ivViewsArrow = viewsCard.findViewById(R.id.ivStatArrow);
+        View viewsCard = binding.statViews;
+        ImageView ivViewsIcon = viewsCard.findViewById(R.id.ivStatIconViews);
+        TextView tvViewsLabel = viewsCard.findViewById(R.id.tvStatLabelViews);
+        TextView tvViewsCount = viewsCard.findViewById(R.id.tvStatCountViews);
 
         ivViewsIcon.setImageResource(R.drawable.ic_explore);
         tvViewsLabel.setText(R.string.stats_views);
-        tvViewsCount.setText("1.2k");
-        tvViewsPercentage.setText("+12%");
-        ivViewsArrow.setRotation(-90); // Up arrow
+        tvViewsCount.setText("12.5k");
 
         // Setup Forks stat card
-        View forksCard = binding.statForks.getRoot();
-        ImageView ivForksIcon = forksCard.findViewById(R.id.ivStatIcon);
-        TextView tvForksLabel = forksCard.findViewById(R.id.tvStatLabel);
-        TextView tvForksCount = forksCard.findViewById(R.id.tvStatCount);
-        TextView tvForksPercentage = forksCard.findViewById(R.id.tvStatPercentage);
-        ImageView ivForksArrow = forksCard.findViewById(R.id.ivStatArrow);
+        View forksCard = binding.statForks;
+        ImageView ivForksIcon = forksCard.findViewById(R.id.ivStatIconForks);
+        TextView tvForksLabel = forksCard.findViewById(R.id.tvStatLabelForks);
+        TextView tvForksCount = forksCard.findViewById(R.id.tvStatCountForks);
 
         ivForksIcon.setImageResource(R.drawable.ic_collections);
         tvForksLabel.setText(R.string.stats_forks);
         tvForksCount.setText("89");
-        tvForksPercentage.setText("0%");
-        tvForksPercentage.setTextColor(getColor(R.color.text_secondary));
-        ivForksArrow.setVisibility(View.GONE);
     }
 
     private void setupActivityFeed() {
@@ -348,41 +195,85 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding.rvActivityFeed.setAdapter(activityFeedAdapter);
     }
 
-    private void setupRecentSnippets() {
-        // Create mock snippet data
-        List<SnippetCard> snippets = new ArrayList<>();
-        snippets.add(new SnippetCard(
-                "Python CSV Parser",
-                "Py",
-                "Updated 2h ago",
-                "import csv\ndef parse_csv(file_path):\n    with open(file_path, 'r') as f:\n        reader = csv.reader(f)\n        for row in reader:\n            print(row)",
-                new String[]{"Data", "Utils"},
-                R.color.error
-        ));
-        snippets.add(new SnippetCard(
-                "Auth Hook",
-                "React",
-                "Updated yesterday",
-                "export const useAuth = () => {\n  const {user, setUser} = useState(null);\n  \n  useEffect(() => {\n    // Auth logic\n  }, []);\n}",
-                new String[]{"React", "Hooks"},
-                R.color.info
-        ));
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadRecentSnippets();
+    }
 
-        // Setup RecyclerView
-        snippetCardAdapter = new SnippetCardAdapter(snippets);
+    private void setupRecentSnippets() {
+        // Setup RecyclerView with empty list initially
+        binding.rvRecentSnippets.setLayoutManager(new LinearLayoutManager(this));
+        snippetCardAdapter = new SnippetCardAdapter(new ArrayList<>());
         snippetCardAdapter.setOnSnippetClickListener(snippet -> {
             Toast.makeText(this, "Clicked: " + snippet.getTitle(), Toast.LENGTH_SHORT).show();
         });
-        binding.rvRecentSnippets.setLayoutManager(new LinearLayoutManager(this));
         binding.rvRecentSnippets.setAdapter(snippetCardAdapter);
     }
 
-    private void setupClickListeners() {
-        // Search card click
-        binding.searchCard.setOnClickListener(v -> {
-            Toast.makeText(this, "Search - Coming Soon", Toast.LENGTH_SHORT).show();
-        });
+    private void loadRecentSnippets() {
+        List<group.eleven.snippet_sharing_app.model.SnippetModel> models = group.eleven.snippet_sharing_app.data.SnippetRepository
+                .getInstance().getRecentSnippets();
 
+        List<SnippetCard> cards = new ArrayList<>();
+        for (group.eleven.snippet_sharing_app.model.SnippetModel model : models) {
+            int color = android.graphics.Color.WHITE;
+            try {
+                color = android.graphics.Color.parseColor(model.getLanguageColor());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            cards.add(new SnippetCard(
+                    model.getTitle(),
+                    model.getLanguage(),
+                    model.getLastModifiedTime(),
+                    model.getCode() != null ? model.getCode() : "// No code preview",
+                    new String[] { model.getPrivacy() },
+                    color));
+        }
+
+        masterSnippetList.clear();
+        masterSnippetList.addAll(cards);
+
+        if (binding != null && binding.etSearch != null) {
+            filter(binding.etSearch.getText().toString());
+        } else {
+            if (snippetCardAdapter != null)
+                snippetCardAdapter.filterList(cards);
+        }
+    }
+
+    private void setupSearch() {
+        binding.etSearch.setFocusable(false);
+        binding.etSearch.setClickable(true);
+        binding.etSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this,
+                    group.eleven.snippet_sharing_app.ui.search.SearchActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void filter(String text) {
+        List<SnippetCard> filteredList = new ArrayList<>();
+        if (text == null)
+            text = "";
+
+        for (SnippetCard snippet : masterSnippetList) {
+            if (snippet.getTitle().toLowerCase().contains(text.toLowerCase()) ||
+                    snippet.getLanguageBadge().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(snippet);
+            }
+        }
+
+        if (snippetCardAdapter != null) {
+            snippetCardAdapter.filterList(filteredList);
+        }
+    }
+
+    // ...
+
+    private void setupClickListeners() {
         // View All Activity
         binding.tvViewAllActivity.setOnClickListener(v -> {
             Toast.makeText(this, "View All Activity - Coming Soon", Toast.LENGTH_SHORT).show();
@@ -396,6 +287,42 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         binding.ivListView.setOnClickListener(v -> {
             Toast.makeText(this, "List View Active", Toast.LENGTH_SHORT).show();
         });
+
+        // Bottom Navigation
+        com.google.android.material.bottomnavigation.BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
+        com.google.android.material.floatingactionbutton.FloatingActionButton fab = findViewById(R.id.fab);
+
+        if (bottomNav != null) {
+            // Set Search (Home) as selected
+            bottomNav.setSelectedItemId(R.id.nav_search);
+
+            bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_search) {
+                    // Already on Home
+                    return true;
+                } else if (id == R.id.nav_library) {
+                    Intent intent = new Intent(this,
+                            group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+                    startActivity(intent);
+                    return false; // Don't switch tab visually, just launch activity
+                } else if (id == R.id.nav_activity) {
+                    Toast.makeText(this, "Activity - Coming Soon", Toast.LENGTH_SHORT).show();
+                    return false;
+                } else if (id == R.id.nav_settings) {
+                    Toast.makeText(this, "Settings - Coming Soon", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                return false;
+            });
+        }
+
+        if (fab != null) {
+            fab.setOnClickListener(v -> {
+                Intent intent = new Intent(this, CreateSnippetActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     @Override
@@ -405,7 +332,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_dashboard) {
             Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_all_snippets) {
-            Toast.makeText(this, "All Snippets - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_favorites) {
             Toast.makeText(this, "Favorites - Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_shared) {
@@ -424,6 +352,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @SuppressLint({ "MissingSuperCall", "GestureBackNavigation" })
     @Override
     public void onBackPressed() {
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {

@@ -12,7 +12,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:cardCornerRadius="20dp"
-        app:cardBackgroundColor="@color/activity_icon_bg"
+        app:cardBackgroundColor="#1e3a2f"
         app:cardElevation="0dp">
 
         <ImageView
@@ -21,7 +21,7 @@
             android:layout_height="20dp"
             android:layout_gravity="center"
             android:src="@drawable/ic_code"
-            app:tint="@color/primary" />
+            app:tint="#42a5f5" />
 
     </com.google.android.material.card.MaterialCardView>
 

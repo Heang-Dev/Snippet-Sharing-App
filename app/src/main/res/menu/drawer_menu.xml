@@ -1,75 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single">
-        
-        <!-- Main Section Header -->
-        <item
-            android:id="@+id/nav_header_main"
-            android:title="@string/nav_main"
-            android:enabled="false" />
+    <item
+        android:title="MAIN">
+        <menu>
+            <item
+                android:id="@+id/nav_dashboard"
+                android:icon="@drawable/ic_dashboard"
+                android:title="Dashboard" 
+                android:checkable="true"
+                android:checked="true"/>
+        </menu>
+    </item>
 
-        <!-- Dashboard -->
-        <item
-            android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_explore"
-            android:title="@string/nav_dashboard" />
-
-        <!-- Snippets (with submenu) -->
-        <item
-            android:id="@+id/nav_snippets"
-            android:icon="@drawable/ic_code"
-            android:title="@string/nav_snippets">
-            <menu>
+    <item android:title="Snippets">
+        <menu>
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_all_snippets"
-                    android:title="@string/nav_all_snippets" />
+                    android:title="All Snippets" />
                 <item
                     android:id="@+id/nav_favorites"
-                    android:title="@string/nav_favorites" />
+                    android:title="Favorites" />
                 <item
                     android:id="@+id/nav_shared"
-                    android:title="@string/nav_shared" />
-            </menu>
-        </item>
+                    android:title="Shared with me" />
+            </group>
+        </menu>
+    </item>
 
-        <!-- Teams -->
-        <item
-            android:id="@+id/nav_teams"
-            android:icon="@drawable/ic_collections"
-            android:title="@string/nav_teams" />
+    <item
+        android:title="Teams"
+        android:id="@+id/nav_teams_group">
+        <menu>
+            <item
+                android:id="@+id/nav_teams"
+                android:icon="@drawable/ic_users"
+                android:title="Teams"
+                app:actionLayout="@layout/menu_action_badge"/>
+        </menu>
+    </item>
 
-    </group>
-
-    <!-- Settings Section -->
-    <group android:checkableBehavior="single">
-        
-        <!-- Settings Section Header -->
-        <item
-            android:id="@+id/nav_header_settings"
-            android:title="@string/nav_settings"
-            android:enabled="false" />
-
-        <!-- Profile -->
-        <item
-            android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_person"
-            android:title="@string/nav_profile" />
-
-        <!-- Preferences -->
-        <item
-            android:id="@+id/nav_preferences"
-            android:icon="@drawable/ic_help"
-            android:title="@string/nav_preferences" />
-
-        <!-- Help & Support -->
-        <item
-            android:id="@+id/nav_help"
-            android:icon="@drawable/ic_help"
-            android:title="@string/nav_help" />
-
-    </group>
+    <item
+        android:title="SETTINGS">
+        <menu>
+            <item
+                android:id="@+id/nav_profile"
+                android:icon="@drawable/ic_person"
+                android:title="Profile" />
+            <item
+                android:id="@+id/nav_preferences"
+                android:icon="@drawable/ic_settings"
+                android:title="Preferences" />
+            <item
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_help"
+                android:title="Help &amp; Support" />
+        </menu>
+    </item>
 
 </menu>

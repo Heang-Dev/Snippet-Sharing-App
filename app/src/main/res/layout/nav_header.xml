@@ -2,136 +2,185 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
-    android:background="@color/primary"
+    android:layout_height="wrap_content"
+    android:background="#0D1F16"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="56dp"
+    android:paddingBottom="24dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <!-- User Avatar -->
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:cardCornerRadius="32dp"
-        app:cardElevation="0dp"
-        android:layout_marginBottom="12dp">
+    <!-- Profile Row -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp">
+        
+        <!-- Profile Content -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/btnClose">
+            
+            <!-- Profile Image with Green Border -->
+            <ImageView
+                android:id="@+id/ivUserProfile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/circle_border_green"
+                android:padding="4dp"
+                android:src="@drawable/ic_user_face"
+                android:contentDescription="Profile Picture" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="16dp">
+                <!-- Name -->
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alex Dev"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Role -->
+                <TextView
+                    android:id="@+id/tvUserRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Pro Plan • Team Lead"
+                    android:textColor="#889990"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Close Button -->
         <ImageView
-            android:id="@+id/ivUserAvatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_person"
-            android:contentDescription="@string/profile_title" />
-    </com.google.android.material.card.MaterialCardView>
+            android:id="@+id/btnClose"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/ic_close"
+            app:tint="#889990"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp"
+            android:contentDescription="Close Menu"/>
+            
+    </RelativeLayout>
 
-    <!-- User Name -->
-    <TextView
-        android:id="@+id/tvUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Alex Dev"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <!-- User Plan -->
-    <TextView
-        android:id="@+id/tvUserPlan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/user_plan"
-        android:textColor="@color/white"
-        android:alpha="0.8"
-        android:textSize="12sp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="16dp" />
-
-    <!-- User Stats -->
+    <!-- Stats Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:orientation="horizontal">
 
-        <!-- Snippets Count -->
+        <!-- Snippets -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_card_rounded"
+            android:gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/tvSnippetsCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="142"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stats_snippets"
-                android:textColor="@color/white"
-                android:alpha="0.7"
-                android:textSize="10sp" />
+                android:layout_marginTop="2dp"
+                android:text="SNIPPETS"
+                android:textColor="#889990"
+                android:textSize="8sp" 
+                android:letterSpacing="0.1"/>
         </LinearLayout>
 
-        <!-- Forks Count -->
+        <!-- Forks -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/bg_card_rounded"
+            android:gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/tvForksCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="89"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stats_forks"
-                android:textColor="@color/white"
-                android:alpha="0.7"
-                android:textSize="10sp" />
+                android:layout_marginTop="2dp"
+                android:text="FORKS"
+                android:textColor="#889990"
+                android:textSize="8sp" 
+                android:letterSpacing="0.1"/>
         </LinearLayout>
 
-        <!-- Views Count -->
+        <!-- Views -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/bg_card_rounded"
+            android:gravity="center"
             android:orientation="vertical"
-            android:gravity="center">
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/tvViewsCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1.2k"
-                android:textColor="@color/white"
-                android:textSize="20sp"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/stats_views"
-                android:textColor="@color/white"
-                android:alpha="0.7"
-                android:textSize="10sp" />
+                android:layout_marginTop="2dp"
+                android:text="VIEWS"
+                android:textColor="#889990"
+                android:textSize="8sp" 
+                android:letterSpacing="0.1"/>
         </LinearLayout>
+
     </LinearLayout>
+    
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#23352D"
+        android:layout_marginTop="24dp"/>
 
 </LinearLayout>

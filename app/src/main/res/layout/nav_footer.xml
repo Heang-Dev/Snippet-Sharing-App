@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#0D1F16"
+    android:orientation="vertical"
+    android:padding="24dp">
+    
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:background="@drawable/bg_logout_btn"
+        android:drawableStart="@drawable/ic_logout"
+        android:drawableTint="#FF5252"
+        android:drawablePadding="8dp"
+        android:paddingStart="24dp"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"/>
+</LinearLayout>

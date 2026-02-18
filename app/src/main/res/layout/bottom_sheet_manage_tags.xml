@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_bottom_sheet_rounded_24"
+    android:padding="20dp">
+
+    <!-- Header: Title and Close Icon -->
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <TextView
+            android:text="Manage Tags"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+        
+        <ImageView
+            android:id="@+id/ivClose"
+            android:src="@drawable/ic_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:padding="2dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#889990" 
+            android:contentDescription="Close" />
+    </LinearLayout>
+
+    <!-- Selected Tags Container (No border, just flow) -->
+    <!-- Max height 250dp, min 50dp -->
+    <ScrollView
+        android:id="@+id/svSelected"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fadeScrollbars="false"
+        android:minHeight="50dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintHeight_max="250dp"
+        app:layout_constraintTop_toBottomOf="@id/layoutHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupSelected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacingVertical="8dp"
+            app:chipSpacingHorizontal="8dp"
+            app:singleLine="false"/>
+    </ScrollView>
+
+    <!-- Search Bar -->
+    <EditText
+        android:id="@+id/etSearchTags"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_search_input_green"
+        android:hint="Search tags..."
+        android:textColorHint="#889990"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="12dp"
+        android:drawableTint="#2ABf75"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:importantForAutofill="no"
+        app:layout_constraintTop_toBottomOf="@id/svSelected"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Suggestions Label -->
+    <TextView
+        android:id="@+id/tvLabelSuggestions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUGGESTIONS"
+        android:textColor="#889990"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@id/etSearchTags"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Footer Buttons (Pinned Bottom) -->
+    <LinearLayout
+        android:id="@+id/layoutFooter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:clickable="true"
+            android:focusable="true"/>
+            
+        <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
+        
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="Done"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            app:backgroundTint="#3DD68C"
+            app:cornerRadius="50dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"/>
+    </LinearLayout>
+
+    <!-- Popular Tags (Above Footer) -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupPopular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        app:chipSpacing="8dp"
+        app:singleLine="false"
+        app:layout_constraintBottom_toTopOf="@id/layoutFooter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvLabelPopular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="POPULAR"
+        android:textColor="#889990"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@id/chipGroupPopular"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <!-- Suggestions List (Fills remaining space) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSuggestions"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintTop_toBottomOf="@id/tvLabelSuggestions"
+        app:layout_constraintBottom_toTopOf="@id/tvLabelPopular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

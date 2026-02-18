@@ -2,28 +2,34 @@ package group.eleven.snippet_sharing_app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
-import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
-import group.eleven.snippet_sharing_app.ui.onboarding.OnboardingActivity;
-import group.eleven.snippet_sharing_app.utils.SessionManager;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
+import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
+import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
 
 /**
- * Main Activity - Splash screen that redirects to Login or Home
+ * Main Activity - Rich Dashboard with Drawer and Bottom Navigation.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final long SPLASH_DELAY = 1500; // 1.5 seconds
-    private static final String PREF_NAME = "onboarding_pref";
-    private static final String KEY_ONBOARDING_COMPLETED = "onboarding_completed";
+    private static final String TAG = "MainActivity";
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,38 +37,137 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        try {
+            // Apply Window Insets for edge-to-edge
+            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.drawerLayout), (v, insets) -> {
+                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                return insets;
+            });
 
-        // Delay and then navigate
-        new Handler(Looper.getMainLooper()).postDelayed(this::navigateToNextScreen, SPLASH_DELAY);
+            // Initialize Views
+            drawerLayout = findViewById(R.id.drawerLayout);
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
+            FloatingActionButton fab = findViewById(R.id.fab);
+            android.view.View menuIcon = findViewById(R.id.ivMenu);
+            android.view.View searchBar = findViewById(R.id.etSearch);
+
+            // Handle Drawer Open
+            if (menuIcon != null) {
+                menuIcon.setOnClickListener(v -> {
+                    if (drawerLayout != null) {
+                        drawerLayout.openDrawer(GravityCompat.START);
+                    }
+                });
+            }
+
+            // Handle Side Menu Item Clicks
+            if (navigationView != null) {
+                navigationView.setNavigationItemSelectedListener(this);
+                // Handle Close Button in Header
+                android.view.View headerView = navigationView.getHeaderView(0);
+                if (headerView != null) {
+                    android.view.View closeBtn = headerView.findViewById(R.id.btnClose);
+                    if (closeBtn != null) {
+                        closeBtn.setOnClickListener(v -> {
+                            if (drawerLayout != null) {
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                            }
+                        });
+                    }
+                }
+
+                // Handle Footer Logout Button
+                // Footer is inflated by NavigationView, but accessing it might need finding it
+                // via findViewById if it's part of the decor or getting child.
+                // Actually, since we used <include> inside NavigationView in XML, it's a child
+                // of NavigationView.
+                // Safe way:
+                android.view.View logoutBtn = findViewById(R.id.btnLogout);
+                if (logoutBtn != null) {
+                    logoutBtn.setOnClickListener(v -> {
+                        Toast.makeText(this, "Logging out...", Toast.LENGTH_SHORT).show();
+                        // Add logout logic here
+                    });
+                }
+            }
+
+            // Handle Bottom Nav Clicks
+            if (bottomNav != null) {
+                bottomNav.setOnItemSelectedListener(item -> {
+                    int id = item.getItemId();
+                    if (id == R.id.nav_search) {
+                        Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
+                        return true;
+                    } else if (id == R.id.nav_library) {
+                        startActivity(new Intent(this, MySnippetsActivity.class));
+                        return false;
+                    } else if (id == R.id.nav_activity) {
+                        Toast.makeText(this, "Activity Feed - Coming Soon", Toast.LENGTH_SHORT).show();
+                        return false;
+                    } else if (id == R.id.nav_settings) {
+                        Toast.makeText(this, "Settings - Coming Soon", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                    return false;
+                });
+            }
+
+            // Handle FAB
+            if (fab != null) {
+                fab.setOnClickListener(v -> {
+                    startActivity(new Intent(this, CreateSnippetActivity.class));
+                });
+            }
+
+            // Handle Search Bar
+            if (searchBar != null) {
+                searchBar.setOnClickListener(v -> {
+                    startActivity(new Intent(this, SearchActivity.class));
+                });
+            }
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onCreate", e);
+            Toast.makeText(this, "Error initializing app", Toast.LENGTH_LONG).show();
+        }
     }
 
-    private void navigateToNextScreen() {
-        // Check if onboarding is completed
-        boolean onboardingCompleted = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-                .getBoolean(KEY_ONBOARDING_COMPLETED, false);
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-        Intent intent;
-        if (!onboardingCompleted) {
-            // First time user, show onboarding
-            intent = new Intent(this, OnboardingActivity.class);
-        } else {
-            SessionManager sessionManager = new SessionManager(this);
-            if (sessionManager.isLoggedIn()) {
-                // User is logged in, go to Home
-                intent = new Intent(this, HomeActivity.class);
-            } else {
-                // User is not logged in, go to Login
-                intent = new Intent(this, LoginActivity.class);
-            }
+        if (id == R.id.nav_dashboard) {
+            Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_all_snippets) {
+            startActivity(new Intent(this, MySnippetsActivity.class));
+        } else if (id == R.id.nav_favorites) {
+            Toast.makeText(this, "Favorites", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_shared) {
+            Toast.makeText(this, "Shared with me", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_teams) {
+            Toast.makeText(this, "My Team", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_profile) {
+            Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_preferences) {
+            Toast.makeText(this, "Preferences", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_help) {
+            Toast.makeText(this, "Help & Support", Toast.LENGTH_SHORT).show();
         }
 
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

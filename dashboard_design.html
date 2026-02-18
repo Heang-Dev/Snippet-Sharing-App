@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevVault Dashboard Redesign</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2D9CDB;
+            --primary-dark: #1A2B3C;
+            --bg-light: #F4F7FA;
+            --text-dark: #333333;
+            --text-grey: #889990;
+            --card-white: #FFFFFF;
+            --success-green: #3DD68C;
+            --danger-red: #EB5757;
+            --border-radius: 12px;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            display: flex;
+            height: 100vh;
+            color: var(--text-dark);
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-white);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #E0E0E0;
+            padding: 24px 0;
+            position: fixed;
+            overflow-y: auto;
+        }
+
+        .brand {
+            padding: 0 24px 24px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand i {
+            color: var(--primary-blue);
+        }
+
+        .menu-section {
+            margin-bottom: 24px;
+        }
+
+        .menu-header {
+            padding: 0 24px 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-grey);
+            font-weight: 600;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 24px;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background-color: #F8FAFC;
+            color: var(--primary-blue);
+        }
+
+        .menu-item.active {
+            background-color: #EBF5FB;
+            color: var(--primary-blue);
+            border-left-color: var(--primary-blue);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-item.logout {
+            color: var(--danger-red);
+        }
+        
+        .menu-item.logout:hover {
+            background-color: #FEF2F2;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 250px; /* Offset for fixed sidebar */
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        /* Header / Stats Section */
+        .profile-header-card {
+            background-color: var(--card-white);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: #FFCC80;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #5D4037;
+            border: 2px solid white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .user-details h1 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .badge {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-grey);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Content Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-white);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-link {
+            font-size: 13px;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Forks Card Specifics */
+        .fork-stat-large {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 8px;
+        }
+
+        .trend-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background-color: #F8FAFC;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-grey);
+            font-weight: 500;
+        }
+
+        .chart-placeholder {
+            height: 60px;
+            margin-top: 24px;
+            background: linear-gradient(90deg, #F0F4F8 0%, #E1E8ED 100%);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            padding: 0 10px;
+        }
+        
+        /* Simulated bars for sparkline */
+        .bar { background: var(--primary-blue); width: 10%; border-radius: 2px 2px 0 0; opacity: 0.5; }
+        .bar:nth-child(1) { height: 30%; }
+        .bar:nth-child(2) { height: 45%; }
+        .bar:nth-child(3) { height: 35%; }
+        .bar:nth-child(4) { height: 60%; }
+        .bar:nth-child(5) { height: 50%; }
+        .bar:nth-child(6) { height: 75%; }
+        .bar:nth-child(7) { height: 40%; }
+        .bar:hover { opacity: 1; }
+
+        /* Activity Feed */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .activity-item:hover {
+            background-color: #F8FAFC;
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .icon-blue { background-color: var(--primary-blue); }
+        .icon-yellow { background-color: #F2C94C; }
+        .icon-green { background-color: var(--success-green); }
+
+        .activity-content h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .activity-content p {
+            font-size: 12px;
+            color: var(--text-grey);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+            .profile-header-card { flex-direction: column; text-align: center; gap: 20px;}
+            .profile-info { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LEFT SIDEBAR -->
+    <nav class="sidebar">
+        <div class="brand">
+            <i class="fas fa-layer-group"></i> DevVault
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-header">Main</div>
+            <a href="#" class="menu-item active">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-code"></i> My Snippets
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-globe"></i> All Snippets
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-star"></i> Favorites
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-share-alt"></i> Shared with me
+            </a>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-header">Team</div>
+            <a href="#" class="menu-item">
+                <i class="fas fa-users"></i> My Team
+            </a>
+        </div>
+
+        <div class="menu-section">
+            <div class="menu-header">Settings</div>
+            <a href="#" class="menu-item">
+                <i class="fas fa-user"></i> Profile
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-cog"></i> Preferences
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-question-circle"></i> Help & Feedback
+            </a>
+            <a href="#" class="menu-item logout">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+            </a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        
+        <!-- TOP PROFILE & STATS -->
+        <section class="profile-header-card">
+            <div class="profile-info">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-details">
+                    <h1>Alex Dev</h1>
+                    <span class="badge">Pro Plan • Team Lead</span>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-value">142</span>
+                    <span class="stat-label">Snippets</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">89</span>
+                    <span class="stat-label">Forks</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value">1.2k</span>
+                    <span class="stat-label">Views</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- DASHBOARD GRID -->
+        <div class="dashboard-grid">
+            
+            <!-- FORKS CARD -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Total Forks</span>
+                    <a href="#" class="card-link">View Analytics</a>
+                </div>
+                
+                <div class="fork-stat-large">89</div>
+                <div class="trend-badge">
+                    <i class="fas fa-minus"></i> 0 new (7d)
+                </div>
+
+                <!-- Simple Bar Chart Placeholder -->
+                <div class="chart-placeholder" title="Weekly Activity">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+
+            <!-- RECENT ACTIVITY FEED -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Recent Activity</span>
+                    <a href="#" class="card-link">View All</a>
+                </div>
+
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon icon-blue">
+                            <i class="fas fa-pen"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Alice updated 'Auth Logic'</h4>
+                            <p>20 min ago</p>
+                        </div>
+                    </li>
+
+                    <li class="activity-item">
+                        <div class="activity-icon icon-yellow">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>John starred 'Docker Config'</h4>
+                            <p>1h ago</p>
+                        </div>
+                    </li>
+
+                    <li class="activity-item">
+                        <div class="activity-icon icon-green">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Sarah created 'API Utils'</h4>
+                            <p>2h ago</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+</body>
+</html>
