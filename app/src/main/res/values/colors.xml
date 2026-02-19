@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- ============================================== -->
-    <!-- UNIFIED THEME COLOR PALETTE - Snippet Sharing  -->
+    <!-- UNIFIED THEME COLOR PALETTE - Code Dash       -->
     <!-- ============================================== -->
+
+    <!-- ========== LOGO/BRAND COLORS ========== -->
+    <!-- Comet logo space theme colors -->
+    <color name="logo_space_purple">#2D1B4E</color>
+    <color name="logo_comet_orange">#FF8C42</color>
+    <color name="logo_comet_pink">#E056A0</color>
+    <color name="logo_asteroid_blue">#5D6B8A</color>
 
     <!-- ========== PRIMARY BRAND COLORS ========== -->
     <!-- Main green accent used throughout the app -->
