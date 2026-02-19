@@ -5,61 +5,61 @@
     android:viewportWidth="160"
     android:viewportHeight="160">
 
-    <!-- Background circle -->
+    <!-- Background circle - Light pink (original size) -->
     <path
         android:pathData="M80,80m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"
-        android:fillColor="#D1FAE5"/>
+        android:fillColor="#F8D8E8"/>
 
-    <!-- Folder shape -->
+    <!-- Folder shape (smaller) -->
     <path
-        android:pathData="M40,55 L65,55 L72,45 L120,45 L120,115 L40,115 Z"
+        android:pathData="M48,62 L68,62 L74,55 L112,55 L112,108 L48,108 Z"
         android:fillColor="#FFFFFF"
-        android:strokeWidth="3"
-        android:strokeColor="#10B981"/>
+        android:strokeWidth="2.5"
+        android:strokeColor="#E056A0"/>
 
     <!-- Folder tab -->
     <path
-        android:pathData="M40,55 L65,55 L72,45"
-        android:strokeWidth="3"
-        android:strokeColor="#10B981"
+        android:pathData="M48,62 L68,62 L74,55"
+        android:strokeWidth="2.5"
+        android:strokeColor="#E056A0"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:fillColor="#00000000"/>
 
     <!-- Folder top edge -->
     <path
-        android:pathData="M40,55 L120,55"
-        android:strokeWidth="3"
-        android:strokeColor="#10B981"/>
+        android:pathData="M48,62 L112,62"
+        android:strokeWidth="2.5"
+        android:strokeColor="#E056A0"/>
 
     <!-- Code file 1 -->
     <path
-        android:pathData="M55,70 L90,70"
-        android:strokeWidth="3"
-        android:strokeColor="#34D399"
+        android:pathData="M58,75 L85,75"
+        android:strokeWidth="2.5"
+        android:strokeColor="#FF8C42"
         android:strokeLineCap="round"/>
 
     <!-- Code file 2 -->
     <path
-        android:pathData="M55,82 L105,82"
-        android:strokeWidth="3"
-        android:strokeColor="#10B981"
+        android:pathData="M58,85 L100,85"
+        android:strokeWidth="2.5"
+        android:strokeColor="#E056A0"
         android:strokeLineCap="round"/>
 
     <!-- Code file 3 -->
     <path
-        android:pathData="M55,94 L75,94"
-        android:strokeWidth="3"
-        android:strokeColor="#6EE7B7"
+        android:pathData="M58,95 L74,95"
+        android:strokeWidth="2.5"
+        android:strokeColor="#F078B8"
         android:strokeLineCap="round"/>
 
     <!-- Checkmark badge -->
     <path
-        android:pathData="M110,35m-12,0a12,12 0,1 1,24 0a12,12 0,1 1,-24 0"
-        android:fillColor="#10B981"/>
+        android:pathData="M108,42m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0"
+        android:fillColor="#E056A0"/>
 
     <path
-        android:pathData="M104,35 L108,39 L116,31"
+        android:pathData="M103,42 L106,45 L113,38"
         android:strokeWidth="2"
         android:strokeColor="#FFFFFF"
         android:strokeLineCap="round"
