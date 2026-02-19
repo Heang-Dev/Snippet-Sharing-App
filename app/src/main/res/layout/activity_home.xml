@@ -48,24 +48,15 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <!-- User Avatar (opens drawer) -->
-                    <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/ivUserAvatar"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
-                        app:cardCornerRadius="18dp"
-                        app:cardElevation="0dp"
-                        app:cardBackgroundColor="@color/primary">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/ic_person"
-                            android:scaleType="centerCrop"
-                            app:tint="@color/white" />
-
-                    </com.google.android.material.card.MaterialCardView>
+                    <!-- Notification Icon -->
+                    <ImageView
+                        android:id="@+id/ivNotification"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_bell"
+                        app:tint="?attr/textPrimaryColor"
+                        android:contentDescription="Notifications" />
 
                 </LinearLayout>
 

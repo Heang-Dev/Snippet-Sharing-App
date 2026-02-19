@@ -154,9 +154,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupUserInfo() {
-        // User avatar click navigates to Profile
-        binding.ivUserAvatar.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ProfileActivity.class);
+        // Notification icon click navigates to Notification Settings
+        binding.ivNotification.setOnClickListener(v -> {
+            Intent intent = new Intent(this, NotificationSettingsActivity.class);
             startActivity(intent);
         });
     }

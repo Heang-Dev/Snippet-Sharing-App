@@ -80,6 +80,7 @@
     <color name="input_stroke">#483860</color>
     <color name="input_stroke_focused">#E056A0</color>
     <color name="input_stroke_error">#F85149</color>
+    <color name="search_input_background">#241830</color>
 
     <!-- ========== NAVIGATION COLORS ========== -->
     <color name="bottom_nav_bg">#150D1E</color>
@@ -269,6 +270,7 @@
     <!-- Input colors for light theme -->
     <color name="light_input_background">#FFFFFF</color>
     <color name="light_input_stroke">#DDDDDD</color>
+    <color name="light_search_input_background">#F0F0F0</color>
 
     <!-- Navigation colors for light theme -->
     <color name="light_nav_bg">#FFFFFF</color>
