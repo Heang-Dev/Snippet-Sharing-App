@@ -112,4 +112,11 @@
     <!-- Tag Colors -->
     <color name="tag_background">#1e3a2f</color>
     <color name="tag_text">#80cbc4</color>
+
+    <!-- Unified Dark Theme Colors -->
+    <color name="bottom_nav_bg">#0D1F16</color>
+    <color name="text_muted">#889990</color>
+    <color name="accent_green">#3DD68C</color>
+    <color name="divider_dark">#23352D</color>
+    <color name="card_inner">#0D130E</color>
 </resources>

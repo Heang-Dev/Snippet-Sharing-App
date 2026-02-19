@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#05100B"
+    android:background="@color/app_background"
     android:fitsSystemWindows="true">
 
     <androidx.core.widget.NestedScrollView
@@ -29,14 +29,14 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_arrow_back"
-                    app:tint="#FFFFFF"
+                    app:tint="@color/text_primary"
                     android:layout_centerVertical="true"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Search"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_centerInParent="true"/>
@@ -64,7 +64,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_search"
-                    app:tint="#889990"/>
+                    app:tint="@color/text_muted"/>
 
                 <EditText
                     android:id="@+id/etSearch"
@@ -73,9 +73,9 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:hint="Search..."
-                    android:textColorHint="#889990"
+                    android:textColorHint="@color/text_muted"
                     android:text="auth middleware"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
@@ -86,7 +86,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_close"
-                    app:tint="#889990"
+                    app:tint="@color/text_muted"
                     android:layout_marginEnd="12dp"/>
 
                 <View
@@ -100,7 +100,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_sliders"
-                    app:tint="#3DD68C"/>
+                    app:tint="@color/accent_green"/>
             </LinearLayout>
 
             <!-- Filters ScrollView -->
@@ -159,13 +159,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Lang: All"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="12sp"/>
                          <ImageView
                             android:layout_width="12dp"
                             android:layout_height="12dp"
                             android:src="@drawable/ic_sort_down"
-                            app:tint="#889990"
+                            app:tint="@color/text_muted"
                             android:layout_marginStart="4dp"/>
                     </LinearLayout>
 
@@ -183,13 +183,13 @@
                              android:layout_width="12dp"
                              android:layout_height="12dp"
                              android:src="@drawable/ic_sort"
-                             app:tint="#889990"
+                             app:tint="@color/text_muted"
                              android:layout_marginEnd="6dp"/>
                          <TextView
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
                              android:text="Relevance"
-                             android:textColor="#FFFFFF"
+                             android:textColor="@color/text_primary"
                              android:textSize="12sp"/>
                      </LinearLayout>
                 </LinearLayout>
@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="124 results found"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
 
@@ -219,7 +219,7 @@
                     android:text="14ms"
                     android:background="@drawable/bg_pill_active"
                     android:backgroundTint="#0D1F16"
-                    android:textColor="#3DD68C"
+                    android:textColor="@color/accent_green"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:paddingTop="4dp"
@@ -243,7 +243,7 @@
                 android:background="@drawable/bg_button_dashed"
                 android:gravity="center"
                 android:text="Load more results"
-                android:textColor="#3DD68C"
+                android:textColor="@color/accent_green"
                 android:textStyle="bold"
                 android:clickable="true"
                 android:focusable="true"/>
@@ -257,7 +257,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#0D1F16"
+        android:background="@color/bottom_nav_bg"
         app:itemIconTint="@color/selector_bottom_nav"
         app:itemTextColor="@color/selector_bottom_nav"
         app:labelVisibilityMode="labeled"
@@ -274,7 +274,7 @@
         app:maxImageSize="32dp"
         android:layout_marginBottom="0dp"
         android:contentDescription="Create Snippet"
-        app:backgroundTint="#3DD68C"
+        app:backgroundTint="@color/accent_green"
         app:elevation="12dp"
         app:srcCompat="@drawable/ic_add"
         app:tint="#000000" />

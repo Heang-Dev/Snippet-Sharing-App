@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0b1612"
+    android:background="@color/app_background"
     android:fitsSystemWindows="true">
 
     <androidx.core.widget.NestedScrollView
@@ -31,7 +31,7 @@
                     android:layout_height="24dp"
                     android:layout_centerVertical="true"
                     android:src="@drawable/ic_arrow_back"
-                    app:tint="#FFFFFF"
+                    app:tint="@color/text_primary"
                     android:clickable="true"
                     android:focusable="true"/>
 
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="Browse Languages"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -67,7 +67,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_search"
-                    app:tint="#889990" />
+                    app:tint="@color/text_muted" />
 
                 <EditText
                     android:id="@+id/etSearch"
@@ -77,8 +77,8 @@
                     android:layout_marginStart="12dp"
                     android:background="@null"
                     android:hint="Find a language..."
-                    android:textColor="#FFFFFF"
-                    android:textColorHint="#889990"
+                    android:textColor="@color/text_primary"
+                    android:textColorHint="@color/text_muted"
                     android:textSize="14sp"
                     android:inputType="text" />
             </LinearLayout>
@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="POPULAR"
-                    android:textColor="#B0BEC5"
+                    android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.1"/>
@@ -103,7 +103,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:text="View stats"
-                    android:textColor="#3DD68C"
+                    android:textColor="@color/accent_green"
                     android:textSize="12sp"
                     android:textStyle="bold"/>
             </RelativeLayout>
@@ -128,7 +128,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ALL LANGUAGES"
-                android:textColor="#B0BEC5"
+                android:textColor="@color/text_secondary"
                 android:textSize="12sp"
                 android:textStyle="bold"
                 android:letterSpacing="0.1"
@@ -152,7 +152,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#0D1F16"
+        android:background="@color/bottom_nav_bg"
         app:itemIconTint="@color/selector_bottom_nav"
         app:itemTextColor="@color/selector_bottom_nav"
         app:labelVisibilityMode="labeled"
@@ -169,7 +169,7 @@
         app:maxImageSize="32dp"
         android:layout_marginBottom="0dp"
         android:contentDescription="Create Snippet"
-        app:backgroundTint="#3DD68C"
+        app:backgroundTint="@color/accent_green"
         app:elevation="12dp"
         app:srcCompat="@drawable/ic_add"
         app:tint="#000000" />

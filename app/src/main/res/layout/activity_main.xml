@@ -5,7 +5,7 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0D1F16"
+    android:background="@color/bottom_nav_bg"
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
@@ -52,7 +52,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_toEndOf="@id/ivMenu"
                         android:text="DevVault"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/text_primary"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
@@ -83,7 +83,7 @@
                         android:layout_height="20dp"
                         android:contentDescription="Search"
                         android:src="@drawable/ic_search"
-                        app:tint="#889990" />
+                        app:tint="@color/text_muted" />
 
                     <TextView
                         android:id="@+id/etSearch"
@@ -93,7 +93,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         android:text="Search snippets, tags..."
-                        android:textColor="#889990" />
+                        android:textColor="@color/text_muted" />
                 </LinearLayout>
 
                 <!-- Stats Row -->
@@ -118,7 +118,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="SNIPPETS"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
@@ -127,7 +127,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="142"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="28sp"
                             android:textStyle="bold" />
 
@@ -135,7 +135,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="↗ +5%"
-                            android:textColor="#3DD68C"
+                            android:textColor="@color/accent_green"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -154,7 +154,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="VIEWS"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
@@ -163,7 +163,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="1.2k"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="28sp"
                             android:textStyle="bold" />
 
@@ -171,7 +171,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="↗ +12%"
-                            android:textColor="#3DD68C"
+                            android:textColor="@color/accent_green"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -189,7 +189,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="FORKS"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:textStyle="bold" />
 
@@ -198,7 +198,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="89"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="28sp"
                             android:textStyle="bold" />
 
@@ -206,7 +206,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="— 0%"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="12sp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -223,7 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Activity Feed"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
@@ -233,7 +233,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:text="View All"
-                        android:textColor="#3DD68C"
+                        android:textColor="@color/accent_green"
                         android:textStyle="bold"/>
                 </RelativeLayout>
 
@@ -278,7 +278,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Alice updated 'Auth Logic'"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold"/>
 
@@ -286,7 +286,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="20 min ago"
-                                android:textColor="#889990"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -322,7 +322,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="John starred 'Docker Config'"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/text_primary"
                                 android:textSize="14sp"
                                 android:textStyle="bold"/>
 
@@ -330,7 +330,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="1h ago"
-                                android:textColor="#889990"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -347,7 +347,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Recent Snippets"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/text_primary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
                     
@@ -360,14 +360,14 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_dashboard"
-                            app:tint="#889990"
+                            app:tint="@color/text_muted"
                             android:layout_marginEnd="12dp"
                             android:contentDescription="Grid View"/>
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_menu"
-                            app:tint="#3DD68C"
+                            app:tint="@color/accent_green"
                             android:contentDescription="List View"/>
                     </LinearLayout>
                 </RelativeLayout>
@@ -395,7 +395,7 @@
                             android:background="@drawable/circle_blue"
                             android:gravity="center"
                             android:text="Py"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold" />
 
                         <LinearLayout
@@ -408,14 +408,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Python CSV Parser"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/text_primary"
                                 android:textStyle="bold"
                                 android:textSize="16sp"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Updated 2h ago"
-                                android:textColor="#889990"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp"/>
                         </LinearLayout>
 
@@ -423,7 +423,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_more_horiz"
-                            app:tint="#889990"
+                            app:tint="@color/text_muted"
                             android:contentDescription="Options"/>
                     </LinearLayout>
 
@@ -484,7 +484,7 @@
                             android:paddingTop="4dp"
                             android:paddingBottom="4dp"
                             android:background="@drawable/bg_tag_chip"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="10sp"
                             android:layout_marginEnd="8dp"/>
                         
@@ -497,7 +497,7 @@
                             android:paddingTop="4dp"
                             android:paddingBottom="4dp"
                             android:background="@drawable/bg_tag_chip"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="10sp"/>
                             
                         <View
@@ -509,7 +509,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_copy"
-                            app:tint="#889990"
+                            app:tint="@color/text_muted"
                             android:contentDescription="Copy"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -537,7 +537,7 @@
                             android:background="@drawable/circle_green"
                             android:gravity="center"
                             android:text="React"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"
                             android:textSize="10sp"/>
 
@@ -551,14 +551,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Auth Hook"
-                                android:textColor="#FFFFFF"
+                                android:textColor="@color/text_primary"
                                 android:textStyle="bold"
                                 android:textSize="16sp"/>
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Updated yesterday"
-                                android:textColor="#889990"
+                                android:textColor="@color/text_muted"
                                 android:textSize="12sp"/>
                         </LinearLayout>
 
@@ -566,7 +566,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_more_horiz"
-                            app:tint="#889990"
+                            app:tint="@color/text_muted"
                             android:contentDescription="Options"/>
                     </LinearLayout>
 
@@ -627,7 +627,7 @@
                             android:paddingTop="4dp"
                             android:paddingBottom="4dp"
                             android:background="@drawable/bg_tag_chip"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="10sp"
                             android:layout_marginEnd="8dp"/>
                         
@@ -640,7 +640,7 @@
                             android:paddingTop="4dp"
                             android:paddingBottom="4dp"
                             android:background="@drawable/bg_tag_chip"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="10sp"/>
                             
                         <View
@@ -652,7 +652,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="45"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textSize="12sp"
                             android:layout_marginEnd="4dp"/>
                         <ImageView
@@ -670,7 +670,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Trending"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_primary"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp"/>
@@ -705,8 +705,8 @@
                                 app:tint="#FFA000"
                                 android:contentDescription="Icon"/>
                             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="82" android:textColor="#889990" android:textSize="10sp"/>
-                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="#889990"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="82" android:textColor="@color/text_muted" android:textSize="10sp"/>
+                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="@color/text_muted"/>
                         </LinearLayout>
                         
                         <TextView
@@ -714,13 +714,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:text="Bash Init"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Standard server setup script for Ubuntu 20.04"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
@@ -747,8 +747,8 @@
                                 android:textColor="#2196F3"
                                 android:textStyle="bold"/>
                             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="64" android:textColor="#889990" android:textSize="10sp"/>
-                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="#889990"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="64" android:textColor="@color/text_muted" android:textSize="10sp"/>
+                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="@color/text_muted"/>
                         </LinearLayout>
                         
                         <TextView
@@ -756,13 +756,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:text="Flex Grid"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Responsive flexbox grid system boilerplate"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
@@ -786,11 +786,11 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_layers"
-                                app:tint="#3DD68C"
+                                app:tint="@color/accent_green"
                                 android:contentDescription="Icon"/>
                             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="51" android:textColor="#889990" android:textSize="10sp"/>
-                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="#889990"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="51" android:textColor="@color/text_muted" android:textSize="10sp"/>
+                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="@color/text_muted"/>
                         </LinearLayout>
                         
                         <TextView
@@ -798,13 +798,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:text="Mongo Connect"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Optimized connection pooling for Mongoose"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
@@ -830,8 +830,8 @@
                                 app:tint="#FFC107"
                                 android:contentDescription="Icon"/>
                             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="48" android:textColor="#889990" android:textSize="10sp"/>
-                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="#889990"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="48" android:textColor="@color/text_muted" android:textSize="10sp"/>
+                            <ImageView android:layout_width="12dp" android:layout_height="12dp" android:src="@drawable/ic_star_filled" app:tint="@color/text_muted"/>
                         </LinearLayout>
                         
                         <TextView
@@ -839,13 +839,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:text="REST Template"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_primary"
                             android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="ExpressJS router template with error handling"
-                            android:textColor="#889990"
+                            android:textColor="@color/text_muted"
                             android:textSize="10sp"
                             android:layout_marginTop="4dp"/>
                     </LinearLayout>
@@ -861,7 +861,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="#0D1F16"
+            android:background="@color/bottom_nav_bg"
             app:itemIconTint="@color/selector_bottom_nav"
             app:itemTextColor="@color/selector_bottom_nav"
             app:labelVisibilityMode="labeled"
@@ -878,7 +878,7 @@
             app:maxImageSize="32dp"
             android:layout_marginBottom="0dp"
             android:contentDescription="Create Snippet"
-            app:backgroundTint="#3DD68C"
+            app:backgroundTint="@color/accent_green"
             app:elevation="12dp"
             app:srcCompat="@drawable/ic_add"
             app:tint="#000000" />
@@ -891,13 +891,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#0D1F16"
+        android:background="@color/bottom_nav_bg"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:itemIconTint="@color/selector_nav_item"
         app:itemTextColor="@color/selector_nav_item"
         app:itemBackground="@drawable/selector_nav_background"
-        app:subheaderColor="#889990"
+        app:subheaderColor="@color/text_muted"
         app:menu="@menu/drawer_menu">
 
         <include layout="@layout/nav_footer"

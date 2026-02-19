@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="#15231c"
+    app:cardBackgroundColor="@color/card_surface"
     app:cardCornerRadius="@dimen/snippet_card_corner"
     app:cardElevation="0dp"
     app:strokeWidth="0dp"
@@ -27,7 +27,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="#1e3a2f"
+                app:cardBackgroundColor="@color/tag_background"
                 app:cardElevation="0dp">
 
                 <TextView
@@ -36,7 +36,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="Py"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/text_primary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -91,7 +91,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="12dp"
             app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="#080e0b"
+            app:cardBackgroundColor="@color/code_background"
             app:strokeWidth="0dp"
             app:cardElevation="0dp">
 
@@ -133,7 +133,7 @@
                     android:id="@+id/tvCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#080e0b"
+                    android:background="@color/code_background"
                     android:fontFamily="monospace"
                     android:minLines="3"
                     android:maxLines="8"
@@ -168,10 +168,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Data"
-                    android:textColor="#80cbc4"
+                    android:textColor="@color/tag_text"
                     android:textSize="11sp"
                     android:background="@drawable/bg_tag_chip"
-                    android:backgroundTint="#1e3a2f"
+                    android:backgroundTint="@color/tag_background"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:paddingTop="6dp"
@@ -183,10 +183,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Utils"
-                    android:textColor="#80cbc4"
+                    android:textColor="@color/tag_text"
                     android:textSize="11sp"
                     android:background="@drawable/bg_tag_chip"
-                    android:backgroundTint="#1e3a2f"
+                    android:backgroundTint="@color/tag_background"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:paddingTop="6dp"
