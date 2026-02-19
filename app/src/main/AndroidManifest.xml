@@ -42,20 +42,21 @@
             android:exported="false"
             android:theme="@style/Theme.Snippet_Sharing_App" />
 
-        <!-- Profile Activity - SET AS LAUNCHER FOR TESTING -->
+        <!-- Profile Activity -->
         <activity
             android:name=".ui.profile.ProfileActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Snippet_Sharing_App.Profile">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:exported="false"
+            android:theme="@style/Theme.Snippet_Sharing_App.Profile" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity> <!-- Onboarding Activity -->
+        <!-- Onboarding Activity - Entry Point -->
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
-            android:exported="false" /> <!-- Auth Activities -->
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- Auth Activities -->
         <activity
             android:name=".ui.auth.LoginActivity"
             android:exported="false"

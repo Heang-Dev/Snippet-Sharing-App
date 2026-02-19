@@ -13,7 +13,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import group.eleven.snippet_sharing_app.MainActivity;
 import group.eleven.snippet_sharing_app.R;
 
 import java.io.File;
@@ -181,9 +180,17 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     private void deleteAccount() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+        // Read image path BEFORE clearing prefs
+        String imagePath = prefs.getString("profile_image_path", null);
+
+        // Clear profile data
         prefs.edit().clear().apply();
 
-        String imagePath = prefs.getString("profile_image_path", null);
+        // Clear session data
+        new group.eleven.snippet_sharing_app.utils.SessionManager(this).clearAll();
+
+        // Delete profile image file
         if (imagePath != null) {
             File file = new File(imagePath);
             if (file.exists()) file.delete();
@@ -191,7 +198,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Account and all data deleted successfully", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.auth.LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

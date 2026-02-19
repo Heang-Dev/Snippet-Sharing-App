@@ -26,8 +26,11 @@ public class ActivityFeedAdapter extends RecyclerView.Adapter<ActivityFeedAdapte
         void onItemClick(ActivityFeedItem item);
     }
 
-    public ActivityFeedAdapter(List<ActivityFeedItem> items) { // Update constructor
+    public ActivityFeedAdapter(List<ActivityFeedItem> items) {
         this.items = items;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 

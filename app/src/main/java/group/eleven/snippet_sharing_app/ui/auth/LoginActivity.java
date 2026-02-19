@@ -61,10 +61,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Auto-fill for development (remove in production)
-        binding.etLogin.setText("chhunmengheang5@gmail.com");
-        binding.etPassword.setText("12345678");
-
         setupFormValidation();
         setupClickListeners();
     }
@@ -99,32 +95,41 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        Log.d(TAG, "attemptLogin: BYPASSING AUTHENTICATION FOR TESTING");
-
-        try {
-            // Create mock user for testing purposes
-            User mockUser = new User();
-            mockUser.setId("dev_user_123");
-            mockUser.setUsername("test_developer");
-            mockUser.setEmail(binding.etLogin.getText() != null ? binding.etLogin.getText().toString() : "dev@example.com");
-            mockUser.setFullName("Developer Mode");
-
-            // Save a mock session so HomeActivity doesn't redirect back to Login
-            sessionManager.createLoginSession("mock_bypass_token", mockUser);
-
-            Toast.makeText(this, "Login Bypassed (Testing Mode)", Toast.LENGTH_SHORT).show();
-            
-            // Navigate to Home
-            navigateToHome();
-
-        } catch (Exception e) {
-            Log.e(TAG, "attemptLogin: Error during bypass", e);
-            // Fallback to basic navigation
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            finish();
+        if (formValidator != null && !formValidator.isFormValid()) {
+            formValidator.validateAll();
+            return;
         }
+
+        String login = binding.etLogin.getText() != null ? binding.etLogin.getText().toString().trim() : "";
+        String password = binding.etPassword.getText() != null ? binding.etPassword.getText().toString().trim() : "";
+
+        if (login.isEmpty() || password.isEmpty()) {
+            showError(getString(R.string.validation_required));
+            return;
+        }
+
+        String deviceName = Build.MANUFACTURER + " " + Build.MODEL;
+        setLoading(true);
+
+        authRepository.login(login, password, deviceName).observe(this, resource -> {
+            if (resource == null) return;
+
+            switch (resource.getStatus()) {
+                case SUCCESS:
+                    setLoading(false);
+                    navigateToHome();
+                    break;
+
+                case ERROR:
+                    setLoading(false);
+                    showError(resource.getMessage());
+                    break;
+
+                case LOADING:
+                    // Already showing loading state
+                    break;
+            }
+        });
     }
 
     private void setLoading(boolean isLoading) {
