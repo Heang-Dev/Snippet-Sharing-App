@@ -5,212 +5,207 @@
     android:viewportWidth="400"
     android:viewportHeight="700">
 
-    <!-- ========== COMET WITH FLAMES (top left) ========== -->
+    <!-- Clean geometric pattern using simple shapes -->
+
+    <!-- ===== LARGE PLANET RINGS (Saturn style) ===== -->
+    <!-- Planet 1 - top right -->
     <path
-        android:pathData="M90,80 Q75,95 60,88 Q45,80 55,65 Q70,50 90,60 Q105,70 90,80 Z"
-        android:strokeWidth="1.8"
-        android:strokeColor="#20E056A0"
-        android:fillColor="#00000000"/>
-    <!-- Comet flames/tail -->
-    <path
-        android:pathData="M55,75 L15,45 M50,68 L20,30 M58,60 L35,25"
-        android:strokeWidth="1.5"
+        android:pathData="M320,100 m-20,0 a20,20 0 1,1 40,0 a20,20 0 1,1 -40,0"
+        android:strokeWidth="2"
         android:strokeColor="#18E056A0"
-        android:strokeLineCap="round"/>
-    <!-- Crater details -->
+        android:fillColor="#00000000"/>
     <path
-        android:pathData="M72,72 m-5,0 a5,5 0,1 1,10 0 a5,5 0,1 1,-10 0"
-        android:strokeWidth="1"
+        android:pathData="M280,100 a50,15 0 0,0 80,0"
+        android:strokeWidth="1.5"
         android:strokeColor="#15E056A0"
         android:fillColor="#00000000"/>
-
-    <!-- ========== SATURN PLANET WITH RINGS (top right) ========== -->
     <path
-        android:pathData="M320,120 m-35,0 a35,35 0,1 1,70 0 a35,35 0,1 1,-70 0"
-        android:strokeWidth="1.8"
-        android:strokeColor="#20E056A0"
-        android:fillColor="#00000000"/>
-    <!-- Saturn outer ring -->
-    <path
-        android:pathData="M260,120 Q320,95 380,120"
-        android:strokeWidth="1.5"
-        android:strokeColor="#20E056A0"
-        android:fillColor="#00000000"/>
-    <!-- Saturn inner ring -->
-    <path
-        android:pathData="M270,120 Q320,100 370,120"
-        android:strokeWidth="1"
-        android:strokeColor="#18E056A0"
-        android:fillColor="#00000000"/>
-
-    <!-- ========== 4-POINT STARS ========== -->
-    <path
-        android:pathData="M370,60 L373,70 L383,73 L373,76 L370,86 L367,76 L357,73 L367,70 Z"
-        android:strokeWidth="1.2"
-        android:strokeColor="#25E056A0"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M50,200 L52,207 L59,209 L52,211 L50,218 L48,211 L41,209 L48,207 Z"
-        android:strokeWidth="1"
-        android:strokeColor="#22FF8C42"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M180,150 L182,157 L189,159 L182,161 L180,168 L178,161 L171,159 L178,157 Z"
-        android:strokeWidth="1"
-        android:strokeColor="#20E056A0"
-        android:fillColor="#00000000"/>
-
-    <!-- ========== ASTEROID WITH CRATERS (left) ========== -->
-    <path
-        android:pathData="M70,300 Q55,285 65,270 Q85,260 100,275 Q110,295 95,310 Q75,315 70,300 Z"
-        android:strokeWidth="1.5"
-        android:strokeColor="#20E056A0"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M78,285 m-6,0 a6,6 0,1 1,12 0 a6,6 0,1 1,-12 0"
-        android:strokeWidth="1"
-        android:strokeColor="#18E056A0"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M88,298 m-4,0 a4,4 0,1 1,8 0 a4,4 0,1 1,-8 0"
-        android:strokeWidth="0.8"
-        android:strokeColor="#15E056A0"
-        android:fillColor="#00000000"/>
-
-    <!-- ========== ROCKET (center right) ========== -->
-    <!-- Rocket body -->
-    <path
-        android:pathData="M310,380 L325,330 L340,380 Z"
-        android:strokeWidth="1.8"
-        android:strokeColor="#22FF8C42"
-        android:fillColor="#00000000"
-        android:strokeLineJoin="round"/>
-    <!-- Rocket nose cone -->
-    <path
-        android:pathData="M325,330 L325,310"
-        android:strokeWidth="1.5"
-        android:strokeColor="#22FF8C42"
-        android:strokeLineCap="round"/>
-    <!-- Rocket window -->
-    <path
-        android:pathData="M325,350 m-8,0 a8,8 0,1 1,16 0 a8,8 0,1 1,-16 0"
-        android:strokeWidth="1.5"
-        android:strokeColor="#22FF8C42"
-        android:fillColor="#00000000"/>
-    <!-- Rocket fins -->
-    <path
-        android:pathData="M310,380 L295,400 L310,390 M340,380 L355,400 L340,390"
-        android:strokeWidth="1.5"
-        android:strokeColor="#22FF8C42"
-        android:fillColor="#00000000"
-        android:strokeLineJoin="round"/>
-    <!-- Rocket exhaust flames -->
-    <path
-        android:pathData="M318,395 Q325,420 332,395 M320,400 Q325,430 330,400"
-        android:strokeWidth="1.2"
-        android:strokeColor="#18FF8C42"
-        android:fillColor="#00000000"/>
-
-    <!-- ========== EARTH PLANET (bottom right) ========== -->
-    <path
-        android:pathData="M330,560 m-45,0 a45,45 0,1 1,90 0 a45,45 0,1 1,-90 0"
-        android:strokeWidth="1.8"
-        android:strokeColor="#20E056A0"
-        android:fillColor="#00000000"/>
-    <!-- Continents -->
-    <path
-        android:pathData="M305,545 Q330,535 355,550 Q365,560 355,575 Q340,580 320,570"
-        android:strokeWidth="1.2"
-        android:strokeColor="#18E056A0"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M300,570 Q310,580 325,585"
-        android:strokeWidth="1"
-        android:strokeColor="#15E056A0"
-        android:fillColor="#00000000"/>
-    <!-- Small moon -->
-    <path
-        android:pathData="M380,510 m-12,0 a12,12 0,1 1,24 0 a12,12 0,1 1,-24 0"
-        android:strokeWidth="1.2"
-        android:strokeColor="#18E056A0"
-        android:fillColor="#00000000"/>
-
-    <!-- ========== SMALL ASTEROIDS ========== -->
-    <path
-        android:pathData="M200,250 Q190,240 198,230 Q212,225 220,238 Q218,252 205,255 Q195,253 200,250 Z"
-        android:strokeWidth="1.2"
-        android:strokeColor="#18FF8C42"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M280,450 Q272,442 278,432 Q292,428 298,440 Q296,452 285,455 Q276,453 280,450 Z"
-        android:strokeWidth="1"
-        android:strokeColor="#18E056A0"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M120,480 Q112,472 118,462 Q132,458 138,470 Q136,482 125,485 Q116,483 120,480 Z"
-        android:strokeWidth="1"
-        android:strokeColor="#18FF8C42"
-        android:fillColor="#00000000"/>
-
-    <!-- ========== SHOOTING STAR (bottom left) ========== -->
-    <path
-        android:pathData="M20,620 L70,570"
-        android:strokeWidth="1.5"
-        android:strokeColor="#22E056A0"
-        android:strokeLineCap="round"/>
-    <path
-        android:pathData="M70,570 m-6,0 a6,6 0,1 1,12 0 a6,6 0,1 1,-12 0"
-        android:fillColor="#25E056A0"/>
-
-    <!-- ========== MORE STARS ========== -->
-    <path
-        android:pathData="M380,280 L382,287 L389,289 L382,291 L380,298 L378,291 L371,289 L378,287 Z"
-        android:strokeWidth="1"
-        android:strokeColor="#20E056A0"
-        android:fillColor="#00000000"/>
-    <path
-        android:pathData="M30,420 L32,427 L39,429 L32,431 L30,438 L28,431 L21,429 L28,427 Z"
-        android:strokeWidth="1"
-        android:strokeColor="#20FF8C42"
-        android:fillColor="#00000000"/>
-
-    <!-- ========== SCATTERED DOTS (stars) ========== -->
-    <path
-        android:pathData="M150,100 m-3,0 a3,3 0,1 1,6 0 a3,3 0,1 1,-6 0"
-        android:fillColor="#20E056A0"/>
-    <path
-        android:pathData="M250,180 m-2,0 a2,2 0,1 1,4 0 a2,2 0,1 1,-4 0"
-        android:fillColor="#18FF8C42"/>
-    <path
-        android:pathData="M100,380 m-2.5,0 a2.5,2.5 0,1 1,5 0 a2.5,2.5 0,1 1,-5 0"
-        android:fillColor="#20E056A0"/>
-    <path
-        android:pathData="M350,220 m-2,0 a2,2 0,1 1,4 0 a2,2 0,1 1,-4 0"
-        android:fillColor="#18E056A0"/>
-    <path
-        android:pathData="M180,520 m-2.5,0 a2.5,2.5 0,1 1,5 0 a2.5,2.5 0,1 1,-5 0"
-        android:fillColor="#20FF8C42"/>
-    <path
-        android:pathData="M60,550 m-2,0 a2,2 0,1 1,4 0 a2,2 0,1 1,-4 0"
-        android:fillColor="#18E056A0"/>
-    <path
-        android:pathData="M220,650 m-3,0 a3,3 0,1 1,6 0 a3,3 0,1 1,-6 0"
-        android:fillColor="#20E056A0"/>
-    <path
-        android:pathData="M390,480 m-2,0 a2,2 0,1 1,4 0 a2,2 0,1 1,-4 0"
-        android:fillColor="#18FF8C42"/>
-    <path
-        android:pathData="M40,160 m-2,0 a2,2 0,1 1,4 0 a2,4 0,1 1,-4 0"
-        android:fillColor="#20E056A0"/>
-    <path
-        android:pathData="M300,30 m-2,0 a2,2 0,1 1,4 0 a2,2 0,1 1,-4 0"
-        android:fillColor="#18E056A0"/>
-
-    <!-- ========== ORBIT LINE (decorative) ========== -->
-    <path
-        android:pathData="M250,380 Q280,350 310,370"
+        android:pathData="M285,100 a45,12 0 0,1 70,0"
         android:strokeWidth="1"
         android:strokeColor="#12E056A0"
+        android:fillColor="#00000000"/>
+
+    <!-- Planet 2 - bottom left -->
+    <path
+        android:pathData="M80,580 m-25,0 a25,25 0 1,1 50,0 a25,25 0 1,1 -50,0"
+        android:strokeWidth="2"
+        android:strokeColor="#18FF8C42"
+        android:fillColor="#00000000"/>
+    <path
+        android:pathData="M35,580 a55,18 0 0,0 90,0"
+        android:strokeWidth="1.5"
+        android:strokeColor="#15FF8C42"
+        android:fillColor="#00000000"/>
+
+    <!-- ===== SIMPLE STARS (4-point) ===== -->
+    <!-- Star 1 -->
+    <path
+        android:pathData="M60,80 L63,90 L73,93 L63,96 L60,106 L57,96 L47,93 L57,90 Z"
+        android:strokeWidth="1.5"
+        android:strokeColor="#20E056A0"
+        android:fillColor="#00000000"/>
+
+    <!-- Star 2 -->
+    <path
+        android:pathData="M350,200 L352,207 L359,209 L352,211 L350,218 L348,211 L341,209 L348,207 Z"
+        android:strokeWidth="1.2"
+        android:strokeColor="#1AFF8C42"
+        android:fillColor="#00000000"/>
+
+    <!-- Star 3 -->
+    <path
+        android:pathData="M180,150 L182,157 L189,159 L182,161 L180,168 L178,161 L171,159 L178,157 Z"
+        android:strokeWidth="1.2"
+        android:strokeColor="#18E056A0"
+        android:fillColor="#00000000"/>
+
+    <!-- Star 4 -->
+    <path
+        android:pathData="M30,350 L32,357 L39,359 L32,361 L30,368 L28,361 L21,359 L28,357 Z"
+        android:strokeWidth="1.2"
+        android:strokeColor="#1AFF8C42"
+        android:fillColor="#00000000"/>
+
+    <!-- Star 5 -->
+    <path
+        android:pathData="M370,450 L372,457 L379,459 L372,461 L370,468 L368,461 L361,459 L368,457 Z"
+        android:strokeWidth="1.2"
+        android:strokeColor="#18E056A0"
+        android:fillColor="#00000000"/>
+
+    <!-- ===== SIMPLE ROCKET (triangle + flame) ===== -->
+    <path
+        android:pathData="M340,320 L355,370 L325,370 Z"
+        android:strokeWidth="2"
+        android:strokeColor="#20FF8C42"
+        android:fillColor="#00000000"
+        android:strokeLineJoin="round"/>
+    <!-- Rocket window -->
+    <path
+        android:pathData="M340,345 m-6,0 a6,6 0 1,1 12,0 a6,6 0 1,1 -12,0"
+        android:strokeWidth="1.5"
+        android:strokeColor="#18FF8C42"
+        android:fillColor="#00000000"/>
+    <!-- Rocket flames -->
+    <path
+        android:pathData="M332,370 L340,390 L348,370"
+        android:strokeWidth="1.5"
+        android:strokeColor="#15FF8C42"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- ===== SHOOTING STARS (lines with dots) ===== -->
+    <!-- Shooting star 1 -->
+    <path
+        android:pathData="M20,180 L70,140"
+        android:strokeWidth="2"
+        android:strokeColor="#20E056A0"
+        android:strokeLineCap="round"/>
+    <path
+        android:pathData="M70,140 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"
+        android:fillColor="#25E056A0"/>
+
+    <!-- Shooting star 2 -->
+    <path
+        android:pathData="M300,50 L340,30"
+        android:strokeWidth="1.5"
+        android:strokeColor="#18FF8C42"
+        android:strokeLineCap="round"/>
+    <path
+        android:pathData="M340,30 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0"
+        android:fillColor="#20FF8C42"/>
+
+    <!-- Shooting star 3 -->
+    <path
+        android:pathData="M250,620 L290,590"
+        android:strokeWidth="1.5"
+        android:strokeColor="#18E056A0"
+        android:strokeLineCap="round"/>
+    <path
+        android:pathData="M290,590 m-3,0 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0"
+        android:fillColor="#20E056A0"/>
+
+    <!-- ===== SMALL CIRCLES (distant stars/planets) ===== -->
+    <path
+        android:pathData="M150,60 m-8,0 a8,8 0 1,1 16,0 a8,8 0 1,1 -16,0"
+        android:strokeWidth="1.5"
+        android:strokeColor="#15E056A0"
+        android:fillColor="#00000000"/>
+
+    <path
+        android:pathData="M380,300 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0"
+        android:strokeWidth="1.5"
+        android:strokeColor="#15FF8C42"
+        android:fillColor="#00000000"/>
+
+    <path
+        android:pathData="M50,450 m-12,0 a12,12 0 1,1 24,0 a12,12 0 1,1 -24,0"
+        android:strokeWidth="1.5"
+        android:strokeColor="#15E056A0"
+        android:fillColor="#00000000"/>
+
+    <path
+        android:pathData="M200,280 m-6,0 a6,6 0 1,1 12,0 a6,6 0 1,1 -12,0"
+        android:strokeWidth="1.2"
+        android:strokeColor="#12FF8C42"
+        android:fillColor="#00000000"/>
+
+    <path
+        android:pathData="M320,520 m-8,0 a8,8 0 1,1 16,0 a8,8 0 1,1 -16,0"
+        android:strokeWidth="1.2"
+        android:strokeColor="#12E056A0"
+        android:fillColor="#00000000"/>
+
+    <!-- ===== TINY DOT STARS ===== -->
+    <path
+        android:pathData="M100,120 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#20E056A0"/>
+    <path
+        android:pathData="M250,180 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#18FF8C42"/>
+    <path
+        android:pathData="M380,80 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#20E056A0"/>
+    <path
+        android:pathData="M20,250 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#18FF8C42"/>
+    <path
+        android:pathData="M120,320 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#18E056A0"/>
+    <path
+        android:pathData="M280,380 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#20FF8C42"/>
+    <path
+        android:pathData="M160,480 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#18E056A0"/>
+    <path
+        android:pathData="M350,550 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#18FF8C42"/>
+    <path
+        android:pathData="M90,650 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#20E056A0"/>
+    <path
+        android:pathData="M220,70 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#15E056A0"/>
+    <path
+        android:pathData="M40,520 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#18FF8C42"/>
+    <path
+        android:pathData="M390,620 m-2,0 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"
+        android:fillColor="#18E056A0"/>
+
+    <!-- ===== ORBIT ARCS ===== -->
+    <path
+        android:pathData="M150,400 Q200,380 250,400"
+        android:strokeWidth="1"
+        android:strokeColor="#10E056A0"
+        android:fillColor="#00000000"/>
+
+    <path
+        android:pathData="M280,150 Q310,130 340,150"
+        android:strokeWidth="1"
+        android:strokeColor="#10FF8C42"
         android:fillColor="#00000000"/>
 
 </vector>
