@@ -127,20 +127,20 @@ public class BrowseLanguagesActivity extends AppCompatActivity {
         if (bottomNav != null) {
             bottomNav.setOnItemSelectedListener(item -> {
                 int id = item.getItemId();
-                if (id == R.id.nav_search) {
+                if (id == R.id.nav_home) {
                     // Go back to Home
                     android.content.Intent intent = new android.content.Intent(this, HomeActivity.class);
                     intent.setFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     return true;
-                } else if (id == R.id.nav_library) {
+                } else if (id == R.id.nav_teams) {
+                    startActivity(new android.content.Intent(this, group.eleven.snippet_sharing_app.ui.team.TeamsListActivity.class));
+                    return false;
+                } else if (id == R.id.nav_snippets) {
                     startActivity(new android.content.Intent(this, MySnippetsActivity.class));
                     return false;
-                } else if (id == R.id.nav_activity) {
-                    startActivity(new android.content.Intent(this, NotificationSettingsActivity.class));
-                    return false;
-                } else if (id == R.id.nav_settings) {
-                    startActivity(new android.content.Intent(this, AccountSettingsActivity.class));
+                } else if (id == R.id.nav_profile) {
+                    startActivity(new android.content.Intent(this, group.eleven.snippet_sharing_app.ui.profile.ProfileActivity.class));
                     return false;
                 }
                 return false;

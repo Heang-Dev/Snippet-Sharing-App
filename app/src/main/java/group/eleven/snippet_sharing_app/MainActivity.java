@@ -101,17 +101,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (bottomNav != null) {
                 bottomNav.setOnItemSelectedListener(item -> {
                     int id = item.getItemId();
-                    if (id == R.id.nav_search) {
+                    if (id == R.id.nav_home) {
                         // Already on dashboard
                         return true;
-                    } else if (id == R.id.nav_library) {
+                    } else if (id == R.id.nav_teams) {
+                        startActivity(new Intent(this, group.eleven.snippet_sharing_app.ui.team.TeamsListActivity.class));
+                        return false;
+                    } else if (id == R.id.nav_snippets) {
                         startActivity(new Intent(this, MySnippetsActivity.class));
                         return false;
-                    } else if (id == R.id.nav_activity) {
-                        startActivity(new Intent(this, NotificationSettingsActivity.class));
-                        return false;
-                    } else if (id == R.id.nav_settings) {
-                        startActivity(new Intent(this, AccountSettingsActivity.class));
+                    } else if (id == R.id.nav_profile) {
+                        startActivity(new Intent(this, group.eleven.snippet_sharing_app.ui.profile.ProfileActivity.class));
                         return false;
                     }
                     return false;

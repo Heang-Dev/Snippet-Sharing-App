@@ -377,25 +377,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         com.google.android.material.floatingactionbutton.FloatingActionButton fab = findViewById(R.id.fab);
 
         if (bottomNav != null) {
-            // Set Search (Home) as selected
-            bottomNav.setSelectedItemId(R.id.nav_search);
+            // Set Home as selected
+            bottomNav.setSelectedItemId(R.id.nav_home);
 
             bottomNav.setOnItemSelectedListener(item -> {
                 int id = item.getItemId();
-                if (id == R.id.nav_search) {
+                if (id == R.id.nav_home) {
                     // Already on Home
                     return true;
-                } else if (id == R.id.nav_library) {
+                } else if (id == R.id.nav_teams) {
+                    Intent intent = new Intent(this,
+                            group.eleven.snippet_sharing_app.ui.team.TeamsListActivity.class);
+                    startActivity(intent);
+                    return false; // Don't switch tab visually, just launch activity
+                } else if (id == R.id.nav_snippets) {
                     Intent intent = new Intent(this,
                             group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
                     startActivity(intent);
-                    return false; // Don't switch tab visually, just launch activity
-                } else if (id == R.id.nav_activity) {
-                    Intent intent = new Intent(this, NotificationSettingsActivity.class);
-                    startActivity(intent);
                     return false;
-                } else if (id == R.id.nav_settings) {
-                    Intent intent = new Intent(this, AccountSettingsActivity.class);
+                } else if (id == R.id.nav_profile) {
+                    Intent intent = new Intent(this, ProfileActivity.class);
                     startActivity(intent);
                     return false;
                 }

@@ -3,40 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/nav_search"
-        android:icon="@drawable/ic_search"
-        android:title="Browse"
-        android:orderInCategory="1" 
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_dashboard"
+        android:title="Home"
+        android:orderInCategory="1"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/nav_library"
-        android:icon="@drawable/ic_folder"
-        android:title="Library"
-        android:orderInCategory="2" 
+        android:id="@+id/nav_teams"
+        android:icon="@drawable/ic_users"
+        android:title="Teams"
+        android:orderInCategory="2"
         app:showAsAction="ifRoom" />
 
     <!-- EMPTY PLACEHOLDER for FAB -->
-    <item 
-        android:id="@+id/placeholder" 
-        android:title="" 
-        android:enabled="false" 
+    <item
+        android:id="@+id/placeholder"
+        android:title=""
+        android:enabled="false"
         android:icon="@drawable/ic_transparent"
-        android:orderInCategory="3" 
+        android:orderInCategory="3"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/nav_activity"
-        android:icon="@drawable/ic_bell"
-        android:title="Activity"
-        android:orderInCategory="4" 
+        android:id="@+id/nav_snippets"
+        android:icon="@drawable/ic_code"
+        android:title="Snippet"
+        android:orderInCategory="4"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Settings"
-        android:orderInCategory="5" 
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/ic_person"
+        android:title="Profile"
+        android:orderInCategory="5"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -106,26 +106,31 @@ public class SearchActivity extends AppCompatActivity {
         com.google.android.material.floatingactionbutton.FloatingActionButton fab = findViewById(R.id.fab);
 
         if (bottomNav != null) {
-            // Set Search (Browse) as selected. ID changed from nav_search to nav_search
-            // (same)
-            bottomNav.setSelectedItemId(R.id.nav_search);
+            // Set Home as selected when coming from search
+            bottomNav.setSelectedItemId(R.id.nav_home);
 
             bottomNav.setOnItemSelectedListener(item -> {
                 int id = item.getItemId();
-                if (id == R.id.nav_search) {
-                    // Already on Search
+                if (id == R.id.nav_home) {
+                    // Go to Home
+                    android.content.Intent intent = new android.content.Intent(this,
+                            group.eleven.snippet_sharing_app.ui.home.HomeActivity.class);
+                    intent.setFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
                     return true;
-                } else if (id == R.id.nav_library) {
+                } else if (id == R.id.nav_teams) {
+                    android.content.Intent intent = new android.content.Intent(this,
+                            group.eleven.snippet_sharing_app.ui.team.TeamsListActivity.class);
+                    startActivity(intent);
+                    return false;
+                } else if (id == R.id.nav_snippets) {
                     android.content.Intent intent = new android.content.Intent(this,
                             group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
                     startActivity(intent);
                     return false;
-                } else if (id == R.id.nav_activity) {
-                    android.content.Intent intent = new android.content.Intent(this, NotificationSettingsActivity.class);
-                    startActivity(intent);
-                    return false;
-                } else if (id == R.id.nav_settings) {
-                    android.content.Intent intent = new android.content.Intent(this, AccountSettingsActivity.class);
+                } else if (id == R.id.nav_profile) {
+                    android.content.Intent intent = new android.content.Intent(this,
+                            group.eleven.snippet_sharing_app.ui.profile.ProfileActivity.class);
                     startActivity(intent);
                     return false;
                 }
