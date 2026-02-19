@@ -67,7 +67,7 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
             tvLanguageBadge = itemView.findViewById(R.id.tvLanguageBadge);
             tvSnippetTitle = itemView.findViewById(R.id.tvSnippetTitle);
             tvSnippetTime = itemView.findViewById(R.id.tvSnippetTime);
-            tvCodePreview = itemView.findViewById(R.id.tvCodePreview);
+            tvCodePreview = itemView.findViewById(R.id.tvCode);
         }
 
         public void bind(TeamSnippet teamSnippet, OnTeamSnippetClickListener listener) {
