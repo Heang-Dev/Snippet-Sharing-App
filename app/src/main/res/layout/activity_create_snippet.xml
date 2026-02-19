@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0b1612"
+    android:background="@color/app_background"
     android:fitsSystemWindows="true"
     android:clipChildren="false">
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="#0b1612"
+        android:background="@color/app_background"
         android:elevation="4dp"
         android:padding="16dp">
 
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:textColor="#b0bec5"
+            android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"/>
@@ -33,7 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Snippet"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_primary"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_centerInParent="true"/>
@@ -44,8 +44,8 @@
             android:layout_height="36dp"
             android:text="Publish"
             android:textSize="12sp"
-            android:textColor="#000000"
-            app:backgroundTint="#00e676"
+            android:textColor="@color/on_primary"
+            app:backgroundTint="@color/neon_green"
             app:cornerRadius="18dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
@@ -76,8 +76,8 @@
                 android:hint="Snippet Title..."
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="#ffffff"
-                android:textColorHint="#4b5552"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
                 android:inputType="textCapSentences"
                 android:gravity="top|start"
                 android:minLines="1"
@@ -97,27 +97,27 @@
                     android:layout_height="36dp"
                     android:background="@drawable/bg_badge_draft"
                     android:text="JavaScript"
-                    android:textColor="#ffffff"
+                    android:textColor="@color/text_primary"
                     android:gravity="center"
                     android:paddingStart="16dp"
                     android:paddingEnd="12dp"
                     android:drawableEnd="@drawable/ic_arrow_forward"
                     android:drawablePadding="8dp"
                     android:textSize="13sp"
-                    app:drawableTint="#00e676"
+                    app:drawableTint="@color/neon_green"
                     android:layout_marginEnd="12dp"/>
-                    
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     android:background="@drawable/bg_badge_draft"
                     android:text="Unsaved Draft"
-                    android:textColor="#b0bec5"
+                    android:textColor="@color/text_secondary"
                     android:gravity="center"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:textSize="12sp"
-                    android:backgroundTint="#15231c" />
+                    android:backgroundTint="@color/surface" />
             </LinearLayout>
 
             <!-- Code Editor Container -->
@@ -125,7 +125,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:cardBackgroundColor="#080e0b"
+                app:cardBackgroundColor="@color/code_background"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="0dp">
@@ -148,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:text="index.js"
-                            android:textColor="#b0bec5"
+                            android:textColor="@color/text_secondary"
                             android:fontFamily="monospace"
                             android:textSize="12sp"/>
 
@@ -158,12 +158,12 @@
                             android:layout_height="20dp"
                             android:src="@drawable/ic_code"
                             android:layout_marginEnd="16dp"
-                            app:tint="#b0bec5"/>
+                            app:tint="@color/icon_secondary"/>
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:src="@drawable/ic_settings"
-                            app:tint="#b0bec5"/>
+                            app:tint="@color/icon_secondary"/>
                     </LinearLayout>
 
                     <!-- Editor -->
@@ -178,7 +178,7 @@
                             android:layout_width="32dp"
                             android:layout_height="wrap_content"
                             android:text="1\n2\n3\n4\n5\n6\n7\n8\n9\n10"
-                            android:textColor="#4b5552"
+                            android:textColor="@color/text_hint"
                             android:textSize="14sp"
                             android:fontFamily="monospace"
                             android:lineSpacingMultiplier="1.2"
@@ -191,7 +191,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
-                            android:textColor="#ffffff"
+                            android:textColor="@color/text_primary"
                             android:textSize="14sp"
                             android:fontFamily="monospace"
                             android:lineSpacingMultiplier="1.2"
@@ -199,7 +199,7 @@
                             android:inputType="textMultiLine|textNoSuggestions"
                             android:minLines="10"
                             android:hint="// Write your code here..."
-                            android:textColorHint="#4b5552"/>
+                            android:textColorHint="@color/text_hint"/>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -212,7 +212,7 @@
                 android:scrollbars="none"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
-                
+
                 <LinearLayout
                     android:id="@+id/llQuickAccess"
                     android:layout_width="wrap_content"
@@ -235,19 +235,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Snippet Metadata"
-                android:textColor="#ffffff"
+                android:textColor="@color/text_primary"
                 android:textStyle="bold"
                 android:layout_marginTop="24dp"
                 android:drawableStart="@drawable/ic_settings"
                 android:drawablePadding="8dp"
-                app:drawableTint="#00e676"/>
+                app:drawableTint="@color/neon_green"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="VISIBILITY"
                 android:textSize="12sp"
-                android:textColor="#b0bec5"
+                android:textColor="@color/text_secondary"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="8dp"/>
 
@@ -266,11 +266,10 @@
                     android:layout_height="match_parent"
                     android:text="Public"
                     android:gravity="center"
-                    android:textColor="#000000"
+                    android:textColor="@color/on_primary"
                     android:textStyle="bold"
-                    android:background="@drawable/bg_neon_button" 
+                    android:background="@drawable/bg_neon_button"
                     android:layout_marginEnd="2dp"/>
-                    <!-- Note: backgroundTint logic handled in code ideally, usually toggle group -->
 
                 <TextView
                     android:id="@+id/tabTeam"
@@ -279,7 +278,7 @@
                     android:layout_height="match_parent"
                     android:text="Team"
                     android:gravity="center"
-                    android:textColor="#b0bec5"/>
+                    android:textColor="@color/text_secondary"/>
 
                 <TextView
                     android:id="@+id/tabPrivate"
@@ -288,18 +287,18 @@
                     android:layout_height="match_parent"
                     android:text="Private"
                     android:gravity="center"
-                    android:textColor="#b0bec5"/>
+                    android:textColor="@color/text_secondary"/>
             </LinearLayout>
-            
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DESCRIPTION"
                 android:textSize="12sp"
-                android:textColor="#b0bec5"
+                android:textColor="@color/text_secondary"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"/>
-                
+
             <EditText
                 android:id="@+id/etDescription"
                 android:layout_width="match_parent"
@@ -309,8 +308,8 @@
                 android:gravity="top|start"
                 android:padding="12dp"
                 android:hint="Briefly describe what this snippet does..."
-                android:textColor="#ffffff"
-                android:textColorHint="#4b5552"
+                android:textColor="@color/text_primary"
+                android:textColorHint="@color/text_hint"
                 android:textSize="14sp"/>
 
             <!-- Manage Tags & Categories Buttons -->
@@ -324,9 +323,9 @@
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:textColor="#ffffff"
+                android:textColor="@color/text_primary"
                 android:drawableEnd="@drawable/ic_arrow_forward"
-                app:drawableTint="#b0bec5"/>
+                app:drawableTint="@color/icon_secondary"/>
 
              <TextView
                 android:id="@+id/btnSelectCategory"
@@ -338,10 +337,10 @@
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:textColor="#ffffff"
+                android:textColor="@color/text_primary"
                 android:drawableEnd="@drawable/ic_arrow_forward"
-                app:drawableTint="#b0bec5"/>
-                
+                app:drawableTint="@color/icon_secondary"/>
+
              <TextView
                 android:id="@+id/btnSelectTeam"
                 android:layout_width="match_parent"
@@ -352,10 +351,10 @@
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:textColor="#ffffff"
+                android:textColor="@color/text_primary"
                 android:drawableEnd="@drawable/ic_arrow_forward"
-                app:drawableTint="#b0bec5"/>
-            
+                app:drawableTint="@color/icon_secondary"/>
+
             <View android:layout_width="match_parent" android:layout_height="100dp"/>
 
         </LinearLayout>

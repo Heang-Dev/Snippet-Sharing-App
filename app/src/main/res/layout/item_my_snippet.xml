@@ -25,7 +25,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="8dp"
         android:text="Date Formatter Utility"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/text_primary"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/ivPrivacy"
@@ -38,7 +38,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_globe"
-        app:tint="#3DD68C"
+        app:tint="@color/neon_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvSnippetTitle"
         app:layout_constraintBottom_toBottomOf="@+id/tvSnippetTitle"
@@ -51,7 +51,7 @@
         android:layout_height="16dp"
         android:layout_marginTop="8dp"
         android:src="@drawable/ic_clock"
-        app:tint="#889990"
+        app:tint="@color/text_hint"
         app:layout_constraintStart_toStartOf="@+id/tvSnippetTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvSnippetTitle"
         tools:ignore="ContentDescription" />
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:text="Modified 2h ago"
-        android:textColor="#889990"
+        android:textColor="@color/text_hint"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/ivClock"
         app:layout_constraintStart_toEndOf="@+id/ivClock"
@@ -90,7 +90,7 @@
             android:paddingEnd="12dp"
             android:paddingBottom="4dp"
             android:text="JavaScript"
-            android:textColor="#FFD600"
+            android:textColor="@color/lang_javascript"
             android:textSize="12sp"
             android:textStyle="bold" />
 
@@ -106,7 +106,7 @@
             android:paddingEnd="10dp"
             android:paddingBottom="4dp"
             android:text="v1.2.0"
-            android:textColor="#889990"
+            android:textColor="@color/text_hint"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -126,7 +126,7 @@
             android:layout_height="24dp"
             android:padding="2dp"
             android:src="@drawable/ic_edit"
-            app:tint="#889990" />
+            app:tint="@color/icon_secondary" />
 
         <ImageView
             android:id="@+id/btnDelete"
@@ -135,7 +135,7 @@
             android:layout_marginStart="16dp"
             android:padding="2dp"
             android:src="@drawable/ic_delete"
-            app:tint="#889990" />
+            app:tint="@color/icon_secondary" />
 
         <ImageView
             android:id="@+id/btnShare"
@@ -144,7 +144,7 @@
             android:layout_marginStart="16dp"
             android:padding="2dp"
             android:src="@drawable/ic_share"
-            app:tint="#889990" />
+            app:tint="@color/icon_secondary" />
 
     </LinearLayout>
 
@@ -153,7 +153,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_star_outline"
-        app:tint="#889990"
+        app:tint="@color/icon_secondary"
         app:layout_constraintBottom_toBottomOf="@+id/llActionsResult"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/llActionsResult"

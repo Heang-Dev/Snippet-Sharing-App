@@ -24,7 +24,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="#1E40AF"
+                app:cardBackgroundColor="@color/lang_typescript"
                 app:cardElevation="0dp">
                 <TextView
                     android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:cardBackgroundColor="#0D110D"
+            app:cardBackgroundColor="@color/code_background"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp">
             <TextView
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:padding="12dp"
                 android:text="const useFetch = (url) => {\n  const [data, setData] = useState(null);\n  useEffect(() => {\n    fetch(url).then(res => res.json())\n  }, [url])\n  return data;\n}"
-                android:textColor="#34D399"
+                android:textColor="@color/code_green"
                 android:textSize="12sp"
                 android:fontFamily="monospace" />
         </com.google.android.material.card.MaterialCardView>
@@ -95,12 +95,12 @@
             android:layout_marginTop="12dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
-            
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_pill_badge"
-                android:backgroundTint="#1F2937"
+                android:backgroundTint="@color/chip_background"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="2dp"
                 android:text="REACT"
@@ -112,7 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_pill_badge"
-                android:backgroundTint="#1F2937"
+                android:backgroundTint="@color/chip_background"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="2dp"
                 android:text="HOOKS"

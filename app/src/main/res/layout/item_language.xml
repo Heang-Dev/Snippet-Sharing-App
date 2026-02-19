@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
@@ -14,7 +15,7 @@
         android:background="@drawable/bg_language_icon"
         android:gravity="center"
         android:text="JS"
-        android:textColor="#FFD600"
+        android:textColor="@color/lang_javascript"
         android:textSize="14sp"
         android:textStyle="bold" />
 
@@ -30,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="JavaScript"
-            android:textColor="#ffffff"
+            android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -39,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="application/javascript"
-            android:textColor="#b0bec5"
+            android:textColor="@color/text_secondary"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -49,6 +50,6 @@
         android:layout_height="24dp"
         android:src="@drawable/ic_check"
         android:visibility="gone"
-        android:tint="#00e676" />
-        
+        app:tint="@color/neon_green" />
+
 </LinearLayout>

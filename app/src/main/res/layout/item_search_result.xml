@@ -14,7 +14,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         app:cardCornerRadius="20dp"
-        app:cardBackgroundColor="#2196F3"
+        app:cardBackgroundColor="@color/lang_typescript"
         app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:text="TS"
             android:gravity="center"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold"/>
     </androidx.cardview.widget.CardView>
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="JWT Auth Middleware"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="14sp"
             android:textStyle="bold"
             android:ellipsize="end"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Security • Middleware"
-            android:textColor="#889990"
+            android:textColor="@color/text_hint"
             android:textSize="12sp"
             android:ellipsize="end"
             android:maxLines="1"
@@ -70,7 +70,7 @@
         android:src="@drawable/ic_bookmark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="#889990"/>
+        app:tint="@color/icon_secondary"/>
 
     <!-- Code Block -->
     <LinearLayout
@@ -105,13 +105,13 @@
                 android:layout_height="8dp"
                 android:background="@drawable/circle_green"/>
         </LinearLayout>
-        
+
         <TextView
             android:id="@+id/tvCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="const verifyToken = (req, res, next) => {\n  const token = req.header('auth-token');\n  if (!token) return res.status(401).send('Access Denied');"
-            android:textColor="#CCCCCC"
+            android:textColor="@color/code_text"
             android:fontFamily="monospace"
             android:textSize="12sp"
             android:maxLines="4"
@@ -132,7 +132,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="#2ABf75"
+            app:cardBackgroundColor="@color/accent_green"
             android:layout_marginEnd="8dp">
              <!-- Placeholder User Avatar -->
              <ImageView
@@ -140,7 +140,7 @@
                  android:layout_height="match_parent"
                  android:src="@drawable/ic_person"
                  android:padding="4dp"
-                 app:tint="#FFFFFF"/>
+                 app:tint="@color/text_primary"/>
         </androidx.cardview.widget.CardView>
 
         <TextView
@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@dev_jane"
-            android:textColor="#889990"
+            android:textColor="@color/text_hint"
             android:textSize="12sp"/>
 
         <!-- Stats -->
@@ -157,18 +157,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical">
-            
+
             <ImageView
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_git_branch"
-                app:tint="#889990"/>
+                app:tint="@color/icon_secondary"/>
             <TextView
                 android:id="@+id/tvForks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12"
-                android:textColor="#889990"
+                android:textColor="@color/text_hint"
                 android:textSize="12sp"
                 android:layout_marginStart="4dp"/>
 
@@ -177,13 +177,13 @@
                 android:layout_height="16dp"
                 android:layout_marginStart="12dp"
                 android:src="@drawable/ic_star_filled"
-                app:tint="#3DD68C"/>
+                app:tint="@color/neon_green"/>
             <TextView
                 android:id="@+id/tvStars"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="84"
-                android:textColor="#3DD68C"
+                android:textColor="@color/neon_green"
                 android:textSize="12sp"
                 android:layout_marginStart="4dp"/>
         </LinearLayout>

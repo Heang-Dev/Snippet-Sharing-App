@@ -11,37 +11,37 @@
     <View
         android:layout_width="48dp"
         android:layout_height="4dp"
-        android:background="#4b5552"
+        android:background="@color/border"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"/>
 
-    <LinearLayout 
-        android:orientation="horizontal" 
-        android:layout_width="match_parent" 
-        android:layout_height="wrap_content" 
-        android:gravity="center_vertical" 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:layout_marginBottom="16dp">
-        <TextView 
-            android:text="Manage Tags" 
-            android:textColor="#ffffff" 
-            android:textSize="20sp" 
-            android:textStyle="bold" 
-            android:layout_weight="1" 
-            android:layout_width="0dp" 
+        <TextView
+            android:text="Manage Tags"
+            android:textColor="@color/text_primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"/>
-        <ImageView 
-            android:id="@+id/btnCloseTags" 
-            android:src="@drawable/ic_close" 
-            android:layout_width="24dp" 
-            android:layout_height="24dp" 
-            app:tint="#b0bec5"/>
+        <ImageView
+            android:id="@+id/btnCloseTags"
+            android:src="@drawable/ic_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:tint="@color/icon_secondary"/>
     </LinearLayout>
 
-    <TextView 
-        android:text="SELECTED" 
-        android:textColor="#69757a" 
-        android:textSize="12sp" 
-        android:layout_marginBottom="12dp" 
+    <TextView
+        android:text="SELECTED"
+        android:textColor="@color/text_muted"
+        android:textSize="12sp"
+        android:layout_marginBottom="12dp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -51,43 +51,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        
+
         <!-- Sample Tag -->
-        <TextView 
-            android:text="#datetime" 
-            android:paddingStart="12dp" 
-            android:paddingEnd="12dp" 
-            android:paddingTop="6dp" 
-            android:paddingBottom="6dp" 
-            android:background="@drawable/bg_neon_button" 
-            android:backgroundTint="#15231c" 
-            android:textColor="#00e676" 
-            android:textStyle="bold" 
-            android:textSize="14sp" 
-            android:drawableEnd="@drawable/ic_close" 
-            android:drawableTint="#00e676" 
-            android:drawablePadding="8dp" 
+        <TextView
+            android:text="#datetime"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:background="@drawable/bg_neon_button"
+            android:backgroundTint="@color/card_inner"
+            android:textColor="@color/neon_green"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:drawableEnd="@drawable/ic_close"
+            android:drawableTint="@color/neon_green"
+            android:drawablePadding="8dp"
             android:layout_marginEnd="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        
-        <TextView 
-            android:text="#javascript" 
-            android:paddingStart="12dp" 
-            android:paddingEnd="12dp" 
-            android:paddingTop="6dp" 
-            android:paddingBottom="6dp" 
-            android:background="@drawable/bg_neon_button" 
-            android:backgroundTint="#15231c" 
-            android:textColor="#00e676" 
-            android:textStyle="bold" 
-            android:textSize="14sp" 
-            android:drawableEnd="@drawable/ic_close" 
-            android:drawableTint="#00e676" 
+
+        <TextView
+            android:text="#javascript"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:background="@drawable/bg_neon_button"
+            android:backgroundTint="@color/card_inner"
+            android:textColor="@color/neon_green"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:drawableEnd="@drawable/ic_close"
+            android:drawableTint="@color/neon_green"
             android:drawablePadding="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        
+
     </LinearLayout>
 
     <EditText
@@ -97,92 +97,96 @@
         android:layout_marginTop="24dp"
         android:background="@drawable/bg_search_field"
         android:hint="Search or create new tag..."
-        android:textColorHint="#4b5552"
-        android:textColor="#ffffff"
+        android:textColorHint="@color/text_muted"
+        android:textColor="@color/text_primary"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="12dp"
-        android:drawableTint="#00e676"/>
+        android:drawableTint="@color/neon_green"/>
 
-    <TextView 
-        android:text="SUGGESTIONS" 
-        android:textColor="#69757a" 
-        android:textSize="12sp" 
-        android:layout_marginTop="24dp" 
+    <TextView
+        android:text="SUGGESTIONS"
+        android:textColor="@color/text_muted"
+        android:textSize="12sp"
+        android:layout_marginTop="24dp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    
-    <LinearLayout android:orientation="vertical" android:layout_marginTop="12dp" android:layout_width="match_parent" android:layout_height="wrap_content">
-         <LinearLayout 
-            android:orientation="horizontal" 
-            android:padding="12dp" 
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+         <LinearLayout
+            android:orientation="horizontal"
+            android:padding="12dp"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-             <TextView 
-                android:text="#" 
-                android:textSize="18sp" 
-                android:textStyle="bold" 
-                android:textColor="#4b5552" 
+             <TextView
+                android:text="#"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_muted"
                 android:layout_marginEnd="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-             <TextView 
-                android:text="utility" 
-                android:textColor="#ffffff" 
-                android:textSize="16sp" 
-                android:layout_weight="1" 
-                android:layout_width="0dp" 
+             <TextView
+                android:text="utility"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
-             <TextView 
-                android:text="12 snippets" 
-                android:textColor="#4b5552" 
+             <TextView
+                android:text="12 snippets"
+                android:textColor="@color/text_muted"
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
          </LinearLayout>
 
-         <LinearLayout 
-            android:orientation="horizontal" 
-            android:padding="12dp" 
+         <LinearLayout
+            android:orientation="horizontal"
+            android:padding="12dp"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-             <TextView 
-                android:text="#" 
-                android:textSize="18sp" 
-                android:textStyle="bold" 
-                android:textColor="#4b5552" 
+             <TextView
+                android:text="#"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_muted"
                 android:layout_marginEnd="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-             <TextView 
-                android:text="frontend" 
-                android:textColor="#ffffff" 
-                android:textSize="16sp" 
-                android:layout_weight="1" 
-                android:layout_width="0dp" 
+             <TextView
+                android:text="frontend"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"/>
-             <TextView 
-                android:text="8 snippets" 
-                android:textColor="#4b5552" 
+             <TextView
+                android:text="8 snippets"
+                android:textColor="@color/text_muted"
                 android:textSize="12sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
          </LinearLayout>
     </LinearLayout>
-    
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnDoneTags"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="24dp"
         android:text="Done"
-        android:textColor="#000000"
+        android:textColor="@color/on_primary"
         android:textStyle="bold"
-        app:backgroundTint="#00e676"
+        app:backgroundTint="@color/neon_green"
         app:cornerRadius="28dp"/>
 
 </LinearLayout>

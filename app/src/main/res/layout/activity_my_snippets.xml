@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#05100B"
+    android:background="@color/app_background"
     android:fitsSystemWindows="true">
 
     <!-- Header -->
@@ -26,7 +26,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_back"
-            app:tint="#FFFFFF"
+            app:tint="@color/icon_primary"
             android:clickable="true"
             android:focusable="true"/>
 
@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:layout_marginStart="12dp"
             android:text="My Snippets"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="28sp"
             android:textStyle="bold"/>
 
@@ -46,7 +46,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/bg_pill_active"
-            android:backgroundTint="#3DD68C"
+            android:backgroundTint="@color/neon_green"
             android:clickable="true"
             android:focusable="true">
             <ImageView
@@ -54,7 +54,7 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_add"
-                app:tint="#05100B"/>
+                app:tint="@color/on_primary"/>
         </FrameLayout>
     </LinearLayout>
 
@@ -76,7 +76,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_search"
-            app:tint="#889990"/>
+            app:tint="@color/icon_secondary"/>
 
         <EditText
             android:id="@+id/etSearch"
@@ -85,8 +85,8 @@
             android:layout_marginStart="8dp"
             android:background="@null"
             android:hint="Search snippets..."
-            android:textColor="#FFFFFF"
-            android:textColorHint="#889990"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
             android:textSize="14sp"
             android:inputType="text"/>
     </LinearLayout>
@@ -119,10 +119,10 @@
                 android:paddingEnd="20dp"
                 android:paddingBottom="8dp"
                 android:text="All Snippets"
-                android:textColor="#05100B"
+                android:textColor="@color/on_primary"
                 android:textStyle="bold"
                 android:clickable="true"/>
-            
+
             <!-- Private -->
             <LinearLayout
                 android:id="@+id/tabPrivate"
@@ -140,13 +140,13 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_lock"
-                    app:tint="#889990"/>
+                    app:tint="@color/icon_secondary"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:text="Private"
-                    android:textColor="#889990"/>
+                    android:textColor="@color/text_secondary"/>
             </LinearLayout>
 
             <!-- Public -->
@@ -166,13 +166,13 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_globe"
-                    app:tint="#889990"/>
+                    app:tint="@color/icon_secondary"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:text="Public"
-                    android:textColor="#889990"/>
+                    android:textColor="@color/text_secondary"/>
             </LinearLayout>
 
             <!-- Team -->
@@ -192,13 +192,13 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:src="@drawable/ic_users"
-                    app:tint="#889990"/>
+                    app:tint="@color/icon_secondary"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="6dp"
                     android:text="Team"
-                    android:textColor="#889990"/>
+                    android:textColor="@color/text_secondary"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -220,7 +220,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SORT BY Last Modified"
-            android:textColor="#3DD68C"
+            android:textColor="@color/neon_green"
             android:textStyle="bold"
             android:textSize="12sp"
             android:textAllCaps="true"
@@ -231,7 +231,7 @@
             android:layout_height="16dp"
             android:layout_marginStart="4dp"
             android:src="@drawable/ic_sort_down"
-            app:tint="#3DD68C"/>
+            app:tint="@color/neon_green"/>
 
         <View
             android:layout_width="0dp"
@@ -243,7 +243,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_list"
-            app:tint="#FFFFFF"/>
+            app:tint="@color/icon_primary"/>
 
         <ImageView
             android:id="@+id/btnViewGrid"
@@ -251,7 +251,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:src="@drawable/ic_grid"
-            app:tint="#889990"/>
+            app:tint="@color/icon_secondary"/>
     </LinearLayout>
 
     <!-- Snippet List -->
@@ -292,12 +292,12 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_double_check"
-                app:tint="#FFFFFF"/>
+                app:tint="@color/icon_primary"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select All"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/text_primary"
                 android:textSize="10sp"
                 android:layout_marginTop="4dp"/>
         </LinearLayout>
@@ -314,12 +314,12 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_lock"
-                app:tint="#FFFFFF"/>
+                app:tint="@color/icon_primary"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Privacy"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/text_primary"
                 android:textSize="10sp"
                 android:layout_marginTop="4dp"/>
         </LinearLayout>
@@ -336,12 +336,12 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_delete"
-                app:tint="#FF5252"/>
+                app:tint="@color/error"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Delete"
-                android:textColor="#FF5252"
+                android:textColor="@color/error"
                 android:textSize="10sp"
                 android:layout_marginTop="4dp"/>
         </LinearLayout>

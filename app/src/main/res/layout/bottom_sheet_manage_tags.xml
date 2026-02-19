@@ -17,16 +17,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        
+
         <TextView
             android:text="Manage Tags"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
-        
+
         <ImageView
             android:id="@+id/ivClose"
             android:src="@drawable/ic_close"
@@ -34,7 +34,7 @@
             android:layout_height="24dp"
             android:padding="2dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            app:tint="#889990" 
+            app:tint="@color/icon_secondary"
             android:contentDescription="Close" />
     </LinearLayout>
 
@@ -70,14 +70,14 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/bg_search_input_green"
         android:hint="Search tags..."
-        android:textColorHint="#889990"
-        android:textColor="#FFFFFF"
+        android:textColorHint="@color/text_hint"
+        android:textColor="@color/text_primary"
         android:textSize="14sp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="12dp"
-        android:drawableTint="#2ABf75"
+        android:drawableTint="@color/accent_green"
         android:inputType="text"
         android:imeOptions="actionSearch"
         android:importantForAutofill="no"
@@ -91,7 +91,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SUGGESTIONS"
-        android:textColor="#889990"
+        android:textColor="@color/text_hint"
         android:textSize="12sp"
         android:textStyle="bold"
         android:textAllCaps="true"
@@ -110,28 +110,28 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        
+
         <TextView
             android:id="@+id/tvCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:padding="12dp"
             android:clickable="true"
             android:focusable="true"/>
-            
+
         <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
-        
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDone"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:text="Done"
-            android:textColor="#000000"
+            android:textColor="@color/on_primary"
             android:textStyle="bold"
-            app:backgroundTint="#3DD68C"
+            app:backgroundTint="@color/neon_green"
             app:cornerRadius="50dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"/>
@@ -154,7 +154,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="POPULAR"
-        android:textColor="#889990"
+        android:textColor="@color/text_hint"
         android:textSize="12sp"
         android:textStyle="bold"
         android:layout_marginBottom="12dp"

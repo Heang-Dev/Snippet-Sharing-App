@@ -119,6 +119,25 @@
     <color name="chip_text_selected">#000000</color>
     <color name="chip_border">#2A4A3A</color>
 
+    <!-- ========== LANGUAGE BRAND COLORS ========== -->
+    <color name="lang_javascript">#F7DF1E</color>
+    <color name="lang_typescript">#3178C6</color>
+    <color name="lang_python">#3776AB</color>
+    <color name="lang_java">#ED8B00</color>
+    <color name="lang_kotlin">#7F52FF</color>
+    <color name="lang_swift">#F05138</color>
+    <color name="lang_go">#00ADD8</color>
+    <color name="lang_rust">#DEA584</color>
+    <color name="lang_ruby">#CC342D</color>
+    <color name="lang_php">#777BB4</color>
+    <color name="lang_csharp">#512BD4</color>
+    <color name="lang_cpp">#00599C</color>
+    <color name="lang_html">#E34F26</color>
+    <color name="lang_css">#1572B6</color>
+
+    <!-- Code green for syntax highlighting -->
+    <color name="code_green">#34D399</color>
+
     <!-- ========== SYNTAX HIGHLIGHTING ========== -->
     <color name="syntax_keyword">#FF79C6</color>
     <color name="syntax_string">#F1FA8C</color>
