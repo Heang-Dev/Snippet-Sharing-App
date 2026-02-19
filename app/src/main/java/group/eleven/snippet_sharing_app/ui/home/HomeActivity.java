@@ -31,6 +31,7 @@ import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.databinding.ActivityHomeBinding;
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
+import group.eleven.snippet_sharing_app.ui.team.TeamsListActivity;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -411,7 +412,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_shared) {
             Toast.makeText(this, "Shared with me - Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_teams) {
-            Toast.makeText(this, "Teams - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(HomeActivity.this, TeamsListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_profile) {
             Toast.makeText(this, "Profile - Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_preferences) {

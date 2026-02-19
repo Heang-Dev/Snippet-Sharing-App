@@ -64,6 +64,13 @@ dependencies {
     // Security for encrypted SharedPreferences
     implementation(libs.security.crypto)
 
+    // CircleImageView for avatars
+    implementation(libs.circleimageview)
+
+    // Glide for image loading
+    implementation(libs.glide)
+    annotationProcessor(libs.glide.compiler)
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

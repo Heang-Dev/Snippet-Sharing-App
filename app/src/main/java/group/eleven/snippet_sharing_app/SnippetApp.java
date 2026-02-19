@@ -20,42 +20,44 @@ public class SnippetApp extends Application {
         super.onCreate();
         Log.d(TAG, "Application onCreate");
 
-        // Save the default handler
-        defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-
-        // Set up global exception handler
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
-            Log.e(TAG, "===========================================");
-            Log.e(TAG, "UNCAUGHT EXCEPTION!");
-            Log.e(TAG, "Thread: " + thread.getName());
-            Log.e(TAG, "Exception: " + throwable.getClass().getSimpleName());
-            Log.e(TAG, "Message: " + throwable.getMessage());
-            Log.e(TAG, "Stack trace:", throwable);
-            Log.e(TAG, "===========================================");
-
-            // Print full stack trace
-            throwable.printStackTrace();
-
-            // Try to show a toast (might not work if not on main thread)
-            try {
-                android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
-                handler.post(() -> {
-                    Toast.makeText(getApplicationContext(),
-                            "CRASH: " + throwable.getClass().getSimpleName() + " - " + throwable.getMessage(),
-                            Toast.LENGTH_LONG).show();
-                });
-                // Give time for toast to show
-                Thread.sleep(2000);
-            } catch (Exception ignored) {}
-
-            // Call the default handler (will crash the app but show in logcat)
-            if (defaultHandler != null) {
-                defaultHandler.uncaughtException(thread, throwable);
-            }
-        });
-
-        // Clear old session data for fresh start
-        clearOldSessionData();
+        // --- START COMMENTED OUT: GLOBAL EXCEPTION HANDLER AND SESSION DATA CLEARING ---
+        // // Save the default handler
+        // defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        //
+        // // Set up global exception handler
+        // Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
+        //     Log.e(TAG, "===========================================");
+        //     Log.e(TAG, "UNCAUGHT EXCEPTION!");
+        //     Log.e(TAG, "Thread: " + thread.getName());
+        //     Log.e(TAG, "Exception: " + throwable.getClass().getSimpleName());
+        //     Log.e(TAG, "Message: " + throwable.getMessage());
+        //     Log.e(TAG, "Stack trace:", throwable);
+        //     Log.e(TAG, "===========================================");
+        //
+        //     // Print full stack trace
+        //     throwable.printStackTrace();
+        //
+        //     // Try to show a toast (might not work if not on main thread)
+        //     try {
+        //         android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+        //         handler.post(() -> {
+        //             Toast.makeText(getApplicationContext(),
+        //                     "CRASH: " + throwable.getClass().getSimpleName() + " - " + throwable.getMessage(),
+        //                     Toast.LENGTH_LONG).show();
+        //         });
+        //         // Give time for toast to show
+        //         Thread.sleep(2000);
+        //     } catch (Exception ignored) {}
+        //
+        //     // Call the default handler (will crash the app but show in logcat)
+        //     if (defaultHandler != null) {
+        //         defaultHandler.uncaughtException(thread, throwable);
+        //     }
+        // });
+        //
+        // // Clear old session data for fresh start
+        // clearOldSessionData();
+        // --- END COMMENTED OUT: GLOBAL EXCEPTION HANDLER AND SESSION DATA CLEARING ---
 
         Log.d(TAG, "Application initialized successfully");
     }

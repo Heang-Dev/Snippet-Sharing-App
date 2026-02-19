@@ -20,10 +20,23 @@ import group.eleven.snippet_sharing_app.data.model.ActivityFeedItem;
 public class ActivityFeedAdapter extends RecyclerView.Adapter<ActivityFeedAdapter.ViewHolder> {
 
     private final List<ActivityFeedItem> items;
+    private OnItemClickListener listener; // Add listener
 
-    public ActivityFeedAdapter(List<ActivityFeedItem> items) {
-        this.items = items;
+    public interface OnItemClickListener {
+        void onItemClick(ActivityFeedItem item);
     }
+
+    public ActivityFeedAdapter(List<ActivityFeedItem> items) { // Update constructor
+        this.items = items;
+        this.listener = listener;
+    }
+
+    public void setActivities(List<ActivityFeedItem> items) {
+        this.items.clear();
+        this.items.addAll(items);
+        notifyDataSetChanged();
+    }
+
 
     @NonNull
     @Override
@@ -36,7 +49,7 @@ public class ActivityFeedAdapter extends RecyclerView.Adapter<ActivityFeedAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ActivityFeedItem item = items.get(position);
-        holder.bind(item);
+        holder.bind(item, listener); // Pass listener to bind method
     }
 
     @Override
@@ -56,10 +69,14 @@ public class ActivityFeedAdapter extends RecyclerView.Adapter<ActivityFeedAdapte
             tvActivityTime = itemView.findViewById(R.id.tvActivityTime);
         }
 
-        public void bind(ActivityFeedItem item) {
+        public void bind(ActivityFeedItem item, OnItemClickListener listener) { // Accept listener here
             ivActivityIcon.setImageResource(item.getIconResId());
             tvActivityDescription.setText(item.getDescription());
             tvActivityTime.setText(item.getTimestamp());
+
+            if (listener != null) {
+                itemView.setOnClickListener(v -> listener.onItemClick(item));
+            }
         }
     }
 }

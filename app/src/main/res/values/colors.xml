@@ -91,4 +91,8 @@
     <!-- Inactive State (Dark Gray) -->
     <color name="nav_inactive_icon">#4A4A4A</color>
     <color name="nav_inactive_text">#4A4A4A</color>
+
+    <!-- Specific shades for buttons, matching success/error -->
+    <color name="green_500">#10B981</color>
+    <color name="red_500">#F85149</color>
 </resources>
