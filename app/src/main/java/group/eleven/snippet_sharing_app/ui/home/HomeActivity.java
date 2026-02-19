@@ -40,6 +40,9 @@ import group.eleven.snippet_sharing_app.databinding.ActivityHomeBinding;
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
 import group.eleven.snippet_sharing_app.ui.team.TeamsListActivity;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
+import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
+import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
+import group.eleven.snippet_sharing_app.ui.profile.NotificationSettingsActivity;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -388,10 +391,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(intent);
                     return false; // Don't switch tab visually, just launch activity
                 } else if (id == R.id.nav_activity) {
-                    Toast.makeText(this, "Activity - Coming Soon", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, NotificationSettingsActivity.class);
+                    startActivity(intent);
                     return false;
                 } else if (id == R.id.nav_settings) {
-                    Toast.makeText(this, "Settings - Coming Soon", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, AccountSettingsActivity.class);
+                    startActivity(intent);
                     return false;
                 }
                 return false;
@@ -423,9 +428,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(HomeActivity.this, TeamsListActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_profile) {
-            Toast.makeText(this, "Profile - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_preferences) {
-            Toast.makeText(this, "Preferences - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, AccountSettingsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_help) {
             Toast.makeText(this, "Help & Support - Coming Soon", Toast.LENGTH_SHORT).show();
         }

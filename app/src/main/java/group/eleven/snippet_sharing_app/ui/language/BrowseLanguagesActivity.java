@@ -19,6 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
+import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
+import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
+import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
+import group.eleven.snippet_sharing_app.ui.profile.NotificationSettingsActivity;
 
 public class BrowseLanguagesActivity extends AppCompatActivity {
 
@@ -119,19 +124,34 @@ public class BrowseLanguagesActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         FloatingActionButton fab = findViewById(R.id.fab);
 
-        // Set 'Library' or 'Browse' as selected depending on flow context,
-        // default to Browse/Home or no selection if it's a sub-page
-        bottomNav.setSelectedItemId(android.R.id.home); // Deselect or set ID
+        if (bottomNav != null) {
+            bottomNav.setOnItemSelectedListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.nav_search) {
+                    // Go back to Home
+                    android.content.Intent intent = new android.content.Intent(this, HomeActivity.class);
+                    intent.setFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    return true;
+                } else if (id == R.id.nav_library) {
+                    startActivity(new android.content.Intent(this, MySnippetsActivity.class));
+                    return false;
+                } else if (id == R.id.nav_activity) {
+                    startActivity(new android.content.Intent(this, NotificationSettingsActivity.class));
+                    return false;
+                } else if (id == R.id.nav_settings) {
+                    startActivity(new android.content.Intent(this, AccountSettingsActivity.class));
+                    return false;
+                }
+                return false;
+            });
+        }
 
-        bottomNav.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            // Simple navigation logic for demonstration
-            if (id == R.id.nav_search) {
-                finish(); // Go back to Home
-                return true;
-            }
-            return false;
-        });
+        if (fab != null) {
+            fab.setOnClickListener(v -> {
+                startActivity(new android.content.Intent(this, CreateSnippetActivity.class));
+            });
+        }
     }
 
     // Inner classes for Adapter

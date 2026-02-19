@@ -18,6 +18,8 @@ import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.model.SearchResult;
+import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
+import group.eleven.snippet_sharing_app.ui.profile.NotificationSettingsActivity;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -119,10 +121,12 @@ public class SearchActivity extends AppCompatActivity {
                     startActivity(intent);
                     return false;
                 } else if (id == R.id.nav_activity) {
-                    Toast.makeText(this, "Activity - Coming Soon", Toast.LENGTH_SHORT).show();
+                    android.content.Intent intent = new android.content.Intent(this, NotificationSettingsActivity.class);
+                    startActivity(intent);
                     return false;
                 } else if (id == R.id.nav_settings) {
-                    Toast.makeText(this, "Settings - Coming Soon", Toast.LENGTH_SHORT).show();
+                    android.content.Intent intent = new android.content.Intent(this, AccountSettingsActivity.class);
+                    startActivity(intent);
                     return false;
                 }
                 return false;

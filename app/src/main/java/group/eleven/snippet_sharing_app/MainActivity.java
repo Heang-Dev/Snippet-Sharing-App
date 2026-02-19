@@ -22,6 +22,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
 import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
+import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
+import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
+import group.eleven.snippet_sharing_app.ui.profile.NotificationSettingsActivity;
+import group.eleven.snippet_sharing_app.ui.team.TeamsListActivity;
 
 /**
  * Main Activity - Rich Dashboard with Drawer and Bottom Navigation.
@@ -98,16 +102,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 bottomNav.setOnItemSelectedListener(item -> {
                     int id = item.getItemId();
                     if (id == R.id.nav_search) {
-                        Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
+                        // Already on dashboard
                         return true;
                     } else if (id == R.id.nav_library) {
                         startActivity(new Intent(this, MySnippetsActivity.class));
                         return false;
                     } else if (id == R.id.nav_activity) {
-                        Toast.makeText(this, "Activity Feed - Coming Soon", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, NotificationSettingsActivity.class));
                         return false;
                     } else if (id == R.id.nav_settings) {
-                        Toast.makeText(this, "Settings - Coming Soon", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, AccountSettingsActivity.class));
                         return false;
                     }
                     return false;
@@ -139,21 +143,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
+            // Already on dashboard
             Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_all_snippets) {
             startActivity(new Intent(this, MySnippetsActivity.class));
         } else if (id == R.id.nav_favorites) {
-            Toast.makeText(this, "Favorites", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Favorites - Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_shared) {
-            Toast.makeText(this, "Shared with me", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Shared with me - Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_teams) {
-            Toast.makeText(this, "My Team", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, TeamsListActivity.class));
         } else if (id == R.id.nav_profile) {
-            Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ProfileActivity.class));
         } else if (id == R.id.nav_preferences) {
-            Toast.makeText(this, "Preferences", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, AccountSettingsActivity.class));
         } else if (id == R.id.nav_help) {
-            Toast.makeText(this, "Help & Support", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Help & Support - Coming Soon", Toast.LENGTH_SHORT).show();
         }
 
         if (drawerLayout != null) {
