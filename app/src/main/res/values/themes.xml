@@ -9,6 +9,9 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorPrimaryContainer">@color/primary_container</item>
 
+        <!-- Custom background color attribute for layouts -->
+        <item name="backgroundColor">@color/background</item>
+
         <!-- Secondary brand color -->
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorSecondaryVariant">@color/secondary_dark</item>

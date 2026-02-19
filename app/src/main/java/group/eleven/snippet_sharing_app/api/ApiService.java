@@ -6,6 +6,11 @@ import group.eleven.snippet_sharing_app.data.model.ForgotPasswordResponse;
 import group.eleven.snippet_sharing_app.data.model.MessageResponse;
 import group.eleven.snippet_sharing_app.data.model.OtpVerifyResponse;
 import group.eleven.snippet_sharing_app.data.model.UserResponse;
+import group.eleven.snippet_sharing_app.data.model.Team;
+import group.eleven.snippet_sharing_app.data.model.TeamMember;
+import group.eleven.snippet_sharing_app.data.model.TeamInvitation;
+import group.eleven.snippet_sharing_app.data.model.TeamSnippet;
+
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,7 +18,10 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.QueryMap;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,4 +106,97 @@ public interface ApiService {
      */
     @DELETE("user")
     Call<MessageResponse> deleteAccount(@Body Map<String, String> password);
+
+
+    // ==================== Team Management ====================
+
+    /**
+     * Get a list of teams the current user is a member of.
+     */
+    @GET("teams")
+    Call<ApiResponse<List<Team>>> getMyTeams();
+
+    /**
+     * Create a new team.
+     */
+    @POST("teams")
+    Call<ApiResponse<Team>> createTeam(@Body Map<String, String> teamData);
+
+    /**
+     * Get details for a specific team.
+     */
+    @GET("teams/{id}")
+    Call<ApiResponse<Team>> getTeamDetails(@Path("id") String teamId);
+
+    /**
+     * Update details for a specific team.
+     */
+    @PUT("teams/{id}")
+    Call<ApiResponse<Team>> updateTeam(@Path("id") String teamId, @Body Map<String, String> teamData);
+
+    /**
+     * Delete a specific team.
+     */
+    @DELETE("teams/{id}")
+    Call<MessageResponse> deleteTeam(@Path("id") String teamId);
+
+    /**
+     * Invite a member to a specific team.
+     */
+    @POST("teams/{id}/members")
+    Call<MessageResponse> inviteTeamMember(@Path("id") String teamId, @Body Map<String, String> inviteData);
+
+    /**
+     * Remove a member from a specific team.
+     */
+    @DELETE("teams/{id}/members/{memberId}")
+    Call<MessageResponse> removeTeamMember(@Path("id") String teamId, @Path("memberId") String memberId);
+
+    /**
+     * Update a member's role in a specific team.
+     */
+    @PUT("teams/{id}/members/{memberId}")
+    Call<MessageResponse> updateTeamMemberRole(@Path("id") String teamId, @Path("memberId") String memberId, @Body Map<String, String> roleData);
+
+    /**
+     * Get a list of members for a specific team.
+     */
+    @GET("teams/{id}/members")
+    Call<ApiResponse<List<TeamMember>>> getTeamMembers(@Path("id") String teamId);
+
+    /**
+     * Get a list of pending invitations for the current user.
+     */
+    @GET("teams/invitations")
+    Call<ApiResponse<List<TeamInvitation>>> getMyTeamInvitations();
+
+    /**
+     * Respond to a team invitation (accept/reject).
+     */
+    @POST("teams/invitations/{id}/respond")
+    Call<MessageResponse> respondToTeamInvitation(@Path("id") String invitationId, @Body Map<String, String> responseData);
+
+    /**
+     * Get a list of snippets for a specific team.
+     */
+    @GET("teams/{id}/snippets")
+    Call<ApiResponse<List<TeamSnippet>>> getTeamSnippets(@Path("id") String teamId, @QueryMap Map<String, String> filters);
+
+    /**
+     * Create a new snippet for a specific team.
+     */
+    @POST("teams/{id}/snippets")
+    Call<ApiResponse<TeamSnippet>> createTeamSnippet(@Path("id") String teamId, @Body Map<String, String> snippetData);
+
+    /**
+     * Transfer ownership of a team.
+     */
+    @POST("teams/{id}/transfer-ownership")
+    Call<MessageResponse> transferTeamOwnership(@Path("id") String teamId, @Body Map<String, String> newOwnerData);
+
+    /**
+     * Get a list of activity feed items for a specific team.
+     */
+    @GET("teams/{id}/activity")
+    Call<ApiResponse<List<group.eleven.snippet_sharing_app.data.model.ActivityFeedItem>>> getTeamActivity(@Path("id") String teamId);
 }
