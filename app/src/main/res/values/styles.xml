@@ -169,6 +169,17 @@
         <item name="android:color">@color/surface_elevated</item>
     </style>
 
+    <!-- Bottom Nav Indicator - Square shape with rounded corners -->
+    <style name="Widget.SnippetApp.BottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/accent_pink</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.SnippetApp.BottomNavIndicator</item>
+    </style>
+
+    <style name="ShapeAppearance.SnippetApp.BottomNavIndicator" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
     <!-- ========== BOTTOM SHEET STYLE ========== -->
     <style name="Widget.SnippetApp.BottomSheet" parent="Widget.Material3.BottomSheet">
         <item name="backgroundTint">?attr/surfaceColor</item>

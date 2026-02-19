@@ -302,7 +302,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="#15231c"
+                    app:cardBackgroundColor="?attr/cardSurfaceColor"
                     app:cardCornerRadius="12dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp"
@@ -654,10 +654,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:paddingBottom="16dp"
             android:background="?attr/bottomNavBackgroundColor"
             app:itemIconTint="@color/selector_bottom_nav"
             app:itemTextColor="@color/selector_bottom_nav"
             app:labelVisibilityMode="labeled"
+            app:itemActiveIndicatorStyle="@style/Widget.SnippetApp.BottomNavIndicator"
             app:menu="@menu/bottom_nav_menu" />
 
         <!-- FAB -->
@@ -669,12 +671,12 @@
             app:layout_anchorGravity="top|center"
             app:fabCustomSize="64dp"
             app:maxImageSize="32dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="8dp"
             android:contentDescription="Create Snippet"
-            app:backgroundTint="@color/accent_green"
+            app:backgroundTint="@color/accent_pink"
             app:elevation="12dp"
             app:srcCompat="@drawable/ic_add"
-            app:tint="#000000" />
+            app:tint="@color/white" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

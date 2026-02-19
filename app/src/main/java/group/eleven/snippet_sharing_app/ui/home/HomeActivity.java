@@ -154,9 +154,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupUserInfo() {
-        // User avatar click navigates to My Snippets
+        // User avatar click navigates to Profile
         binding.ivUserAvatar.setOnClickListener(v -> {
-            Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+            Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
         });
     }
