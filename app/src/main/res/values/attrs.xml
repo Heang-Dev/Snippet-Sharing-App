@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ============================================== -->
+    <!-- CUSTOM THEME ATTRIBUTES - Snippet Sharing App  -->
+    <!-- ============================================== -->
+
+    <!-- These attributes can be referenced in layouts using ?attr/attributeName -->
+    <!-- They will resolve to the correct color based on the active theme -->
+
+    <!-- ========== BACKGROUND ATTRIBUTES ========== -->
+    <attr name="appBackgroundColor" format="color|reference" />
+    <attr name="surfaceColor" format="color|reference" />
+    <attr name="surfaceVariantColor" format="color|reference" />
+    <attr name="surfaceElevatedColor" format="color|reference" />
+    <attr name="cardSurfaceColor" format="color|reference" />
+    <attr name="cardInnerColor" format="color|reference" />
+    <attr name="codeBackgroundColor" format="color|reference" />
+
+    <!-- ========== TEXT ATTRIBUTES ========== -->
+    <attr name="textPrimaryColor" format="color|reference" />
+    <attr name="textSecondaryColor" format="color|reference" />
+    <attr name="textMutedColor" format="color|reference" />
+    <attr name="textHintColor" format="color|reference" />
+    <attr name="textLinkColor" format="color|reference" />
+
+    <!-- ========== ACCENT/BRAND ATTRIBUTES ========== -->
+    <attr name="accentColor" format="color|reference" />
+    <attr name="accentVariantColor" format="color|reference" />
+
+    <!-- ========== BORDER/DIVIDER ATTRIBUTES ========== -->
+    <attr name="dividerColor" format="color|reference" />
+    <attr name="borderColor" format="color|reference" />
+    <attr name="borderFocusColor" format="color|reference" />
+
+    <!-- ========== INPUT ATTRIBUTES ========== -->
+    <attr name="inputBackgroundColor" format="color|reference" />
+    <attr name="inputStrokeColor" format="color|reference" />
+    <attr name="inputStrokeFocusColor" format="color|reference" />
+
+    <!-- ========== NAVIGATION ATTRIBUTES ========== -->
+    <attr name="bottomNavBackgroundColor" format="color|reference" />
+    <attr name="navItemActiveColor" format="color|reference" />
+    <attr name="navItemInactiveColor" format="color|reference" />
+
+    <!-- ========== BUTTON ATTRIBUTES ========== -->
+    <attr name="buttonPrimaryColor" format="color|reference" />
+    <attr name="buttonSecondaryColor" format="color|reference" />
+    <attr name="buttonDangerColor" format="color|reference" />
+
+    <!-- ========== ICON ATTRIBUTES ========== -->
+    <attr name="iconPrimaryColor" format="color|reference" />
+    <attr name="iconSecondaryColor" format="color|reference" />
+    <attr name="iconAccentColor" format="color|reference" />
+
+    <!-- ========== TAG/CHIP ATTRIBUTES ========== -->
+    <attr name="tagBackgroundColor" format="color|reference" />
+    <attr name="tagTextColor" format="color|reference" />
+    <attr name="chipBackgroundColor" format="color|reference" />
+    <attr name="chipSelectedBackgroundColor" format="color|reference" />
+
+    <!-- ========== STATUS ATTRIBUTES ========== -->
+    <attr name="successColor" format="color|reference" />
+    <attr name="errorColor" format="color|reference" />
+    <attr name="warningColor" format="color|reference" />
+    <attr name="infoColor" format="color|reference" />
+
+    <!-- ========== COMPONENT STYLE ATTRIBUTES ========== -->
+    <attr name="snippetCardStyle" format="reference" />
+    <attr name="searchBarStyle" format="reference" />
+    <attr name="bottomSheetStyle" format="reference" />
+    <attr name="chipStyle" format="reference" />
+    <attr name="tagStyle" format="reference" />
+</resources>

@@ -1,122 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors - Modern Green Theme -->
+    <!-- ============================================== -->
+    <!-- UNIFIED THEME COLOR PALETTE - Snippet Sharing  -->
+    <!-- ============================================== -->
+
+    <!-- ========== PRIMARY BRAND COLORS ========== -->
+    <!-- Main green accent used throughout the app -->
     <color name="primary">#10B981</color>
-    <color name="app_background">#0b1612</color>
-    <color name="card_surface">#15231c</color>
-    <color name="neon_green">#00e676</color>
     <color name="primary_dark">#059669</color>
     <color name="primary_light">#34D399</color>
-    <color name="primary_container">#D1FAE5</color>
-    <color name="primary_surface">#ECFDF5</color>
+    <color name="primary_variant">#047857</color>
 
-    <!-- Secondary Colors -->
-    <color name="secondary">#6366F1</color>
-    <color name="secondary_dark">#4F46E5</color>
+    <!-- Neon/Accent green for highlights and CTAs -->
+    <color name="accent_green">#3DD68C</color>
+    <color name="neon_green">#00E676</color>
 
-    <!-- Background Colors -->
-    <color name="background">#FFFFFF</color>
-    <color name="background_secondary">#F9FAFB</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="card_background">#FFFFFF</color>
+    <!-- On Primary (text/icons on primary color) -->
+    <color name="on_primary">#000000</color>
+    <color name="on_primary_light">#FFFFFF</color>
 
-    <!-- Dark Theme Colors (for auth screens) -->
-    <color name="dark_background">#0D1117</color>
-    <color name="dark_surface">#161B22</color>
-    <color name="dark_card">#21262D</color>
-    <color name="dark_input_bg">#0D1117</color>
-    <color name="dark_input_stroke">#30363D</color>
-    <color name="dark_input_stroke_focus">#10B981</color>
-    <color name="dark_divider">#30363D</color>
+    <!-- ========== BACKGROUND COLORS ========== -->
+    <!-- Main app background (darkest) -->
+    <color name="app_background">#0B1612</color>
+    <color name="app_background_variant">#080C08</color>
 
-    <!-- Profile UI 100% Match Colors (More Vibrant & Deep) -->
-    <color name="profile_bg">#080C08</color>
-    <color name="profile_card">#121A13</color>
-    <color name="profile_card_inner">#0D130E</color>
-    <color name="profile_primary">#2ED158</color>
-    <color name="profile_text_white">#FFFFFF</color>
-    <color name="profile_text_muted">#8BA390</color>
-    
+    <!-- Surface colors for cards, sheets, dialogs -->
+    <color name="surface">#15231C</color>
+    <color name="surface_variant">#1A2A22</color>
+    <color name="surface_elevated">#1E3A2F</color>
+
+    <!-- Card backgrounds -->
+    <color name="card_surface">#15231C</color>
+    <color name="card_inner">#0D130E</color>
+    <color name="card_elevated">#1E3A2F</color>
+
+    <!-- Code editor/preview background -->
+    <color name="code_background">#080E0B</color>
+    <color name="code_header">#15231C</color>
+
+    <!-- ========== TEXT COLORS ========== -->
+    <!-- Primary text (headings, important content) -->
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_on_dark">#E6EDF3</color>
+
+    <!-- Secondary text (descriptions, captions) -->
+    <color name="text_secondary">#B0BEC5</color>
+    <color name="text_muted">#889990</color>
+
+    <!-- Hint/Placeholder text -->
+    <color name="text_hint">#4B5552</color>
+    <color name="text_disabled">#3A4540</color>
+
+    <!-- Link text -->
+    <color name="text_link">#3DD68C</color>
+
+    <!-- ========== BORDER & DIVIDER COLORS ========== -->
+    <color name="divider">#23352D</color>
+    <color name="divider_dark">#1A2A22</color>
+    <color name="border">#30363D</color>
+    <color name="border_focus">#3DD68C</color>
+    <color name="border_light">#4B5552</color>
+
+    <!-- ========== INPUT FIELD COLORS ========== -->
+    <color name="input_background">#0D1117</color>
+    <color name="input_background_focused">#15231C</color>
+    <color name="input_stroke">#30363D</color>
+    <color name="input_stroke_focused">#3DD68C</color>
+    <color name="input_stroke_error">#F85149</color>
+
+    <!-- ========== NAVIGATION COLORS ========== -->
+    <color name="bottom_nav_bg">#0D1F16</color>
+    <color name="nav_item_active">#3DD68C</color>
+    <color name="nav_item_inactive">#889990</color>
+    <color name="drawer_background">#0B1612</color>
+    <color name="drawer_item_selected">#1E3A2F</color>
+
+    <!-- ========== BUTTON COLORS ========== -->
+    <color name="button_primary">#3DD68C</color>
+    <color name="button_primary_pressed">#2ABF75</color>
+    <color name="button_secondary">#1E3A2F</color>
+    <color name="button_secondary_pressed">#2A4A3A</color>
+    <color name="button_disabled">#1A2A22</color>
+    <color name="button_danger">#F85149</color>
+    <color name="button_danger_pressed">#DA3633</color>
+
+    <!-- ========== STATUS COLORS ========== -->
+    <color name="success">#10B981</color>
+    <color name="success_light">#D1FAE5</color>
+    <color name="success_bg">#0D2818</color>
+
+    <color name="error">#F85149</color>
+    <color name="error_light">#FEE2E2</color>
+    <color name="error_bg">#2D1618</color>
+
+    <color name="warning">#D29922</color>
+    <color name="warning_light">#FEF3C7</color>
+    <color name="warning_bg">#2D2818</color>
+
+    <color name="info">#58A6FF</color>
+    <color name="info_light">#DBEAFE</color>
+    <color name="info_bg">#182840</color>
+
+    <!-- ========== TAG & BADGE COLORS ========== -->
+    <color name="tag_background">#1E3A2F</color>
+    <color name="tag_text">#80CBC4</color>
+    <color name="tag_border">#2A4A3A</color>
+
     <color name="badge_blue">#2563EB</color>
     <color name="badge_purple">#9333EA</color>
     <color name="badge_orange">#EA580C</color>
-    
-    <color name="graph_0">#1A231C</color>
-    <color name="graph_1">#065F46</color>
-    <color name="graph_2">#059669</color>
-    <color name="graph_3">#10B981</color>
-    <color name="graph_4">#34D399</color>
+    <color name="badge_green">#10B981</color>
+    <color name="badge_red">#EF4444</color>
 
-    <!-- Switch Colors -->
+    <!-- ========== CHIP COLORS ========== -->
+    <color name="chip_background">#1E3A2F</color>
+    <color name="chip_background_selected">#3DD68C</color>
+    <color name="chip_text">#B0BEC5</color>
+    <color name="chip_text_selected">#000000</color>
+    <color name="chip_border">#2A4A3A</color>
+
+    <!-- ========== SYNTAX HIGHLIGHTING ========== -->
+    <color name="syntax_keyword">#FF79C6</color>
+    <color name="syntax_string">#F1FA8C</color>
+    <color name="syntax_number">#BD93F9</color>
+    <color name="syntax_comment">#6272A4</color>
+    <color name="syntax_function">#50FA7B</color>
+    <color name="syntax_variable">#F8F8F2</color>
+    <color name="syntax_operator">#FF79C6</color>
+
+    <!-- ========== ACTIVITY GRAPH COLORS ========== -->
+    <color name="graph_level_0">#1A231C</color>
+    <color name="graph_level_1">#065F46</color>
+    <color name="graph_level_2">#059669</color>
+    <color name="graph_level_3">#10B981</color>
+    <color name="graph_level_4">#34D399</color>
+
+    <!-- ========== SWITCH/TOGGLE COLORS ========== -->
+    <color name="switch_track_on">#3DD68C</color>
     <color name="switch_track_off">#1F2937</color>
+    <color name="switch_thumb_on">#FFFFFF</color>
     <color name="switch_thumb_off">#9CA3AF</color>
 
-    <!-- Text Colors -->
-    <color name="text_primary">#ffffff</color>
-    <color name="text_secondary">#b0bec5</color>
-    <color name="text_hint">#9CA3AF</color>
-    <color name="text_on_primary">#FFFFFF</color>
-    <color name="text_on_dark">#E6EDF3</color>
-    <color name="text_on_dark_secondary">#7D8590</color>
-    <color name="text_on_dark_hint">#484F58</color>
+    <!-- ========== ICON COLORS ========== -->
+    <color name="icon_primary">#FFFFFF</color>
+    <color name="icon_secondary">#889990</color>
+    <color name="icon_accent">#3DD68C</color>
+    <color name="icon_disabled">#4B5552</color>
 
-    <!-- Status Colors -->
-    <color name="error">#F85149</color>
-    <color name="error_light">#FEE2E2</color>
-    <color name="success">#10B981</color>
-    <color name="success_light">#D1FAE5</color>
-    <color name="warning">#D29922</color>
-    <color name="warning_light">#FEF3C7</color>
-    <color name="info">#58A6FF</color>
-    <color name="info_light">#DBEAFE</color>
+    <!-- ========== RIPPLE/OVERLAY COLORS ========== -->
+    <color name="ripple_light">#20FFFFFF</color>
+    <color name="ripple_dark">#20000000</color>
+    <color name="overlay_light">#15FFFFFF</color>
+    <color name="overlay_dark">#80000000</color>
 
-    <!-- Border Colors -->
-    <color name="border">#E5E7EB</color>
-    <color name="border_focus">#10B981</color>
-    <color name="divider">#F3F4F6</color>
+    <!-- ========== SHIMMER/SKELETON COLORS ========== -->
+    <color name="shimmer_base">#15231C</color>
+    <color name="shimmer_highlight">#1E3A2F</color>
 
-    <!-- Legacy colors -->
+    <!-- ========== LEGACY/COMPATIBILITY (keep for migration) ========== -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
 
-    <!-- Navigation Colors -->
-    <color name="nav_active_icon">#C9A961</color>
-    <color name="nav_active_text">#C9A961</color>
-    <color name="nav_inactive_icon">#4A4A4A</color>
-    <color name="nav_inactive_text">#4A4A4A</color>
-    
-    <!-- App-wide UI Colors -->
-    <color name="surface_elevated">#FFFFFF</color>
-    <color name="code_background">#080e0b</color>
-    <color name="code_text">#E2E8F0</color>
-    <color name="stat_positive">#10B981</color>
-    <color name="stat_negative">#EF4444</color>
-    <color name="badge_background">#E0E7FF</color>
-    <color name="badge_text">#4F46E5</color>
-    <color name="activity_icon_bg">#F3F4F6</color>
-    <color name="drawer_selected">#ECFDF5</color>
-    <color name="drawer_selected_text">#10B981</color>
-    
-    <!-- Glass Navigation Colors -->
+    <!-- Legacy aliases (mapped to new unified colors) -->
+    <color name="dark_background">@color/app_background</color>
+    <color name="dark_surface">@color/surface</color>
+    <color name="dark_card">@color/card_surface</color>
+    <color name="dark_input_bg">@color/input_background</color>
+    <color name="dark_input_stroke">@color/input_stroke</color>
+    <color name="dark_input_stroke_focus">@color/input_stroke_focused</color>
+    <color name="dark_divider">@color/divider</color>
+    <color name="profile_bg">@color/app_background_variant</color>
+    <color name="profile_card">@color/surface</color>
+    <color name="profile_card_inner">@color/card_inner</color>
+    <color name="profile_primary">@color/accent_green</color>
+    <color name="profile_text_white">@color/text_primary</color>
+    <color name="profile_text_muted">@color/text_muted</color>
+    <color name="background">#FFFFFF</color>
+    <color name="background_secondary">#F9FAFB</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="primary_container">#D1FAE5</color>
+    <color name="primary_surface">#ECFDF5</color>
+    <color name="secondary">#6366F1</color>
+    <color name="secondary_dark">#4F46E5</color>
+    <color name="text_on_primary">@color/on_primary_light</color>
+    <color name="text_on_dark_secondary">@color/text_secondary</color>
+    <color name="text_on_dark_hint">@color/text_hint</color>
+    <color name="code_text">@color/text_primary</color>
+    <color name="nav_active_icon">@color/nav_item_active</color>
+    <color name="nav_active_text">@color/nav_item_active</color>
+    <color name="nav_inactive_icon">@color/nav_item_inactive</color>
+    <color name="nav_inactive_text">@color/nav_item_inactive</color>
+    <color name="nav_active_bg">@color/accent_green</color>
+    <color name="stat_positive">@color/success</color>
+    <color name="stat_negative">@color/error</color>
+    <color name="activity_icon_bg">@color/surface_elevated</color>
+    <color name="drawer_selected">@color/drawer_item_selected</color>
+    <color name="drawer_selected_text">@color/accent_green</color>
+    <color name="badge_background">@color/tag_background</color>
+    <color name="badge_text">@color/tag_text</color>
+    <color name="green_500">@color/success</color>
+    <color name="red_500">@color/error</color>
     <color name="glass_nav_background">#D9F5F5F5</color>
     <color name="glass_nav_border">#18000000</color>
     <color name="glass_nav_shadow">#20000000</color>
-    
-    <!-- Active State (Warm Gold) -->
-    <color name="nav_active_bg">#C9A961</color>
-
-    <!-- Specific shades for buttons, matching success/error -->
-    <color name="green_500">#10B981</color>
-    <color name="red_500">#F85149</color>
-
-    <!-- Tag Colors -->
-    <color name="tag_background">#1e3a2f</color>
-    <color name="tag_text">#80cbc4</color>
-
-    <!-- Unified Dark Theme Colors -->
-    <color name="bottom_nav_bg">#0D1F16</color>
-    <color name="text_muted">#889990</color>
-    <color name="accent_green">#3DD68C</color>
-    <color name="divider_dark">#23352D</color>
-    <color name="card_inner">#0D130E</color>
+    <color name="graph_0">@color/graph_level_0</color>
+    <color name="graph_1">@color/graph_level_1</color>
+    <color name="graph_2">@color/graph_level_2</color>
+    <color name="graph_3">@color/graph_level_3</color>
+    <color name="graph_4">@color/graph_level_4</color>
 </resources>
