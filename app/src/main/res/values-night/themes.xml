@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- ============================================== -->
-    <!-- NIGHT THEME - Snippet Sharing App             -->
+    <!-- NIGHT THEME - Code Dash                       -->
+    <!-- Space/Comet Theme with Pink/Orange accents    -->
     <!-- Since the app is already dark-themed,         -->
     <!-- night mode uses the same colors as day mode.  -->
     <!-- ============================================== -->
@@ -37,8 +38,8 @@
         <item name="textMutedColor">@color/text_muted</item>
         <item name="textHintColor">@color/text_hint</item>
         <item name="textLinkColor">@color/text_link</item>
-        <item name="accentColor">@color/accent_green</item>
-        <item name="accentVariantColor">@color/neon_green</item>
+        <item name="accentColor">@color/accent_pink</item>
+        <item name="accentVariantColor">@color/neon_pink</item>
         <item name="dividerColor">@color/divider</item>
         <item name="borderColor">@color/border</item>
         <item name="borderFocusColor">@color/border_focus</item>
