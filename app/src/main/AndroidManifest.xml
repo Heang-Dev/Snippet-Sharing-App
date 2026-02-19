@@ -17,6 +17,8 @@
         android:theme="@style/Theme.Snippet_Sharing_App"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <!-- Splash/Main Activity -->
         <activity
             android:name=".ui.team.TeamsListActivity"
             android:exported="false" />
@@ -37,8 +39,14 @@
         <!-- Splash/Main Activity - Redirects to Login or Home -->
         <activity
             android:name=".MainActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Snippet_Sharing_App" />
+
+        <!-- Profile Activity - SET AS LAUNCHER FOR TESTING -->
+        <activity
+            android:name=".ui.profile.ProfileActivity"
             android:exported="true"
-            android:theme="@style/Theme.Snippet_Sharing_App">
+            android:theme="@style/Theme.Snippet_Sharing_App.Profile">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -71,6 +79,35 @@
         <activity
             android:name=".ui.home.HomeActivity"
             android:exported="false" />
+
+        <!-- Edit Profile Activity -->
+        <activity
+            android:name=".ui.profile.EditProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Snippet_Sharing_App.Profile"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Account Settings Activity -->
+        <activity
+            android:name=".ui.profile.AccountSettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Snippet_Sharing_App.Profile"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Notification Settings Activity -->
+        <activity
+            android:name=".ui.profile.NotificationSettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Snippet_Sharing_App.Profile"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Privacy Settings Activity -->
+        <activity
+            android:name=".ui.profile.PrivacySettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Snippet_Sharing_App.Profile"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

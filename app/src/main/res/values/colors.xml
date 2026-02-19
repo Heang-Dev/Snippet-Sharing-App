@@ -26,6 +26,28 @@
     <color name="dark_input_stroke_focus">#10B981</color>
     <color name="dark_divider">#30363D</color>
 
+    <!-- Profile UI 100% Match Colors (More Vibrant & Deep) -->
+    <color name="profile_bg">#080C08</color>
+    <color name="profile_card">#121A13</color>
+    <color name="profile_card_inner">#0D130E</color>
+    <color name="profile_primary">#2ED158</color>
+    <color name="profile_text_white">#FFFFFF</color>
+    <color name="profile_text_muted">#8BA390</color>
+    
+    <color name="badge_blue">#2563EB</color>
+    <color name="badge_purple">#9333EA</color>
+    <color name="badge_orange">#EA580C</color>
+    
+    <color name="graph_0">#1A231C</color>
+    <color name="graph_1">#065F46</color>
+    <color name="graph_2">#059669</color>
+    <color name="graph_3">#10B981</color>
+    <color name="graph_4">#34D399</color>
+
+    <!-- Switch Colors -->
+    <color name="switch_track_off">#1F2937</color>
+    <color name="switch_thumb_off">#9CA3AF</color>
+
     <!-- Text Colors -->
     <color name="text_primary">#111827</color>
     <color name="text_secondary">#6B7280</color>
@@ -54,19 +76,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!-- Social Button Colors -->
-    <color name="google_button_bg">#21262D</color>
-    <color name="github_button_bg">#21262D</color>
-
-    <!-- Icon Circle Background -->
-    <color name="icon_circle_bg">#21262D</color>
-    <color name="icon_circle_stroke">#30363D</color>
-
-    <!-- Gradient colors for splash -->
-    <color name="gradient_start">#10B981</color>
-    <color name="gradient_end">#059669</color>
+    <!-- Navigation Colors -->
+    <color name="nav_active_icon">#C9A961</color>
+    <color name="nav_active_text">#C9A961</color>
+    <color name="nav_inactive_icon">#4A4A4A</color>
+    <color name="nav_inactive_text">#4A4A4A</color>
     
-    <!-- Home Screen Colors -->
+    <!-- App-wide UI Colors -->
     <color name="surface_elevated">#FFFFFF</color>
     <color name="code_background">#1E293B</color>
     <color name="code_text">#E2E8F0</color>
