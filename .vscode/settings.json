@@ -1,0 +1,13 @@
+{
+  "java.project.sourcePaths": ["app/src/main/java"],
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "**/.gradle": true,
+    "**/build": true,
+    "**/.idea": true,
+    "**/*.iml": true
+  }
+}

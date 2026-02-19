@@ -1,0 +1,87 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Debug APK",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["assembleDebug"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Install Debug APK",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["installDebug"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run App",
+      "type": "shell",
+      "command": "adb shell monkey -p group.eleven.snippet_sharing_app -c android.intent.category.LAUNCHER 1",
+      "group": "test",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run App",
+      "type": "shell",
+      "command": "./gradlew installDebug && adb shell monkey -p group.eleven.snippet_sharing_app -c android.intent.category.LAUNCHER 1",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Emulator",
+      "type": "shell",
+      "command": "emulator -avd Medium_Phone_API_36.0 -no-snapshot-load &",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean Project",
+      "type": "shell",
+      "command": "./gradlew",
+      "args": ["clean"],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "View Logcat",
+      "type": "shell",
+      "command": "adb logcat -s group.eleven.snippet_sharing_app:V *:S",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    }
+  ]
+}
