@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
+
 import java.io.File;
 
 /**
@@ -19,6 +21,9 @@ public class SnippetApp extends Application {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Application onCreate");
+
+        // Apply saved theme preference on app startup
+        ThemeManager.getInstance(this).applyTheme();
 
         // --- START COMMENTED OUT: GLOBAL EXCEPTION HANDLER AND SESSION DATA CLEARING ---
         // // Save the default handler

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/profile_bg">
+    android:background="?attr/appBackgroundColor">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -16,14 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationIconTint="@color/white">
+            app:navigationIconTint="?attr/textPrimaryColor">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Account Settings"
-                android:textColor="@color/white"
+                android:textColor="?attr/textPrimaryColor"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -44,10 +44,67 @@
             android:orientation="vertical"
             android:padding="20dp">
 
+            <!-- Appearance Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="APPEARANCE"
+                android:textColor="#818CF8"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05" />
+
+            <!-- Theme Toggle -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dark Mode"
+                        android:textColor="?attr/textPrimaryColor"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Use dark theme throughout the app"
+                        android:textColor="?attr/textMutedColor"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swDarkMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:trackTint="@color/switch_track_selector"
+                    app:thumbTint="@color/white" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="#1A231C" />
+
             <!-- Change Password Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="CHANGE PASSWORD"
                 android:textColor="#818CF8"
                 android:textSize="13sp"
@@ -59,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Current Password"
-                android:textColor="@color/profile_text_muted"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="14sp" />
 
             <FrameLayout
@@ -75,8 +132,8 @@
                     android:hint="••••••••"
                     android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/profile_text_muted" />
+                    android:textColor="?attr/textPrimaryColor"
+                    android:textColorHint="?attr/textMutedColor" />
 
                 <ImageView
                     android:id="@+id/ivCurrentPasswordToggle"
@@ -87,7 +144,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/ic_visibility_off"
-                    app:tint="@color/profile_text_muted" />
+                    app:tint="?attr/textMutedColor" />
             </FrameLayout>
 
             <TextView
@@ -95,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="New Password"
-                android:textColor="@color/profile_text_muted"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="14sp" />
 
             <FrameLayout
@@ -111,8 +168,8 @@
                     android:hint="Enter new password"
                     android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/profile_text_muted" />
+                    android:textColor="?attr/textPrimaryColor"
+                    android:textColorHint="?attr/textMutedColor" />
 
                 <ImageView
                     android:id="@+id/ivNewPasswordToggle"
@@ -123,7 +180,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/ic_visibility_off"
-                    app:tint="@color/profile_text_muted" />
+                    app:tint="?attr/textMutedColor" />
             </FrameLayout>
 
             <TextView
@@ -131,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Confirm New Password"
-                android:textColor="@color/profile_text_muted"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="14sp" />
 
             <FrameLayout
@@ -147,8 +204,8 @@
                     android:hint="Confirm new password"
                     android:inputType="textPassword"
                     android:paddingHorizontal="16dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/profile_text_muted" />
+                    android:textColor="?attr/textPrimaryColor"
+                    android:textColorHint="?attr/textMutedColor" />
 
                 <ImageView
                     android:id="@+id/ivConfirmPasswordToggle"
@@ -159,7 +216,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:src="@drawable/ic_visibility_off"
-                    app:tint="@color/profile_text_muted" />
+                    app:tint="?attr/textMutedColor" />
             </FrameLayout>
 
             <View
@@ -186,7 +243,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Two-Factor Authentication"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/textPrimaryColor"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -195,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Add an extra layer of security"
-                        android:textColor="@color/profile_text_muted"
+                        android:textColor="?attr/textMutedColor"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -230,7 +287,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardBackgroundColor="@color/profile_card"
+                app:cardBackgroundColor="?attr/cardSurfaceColor"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
@@ -267,7 +324,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Google"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/textPrimaryColor"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -276,7 +333,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Not connected"
-                            android:textColor="@color/profile_text_muted"
+                            android:textColor="?attr/textMutedColor"
                             android:textSize="13sp" />
                     </LinearLayout>
 
@@ -288,7 +345,7 @@
                         android:text="Connect"
                         android:textAllCaps="false"
                         android:textSize="12sp"
-                        android:textColor="@color/profile_text_muted"
+                        android:textColor="?attr/textMutedColor"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         app:strokeColor="#1A231C"
                         app:cornerRadius="20dp" />
@@ -300,7 +357,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardBackgroundColor="@color/profile_card"
+                app:cardBackgroundColor="?attr/cardSurfaceColor"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
@@ -324,7 +381,7 @@
                             android:layout_height="24dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_github"
-                            app:tint="@color/white" />
+                            app:tint="?attr/textPrimaryColor" />
                     </com.google.android.material.card.MaterialCardView>
 
                     <LinearLayout
@@ -338,7 +395,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="GitHub"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/textPrimaryColor"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -347,7 +404,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Not connected"
-                            android:textColor="@color/profile_text_muted"
+                            android:textColor="?attr/textMutedColor"
                             android:textSize="13sp" />
                     </LinearLayout>
 
@@ -359,7 +416,7 @@
                         android:text="Connect"
                         android:textAllCaps="false"
                         android:textSize="12sp"
-                        android:textColor="@color/profile_text_muted"
+                        android:textColor="?attr/textMutedColor"
                         style="@style/Widget.Material3.Button.OutlinedButton"
                         app:strokeColor="#1A231C"
                         app:cornerRadius="20dp" />
@@ -427,7 +484,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="iPhone 14 Pro"
-                            android:textColor="@color/white"
+                            android:textColor="?attr/textPrimaryColor"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -450,7 +507,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="San Francisco, US • Active now"
-                        android:textColor="@color/profile_text_muted"
+                        android:textColor="?attr/textMutedColor"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -467,7 +524,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_code"
-                    app:tint="@color/profile_text_muted" />
+                    app:tint="?attr/textMutedColor" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -480,7 +537,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="MacBook Pro M2"
-                        android:textColor="@color/white"
+                        android:textColor="?attr/textPrimaryColor"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -489,7 +546,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="San Francisco, US • 22 mins ago"
-                        android:textColor="@color/profile_text_muted"
+                        android:textColor="?attr/textMutedColor"
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -566,7 +623,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/profile_bg"
+        android:background="?attr/appBackgroundColor"
         android:padding="20dp">
 
         <com.google.android.material.button.MaterialButton
@@ -574,7 +631,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:text="Save Changes"
-            android:textColor="@color/profile_bg"
+            android:textColor="@color/white"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:textStyle="bold"

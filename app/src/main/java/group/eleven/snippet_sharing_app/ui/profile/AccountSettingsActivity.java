@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
 
 import java.io.File;
 
@@ -23,7 +24,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private boolean isNewPasswordVisible = false;
     private boolean isConfirmPasswordVisible = false;
     
-    private MaterialSwitch swTwoFactor;
+    private MaterialSwitch swTwoFactor, swDarkMode;
+    private ThemeManager themeManager;
     private EditText etCurrentPassword, etNewPassword, etConfirmPassword;
     private ImageView ivCurrentPasswordToggle, ivNewPasswordToggle, ivConfirmPasswordToggle;
     
@@ -50,15 +52,23 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        // Theme manager
+        themeManager = ThemeManager.getInstance(this);
+
+        // Switches
         swTwoFactor = findViewById(R.id.swTwoFactor);
+        swDarkMode = findViewById(R.id.swDarkMode);
+
+        // Password fields
         etCurrentPassword = findViewById(R.id.etCurrentPassword);
         etNewPassword = findViewById(R.id.etNewPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
-        
+
         ivCurrentPasswordToggle = findViewById(R.id.ivCurrentPasswordToggle);
         ivNewPasswordToggle = findViewById(R.id.ivNewPasswordToggle);
         ivConfirmPasswordToggle = findViewById(R.id.ivConfirmPasswordToggle);
-        
+
+        // Social login buttons
         btnConnectGoogle = findViewById(R.id.btnConnectGoogle);
         btnConnectGithub = findViewById(R.id.btnConnectGithub);
         tvGoogleEmail = findViewById(R.id.tvGoogleEmail);
@@ -67,13 +77,21 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     private void loadSettings() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+        // Load theme setting
+        if (swDarkMode != null) {
+            boolean isDarkMode = themeManager.getThemeMode() == ThemeManager.MODE_DARK;
+            swDarkMode.setChecked(isDarkMode);
+        }
+
+        // Load 2FA setting
         if (swTwoFactor != null) {
             swTwoFactor.setChecked(prefs.getBoolean("two_factor_enabled", true));
         }
-        
+
         isGoogleConnected = prefs.getBoolean("google_connected", false);
         isGithubConnected = prefs.getBoolean("github_connected", false);
-        
+
         updateSocialUI();
     }
 
@@ -117,6 +135,23 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     private void setupActions() {
+        // Dark Mode Toggle
+        if (swDarkMode != null) {
+            swDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                // Only process if user manually changed it (not from loadSettings)
+                if (!buttonView.isPressed()) return;
+
+                if (isChecked) {
+                    themeManager.setThemeMode(ThemeManager.MODE_DARK);
+                } else {
+                    themeManager.setThemeMode(ThemeManager.MODE_LIGHT);
+                }
+                // Recreate activity to apply theme change immediately
+                recreate();
+            });
+        }
+
+        // Save Changes Button
         if (findViewById(R.id.btnSaveChanges) != null) {
             findViewById(R.id.btnSaveChanges).setOnClickListener(v -> {
                 if (validatePasswords()) {
