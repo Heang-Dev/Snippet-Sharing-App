@@ -108,6 +108,25 @@
             android:theme="@style/Theme.Snippet_Sharing_App.Profile"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Snippet Activities -->
+        <activity
+            android:name=".ui.snippet.CreateSnippetActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.mysnippets.MySnippetsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".ui.language.BrowseLanguagesActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
     </application>
 
 </manifest>

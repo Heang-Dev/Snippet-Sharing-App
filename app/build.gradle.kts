@@ -14,8 +14,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        // API Base URL - Change this for production
         buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
     }
 
@@ -40,28 +38,22 @@ android {
 }
 
 dependencies {
-    // AndroidX Core
+    // AndroidX & Core
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // Retrofit for API calls
+    // Networking
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
-
-    // OkHttp for networking
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
-
-    // Gson for JSON parsing
     implementation(libs.gson)
 
-    // Lifecycle components (ViewModel, LiveData)
+    // Lifecycle & Security
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
-
-    // Security for encrypted SharedPreferences
     implementation(libs.security.crypto)
 
     // CircleImageView for avatars
@@ -70,6 +62,9 @@ dependencies {
     // Glide for image loading
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
+
+    // Syntax Highlighting (JitPack - using master snapshot)
+    implementation("com.github.tiagohm:CodeView:master-SNAPSHOT")
 
     // Testing
     testImplementation(libs.junit)

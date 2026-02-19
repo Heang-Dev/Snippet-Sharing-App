@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet"
+    android:padding="24dp">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="48dp"
+        android:layout_height="4dp"
+        android:background="#4b5552"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="16dp">
+        <TextView android:text="Select Category" android:textColor="#ffffff" android:textSize="20sp" android:textStyle="bold" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content"/>
+        <ImageView android:id="@+id/btnCloseCategory" android:src="@drawable/ic_close" android:layout_width="24dp" android:layout_height="24dp" app:tint="#b0bec5"/>
+    </LinearLayout>
+    
+    <EditText
+        android:id="@+id/etSearchCategory"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_search_field"
+        android:hint="Search categories..."
+        android:textColorHint="#4b5552"
+        android:textColor="#ffffff"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="12dp"
+         android:drawableTint="#b0bec5"/>
+         
+    <!-- Create New Button -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text="Create New Category"
+        android:drawableStart="@drawable/ic_add"
+        android:drawablePadding="16dp"
+        android:textColor="#00e676"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:padding="16dp"
+        android:background="@drawable/bg_search_field" 
+        app:drawableTint="#00e676"/>
+
+    <TextView android:text="RECENT" android:textColor="#69757a" android:textSize="12sp" android:layout_marginTop="24dp" android:textStyle="bold"/>
+
+     <!-- Recent Folder Item (Selected) -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center_vertical"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        android:background="@drawable/bg_badge_draft"
+        android:backgroundTint="#15231c">
+        
+        <ImageView android:src="@drawable/ic_folder" android:layout_width="40dp" android:layout_height="40dp" app:tint="#00e676"/>
+        <LinearLayout android:orientation="vertical" android:layout_marginStart="16dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+             <TextView android:text="Utilities" android:textColor="#ffffff" android:textSize="16sp" android:textStyle="bold"/>
+             <TextView android:text="12 snippets" android:textColor="#b0bec5" android:textSize="12sp"/>
+        </LinearLayout>
+        <ImageView android:src="@drawable/ic_check_circle" app:tint="#00e676" android:layout_width="24dp" android:layout_height="24dp" />
+    </LinearLayout>
+
+    <TextView android:text="ALL CATEGORIES" android:textColor="#69757a" android:textSize="12sp" android:layout_marginTop="24dp" android:textStyle="bold"/>
+
+</LinearLayout>

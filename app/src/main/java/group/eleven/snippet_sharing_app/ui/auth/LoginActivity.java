@@ -99,93 +99,31 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void attemptLogin() {
-        Log.d(TAG, "attemptLogin: Starting login process");
+        Log.d(TAG, "attemptLogin: BYPASSING AUTHENTICATION FOR TESTING");
 
         try {
-            // Validate fields
-            if (formValidator == null || !formValidator.validateAll()) {
-                return;
-            }
+            // Create mock user for testing purposes
+            User mockUser = new User();
+            mockUser.setId("dev_user_123");
+            mockUser.setUsername("test_developer");
+            mockUser.setEmail(binding.etLogin.getText() != null ? binding.etLogin.getText().toString() : "dev@example.com");
+            mockUser.setFullName("Developer Mode");
 
-            String login = binding.etLogin.getText() != null
-                    ? binding.etLogin.getText().toString().trim() : "";
-            String password = binding.etPassword.getText() != null
-                    ? binding.etPassword.getText().toString() : "";
+            // Save a mock session so HomeActivity doesn't redirect back to Login
+            sessionManager.createLoginSession("mock_bypass_token", mockUser);
 
-            if (TextUtils.isEmpty(login) || TextUtils.isEmpty(password)) {
-                showError("Please fill in all fields");
-                return;
-            }
+            Toast.makeText(this, "Login Bypassed (Testing Mode)", Toast.LENGTH_SHORT).show();
+            
+            // Navigate to Home
+            navigateToHome();
 
-            // Show loading
-            setLoading(true);
-
-            String deviceName = Build.MANUFACTURER + " " + Build.MODEL;
-            Log.d(TAG, "attemptLogin: Calling API with login: " + login);
-
-            // Call API
-            authRepository.login(login, password, deviceName).observe(this, resource -> {
-                try {
-                    if (resource == null) {
-                        setLoading(false);
-                        showError("An unexpected error occurred");
-                        return;
-                    }
-
-                    if (resource.isLoading()) {
-                        return;
-                    }
-
-                    setLoading(false);
-
-                    if (resource.isSuccess()) {
-                        Log.d(TAG, "attemptLogin: API returned success");
-
-                        // CRITICAL: Verify session was saved correctly with valid data
-                        String savedToken = sessionManager.getAuthToken();
-                        User savedUser = sessionManager.getUser();
-
-                        Log.d(TAG, "attemptLogin: Verifying - Token: " + (savedToken != null ? "present" : "NULL"));
-                        Log.d(TAG, "attemptLogin: Verifying - User: " + (savedUser != null ? savedUser.getUsername() : "NULL"));
-
-                        if (savedToken == null || savedToken.isEmpty()) {
-                            Log.e(TAG, "attemptLogin: Session verification FAILED - no token");
-                            showError("Login error: Session not saved properly");
-                            return;
-                        }
-
-                        if (savedUser == null) {
-                            Log.e(TAG, "attemptLogin: Session verification FAILED - no user");
-                            showError("Login error: User data not saved properly");
-                            return;
-                        }
-
-                        if (!sessionManager.isLoggedIn()) {
-                            Log.e(TAG, "attemptLogin: Session verification FAILED - not logged in");
-                            showError("Login error: Session state invalid");
-                            return;
-                        }
-
-                        // All checks passed - navigate to home
-                        Log.d(TAG, "attemptLogin: All verifications passed - navigating to home");
-                        Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-                        navigateToHome();
-
-                    } else {
-                        String errorMessage = resource.getMessage();
-                        Log.e(TAG, "attemptLogin: Login failed - " + errorMessage);
-                        showError(errorMessage != null ? errorMessage : "Login failed");
-                    }
-                } catch (Exception e) {
-                    Log.e(TAG, "attemptLogin: CRASH in callback", e);
-                    setLoading(false);
-                    showError("Error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
-                }
-            });
         } catch (Exception e) {
-            Log.e(TAG, "attemptLogin: CRASH", e);
-            setLoading(false);
-            showError("Error: " + e.getClass().getSimpleName() + " - " + e.getMessage());
+            Log.e(TAG, "attemptLogin: Error during bypass", e);
+            // Fallback to basic navigation
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="?attr/selectableItemBackground"
+    android:padding="12dp">
+
+    <!-- Avatar Background (Dynamic) -->
+    <TextView
+        android:id="@+id/tvAvatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_avatar_circle"
+        android:gravity="center"
+        android:text="FE"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTeamName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Frontend Wizards"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvMemberCount"
+        app:layout_constraintEnd_toStartOf="@+id/ivSelection"
+        app:layout_constraintStart_toEndOf="@+id/tvAvatar"
+        app:layout_constraintTop_toTopOf="@+id/tvAvatar"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tvMemberCount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="8 members"
+        android:textColor="#889990"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvAvatar"
+        app:layout_constraintEnd_toEndOf="@+id/tvTeamName"
+        app:layout_constraintStart_toStartOf="@+id/tvTeamName"
+        app:layout_constraintTop_toBottomOf="@+id/tvTeamName" />
+
+    <ImageView
+        android:id="@+id/ivSelection"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_radio_unchecked"
+        app:tint="#889990"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

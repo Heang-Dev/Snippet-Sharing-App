@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet"
+    android:padding="24dp">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="48dp"
+        android:layout_height="4dp"
+        android:background="#4b5552"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <LinearLayout android:orientation="horizontal" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginBottom="16dp">
+        <TextView android:text="Select Team" android:textColor="#ffffff" android:textSize="20sp" android:textStyle="bold" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content"/>
+        <ImageView android:id="@+id/btnCloseTeam" android:src="@drawable/ic_close" android:layout_width="24dp" android:layout_height="24dp" app:tint="#b0bec5"/>
+    </LinearLayout>
+    
+    <EditText
+        android:id="@+id/etSearchTeam"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_search_field"
+        android:hint="Search teams..."
+        android:textColorHint="#4b5552"
+        android:textColor="#ffffff"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="12dp"
+         android:drawableTint="#b0bec5"/>
+
+    <TextView android:text="YOUR TEAMS" android:textColor="#69757a" android:textSize="12sp" android:layout_marginTop="24dp" android:textStyle="bold"/>
+
+     <!-- Team Item (Selected) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:gravity="center_vertical"
+        android:padding="12dp"
+        android:background="@drawable/bg_badge_draft"
+        android:backgroundTint="#2600e676"
+        android:layout_marginTop="12dp">
+        
+        <TextView android:text="FE" android:background="#3329b6f6" android:textColor="#ffffff" android:textSize="14sp" android:textStyle="bold" android:gravity="center" android:padding="10dp" android:backgroundTint="#29b6f6" android:layout_width="40dp" android:layout_height="40dp" />
+        <LinearLayout android:orientation="vertical" android:layout_marginStart="16dp" android:layout_weight="1" android:layout_width="0dp" android:layout_height="wrap_content">
+             <TextView android:text="Frontend Wizards" android:textColor="#ffffff" android:textSize="16sp" android:textStyle="bold"/>
+             <TextView android:text="8 members" android:textColor="#b0bec5" android:textSize="12sp"/>
+        </LinearLayout>
+        <ImageView android:src="@drawable/ic_check_circle" app:tint="#00e676" android:layout_width="24dp" android:layout_height="24dp" />
+    </LinearLayout>
+    
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnConfirmTeam"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="32dp"
+        android:text="Confirm Selection"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        app:backgroundTint="#00e676"
+        app:cornerRadius="28dp"/>
+
+</LinearLayout>
