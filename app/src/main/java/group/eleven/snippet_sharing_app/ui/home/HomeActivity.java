@@ -32,12 +32,15 @@ import java.util.List;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.SnippetManager;
 import group.eleven.snippet_sharing_app.data.model.ActivityFeedItem;
+import group.eleven.snippet_sharing_app.data.model.DashboardStats;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.model.User;
+import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityHomeBinding;
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
 import group.eleven.snippet_sharing_app.ui.team.TeamsListActivity;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
+import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -49,11 +52,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private ActivityHomeBinding binding;
     private SessionManager sessionManager;
+    private DashboardRepository dashboardRepository;
     private ActionBarDrawerToggle drawerToggle;
 
     private ActivityFeedAdapter activityFeedAdapter;
     private SnippetCardAdapter snippetCardAdapter;
     private List<SnippetCard> masterSnippetList = new ArrayList<>();
+
+    // Stats TextViews
+    private TextView tvSnippetsCount, tvViewsCount, tvForksCount;
+    private TextView tvDrawerSnippetsCount, tvDrawerForksCount, tvDrawerViewsCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +75,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             // ... (window insets code) ...
 
-            // Initialize session manager
+            // Initialize session manager and repository
             sessionManager = new SessionManager(this);
+            dashboardRepository = new DashboardRepository(this);
 
             if (!sessionManager.isLoggedIn()) {
                 navigateToLogin();
@@ -123,9 +132,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Setup drawer header
         View headerView = binding.navigationView.getHeaderView(0);
         TextView tvUserName = headerView.findViewById(R.id.tvUserName);
-        TextView tvSnippetsCount = headerView.findViewById(R.id.tvSnippetsCount);
-        TextView tvForksCount = headerView.findViewById(R.id.tvForksCount);
-        TextView tvViewsCount = headerView.findViewById(R.id.tvViewsCount);
+        tvDrawerSnippetsCount = headerView.findViewById(R.id.tvSnippetsCount);
+        tvDrawerForksCount = headerView.findViewById(R.id.tvForksCount);
+        tvDrawerViewsCount = headerView.findViewById(R.id.tvViewsCount);
 
         User user = sessionManager.getUser();
         if (user != null) {
@@ -135,10 +144,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             tvUserName.setText(displayName);
         }
 
-        // Set mock stats (will be replaced with real data)
-        tvSnippetsCount.setText("142");
-        tvForksCount.setText("89");
-        tvViewsCount.setText("1.2k");
+        // Set placeholder stats (will be replaced with real data from API)
+        tvDrawerSnippetsCount.setText("--");
+        tvDrawerForksCount.setText("--");
+        tvDrawerViewsCount.setText("--");
     }
 
     private void setupUserInfo() {
@@ -154,46 +163,91 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         View snippetsCard = binding.statSnippets;
         ImageView ivSnippetsIcon = snippetsCard.findViewById(R.id.ivStatIconSnippets);
         TextView tvSnippetsLabel = snippetsCard.findViewById(R.id.tvStatLabelSnippets);
-        TextView tvSnippetsCount = snippetsCard.findViewById(R.id.tvStatCountSnippets);
-        // Arrow and percentage removed in design update
+        tvSnippetsCount = snippetsCard.findViewById(R.id.tvStatCountSnippets);
 
         ivSnippetsIcon.setImageResource(R.drawable.ic_code);
         tvSnippetsLabel.setText(R.string.stats_snippets);
-        tvSnippetsCount.setText("142");
+        tvSnippetsCount.setText("--");
 
-        // Setup Views stat card
+        // Setup Views stat card (using favorites_received as popularity metric)
         View viewsCard = binding.statViews;
         ImageView ivViewsIcon = viewsCard.findViewById(R.id.ivStatIconViews);
         TextView tvViewsLabel = viewsCard.findViewById(R.id.tvStatLabelViews);
-        TextView tvViewsCount = viewsCard.findViewById(R.id.tvStatCountViews);
+        tvViewsCount = viewsCard.findViewById(R.id.tvStatCountViews);
 
         ivViewsIcon.setImageResource(R.drawable.ic_explore);
         tvViewsLabel.setText(R.string.stats_views);
-        tvViewsCount.setText("12.5k");
+        tvViewsCount.setText("--");
 
-        // Setup Forks stat card
+        // Setup Forks stat card (using followers count)
         View forksCard = binding.statForks;
         ImageView ivForksIcon = forksCard.findViewById(R.id.ivStatIconForks);
         TextView tvForksLabel = forksCard.findViewById(R.id.tvStatLabelForks);
-        TextView tvForksCount = forksCard.findViewById(R.id.tvStatCountForks);
+        tvForksCount = forksCard.findViewById(R.id.tvStatCountForks);
 
         ivForksIcon.setImageResource(R.drawable.ic_collections);
         tvForksLabel.setText(R.string.stats_forks);
-        tvForksCount.setText("89");
+        tvForksCount.setText("--");
+
+        // Fetch real stats from API
+        loadDashboardStats();
+    }
+
+    private void loadDashboardStats() {
+        dashboardRepository.getDashboardStats().observe(this, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                DashboardStats stats = resource.data;
+
+                // Update stats cards
+                tvSnippetsCount.setText(String.valueOf(stats.getSnippetCount()));
+                tvViewsCount.setText(stats.getFormattedFavorites());
+                tvForksCount.setText(stats.getFormattedFollowers());
+
+                // Update drawer header stats
+                if (tvDrawerSnippetsCount != null) {
+                    tvDrawerSnippetsCount.setText(String.valueOf(stats.getSnippetCount()));
+                }
+                if (tvDrawerForksCount != null) {
+                    tvDrawerForksCount.setText(stats.getFormattedFollowers());
+                }
+                if (tvDrawerViewsCount != null) {
+                    tvDrawerViewsCount.setText(stats.getFormattedFavorites());
+                }
+            } else if (resource.status == Resource.Status.ERROR) {
+                Log.e(TAG, "Failed to load stats: " + resource.message);
+                // Keep showing "--" or set defaults
+                tvSnippetsCount.setText("0");
+                tvViewsCount.setText("0");
+                tvForksCount.setText("0");
+            }
+            // For LOADING status, keep showing "--"
+        });
     }
 
     private void setupActivityFeed() {
-        // Create mock activity feed data
-        List<ActivityFeedItem> activities = new ArrayList<>();
-        activities.add(new ActivityFeedItem(
-                "Alice", "updated", "Auth Logic", "20 min ago", R.drawable.ic_code));
-        activities.add(new ActivityFeedItem(
-                "John", "starred", "Docker Config", "1h ago", R.drawable.ic_favorite));
-
-        // Setup RecyclerView
-        activityFeedAdapter = new ActivityFeedAdapter(activities);
+        // Setup RecyclerView with empty list initially
+        activityFeedAdapter = new ActivityFeedAdapter(new ArrayList<>());
         binding.rvActivityFeed.setLayoutManager(new LinearLayoutManager(this));
         binding.rvActivityFeed.setAdapter(activityFeedAdapter);
+
+        // Fetch real activity feed from API
+        loadActivityFeed();
+    }
+
+    private void loadActivityFeed() {
+        dashboardRepository.getActivityFeed(5).observe(this, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                activityFeedAdapter.setActivities(resource.data);
+            } else if (resource.status == Resource.Status.ERROR) {
+                Log.e(TAG, "Failed to load activity feed: " + resource.message);
+                // Show placeholder message or empty state
+                List<ActivityFeedItem> placeholder = new ArrayList<>();
+                placeholder.add(new ActivityFeedItem(
+                        "Welcome", "to", "Snippet Sharing", "Just now", R.drawable.ic_code));
+                activityFeedAdapter.setActivities(placeholder);
+            }
+            // For LOADING, keep showing previous data or empty
+        });
     }
 
     @Override
@@ -213,35 +267,61 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadRecentSnippets() {
-        List<group.eleven.snippet_sharing_app.model.SnippetModel> models = group.eleven.snippet_sharing_app.data.SnippetRepository
-                .getInstance().getRecentSnippets();
+        dashboardRepository.getRecentSnippets(10).observe(this, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                masterSnippetList.clear();
+                masterSnippetList.addAll(resource.data);
 
-        List<SnippetCard> cards = new ArrayList<>();
-        for (group.eleven.snippet_sharing_app.model.SnippetModel model : models) {
-            int color = android.graphics.Color.WHITE;
-            try {
-                color = android.graphics.Color.parseColor(model.getLanguageColor());
-            } catch (Exception e) {
-                e.printStackTrace();
+                if (binding != null && binding.etSearch != null) {
+                    filter(binding.etSearch.getText().toString());
+                } else {
+                    if (snippetCardAdapter != null) {
+                        snippetCardAdapter.filterList(resource.data);
+                    }
+                }
+            } else if (resource.status == Resource.Status.ERROR) {
+                Log.e(TAG, "Failed to load snippets: " + resource.message);
+                // Fallback to local storage if API fails
+                loadLocalSnippets();
+            }
+            // For LOADING, keep showing previous data
+        });
+    }
+
+    /**
+     * Fallback to local snippets when API fails
+     */
+    private void loadLocalSnippets() {
+        try {
+            List<group.eleven.snippet_sharing_app.model.SnippetModel> models =
+                    group.eleven.snippet_sharing_app.data.SnippetRepository.getInstance().getRecentSnippets();
+
+            List<SnippetCard> cards = new ArrayList<>();
+            for (group.eleven.snippet_sharing_app.model.SnippetModel model : models) {
+                int color = android.graphics.Color.WHITE;
+                try {
+                    color = android.graphics.Color.parseColor(model.getLanguageColor());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                cards.add(new SnippetCard(
+                        model.getTitle(),
+                        model.getLanguage(),
+                        model.getLastModifiedTime(),
+                        model.getCode() != null ? model.getCode() : "// No code preview",
+                        new String[] { model.getPrivacy() },
+                        color));
             }
 
-            cards.add(new SnippetCard(
-                    model.getTitle(),
-                    model.getLanguage(),
-                    model.getLastModifiedTime(),
-                    model.getCode() != null ? model.getCode() : "// No code preview",
-                    new String[] { model.getPrivacy() },
-                    color));
-        }
+            masterSnippetList.clear();
+            masterSnippetList.addAll(cards);
 
-        masterSnippetList.clear();
-        masterSnippetList.addAll(cards);
-
-        if (binding != null && binding.etSearch != null) {
-            filter(binding.etSearch.getText().toString());
-        } else {
-            if (snippetCardAdapter != null)
+            if (snippetCardAdapter != null) {
                 snippetCardAdapter.filterList(cards);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load local snippets", e);
         }
     }
 

@@ -2,9 +2,12 @@ package group.eleven.snippet_sharing_app.api;
 
 import group.eleven.snippet_sharing_app.data.model.ApiResponse;
 import group.eleven.snippet_sharing_app.data.model.AuthResponse;
+import group.eleven.snippet_sharing_app.data.model.DashboardStats;
+import group.eleven.snippet_sharing_app.data.model.FeedActivity;
 import group.eleven.snippet_sharing_app.data.model.ForgotPasswordResponse;
 import group.eleven.snippet_sharing_app.data.model.MessageResponse;
 import group.eleven.snippet_sharing_app.data.model.OtpVerifyResponse;
+import group.eleven.snippet_sharing_app.data.model.Snippet;
 import group.eleven.snippet_sharing_app.data.model.UserResponse;
 import group.eleven.snippet_sharing_app.data.model.Team;
 import group.eleven.snippet_sharing_app.data.model.TeamMember;
@@ -199,4 +202,68 @@ public interface ApiService {
      */
     @GET("teams/{id}/activity")
     Call<ApiResponse<List<group.eleven.snippet_sharing_app.data.model.ActivityFeedItem>>> getTeamActivity(@Path("id") String teamId);
+
+    // ==================== Dashboard / Feed ====================
+
+    /**
+     * Get activity statistics for the authenticated user (snippets count, views, etc.)
+     */
+    @GET("feed/stats")
+    Call<ApiResponse<DashboardStats>> getDashboardStats();
+
+    /**
+     * Get personalized activity feed (from followed users)
+     */
+    @GET("feed")
+    Call<ApiResponse<List<FeedActivity>>> getActivityFeed(@QueryMap Map<String, String> params);
+
+    /**
+     * Get public activity feed (trending/recent)
+     */
+    @GET("feed/public")
+    Call<ApiResponse<List<FeedActivity>>> getPublicFeed(@QueryMap Map<String, String> params);
+
+    // ==================== Snippets ====================
+
+    /**
+     * Get current user's snippets
+     */
+    @GET("snippets")
+    Call<ApiResponse<List<Snippet>>> getMySnippets(@QueryMap Map<String, String> params);
+
+    /**
+     * Get public/trending snippets
+     */
+    @GET("snippets/public")
+    Call<ApiResponse<List<Snippet>>> getPublicSnippets(@QueryMap Map<String, String> params);
+
+    /**
+     * Get trending snippets
+     */
+    @GET("snippets/trending")
+    Call<ApiResponse<List<Snippet>>> getTrendingSnippets(@QueryMap Map<String, String> params);
+
+    /**
+     * Create a new snippet
+     */
+    @POST("snippets")
+    Call<ApiResponse<Snippet>> createSnippet(@Body Map<String, Object> snippetData);
+
+    /**
+     * Get single snippet by slug
+     */
+    @GET("snippets/{slug}")
+    Call<ApiResponse<Snippet>> getSnippetBySlug(@Path("slug") String slug);
+
+    /**
+     * Update a snippet
+     */
+    @PUT("snippets/{id}")
+    Call<ApiResponse<Snippet>> updateSnippet(@Path("id") String id, @Body Map<String, Object> snippetData);
+
+    /**
+     * Delete a snippet
+     */
+    @DELETE("snippets/{id}")
+    Call<MessageResponse> deleteSnippet(@Path("id") String id);
 }
