@@ -15,6 +15,7 @@
     <attr name="cardSurfaceColor" format="color|reference" />
     <attr name="cardInnerColor" format="color|reference" />
     <attr name="codeBackgroundColor" format="color|reference" />
+    <attr name="codeTextColor" format="color|reference" />
 
     <!-- ========== TEXT ATTRIBUTES ========== -->
     <attr name="textPrimaryColor" format="color|reference" />

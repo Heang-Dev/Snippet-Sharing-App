@@ -41,7 +41,7 @@
         <item name="colorOutlineVariant">@color/light_divider</item>
 
         <!-- System Bars - Light -->
-        <item name="android:statusBarColor">@color/light_background</item>
+        <item name="android:statusBarColor">@color/white</item>
         <item name="android:navigationBarColor">@color/light_nav_bg</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
@@ -55,6 +55,7 @@
         <item name="cardSurfaceColor">@color/light_card_surface</item>
         <item name="cardInnerColor">@color/light_card_inner</item>
         <item name="codeBackgroundColor">@color/light_code_background</item>
+        <item name="codeTextColor">@color/text_primary</item>
 
         <!-- Text - Light -->
         <item name="textPrimaryColor">@color/light_text_primary</item>

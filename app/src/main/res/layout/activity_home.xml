@@ -13,7 +13,6 @@
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:background="?attr/appBackgroundColor">
 
         <!-- App Bar -->
@@ -76,9 +75,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="16dp"
-                android:paddingBottom="120dp">
+                android:paddingBottom="72dp">
 
-                <!-- Search Bar -->
                 <!-- Search Bar -->
                 <LinearLayout
                     android:id="@+id/searchCard"
@@ -86,6 +84,7 @@
                     android:layout_height="50dp"
                     android:layout_marginBottom="24dp"
                     android:background="@drawable/bg_search_input_team"
+                    android:backgroundTint="?attr/cardSurfaceColor"
                     android:gravity="center_vertical"
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/profile_card"
+    app:cardBackgroundColor="?attr/cardSurfaceColor"
     app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
     android:layout_marginBottom="12dp">
@@ -45,15 +45,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="React useFetch Hook"
-                    android:textColor="@color/white"
+                    android:text="Date Formatter Utility"
+                    android:textColor="?attr/textPrimaryColor"
                     android:textSize="15sp"
                     android:textStyle="bold" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Updated 2h ago"
-                    android:textColor="@color/profile_text_muted"
+                    android:text="Modified 2h ago"
+                    android:textColor="?attr/textMutedColor"
                     android:textSize="11sp" />
             </LinearLayout>
 
@@ -62,13 +62,13 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_check_circle"
-                app:tint="@color/profile_primary" />
+                app:tint="?attr/accentColor" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="24"
-                android:textColor="@color/profile_text_muted"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -76,17 +76,53 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            app:cardBackgroundColor="@color/code_background"
+            app:cardBackgroundColor="?attr/codeBackgroundColor"
             app:cardCornerRadius="12dp"
             app:cardElevation="0dp">
-            <TextView
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="const useFetch = (url) => {\n  const [data, setData] = useState(null);\n  useEffect(() => {\n    fetch(url).then(res => res.json())\n  }, [url])\n  return data;\n}"
-                android:textColor="@color/code_green"
-                android:textSize="12sp"
-                android:fontFamily="monospace" />
+                android:orientation="vertical">
+
+                <!-- Hacker Dots Header -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical|end"
+                    android:paddingEnd="12dp"
+                    android:paddingStart="12dp"
+                    android:background="?attr/cardInnerColor">
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/circle_red"
+                        android:layout_marginEnd="6dp" />
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/circle_yellow"
+                        android:layout_marginEnd="6dp" />
+
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/circle_green" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="function formatDate(date) { '#C586C0'>return new Intl.DateTimeFormat('en-US').format(date); }"
+                    android:textColor="?attr/codeTextColor"
+                    android:textSize="12sp"
+                    android:fontFamily="monospace" />
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -100,11 +136,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_pill_badge"
-                android:backgroundTint="@color/chip_background"
+                android:backgroundTint="?attr/chipBackgroundColor"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="2dp"
-                android:text="REACT"
-                android:textColor="@color/profile_text_muted"
+                android:text="Data"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="10sp"
                 android:layout_marginEnd="8dp" />
 
@@ -112,11 +148,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_pill_badge"
-                android:backgroundTint="@color/chip_background"
+                android:backgroundTint="?attr/chipBackgroundColor"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="2dp"
-                android:text="HOOKS"
-                android:textColor="@color/profile_text_muted"
+                android:text="Utils"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="10sp" />
 
             <View
@@ -128,7 +164,7 @@
                 android:layout_width="18dp"
                 android:layout_height="18dp"
                 android:src="@drawable/ic_collections"
-                app:tint="@color/profile_text_muted" />
+                app:tint="?attr/textMutedColor" />
         </LinearLayout>
 
     </LinearLayout>

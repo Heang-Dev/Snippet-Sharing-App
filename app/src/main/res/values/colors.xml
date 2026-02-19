@@ -249,13 +249,13 @@
 
     <!-- ========== LIGHT THEME COLORS ========== -->
     <!-- Background colors for light theme -->
-    <color name="light_background">#FAFAFA</color>
+    <color name="light_background">#F5F0F8</color>
     <color name="light_surface">#FFFFFF</color>
-    <color name="light_surface_variant">#F5F5F5</color>
+    <color name="light_surface_variant">#F0EBF5</color>
     <color name="light_surface_elevated">#FFFFFF</color>
     <color name="light_card_surface">#FFFFFF</color>
-    <color name="light_card_inner">#F8F8F8</color>
-    <color name="light_code_background">#F5F2F0</color>
+    <color name="light_card_inner">#E8E0F0</color>
+    <color name="light_code_background">#2D2A3E</color>
 
     <!-- Text colors for light theme -->
     <color name="light_text_primary">#1A1A1A</color>
