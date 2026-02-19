@@ -26,19 +26,23 @@
             app:tint="@color/text_primary" />
 
         <!-- App Logo -->
-        <FrameLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:background="@drawable/bg_logo_circle">
+            app:cardCornerRadius="32dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="@color/surface_variant">
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_launcher_foreground"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/app_name" />
-        </FrameLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Title -->
         <TextView

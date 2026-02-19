@@ -5,24 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_app_pattern">
 
-    <!-- App Logo -->
-    <FrameLayout
-        android:id="@+id/ivLogo"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:background="@drawable/bg_logo_circle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_launcher_foreground"
-            android:contentDescription="@string/app_name" />
-    </FrameLayout>
-
     <!-- Skip Button -->
     <TextView
         android:id="@+id/tvSkip"
@@ -48,7 +30,7 @@
         app:layout_constraintBottom_toTopOf="@id/indicatorContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivLogo" />
+        app:layout_constraintTop_toBottomOf="@id/tvSkip" />
 
     <!-- Page Indicator Container -->
     <LinearLayout
