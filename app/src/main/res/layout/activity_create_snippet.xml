@@ -372,6 +372,7 @@
                         android:layout_marginEnd="2dp">
 
                         <TextView
+                            android:id="@+id/tvPublicLabel"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="Public"
@@ -382,25 +383,46 @@
 
                     </com.google.android.material.card.MaterialCardView>
 
-                    <TextView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/tabTeam"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:text="Team"
-                        android:gravity="center"
-                        android:textColor="?attr/textSecondaryColor"
-                        android:textSize="13sp" />
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardCornerRadius="19dp"
+                        app:cardElevation="0dp"
+                        android:layout_marginEnd="2dp">
 
-                    <TextView
+                        <TextView
+                            android:id="@+id/tvTeamLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Team"
+                            android:gravity="center"
+                            android:textColor="?attr/textSecondaryColor"
+                            android:textSize="13sp" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/tabPrivate"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="match_parent"
-                        android:text="Private"
-                        android:gravity="center"
-                        android:textColor="?attr/textSecondaryColor"
-                        android:textSize="13sp" />
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardCornerRadius="19dp"
+                        app:cardElevation="0dp">
+
+                        <TextView
+                            android:id="@+id/tvPrivateLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Private"
+                            android:gravity="center"
+                            android:textColor="?attr/textSecondaryColor"
+                            android:textSize="13sp" />
+
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
 
