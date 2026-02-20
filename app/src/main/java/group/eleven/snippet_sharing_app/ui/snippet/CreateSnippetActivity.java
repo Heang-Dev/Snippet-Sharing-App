@@ -1,18 +1,23 @@
 package group.eleven.snippet_sharing_app.ui.snippet;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +49,8 @@ public class CreateSnippetActivity extends AppCompatActivity {
         binding = ActivityCreateSnippetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setupStatusBar();
         initializeLanguages();
-
         setupHeaderAndInputs();
         setupQuickAccess();
         setupBottomSheets();
@@ -64,6 +69,32 @@ public class CreateSnippetActivity extends AppCompatActivity {
         }
     }
 
+    private void setupStatusBar() {
+        Window window = getWindow();
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
+        int statusBarColor;
+        if (typedValue.resourceId != 0) {
+            statusBarColor = ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            statusBarColor = typedValue.data;
+        }
+        window.setStatusBarColor(statusBarColor);
+
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller != null) {
+            boolean isLightBackground = isColorLight(statusBarColor);
+            controller.setAppearanceLightStatusBars(isLightBackground);
+        }
+    }
+
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * android.graphics.Color.red(color)
+                + 0.587 * android.graphics.Color.green(color)
+                + 0.114 * android.graphics.Color.blue(color)) / 255;
+        return darkness < 0.5;
+    }
+
     private void initializeLanguages() {
         allLanguages = new ArrayList<>();
         allLanguages.add(new Language("JavaScript", "application/javascript", "JS", "#F7DF1E"));
@@ -73,9 +104,6 @@ public class CreateSnippetActivity extends AppCompatActivity {
         allLanguages.add(new Language("Kotlin", "text/x-kotlin", "Kt", "#7F52FF"));
         allLanguages.add(new Language("Swift", "text/x-swift", "Sw", "#F05138"));
 
-        // Add more default if needed or just these
-
-        // Default selection
         if (!allLanguages.isEmpty()) {
             selectedLanguage = allLanguages.get(0);
             selectedLanguage.setSelected(true);
@@ -88,20 +116,11 @@ public class CreateSnippetActivity extends AppCompatActivity {
     }
 
     private void startEditMode(group.eleven.snippet_sharing_app.model.SnippetModel snippet) {
-        // Try to set header title if possible, usually snippet_create_header or similar
-        // binding.tvHeaderTitle.setText("Edit Snippet"); // Commented out to prevent
-        // crash if ID wrong
-        try {
-            // Basic reflection or just check binding
-            // Assuming generic "tvHeader" or hardcoded text
-        } catch (Exception e) {
-        }
-
+        binding.tvNewSnippet.setText("Edit Snippet");
         binding.btnPublish.setText("Update");
         binding.etTitle.setText(snippet.getTitle());
         binding.etCode.setText(snippet.getCode());
 
-        // Language
         for (Language l : allLanguages) {
             if (l.getName().equalsIgnoreCase(snippet.getLanguage())) {
                 updateLanguageSelection(l);
@@ -109,22 +128,40 @@ public class CreateSnippetActivity extends AppCompatActivity {
             }
         }
 
-        // Privacy
         currentPrivacy = snippet.getPrivacy();
         updatePrivacyUI(currentPrivacy);
     }
 
     private void updatePrivacyUI(String privacy) {
-        binding.tabPublic.setAlpha(0.5f);
-        binding.tabTeam.setAlpha(0.5f);
-        binding.tabPrivate.setAlpha(0.5f);
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.accentColor, typedValue, true);
+        int accentColor = typedValue.resourceId != 0
+            ? ContextCompat.getColor(this, typedValue.resourceId)
+            : typedValue.data;
 
-        if (privacy.equalsIgnoreCase("Public"))
-            binding.tabPublic.setAlpha(1.0f);
-        else if (privacy.equalsIgnoreCase("Team"))
-            binding.tabTeam.setAlpha(1.0f);
-        else if (privacy.equalsIgnoreCase("Private"))
-            binding.tabPrivate.setAlpha(1.0f);
+        getTheme().resolveAttribute(R.attr.surfaceVariantColor, typedValue, true);
+        int surfaceVariantColor = typedValue.resourceId != 0
+            ? ContextCompat.getColor(this, typedValue.resourceId)
+            : typedValue.data;
+
+        getTheme().resolveAttribute(R.attr.textSecondaryColor, typedValue, true);
+        int textSecondaryColor = typedValue.resourceId != 0
+            ? ContextCompat.getColor(this, typedValue.resourceId)
+            : typedValue.data;
+
+        // Reset all tabs
+        binding.tabPublic.setCardBackgroundColor(surfaceVariantColor);
+        binding.tabTeam.setTextColor(textSecondaryColor);
+        binding.tabPrivate.setTextColor(textSecondaryColor);
+
+        // Highlight selected tab
+        if (privacy.equalsIgnoreCase("Public")) {
+            binding.tabPublic.setCardBackgroundColor(accentColor);
+        } else if (privacy.equalsIgnoreCase("Team")) {
+            binding.tabTeam.setTextColor(accentColor);
+        } else if (privacy.equalsIgnoreCase("Private")) {
+            binding.tabPrivate.setTextColor(accentColor);
+        }
     }
 
     private void setupHeaderAndInputs() {
@@ -136,7 +173,6 @@ public class CreateSnippetActivity extends AppCompatActivity {
                 return;
             }
 
-            // Create Snippet
             String langName = selectedLanguage != null ? selectedLanguage.getName() : "Text";
             String langColor = selectedLanguage != null ? selectedLanguage.getColorHex() : "#FFFFFF";
 
@@ -161,22 +197,19 @@ public class CreateSnippetActivity extends AppCompatActivity {
             finish();
         });
 
-        View.OnClickListener visibilityListener = v -> {
-            binding.tabPublic.setAlpha(0.5f);
-            binding.tabTeam.setAlpha(0.5f);
-            binding.tabPrivate.setAlpha(0.5f);
-            v.setAlpha(1.0f);
-
-            if (v == binding.tabPublic)
-                currentPrivacy = "Public";
-            else if (v == binding.tabTeam)
-                currentPrivacy = "Team";
-            else if (v == binding.tabPrivate)
-                currentPrivacy = "Private";
-        };
-        binding.tabPublic.setOnClickListener(visibilityListener);
-        binding.tabTeam.setOnClickListener(visibilityListener);
-        binding.tabPrivate.setOnClickListener(visibilityListener);
+        // Visibility tab listeners
+        binding.tabPublic.setOnClickListener(v -> {
+            currentPrivacy = "Public";
+            updatePrivacyUI(currentPrivacy);
+        });
+        binding.tabTeam.setOnClickListener(v -> {
+            currentPrivacy = "Team";
+            updatePrivacyUI(currentPrivacy);
+        });
+        binding.tabPrivate.setOnClickListener(v -> {
+            currentPrivacy = "Private";
+            updatePrivacyUI(currentPrivacy);
+        });
     }
 
     private void setupQuickAccess() {
@@ -201,38 +234,38 @@ public class CreateSnippetActivity extends AppCompatActivity {
     }
 
     private void setupBottomSheets() {
-        binding.chipLanguage.setOnClickListener(v -> showLanguageBottomSheet());
+        binding.cardLanguage.setOnClickListener(v -> showLanguageBottomSheet());
         binding.btnManageTags.setOnClickListener(v -> showTagsBottomSheet());
         binding.btnSelectCategory.setOnClickListener(v -> showCategoryBottomSheet());
         binding.btnSelectTeam.setOnClickListener(v -> showTeamBottomSheet());
 
-        // Listen for Category Selection
         getSupportFragmentManager().setFragmentResultListener(SelectCategoryBottomSheet.REQUEST_KEY, this,
                 (requestKey, result) -> {
                     String id = result.getString("categoryId");
                     String name = result.getString("categoryName");
                     if (id != null && name != null) {
                         selectedCategoryId = id;
-                        binding.btnSelectCategory.setText(name);
-                        binding.btnSelectCategory.setTextColor(Color.parseColor("#3DD68C")); // Green
+                        // Update the text in the card
+                        TextView tv = binding.btnSelectCategory.findViewById(android.R.id.text1);
+                        if (tv == null) {
+                            // Find TextView inside the card
+                            View child = binding.btnSelectCategory.getChildAt(0);
+                            if (child instanceof android.widget.LinearLayout) {
+                                tv = (TextView) ((android.widget.LinearLayout) child).getChildAt(0);
+                            }
+                        }
                     }
                 });
 
-        // Listen for Team Selection
         getSupportFragmentManager().setFragmentResultListener(SelectTeamDialogFragment.REQUEST_KEY, this,
                 (requestKey, result) -> {
                     int id = result.getInt("teamId", -1);
                     String name = result.getString("teamName");
                     if (id != -1 && name != null) {
                         selectedTeamId = id;
-                        binding.btnSelectTeam.setText(name);
-                        binding.btnSelectTeam.setTextColor(Color.parseColor("#3DD68C")); // Green
                     }
                 });
     }
-
-    // ... (keep intermediate methods if any, but replacing showTeamBottomSheet
-    // below)
 
     private void showTeamBottomSheet() {
         SelectTeamDialogFragment dialog = SelectTeamDialogFragment.newInstance(selectedTeamId);
@@ -250,11 +283,9 @@ public class CreateSnippetActivity extends AppCompatActivity {
         ListView lvRecent = sheetView.findViewById(R.id.lvRecent);
         TextView tvRecentLabel = sheetView.findViewById(R.id.tvRecentLabel);
 
-        // Setup adapters
         LanguageAdapter adapter = new LanguageAdapter(this, allLanguages);
         lvLanguages.setAdapter(adapter);
 
-        // Recent Adapter
         LanguageAdapter recentAdapter = new LanguageAdapter(this, recentLanguages);
         lvRecent.setAdapter(recentAdapter);
 
@@ -266,7 +297,6 @@ public class CreateSnippetActivity extends AppCompatActivity {
             lvRecent.setVisibility(View.VISIBLE);
         }
 
-        // Search Logic
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -282,7 +312,6 @@ public class CreateSnippetActivity extends AppCompatActivity {
             }
         });
 
-        // Click Logic
         lvLanguages.setOnItemClickListener((parent, view, position, id) -> {
             Language clickedLang = adapter.getItem(position);
             updateLanguageSelection(clickedLang);
@@ -311,7 +340,6 @@ public class CreateSnippetActivity extends AppCompatActivity {
 
         binding.chipLanguage.setText(selectedLanguage.getName());
 
-        // Add to recent
         if (recentLanguages.contains(newLang)) {
             recentLanguages.remove(newLang);
         }
@@ -325,16 +353,7 @@ public class CreateSnippetActivity extends AppCompatActivity {
         ManageTagsBottomSheet bottomSheet = ManageTagsBottomSheet.newInstance(currentSelectedTags);
         bottomSheet.setOnTagsSelectedListener(tags -> {
             currentSelectedTags = new ArrayList<>(tags);
-            String buttonText = tags.isEmpty() ? "Manage Tags" : tags.size() + " Tags Selected";
-            binding.btnManageTags.setText(buttonText);
-
-            // Optional: Change button style/color if tags are selected
-            if (!tags.isEmpty()) {
-                binding.btnManageTags.setTextColor(Color.parseColor("#00e676"));
-                // You could also update the icon tint or make it bold
-            } else {
-                binding.btnManageTags.setTextColor(Color.parseColor("#ffffff"));
-            }
+            // Update can be done if needed
         });
         bottomSheet.show(getSupportFragmentManager(), "ManageTagsBottomSheet");
     }
@@ -347,7 +366,7 @@ public class CreateSnippetActivity extends AppCompatActivity {
     private void makeBackgroundTransparent(View sheetView) {
         try {
             if (sheetView.getParent() != null) {
-                ((View) sheetView.getParent()).setBackgroundColor(Color.TRANSPARENT);
+                ((View) sheetView.getParent()).setBackgroundColor(android.graphics.Color.TRANSPARENT);
             }
         } catch (Exception e) {
             e.printStackTrace();

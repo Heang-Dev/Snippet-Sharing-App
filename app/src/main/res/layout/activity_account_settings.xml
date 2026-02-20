@@ -8,7 +8,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="?attr/appBackgroundColor"
         app:elevation="0dp">
 
         <androidx.appcompat.widget.Toolbar
@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Account Settings"
+                android:text="@string/account_settings"
                 android:textColor="?attr/textPrimaryColor"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="100dp"
+        android:paddingBottom="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -44,17 +44,17 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Appearance Section -->
+            <!-- ========== APPEARANCE SECTION ========== -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="APPEARANCE"
-                android:textColor="#818CF8"
-                android:textSize="13sp"
+                android:text="@string/settings_appearance"
+                android:textColor="?attr/accentColor"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                android:letterSpacing="0.05" />
+                android:letterSpacing="0.08" />
 
-            <!-- Theme Toggle -->
+            <!-- Dark Mode Toggle -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Dark Mode"
+                        android:text="@string/dark_mode"
                         android:textColor="?attr/textPrimaryColor"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -80,7 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Use dark theme throughout the app"
+                        android:text="@string/dark_mode_desc"
                         android:textColor="?attr/textMutedColor"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -89,7 +89,6 @@
                     android:id="@+id/swDarkMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     app:trackTint="@color/switch_track_selector"
                     app:thumbTint="@color/white" />
             </LinearLayout>
@@ -97,139 +96,80 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="24dp"
-                android:background="#1A231C" />
-
-            <!-- Change Password Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="CHANGE PASSWORD"
-                android:textColor="#818CF8"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.05" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Current Password"
-                android:textColor="?attr/textMutedColor"
-                android:textSize="14sp" />
+                android:background="?attr/dividerColor" />
 
-            <FrameLayout
+            <!-- ========== SECURITY SECTION ========== -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/settings_security"
+                android:textColor="?attr/accentColor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
+
+            <!-- Change Password -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilCurrentPassword"
+                style="@style/Widget.SnippetApp.TextInput"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="@string/current_password"
+                app:endIconMode="password_toggle"
+                app:endIconTint="?attr/textMutedColor">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etCurrentPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_edit_text_dark"
-                    android:hint="••••••••"
+                    android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:paddingHorizontal="16dp"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textColorHint="?attr/textMutedColor" />
+                    android:textColor="?attr/textPrimaryColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/ivCurrentPasswordToggle"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_visibility_off"
-                    app:tint="?attr/textMutedColor" />
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="New Password"
-                android:textColor="?attr/textMutedColor"
-                android:textSize="14sp" />
-
-            <FrameLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilNewPassword"
+                style="@style/Widget.SnippetApp.TextInput"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="@string/new_password"
+                app:endIconMode="password_toggle"
+                app:endIconTint="?attr/textMutedColor">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etNewPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_edit_text_dark"
-                    android:hint="Enter new password"
+                    android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:paddingHorizontal="16dp"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textColorHint="?attr/textMutedColor" />
+                    android:textColor="?attr/textPrimaryColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/ivNewPasswordToggle"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_visibility_off"
-                    app:tint="?attr/textMutedColor" />
-            </FrameLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Confirm New Password"
-                android:textColor="?attr/textMutedColor"
-                android:textSize="14sp" />
-
-            <FrameLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilConfirmPassword"
+                style="@style/Widget.SnippetApp.TextInput"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="@string/confirm_new_password"
+                app:endIconMode="password_toggle"
+                app:endIconTint="?attr/textMutedColor">
 
-                <EditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etConfirmPassword"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_edit_text_dark"
-                    android:hint="Confirm new password"
+                    android:layout_height="wrap_content"
                     android:inputType="textPassword"
-                    android:paddingHorizontal="16dp"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textColorHint="?attr/textMutedColor" />
+                    android:textColor="?attr/textPrimaryColor" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/ivConfirmPasswordToggle"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="16dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:src="@drawable/ic_visibility_off"
-                    app:tint="?attr/textMutedColor" />
-            </FrameLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="24dp"
-                android:background="#1A231C" />
-
-            <!-- 2FA Section -->
+            <!-- 2FA Toggle -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -242,7 +182,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Two-Factor Authentication"
+                        android:text="@string/two_factor_auth"
                         android:textColor="?attr/textPrimaryColor"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -251,7 +191,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Add an extra layer of security"
+                        android:text="@string/two_factor_desc"
                         android:textColor="?attr/textMutedColor"
                         android:textSize="13sp" />
                 </LinearLayout>
@@ -260,7 +200,6 @@
                     android:id="@+id/swTwoFactor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     app:trackTint="@color/switch_track_selector"
                     app:thumbTint="@color/white" />
             </LinearLayout>
@@ -268,19 +207,19 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="24dp"
-                android:background="#1A231C" />
+                android:layout_marginTop="20dp"
+                android:background="?attr/dividerColor" />
 
-            <!-- Connected Accounts Section -->
+            <!-- ========== CONNECTED ACCOUNTS SECTION ========== -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="CONNECTED ACCOUNTS"
-                android:textColor="#818CF8"
-                android:textSize="13sp"
+                android:text="@string/connected_accounts"
+                android:textColor="?attr/accentColor"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                android:letterSpacing="0.05" />
+                android:letterSpacing="0.08" />
 
             <!-- Google Card -->
             <com.google.android.material.card.MaterialCardView
@@ -288,10 +227,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="24dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#1A231C">
+                app:strokeColor="?attr/borderColor">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -300,18 +239,13 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:cardBackgroundColor="#0D110D"
-                        app:cardCornerRadius="24dp"
-                        app:cardElevation="0dp">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_google" />
-                    </com.google.android.material.card.MaterialCardView>
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_google"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_icon_circle"
+                        android:contentDescription="Google"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -332,23 +266,22 @@
                             android:id="@+id/tvGoogleEmail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Not connected"
+                            android:text="@string/not_connected"
                             android:textColor="?attr/textMutedColor"
                             android:textSize="13sp" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnConnectGoogle"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="0dp"
-                        android:text="Connect"
+                        android:layout_height="36dp"
+                        android:text="@string/connect"
                         android:textAllCaps="false"
                         android:textSize="12sp"
-                        android:textColor="?attr/textMutedColor"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        app:strokeColor="#1A231C"
-                        app:cornerRadius="20dp" />
+                        android:textColor="?attr/textPrimaryColor"
+                        app:strokeColor="?attr/borderColor"
+                        app:cornerRadius="18dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -358,10 +291,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="24dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="#1A231C">
+                app:strokeColor="?attr/borderColor">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -370,19 +303,14 @@
                     android:orientation="horizontal"
                     android:padding="16dp">
 
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        app:cardBackgroundColor="#0D110D"
-                        app:cardCornerRadius="24dp"
-                        app:cardElevation="0dp">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_github"
-                            app:tint="?attr/textPrimaryColor" />
-                    </com.google.android.material.card.MaterialCardView>
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_github"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_icon_circle"
+                        app:tint="?attr/textPrimaryColor"
+                        android:contentDescription="GitHub"/>
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -403,140 +331,60 @@
                             android:id="@+id/tvGithubUsername"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Not connected"
+                            android:text="@string/not_connected"
                             android:textColor="?attr/textMutedColor"
                             android:textSize="13sp" />
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnConnectGithub"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:minWidth="0dp"
-                        android:text="Connect"
+                        android:layout_height="36dp"
+                        android:text="@string/connect"
                         android:textAllCaps="false"
                         android:textSize="12sp"
-                        android:textColor="?attr/textMutedColor"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        app:strokeColor="#1A231C"
-                        app:cornerRadius="20dp" />
+                        android:textColor="?attr/textPrimaryColor"
+                        app:strokeColor="?attr/borderColor"
+                        app:cornerRadius="18dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Active Sessions Section -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="?attr/dividerColor" />
+
+            <!-- ========== NOTIFICATIONS SECTION ========== -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/settings_notifications"
+                android:textColor="?attr/accentColor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
+
+            <!-- Push Notifications Toggle -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ACTIVE SESSIONS"
-                    android:textColor="#818CF8"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.05" />
-
-                <TextView
-                    android:id="@+id/tvRevokeAll"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Revoke all"
-                    android:textColor="#EF4444"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:clickable="true"
-                    android:focusable="true" />
-            </LinearLayout>
-
-            <!-- iPhone Session -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_onboarding_share"
-                    app:tint="@color/profile_primary" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="iPhone 14 Pro"
-                            android:textColor="?attr/textPrimaryColor"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:background="@drawable/bg_pill_badge"
-                            android:backgroundTint="#064E3B"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
-                            android:text="CURRENT"
-                            android:textColor="@color/profile_primary"
-                            android:textSize="10sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="San Francisco, US • Active now"
-                        android:textColor="?attr/textMutedColor"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- MacBook Session -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_code"
-                    app:tint="?attr/textMutedColor" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MacBook Pro M2"
+                        android:text="@string/push_notifications"
                         android:textColor="?attr/textPrimaryColor"
                         android:textSize="15sp"
                         android:textStyle="bold" />
@@ -544,99 +392,127 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="San Francisco, US • 22 mins ago"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/push_notifications_desc"
                         android:textColor="?attr/textMutedColor"
-                        android:textSize="12sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swPushNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:trackTint="@color/switch_track_selector"
+                    app:thumbTint="@color/white" />
             </LinearLayout>
 
-            <!-- Danger Zone -->
-            <com.google.android.material.card.MaterialCardView
+            <!-- Email Notifications Toggle -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                app:cardBackgroundColor="#1A0D0D"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="#2D1616">
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/ic_help"
-                            app:tint="#EF4444" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:text="Danger Zone"
-                            android:textColor="#EF4444"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:lineSpacingMultiplier="1.2"
-                        android:text="Deleting your account will permanently remove all your data, including code snippets and revision history. This action cannot be undone."
-                        android:textColor="#A08888"
-                        android:textSize="13sp" />
+                        android:text="@string/email_notifications"
+                        android:textColor="?attr/textPrimaryColor"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnDeleteAccount"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="20dp"
-                        android:text="Delete Account"
-                        android:textAllCaps="false"
-                        android:textColor="#EF4444"
-                        android:textStyle="bold"
-                        app:backgroundTint="#2D1616"
-                        app:cornerRadius="28dp"
-                        app:strokeColor="#EF4444"
-                        app:strokeWidth="1dp"
-                        style="@style/Widget.Material3.Button.OutlinedButton" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/email_notifications_desc"
+                        android:textColor="?attr/textMutedColor"
+                        android:textSize="13sp" />
                 </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swEmailNotifications"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:trackTint="@color/switch_track_selector"
+                    app:thumbTint="@color/white" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="?attr/dividerColor" />
+
+            <!-- ========== ACCOUNT ACTIONS SECTION ========== -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/settings_account"
+                android:textColor="?attr/accentColor"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.08" />
+
+            <!-- Save Changes Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSaveChanges"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/save_changes"
+                android:textColor="@color/on_primary"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:backgroundTint="?attr/accentColor"
+                app:cornerRadius="12dp" />
+
+            <!-- Logout Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/logout"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textColor="?attr/textPrimaryColor"
+                app:icon="@drawable/ic_logout"
+                app:iconGravity="textStart"
+                app:iconTint="?attr/textPrimaryColor"
+                app:strokeColor="?attr/borderColor"
+                app:cornerRadius="12dp" />
+
+            <!-- Delete Account Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteAccount"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/delete_account"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textColor="?attr/errorColor"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconTint="?attr/errorColor"
+                app:strokeColor="?attr/errorColor"
+                app:cornerRadius="12dp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?attr/appBackgroundColor"
-        android:padding="20dp">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSaveChanges"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Save Changes"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:backgroundTint="@color/profile_primary"
-            app:cornerRadius="16dp" />
-    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

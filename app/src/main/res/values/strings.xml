@@ -194,4 +194,31 @@
     <string name="results_found">%1$d results found</string>
     <string name="load_more">Load more results</string>
     <string name="create_snippet">Create Snippet</string>
+
+    <!-- Account Settings -->
+    <string name="account_settings">Account Settings</string>
+    <string name="settings_appearance">APPEARANCE</string>
+    <string name="settings_security">SECURITY</string>
+    <string name="settings_notifications">NOTIFICATIONS</string>
+    <string name="settings_account">ACCOUNT</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_desc">Use dark theme throughout the app</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="two_factor_auth">Two-Factor Authentication</string>
+    <string name="two_factor_desc">Add an extra layer of security</string>
+    <string name="connected_accounts">CONNECTED ACCOUNTS</string>
+    <string name="not_connected">Not connected</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="push_notifications">Push Notifications</string>
+    <string name="push_notifications_desc">Get notified about new activity</string>
+    <string name="email_notifications">Email Notifications</string>
+    <string name="email_notifications_desc">Receive updates via email</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="logout">Log Out</string>
+    <string name="logout_confirm">Are you sure you want to log out?</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="delete_account_confirm">This will permanently delete all your data. This action cannot be undone.</string>
 </resources>

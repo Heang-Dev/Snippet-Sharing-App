@@ -3,32 +3,32 @@ package group.eleven.snippet_sharing_app.ui.profile;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
-import group.eleven.snippet_sharing_app.R;
-import group.eleven.snippet_sharing_app.utils.ThemeManager;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 
+import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
+import group.eleven.snippet_sharing_app.utils.SessionManager;
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
+
 public class AccountSettingsActivity extends AppCompatActivity {
 
-    private boolean isCurrentPasswordVisible = false;
-    private boolean isNewPasswordVisible = false;
-    private boolean isConfirmPasswordVisible = false;
-    
-    private MaterialSwitch swTwoFactor, swDarkMode;
+    private MaterialSwitch swTwoFactor, swDarkMode, swPushNotifications, swEmailNotifications;
     private ThemeManager themeManager;
-    private EditText etCurrentPassword, etNewPassword, etConfirmPassword;
-    private ImageView ivCurrentPasswordToggle, ivNewPasswordToggle, ivConfirmPasswordToggle;
-    
+    private SessionManager sessionManager;
+    private TextInputEditText etCurrentPassword, etNewPassword, etConfirmPassword;
+
     private Button btnConnectGoogle, btnConnectGithub;
     private TextView tvGoogleEmail, tvGithubUsername;
     private boolean isGoogleConnected = false;
@@ -47,26 +47,24 @@ public class AccountSettingsActivity extends AppCompatActivity {
         initViews();
         loadSettings();
         setupNavigation();
-        setupPasswordToggles();
         setupActions();
     }
 
     private void initViews() {
-        // Theme manager
+        // Managers
         themeManager = ThemeManager.getInstance(this);
+        sessionManager = new SessionManager(this);
 
         // Switches
         swTwoFactor = findViewById(R.id.swTwoFactor);
         swDarkMode = findViewById(R.id.swDarkMode);
+        swPushNotifications = findViewById(R.id.swPushNotifications);
+        swEmailNotifications = findViewById(R.id.swEmailNotifications);
 
-        // Password fields
+        // Password fields (using TextInputEditText now)
         etCurrentPassword = findViewById(R.id.etCurrentPassword);
         etNewPassword = findViewById(R.id.etNewPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
-
-        ivCurrentPasswordToggle = findViewById(R.id.ivCurrentPasswordToggle);
-        ivNewPasswordToggle = findViewById(R.id.ivNewPasswordToggle);
-        ivConfirmPasswordToggle = findViewById(R.id.ivConfirmPasswordToggle);
 
         // Social login buttons
         btnConnectGoogle = findViewById(R.id.btnConnectGoogle);
@@ -86,7 +84,15 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
         // Load 2FA setting
         if (swTwoFactor != null) {
-            swTwoFactor.setChecked(prefs.getBoolean("two_factor_enabled", true));
+            swTwoFactor.setChecked(prefs.getBoolean("two_factor_enabled", false));
+        }
+
+        // Load notification settings
+        if (swPushNotifications != null) {
+            swPushNotifications.setChecked(prefs.getBoolean("push_notifications", true));
+        }
+        if (swEmailNotifications != null) {
+            swEmailNotifications.setChecked(prefs.getBoolean("email_notifications", true));
         }
 
         isGoogleConnected = prefs.getBoolean("google_connected", false);
@@ -100,38 +106,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         if (toolbar != null) {
             toolbar.setNavigationOnClickListener(v -> finish());
         }
-    }
-
-    private void setupPasswordToggles() {
-        if (ivCurrentPasswordToggle != null && etCurrentPassword != null) {
-            ivCurrentPasswordToggle.setOnClickListener(v -> {
-                isCurrentPasswordVisible = togglePassword(etCurrentPassword, ivCurrentPasswordToggle, isCurrentPasswordVisible);
-            });
-        }
-
-        if (ivNewPasswordToggle != null && etNewPassword != null) {
-            ivNewPasswordToggle.setOnClickListener(v -> {
-                isNewPasswordVisible = togglePassword(etNewPassword, ivNewPasswordToggle, isNewPasswordVisible);
-            });
-        }
-
-        if (ivConfirmPasswordToggle != null && etConfirmPassword != null) {
-            ivConfirmPasswordToggle.setOnClickListener(v -> {
-                isConfirmPasswordVisible = togglePassword(etConfirmPassword, ivConfirmPasswordToggle, isConfirmPasswordVisible);
-            });
-        }
-    }
-
-    private boolean togglePassword(EditText editText, ImageView toggleIcon, boolean isVisible) {
-        if (isVisible) {
-            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-            toggleIcon.setImageResource(R.drawable.ic_visibility_off);
-        } else {
-            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-            toggleIcon.setImageResource(R.drawable.ic_visibility);
-        }
-        editText.setSelection(editText.getText().length());
-        return !isVisible;
     }
 
     private void setupActions() {
@@ -162,6 +136,12 @@ public class AccountSettingsActivity extends AppCompatActivity {
             });
         }
 
+        // Logout Button
+        if (findViewById(R.id.btnLogout) != null) {
+            findViewById(R.id.btnLogout).setOnClickListener(v -> showLogoutConfirmation());
+        }
+
+        // Social connect buttons
         if (btnConnectGoogle != null) {
             btnConnectGoogle.setOnClickListener(v -> {
                 isGoogleConnected = !isGoogleConnected;
@@ -178,12 +158,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
             });
         }
 
-        if (findViewById(R.id.tvRevokeAll) != null) {
-            findViewById(R.id.tvRevokeAll).setOnClickListener(v -> 
-                Toast.makeText(this, "All other sessions have been revoked", Toast.LENGTH_SHORT).show()
-            );
-        }
-
+        // Delete Account Button
         if (findViewById(R.id.btnDeleteAccount) != null) {
             findViewById(R.id.btnDeleteAccount).setOnClickListener(v -> showDeleteConfirmation());
         }
@@ -191,25 +166,46 @@ public class AccountSettingsActivity extends AppCompatActivity {
 
     private void updateSocialUI() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        if (btnConnectGoogle != null) {
-            btnConnectGoogle.setText(isGoogleConnected ? "Disconnect" : "Connect");
-            String email = prefs.getString("email", "alex@gmail.com");
-            tvGoogleEmail.setText(isGoogleConnected ? email : "Not connected");
+        if (btnConnectGoogle != null && tvGoogleEmail != null) {
+            btnConnectGoogle.setText(isGoogleConnected ? getString(R.string.disconnect) : getString(R.string.connect));
+            String email = prefs.getString("email", "");
+            tvGoogleEmail.setText(isGoogleConnected && !email.isEmpty() ? email : getString(R.string.not_connected));
         }
-        if (btnConnectGithub != null) {
-            btnConnectGithub.setText(isGithubConnected ? "Disconnect" : "Connect");
-            String username = prefs.getString("username", "@alexcodes");
-            tvGithubUsername.setText(isGithubConnected ? username : "Not connected");
+        if (btnConnectGithub != null && tvGithubUsername != null) {
+            btnConnectGithub.setText(isGithubConnected ? getString(R.string.disconnect) : getString(R.string.connect));
+            String username = prefs.getString("username", "");
+            tvGithubUsername.setText(isGithubConnected && !username.isEmpty() ? "@" + username : getString(R.string.not_connected));
         }
     }
 
+    private void showLogoutConfirmation() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.logout_confirm)
+                .setPositiveButton(R.string.logout, (dialog, which) -> performLogout())
+                .setNegativeButton(R.string.cancel, null)
+                .show();
+    }
+
+    private void performLogout() {
+        // Clear session
+        sessionManager.clearAll();
+
+        Toast.makeText(this, R.string.profile_logout_success, Toast.LENGTH_SHORT).show();
+
+        // Navigate to login
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     private void showDeleteConfirmation() {
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Account?")
-                .setMessage("This will permanently delete all your profile information, snippets, and photos. This cannot be undone.")
-                .setPositiveButton("DELETE", (dialog, which) -> deleteAccount())
-                .setNegativeButton("CANCEL", null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.delete_account)
+                .setMessage(R.string.delete_account_confirm)
+                .setPositiveButton("Delete", (dialog, which) -> deleteAccount())
+                .setNegativeButton(R.string.cancel, null)
                 .show();
     }
 
@@ -223,7 +219,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
         prefs.edit().clear().apply();
 
         // Clear session data
-        new group.eleven.snippet_sharing_app.utils.SessionManager(this).clearAll();
+        sessionManager.clearAll();
 
         // Delete profile image file
         if (imagePath != null) {
@@ -231,25 +227,27 @@ public class AccountSettingsActivity extends AppCompatActivity {
             if (file.exists()) file.delete();
         }
 
-        Toast.makeText(this, "Account and all data deleted successfully", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Account deleted successfully", Toast.LENGTH_LONG).show();
 
-        Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.auth.LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
     }
 
     private boolean validatePasswords() {
-        String newPass = etNewPassword.getText().toString();
-        String confirmPass = etConfirmPassword.getText().toString();
+        if (etNewPassword == null || etConfirmPassword == null) return true;
+
+        String newPass = etNewPassword.getText() != null ? etNewPassword.getText().toString() : "";
+        String confirmPass = etConfirmPassword.getText() != null ? etConfirmPassword.getText().toString() : "";
 
         if (!newPass.isEmpty()) {
             if (newPass.length() < 6) {
-                Toast.makeText(this, "New password must be at least 6 characters", Toast.LENGTH_SHORT).show();
+                etNewPassword.setError("Password must be at least 6 characters");
                 return false;
             }
             if (!newPass.equals(confirmPass)) {
-                Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show();
+                etConfirmPassword.setError("Passwords do not match");
                 return false;
             }
         }
@@ -260,6 +258,12 @@ public class AccountSettingsActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
         if (swTwoFactor != null) {
             editor.putBoolean("two_factor_enabled", swTwoFactor.isChecked());
+        }
+        if (swPushNotifications != null) {
+            editor.putBoolean("push_notifications", swPushNotifications.isChecked());
+        }
+        if (swEmailNotifications != null) {
+            editor.putBoolean("email_notifications", swEmailNotifications.isChecked());
         }
         editor.putBoolean("google_connected", isGoogleConnected);
         editor.putBoolean("github_connected", isGithubConnected);

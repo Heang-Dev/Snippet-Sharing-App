@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="QuickAccessChip">
-        <item name="android:layout_width">36dp</item>
-        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">34dp</item>
+        <item name="android:minWidth">34dp</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/bg_badge_draft</item>
-        <item name="android:layout_marginEnd">8dp</item>
-        <item name="android:textColor">#b0bec5</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/bg_quick_access_chip</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:textColor">?attr/textSecondaryColor</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
     </style>
 </resources>
