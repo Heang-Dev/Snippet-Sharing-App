@@ -180,12 +180,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         tvDrawerFollowersCount = headerView.findViewById(R.id.tvFollowersCount);
         tvDrawerFollowingCount = headerView.findViewById(R.id.tvFollowingCount);
 
-        // Setup close button
-        ImageView btnClose = headerView.findViewById(R.id.btnClose);
-        if (btnClose != null) {
-            btnClose.setOnClickListener(v -> binding.drawerLayout.closeDrawer(GravityCompat.START));
-        }
-
         User user = sessionManager.getUser();
         if (user != null) {
             // Set display name
@@ -504,9 +498,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            // Already on Dashboard/Home - just close drawer
+            // Already on Home - just close drawer
+        } else if (id == R.id.nav_explore) {
+            Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.explore.ExploreActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_all_snippets) {
             Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_create_snippet) {
+            Intent intent = new Intent(this, CreateSnippetActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_favorites) {
             Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class);
@@ -516,6 +516,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         } else if (id == R.id.nav_teams) {
             Intent intent = new Intent(HomeActivity.this, TeamsListActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_notifications) {
+            Intent intent = new Intent(this, NotificationsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);

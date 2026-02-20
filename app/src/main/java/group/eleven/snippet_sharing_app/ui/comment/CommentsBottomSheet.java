@@ -164,11 +164,13 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
     }
 
     private void loadComments() {
-        commentRepository.getComments(snippetId, 30).observe(getViewLifecycleOwner(), resource -> {
+        commentRepository.getComments(snippetId, 50).observe(getViewLifecycleOwner(), resource -> {
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                 adapter.setComments(resource.data);
-                updateEmptyState(resource.data.isEmpty());
-                tvCommentsTitle.setText("Comments (" + resource.data.size() + ")");
+                // Count includes all comments (root + replies)
+                int totalCount = countAllComments(resource.data);
+                updateEmptyState(totalCount == 0);
+                tvCommentsTitle.setText("Comments (" + totalCount + ")");
             } else if (resource.status == Resource.Status.ERROR) {
                 // Show empty state when API fails
                 adapter.setComments(new ArrayList<>());
@@ -177,6 +179,20 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
                 Toast.makeText(requireContext(), "Unable to load comments", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * Count all comments including nested replies
+     */
+    private int countAllComments(List<Comment> comments) {
+        int count = 0;
+        for (Comment comment : comments) {
+            count++; // Count the comment itself
+            if (comment.hasReplies()) {
+                count += comment.getRepliesCount(); // Count replies
+            }
+        }
+        return count;
     }
 
     private void postComment(String content) {
@@ -190,12 +206,19 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
                 etComment.setText("");
                 rvComments.scrollToPosition(0);
                 updateEmptyState(false);
-                tvCommentsTitle.setText("Comments (" + adapter.getItemCount() + ")");
+                updateCommentsCount();
                 Toast.makeText(requireContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
             } else if (resource.status == Resource.Status.ERROR) {
                 Toast.makeText(requireContext(), "Failed to post comment: " + resource.message, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * Update the comments count in the title
+     */
+    private void updateCommentsCount() {
+        tvCommentsTitle.setText("Comments (" + adapter.getItemCount() + ")");
     }
 
     private void updateEmptyState(boolean isEmpty) {
@@ -205,13 +228,26 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
 
     @Override
     public void onLikeClick(Comment comment, int position) {
-        boolean newLikeState = !comment.isLiked();
-        int newCount = comment.getLikesCount() + (newLikeState ? 1 : -1);
+        // Optimistic UI update
+        boolean originalLikeState = comment.isLiked();
+        int originalCount = comment.getLikesCount();
+        boolean newLikeState = !originalLikeState;
+        int newCount = originalCount + (newLikeState ? 1 : -1);
+
         comment.setLiked(newLikeState);
-        comment.setLikesCount(newCount);
+        comment.setLikesCount(Math.max(0, newCount));
         adapter.updateComment(position, comment);
 
-        // TODO: Call API to like/unlike comment
+        // Call API to persist the like
+        commentRepository.toggleLike(comment.getId(), originalLikeState).observe(getViewLifecycleOwner(), resource -> {
+            if (resource.status == Resource.Status.ERROR) {
+                // Rollback on error
+                comment.setLiked(originalLikeState);
+                comment.setLikesCount(originalCount);
+                adapter.updateComment(position, comment);
+                Toast.makeText(requireContext(), "Failed to update like", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

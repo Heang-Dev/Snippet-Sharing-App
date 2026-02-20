@@ -144,4 +144,38 @@ public class CommentRepository {
 
         return result;
     }
+
+    /**
+     * Toggle like on a comment
+     */
+    public LiveData<Resource<Boolean>> toggleLike(String commentId, boolean currentlyLiked) {
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading(null));
+
+        Call<MessageResponse> call;
+        if (currentlyLiked) {
+            call = apiService.unlikeComment(commentId);
+        } else {
+            call = apiService.likeComment(commentId);
+        }
+
+        call.enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    result.setValue(Resource.success(!currentlyLiked));
+                } else {
+                    String message = response.body() != null ? response.body().getMessage() : "Failed to update like";
+                    result.setValue(Resource.error(message, null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                result.setValue(Resource.error("Network error: " + t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
 }

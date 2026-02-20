@@ -19,14 +19,15 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.api.ApiClient;
 import group.eleven.snippet_sharing_app.data.model.Comment;
 
 /**
- * Adapter for displaying comments in a list
+ * Adapter for displaying comments in a list with reply support
  */
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
-    private List<Comment> comments;
+    private List<Comment> flattenedComments;
     private Context context;
     private OnCommentActionListener listener;
 
@@ -37,26 +38,60 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     public CommentsAdapter() {
-        this.comments = new ArrayList<>();
+        this.flattenedComments = new ArrayList<>();
     }
 
     public void setOnCommentActionListener(OnCommentActionListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Set comments and flatten replies for display
+     */
     public void setComments(List<Comment> comments) {
-        this.comments = comments != null ? comments : new ArrayList<>();
+        flattenedComments = new ArrayList<>();
+        if (comments != null) {
+            for (Comment comment : comments) {
+                flattenedComments.add(comment);
+                // Add replies after parent comment
+                if (comment.hasReplies()) {
+                    flattenedComments.addAll(comment.getReplies());
+                }
+            }
+        }
         notifyDataSetChanged();
     }
 
     public void addComment(Comment comment) {
-        comments.add(0, comment);
-        notifyItemInserted(0);
+        // Add new comment at top if it's a root comment
+        if (!comment.isReply()) {
+            flattenedComments.add(0, comment);
+            notifyItemInserted(0);
+        } else {
+            // Add reply after its parent
+            for (int i = 0; i < flattenedComments.size(); i++) {
+                if (flattenedComments.get(i).getId().equals(comment.getParentId())) {
+                    // Find the end of replies for this parent
+                    int insertPos = i + 1;
+                    while (insertPos < flattenedComments.size() &&
+                           flattenedComments.get(insertPos).isReply() &&
+                           comment.getParentId().equals(flattenedComments.get(insertPos).getParentId())) {
+                        insertPos++;
+                    }
+                    flattenedComments.add(insertPos, comment);
+                    notifyItemInserted(insertPos);
+                    return;
+                }
+            }
+            // If parent not found, add at top
+            flattenedComments.add(0, comment);
+            notifyItemInserted(0);
+        }
     }
 
     public void updateComment(int position, Comment comment) {
-        if (position >= 0 && position < comments.size()) {
-            comments.set(position, comment);
+        if (position >= 0 && position < flattenedComments.size()) {
+            flattenedComments.set(position, comment);
             notifyItemChanged(position);
         }
     }
@@ -71,13 +106,13 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Comment comment = comments.get(position);
+        Comment comment = flattenedComments.get(position);
         holder.bind(comment, position);
     }
 
     @Override
     public int getItemCount() {
-        return comments.size();
+        return flattenedComments.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -85,9 +120,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         TextView tvAuthorName, tvTimeAgo, tvCommentText, tvLikeText, tvLikesCount;
         LinearLayout btnLike, btnReply;
         ImageView ivLike;
+        View rootView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            rootView = itemView;
             ivAuthorAvatar = itemView.findViewById(R.id.ivAuthorAvatar);
             tvAuthorName = itemView.findViewById(R.id.tvAuthorName);
             tvTimeAgo = itemView.findViewById(R.id.tvTimeAgo);
@@ -100,20 +137,50 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         }
 
         public void bind(Comment comment, int position) {
-            // Author name
-            tvAuthorName.setText(comment.getDisplayName());
+            // Apply indentation for replies
+            int basePadding = (int) (16 * context.getResources().getDisplayMetrics().density);
+            int replyIndent = (int) (40 * context.getResources().getDisplayMetrics().density);
+            if (comment.isReply()) {
+                rootView.setPadding(basePadding + replyIndent,
+                    (int) (8 * context.getResources().getDisplayMetrics().density),
+                    basePadding,
+                    (int) (8 * context.getResources().getDisplayMetrics().density));
+                // Smaller avatar for replies
+                ViewGroup.LayoutParams params = ivAuthorAvatar.getLayoutParams();
+                params.width = (int) (28 * context.getResources().getDisplayMetrics().density);
+                params.height = (int) (28 * context.getResources().getDisplayMetrics().density);
+                ivAuthorAvatar.setLayoutParams(params);
+            } else {
+                rootView.setPadding(basePadding,
+                    (int) (12 * context.getResources().getDisplayMetrics().density),
+                    basePadding,
+                    (int) (12 * context.getResources().getDisplayMetrics().density));
+                // Normal avatar size for main comments
+                ViewGroup.LayoutParams params = ivAuthorAvatar.getLayoutParams();
+                params.width = (int) (36 * context.getResources().getDisplayMetrics().density);
+                params.height = (int) (36 * context.getResources().getDisplayMetrics().density);
+                ivAuthorAvatar.setLayoutParams(params);
+            }
 
-            // Time ago
-            tvTimeAgo.setText(comment.getCreatedAt());
+            // Author name with edited indicator
+            String displayName = comment.getDisplayName();
+            if (comment.isEdited()) {
+                displayName += " (edited)";
+            }
+            tvAuthorName.setText(displayName);
+
+            // Formatted time ago
+            tvTimeAgo.setText(comment.getFormattedTime());
 
             // Comment text
             tvCommentText.setText(comment.getContent());
 
-            // Author avatar
+            // Author avatar with proper URL
             String avatarUrl = comment.getAuthorAvatar();
             if (avatarUrl != null && !avatarUrl.isEmpty()) {
+                String fullUrl = ApiClient.getFullStorageUrl(avatarUrl);
                 Glide.with(context)
-                        .load(avatarUrl)
+                        .load(fullUrl)
                         .placeholder(R.drawable.ic_person)
                         .error(R.drawable.ic_person)
                         .into(ivAuthorAvatar);
@@ -161,6 +228,8 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                 ivLike.setImageResource(R.drawable.ic_heart);
                 ivLike.setColorFilter(null);
                 tvLikeText.setText("Like");
+                tvLikeText.setTextColor(ContextCompat.getColor(context,
+                    android.R.color.secondary_text_dark));
             }
         }
     }

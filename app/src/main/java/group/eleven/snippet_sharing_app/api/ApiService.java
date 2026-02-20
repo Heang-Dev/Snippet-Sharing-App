@@ -431,6 +431,18 @@ public interface ApiService {
     @DELETE("comments/{id}")
     Call<MessageResponse> deleteComment(@Path("id") String commentId);
 
+    /**
+     * Like a comment
+     */
+    @POST("comments/{id}/like")
+    Call<MessageResponse> likeComment(@Path("id") String commentId);
+
+    /**
+     * Unlike a comment
+     */
+    @DELETE("comments/{id}/like")
+    Call<MessageResponse> unlikeComment(@Path("id") String commentId);
+
     // ==================== Favorites ====================
 
     /**

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Selected/Checked state - accent pink -->
-    <item android:color="@color/accent_pink" android:state_checked="true" />
-    <!-- Default state - matches light theme secondary text -->
-    <item android:color="@color/light_text_secondary" />
+    <!-- Use text_secondary for all states - visible in dark mode -->
+    <item android:color="@color/text_secondary" />
 </selector>

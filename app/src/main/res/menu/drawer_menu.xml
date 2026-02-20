@@ -2,36 +2,41 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:title="Main">
-        <menu>
-            <item
-                android:id="@+id/nav_dashboard"
-                android:icon="@drawable/ic_home"
-                android:title="Dashboard"
-                android:checkable="true"
-                android:checked="true"/>
-        </menu>
-    </item>
+    <!-- Main Navigation - No checkable behavior to remove indicator -->
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_explore"
+            android:icon="@drawable/ic_search"
+            android:title="Explore" />
+    </group>
 
+    <!-- Snippets Section -->
     <item android:title="Snippets">
         <menu>
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_all_snippets"
-                    android:icon="@drawable/ic_code"
-                    android:title="All Snippets" />
-                <item
-                    android:id="@+id/nav_favorites"
-                    android:icon="@drawable/ic_star_filled"
-                    android:title="Favorites" />
-                <item
-                    android:id="@+id/nav_shared"
-                    android:icon="@drawable/ic_share"
-                    android:title="Shared with me" />
-            </group>
+            <item
+                android:id="@+id/nav_all_snippets"
+                android:icon="@drawable/ic_code"
+                android:title="My Snippets" />
+            <item
+                android:id="@+id/nav_create_snippet"
+                android:icon="@drawable/ic_add"
+                android:title="Create Snippet" />
+            <item
+                android:id="@+id/nav_favorites"
+                android:icon="@drawable/ic_star_filled"
+                android:title="Favorites" />
+            <item
+                android:id="@+id/nav_shared"
+                android:icon="@drawable/ic_share"
+                android:title="Shared with me" />
         </menu>
     </item>
 
+    <!-- Collaborate Section -->
     <item android:title="Collaborate">
         <menu>
             <item
@@ -39,10 +44,15 @@
                 android:icon="@drawable/ic_users"
                 android:title="Teams"
                 app:actionLayout="@layout/menu_action_badge"/>
+            <item
+                android:id="@+id/nav_notifications"
+                android:icon="@drawable/ic_bell"
+                android:title="Notifications" />
         </menu>
     </item>
 
-    <item android:title="Settings">
+    <!-- Account Section -->
+    <item android:title="Account">
         <menu>
             <item
                 android:id="@+id/nav_profile"
@@ -51,11 +61,22 @@
             <item
                 android:id="@+id/nav_preferences"
                 android:icon="@drawable/ic_sliders"
-                android:title="Preferences" />
+                android:title="Settings" />
             <item
                 android:id="@+id/nav_help"
                 android:icon="@drawable/ic_help"
                 android:title="Help &amp; Support" />
+        </menu>
+    </item>
+
+    <!-- App Info - No header title -->
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_app_version"
+                android:icon="@drawable/ic_info"
+                android:title="Code Dash v1.0.0"
+                android:enabled="false" />
         </menu>
     </item>
 
