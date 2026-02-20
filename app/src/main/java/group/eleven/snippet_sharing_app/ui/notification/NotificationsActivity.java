@@ -168,20 +168,12 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
                 Log.d(TAG, "Loaded " + allNotifications.size() + " notifications from API");
             } else if (resource.status == Resource.Status.ERROR) {
                 Log.e(TAG, "Failed to load notifications: " + resource.message);
-                // Fall back to mock data for demo
-                loadMockNotificationsFallback();
+                // Show empty state when API fails
+                allNotifications.clear();
+                filterNotifications();
+                Toast.makeText(this, "Unable to load notifications", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    /**
-     * Fallback to mock data when API fails
-     */
-    private void loadMockNotificationsFallback() {
-        allNotifications = group.eleven.snippet_sharing_app.data.MockDataProvider
-                .getMockNotifications(12);
-        filterNotifications();
-        Log.d(TAG, "Loaded " + allNotifications.size() + " mock notifications as fallback");
     }
 
     @Override

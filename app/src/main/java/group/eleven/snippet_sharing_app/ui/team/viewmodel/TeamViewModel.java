@@ -171,13 +171,7 @@ public class TeamViewModel extends AndroidViewModel {
         teamRepository.getTeamMembers(teamId).observeForever(new Observer<AuthRepository.Resource<List<TeamMember>>>() {
             @Override
             public void onChanged(AuthRepository.Resource<List<TeamMember>> listResource) {
-                // Fall back to mock data if API fails
-                if (listResource.getStatus() == AuthRepository.Resource.Status.ERROR) {
-                    List<TeamMember> mockMembers = group.eleven.snippet_sharing_app.data.MockDataProvider.getMockTeamMembers(5);
-                    _teamMembersResult.setValue(AuthRepository.Resource.success(mockMembers));
-                } else {
-                    _teamMembersResult.setValue(listResource);
-                }
+                _teamMembersResult.setValue(listResource);
                 teamRepository.getTeamMembers(teamId).removeObserver(this);
             }
         });
@@ -262,13 +256,7 @@ public class TeamViewModel extends AndroidViewModel {
         teamRepository.getTeamActivity(teamId).observeForever(new Observer<AuthRepository.Resource<List<ActivityFeedItem>>>() {
             @Override
             public void onChanged(AuthRepository.Resource<List<ActivityFeedItem>> listResource) {
-                // Fall back to mock data if API fails
-                if (listResource.getStatus() == AuthRepository.Resource.Status.ERROR) {
-                    List<ActivityFeedItem> mockActivity = group.eleven.snippet_sharing_app.data.MockDataProvider.getMockActivityFeed(5);
-                    _teamActivityFeedResult.setValue(AuthRepository.Resource.success(mockActivity));
-                } else {
-                    _teamActivityFeedResult.setValue(listResource);
-                }
+                _teamActivityFeedResult.setValue(listResource);
                 teamRepository.getTeamActivity(teamId).removeObserver(this);
             }
         });

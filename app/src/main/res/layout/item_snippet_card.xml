@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardBackgroundColor="?attr/cardSurfaceColor"
-    app:cardCornerRadius="@dimen/snippet_card_corner"
+    app:cardCornerRadius="16dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp"
-    android:layout_marginBottom="@dimen/card_spacing">
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="12dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,9 +27,9 @@
 
             <!-- Language Badge -->
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                app:cardCornerRadius="20dp"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                app:cardCornerRadius="12dp"
                 app:cardBackgroundColor="?attr/tagBackgroundColor"
                 app:cardElevation="0dp">
 
@@ -35,10 +38,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="Py"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:text="JS"
+                    android:textColor="?attr/accentColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="JS" />
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -53,12 +57,15 @@
                 <!-- Snippet Title -->
                 <TextView
                     android:id="@+id/tvSnippetTitle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
                     android:text="Python CSV Parser"
                     android:textColor="?attr/textPrimaryColor"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="React Custom Hook for API Calls" />
 
                 <!-- Updated Time -->
                 <TextView
@@ -66,18 +73,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Updated 2h ago"
-                    android:textColor="?attr/textSecondaryColor"
+                    android:textColor="?attr/textMutedColor"
                     android:textSize="12sp"
-                    android:layout_marginTop="2dp" />
+                    android:layout_marginTop="4dp"
+                    tools:text="Just now" />
 
             </LinearLayout>
 
             <!-- More Menu -->
             <ImageView
                 android:id="@+id/ivSnippetMenu"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_help"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="4dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_more_vert"
                 app:tint="?attr/textSecondaryColor"
                 android:contentDescription="More options" />
 
@@ -90,8 +100,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="12dp"
-            app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="?attr/codeBackgroundColor"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="?attr/codeBlockBackground"
             app:strokeWidth="0dp"
             app:cardElevation="0dp">
 
@@ -100,46 +110,62 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Hacker Dots Header -->
+                <!-- Code Header -->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
+                    android:layout_height="32dp"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical|end"
-                    android:paddingEnd="12dp"
+                    android:gravity="center_vertical"
                     android:paddingStart="12dp"
-                    android:background="?attr/cardInnerColor">
+                    android:paddingEnd="12dp"
+                    android:background="?attr/codeBlockHeaderBackground">
 
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:background="@drawable/circle_red"
-                        android:layout_marginEnd="6dp" />
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_code"
+                        app:tint="?attr/textMutedColor" />
 
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:background="@drawable/circle_yellow"
-                        android:layout_marginEnd="6dp" />
+                    <TextView
+                        android:id="@+id/tvCodeFilename"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="monospace"
+                        android:textColor="?attr/textMutedColor"
+                        android:textSize="11sp"
+                        android:text="snippet.js"
+                        tools:text="index.js" />
 
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:background="@drawable/circle_green" />
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_copy"
+                        app:tint="?attr/textMutedColor" />
 
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvCode"
+                <!-- Code Content -->
+                <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/codeBackgroundColor"
-                    android:fontFamily="monospace"
-                    android:minLines="3"
-                    android:maxLines="8"
-                    android:padding="12dp"
-                    android:textColor="?attr/codeTextColor"
-                    android:textSize="12sp" />
+                    android:scrollbars="none">
+
+                    <TextView
+                        android:id="@+id/tvCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:lineSpacingMultiplier="1.3"
+                        android:minLines="3"
+                        android:maxLines="8"
+                        android:padding="12dp"
+                        android:textColor="?attr/codeTextColor"
+                        android:textSize="12sp"
+                        tools:text="function useApi(url) {\n  const [data, setData] = useState(null);\n  return data;\n}" />
+
+                </HorizontalScrollView>
 
             </LinearLayout>
 
@@ -156,53 +182,62 @@
             android:gravity="center_vertical">
 
             <!-- Tags Container -->
-            <LinearLayout
-                android:id="@+id/llTagsContainer"
+            <HorizontalScrollView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="horizontal">
+                android:scrollbars="none">
 
-                <!-- Tag 1 -->
-                <TextView
+                <LinearLayout
+                    android:id="@+id/llTagsContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Data"
-                    android:textColor="?attr/tagTextColor"
-                    android:textSize="11sp"
-                    android:background="@drawable/bg_tag_chip"
-                    android:backgroundTint="?attr/tagBackgroundColor"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_marginEnd="6dp" />
+                    android:orientation="horizontal">
 
-                <!-- Tag 2 -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Utils"
-                    android:textColor="?attr/tagTextColor"
-                    android:textSize="11sp"
-                    android:background="@drawable/bg_tag_chip"
-                    android:backgroundTint="?attr/tagBackgroundColor"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp" />
+                    <!-- Tag 1 -->
+                    <TextView
+                        android:id="@+id/tvTag1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Data"
+                        android:textColor="?attr/tagTextColor"
+                        android:textSize="12sp"
+                        android:background="@drawable/bg_tag_chip"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:layout_marginEnd="8dp"
+                        tools:text="React" />
 
-            </LinearLayout>
+                    <!-- Tag 2 -->
+                    <TextView
+                        android:id="@+id/tvTag2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Utils"
+                        android:textColor="?attr/tagTextColor"
+                        android:textSize="12sp"
+                        android:background="@drawable/bg_tag_chip"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        tools:text="Hooks" />
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
 
             <!-- Share Button -->
             <ImageButton
                 android:id="@+id/btnShare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Share"
-                android:padding="8dp"
-                android:src="@android:drawable/ic_menu_share"
+                android:padding="6dp"
+                android:src="@drawable/ic_share"
                 app:tint="?attr/textSecondaryColor" />
 
         </LinearLayout>

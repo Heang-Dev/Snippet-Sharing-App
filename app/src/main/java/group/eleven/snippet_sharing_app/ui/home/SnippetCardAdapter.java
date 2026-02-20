@@ -6,22 +6,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Map;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
-import group.eleven.snippet_sharing_app.ui.team.TeamDashboardActivity;
 
 /**
  * Adapter for snippet cards RecyclerView
@@ -30,6 +25,64 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
 
     private List<SnippetCard> snippets;
     private OnSnippetClickListener listener;
+
+    // Map of language names to their abbreviations
+    private static final Map<String, String> LANGUAGE_ABBREVIATIONS = new HashMap<>();
+    // Map of language names to file extensions
+    private static final Map<String, String> LANGUAGE_EXTENSIONS = new HashMap<>();
+
+    static {
+        LANGUAGE_ABBREVIATIONS.put("javascript", "JS");
+        LANGUAGE_ABBREVIATIONS.put("typescript", "TS");
+        LANGUAGE_ABBREVIATIONS.put("python", "Py");
+        LANGUAGE_ABBREVIATIONS.put("java", "Java");
+        LANGUAGE_ABBREVIATIONS.put("kotlin", "Kt");
+        LANGUAGE_ABBREVIATIONS.put("swift", "Swft");
+        LANGUAGE_ABBREVIATIONS.put("go", "Go");
+        LANGUAGE_ABBREVIATIONS.put("rust", "Rs");
+        LANGUAGE_ABBREVIATIONS.put("ruby", "Rb");
+        LANGUAGE_ABBREVIATIONS.put("php", "PHP");
+        LANGUAGE_ABBREVIATIONS.put("c#", "C#");
+        LANGUAGE_ABBREVIATIONS.put("csharp", "C#");
+        LANGUAGE_ABBREVIATIONS.put("c++", "C++");
+        LANGUAGE_ABBREVIATIONS.put("cpp", "C++");
+        LANGUAGE_ABBREVIATIONS.put("c", "C");
+        LANGUAGE_ABBREVIATIONS.put("html", "HTML");
+        LANGUAGE_ABBREVIATIONS.put("html/css", "HC");
+        LANGUAGE_ABBREVIATIONS.put("css", "CSS");
+        LANGUAGE_ABBREVIATIONS.put("sql", "SQL");
+        LANGUAGE_ABBREVIATIONS.put("shell", "Sh");
+        LANGUAGE_ABBREVIATIONS.put("bash", "Sh");
+        LANGUAGE_ABBREVIATIONS.put("dart", "Dart");
+        LANGUAGE_ABBREVIATIONS.put("react", "Rct");
+        LANGUAGE_ABBREVIATIONS.put("vue", "Vue");
+
+        // File extensions
+        LANGUAGE_EXTENSIONS.put("javascript", ".js");
+        LANGUAGE_EXTENSIONS.put("typescript", ".ts");
+        LANGUAGE_EXTENSIONS.put("python", ".py");
+        LANGUAGE_EXTENSIONS.put("java", ".java");
+        LANGUAGE_EXTENSIONS.put("kotlin", ".kt");
+        LANGUAGE_EXTENSIONS.put("swift", ".swift");
+        LANGUAGE_EXTENSIONS.put("go", ".go");
+        LANGUAGE_EXTENSIONS.put("rust", ".rs");
+        LANGUAGE_EXTENSIONS.put("ruby", ".rb");
+        LANGUAGE_EXTENSIONS.put("php", ".php");
+        LANGUAGE_EXTENSIONS.put("c#", ".cs");
+        LANGUAGE_EXTENSIONS.put("csharp", ".cs");
+        LANGUAGE_EXTENSIONS.put("c++", ".cpp");
+        LANGUAGE_EXTENSIONS.put("cpp", ".cpp");
+        LANGUAGE_EXTENSIONS.put("c", ".c");
+        LANGUAGE_EXTENSIONS.put("html", ".html");
+        LANGUAGE_EXTENSIONS.put("html/css", ".html");
+        LANGUAGE_EXTENSIONS.put("css", ".css");
+        LANGUAGE_EXTENSIONS.put("sql", ".sql");
+        LANGUAGE_EXTENSIONS.put("shell", ".sh");
+        LANGUAGE_EXTENSIONS.put("bash", ".sh");
+        LANGUAGE_EXTENSIONS.put("dart", ".dart");
+        LANGUAGE_EXTENSIONS.put("react", ".jsx");
+        LANGUAGE_EXTENSIONS.put("vue", ".vue");
+    }
 
     public interface OnSnippetClickListener {
         void onSnippetClick(SnippetCard snippet);
@@ -67,51 +120,55 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
         return snippets.size();
     }
 
-    private static CharSequence highlightCode(String code) {
-        // 1. Escape HTML special characters
-        String escaped = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
-
-        // 2. VS Code Dark Theme Colors
-        String colorKeyword = "#C586C0"; // Purple (import, public, void, return)
-        String colorControl = "#C586C0"; // Purple (if, else, for, while)
-        String colorType = "#4EC9B0"; // Teal (String, int, boolean, ClassName)
-        String colorFunction = "#DCDCAA"; // Light Yellow (methodName)
-        String colorString = "#CE9178"; // Orange/Brown ("text")
-        String colorNumber = "#B5CEA8"; // Light Green (123)
-        String colorComment = "#6A9955"; // Green (// comment)
-        String colorNormal = "#D4D4D4"; // Grey/White (default text)
-
-        // 3. Apply Coloring (Order is crucial!)
-        // Comments (Handle first to avoid coloring keywords inside comments)
-        // Note: This simple regex handles single line comments //...
-        String colored = escaped.replaceAll("(//.*)", "<font color='" + colorComment + "'>$1</font>");
-
-        // Keywords & Control Flow (Purple)
-        // We use a negative lookahead (?![^<]*>) to avoid replacing inside HTML tags we
-        // just added
-        colored = colored.replaceAll(
-                "\\b(public|private|protected|void|return|import|package|class|new|this|super|extends|implements)\\b(?![^<]*>)",
-                "<font color='" + colorKeyword + "'>$1</font>");
-        colored = colored.replaceAll("\\b(if|else|for|while|switch|case|break|continue|try|catch|finally)\\b(?![^<]*>)",
-                "<font color='" + colorControl + "'>$1</font>");
-
-        // Primitive Types (Teal)
-        colored = colored.replaceAll("\\b(int|long|float|double|boolean|char|String|void)\\b(?![^<]*>)",
-                "<font color='" + colorType + "'>$1</font>");
-
-        // Strings (Orange) - Handle both " and '
-        colored = colored.replaceAll("(\".*?\")(?![^<]*>)", "<font color='" + colorString + "'>$1</font>");
-        colored = colored.replaceAll("('.*?')(?![^<]*>)", "<font color='" + colorString + "'>$1</font>");
-
-        // Numbers (Light Green)
-        colored = colored.replaceAll("\\b(\\d+)\\b(?![^<]*>)", "<font color='" + colorNumber + "'>$1</font>");
-
-        // 4. Return HTML
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            return android.text.Html.fromHtml(colored, android.text.Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            return android.text.Html.fromHtml(colored);
+    /**
+     * Get abbreviated language name for badge display
+     */
+    private static String getLanguageAbbreviation(String language) {
+        if (language == null || language.isEmpty()) {
+            return "?";
         }
+        String lowerLang = language.toLowerCase().trim();
+        String abbrev = LANGUAGE_ABBREVIATIONS.get(lowerLang);
+        if (abbrev != null) {
+            return abbrev;
+        }
+        // Return first 2-4 characters if not found in map
+        if (language.length() <= 4) {
+            return language;
+        }
+        return language.substring(0, Math.min(4, language.length()));
+    }
+
+    /**
+     * Get file extension for language
+     */
+    private static String getFileExtension(String language) {
+        if (language == null || language.isEmpty()) {
+            return ".txt";
+        }
+        String lowerLang = language.toLowerCase().trim();
+        String ext = LANGUAGE_EXTENSIONS.get(lowerLang);
+        return ext != null ? ext : ".txt";
+    }
+
+    /**
+     * Generate a filename from snippet title and language
+     */
+    private static String generateFilename(String title, String language) {
+        if (title == null || title.isEmpty()) {
+            return "snippet" + getFileExtension(language);
+        }
+        // Convert title to filename-safe format
+        String filename = title.toLowerCase()
+                .replaceAll("[^a-z0-9]+", "_")
+                .replaceAll("^_+|_+$", "");
+        if (filename.length() > 20) {
+            filename = filename.substring(0, 20);
+        }
+        if (filename.isEmpty()) {
+            filename = "snippet";
+        }
+        return filename + getFileExtension(language);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -119,6 +176,9 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
         private final TextView tvSnippetTitle;
         private final TextView tvSnippetTime;
         private final TextView tvCode;
+        private final TextView tvCodeFilename;
+        private final TextView tvTag1;
+        private final TextView tvTag2;
         private final CardView cardView;
         private final ImageButton btnShare;
 
@@ -129,19 +189,45 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
             tvSnippetTitle = itemView.findViewById(R.id.tvSnippetTitle);
             tvSnippetTime = itemView.findViewById(R.id.tvSnippetTime);
             tvCode = itemView.findViewById(R.id.tvCode);
+            tvCodeFilename = itemView.findViewById(R.id.tvCodeFilename);
+            tvTag1 = itemView.findViewById(R.id.tvTag1);
+            tvTag2 = itemView.findViewById(R.id.tvTag2);
             btnShare = itemView.findViewById(R.id.btnShare);
         }
 
         public void bind(SnippetCard snippet, OnSnippetClickListener listener) {
-            tvLanguageBadge.setText(snippet.getLanguageBadge());
+            // Show abbreviated language name in badge
+            tvLanguageBadge.setText(getLanguageAbbreviation(snippet.getLanguageBadge()));
             tvSnippetTitle.setText(snippet.getTitle());
             tvSnippetTime.setText(snippet.getUpdatedTime());
 
-            // Configure Code Highlight
+            // Set filename in code header
+            if (tvCodeFilename != null) {
+                tvCodeFilename.setText(generateFilename(snippet.getTitle(), snippet.getLanguageBadge()));
+            }
+
+            // Display code preview
             if (tvCode != null) {
-                tvCode.setText(highlightCode(snippet.getCodePreview()));
-                // Set background color for the TextView if needed to match the theme
-                tvCode.setBackgroundColor(android.graphics.Color.parseColor("#080e0b"));
+                String code = snippet.getCodePreview();
+                tvCode.setText(code != null && !code.isEmpty() ? code : "// No code preview");
+            }
+
+            // Set tags
+            String[] tags = snippet.getTags();
+            if (tags != null && tags.length > 0) {
+                if (tvTag1 != null) {
+                    tvTag1.setText(tags[0]);
+                    tvTag1.setVisibility(View.VISIBLE);
+                }
+                if (tvTag2 != null && tags.length > 1) {
+                    tvTag2.setText(tags[1]);
+                    tvTag2.setVisibility(View.VISIBLE);
+                } else if (tvTag2 != null) {
+                    tvTag2.setVisibility(View.GONE);
+                }
+            } else {
+                if (tvTag1 != null) tvTag1.setVisibility(View.GONE);
+                if (tvTag2 != null) tvTag2.setVisibility(View.GONE);
             }
 
             if (btnShare != null) {

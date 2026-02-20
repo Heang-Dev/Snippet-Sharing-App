@@ -361,27 +361,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 updateEmptyState(snippetList.isEmpty());
             } else if (resource.status == Resource.Status.ERROR) {
                 Log.e(TAG, "Failed to load trending: " + resource.message);
-                loadLocalFallback();
+                // Show empty state when no data is available
+                updateEmptyState(true);
+                Toast.makeText(this, "Unable to load snippets. Please check your connection.", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void loadLocalFallback() {
-        try {
-            // Use MockDataProvider for realistic test data
-            List<SnippetCard> mockCards = group.eleven.snippet_sharing_app.data.MockDataProvider
-                    .getMockSnippetCards(15);
-
-            snippetList.clear();
-            snippetList.addAll(mockCards);
-            feedAdapter.setSnippets(snippetList);
-            updateEmptyState(snippetList.isEmpty());
-
-            Log.d(TAG, "Loaded " + mockCards.size() + " mock snippets for testing");
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to load mock data", e);
-            updateEmptyState(true);
-        }
     }
 
     private void updateEmptyState(boolean isEmpty) {

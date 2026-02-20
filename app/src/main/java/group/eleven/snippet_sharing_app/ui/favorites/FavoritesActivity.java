@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
-import group.eleven.snippet_sharing_app.data.MockDataProvider;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
 import group.eleven.snippet_sharing_app.data.repository.FavoritesRepository;
@@ -191,24 +190,12 @@ public class FavoritesActivity extends AppCompatActivity {
                 Log.d(TAG, "Loaded " + allFavorites.size() + " favorites from API");
             } else if (resource.status == Resource.Status.ERROR) {
                 Log.e(TAG, "Failed to load favorites: " + resource.message);
-                // Fall back to mock data for demo
-                loadMockFavoritesFallback();
+                // Show empty state when no data available
+                allFavorites.clear();
+                updateUI();
+                Toast.makeText(this, "Unable to load favorites", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void loadMockFavoritesFallback() {
-        List<SnippetCard> mockSnippets = MockDataProvider.getMockSnippetCards(10);
-
-        // Simulate favorites by showing a subset of snippets
-        allFavorites.clear();
-        for (int i = 0; i < mockSnippets.size(); i++) {
-            if (i % 2 == 0) {
-                allFavorites.add(mockSnippets.get(i));
-            }
-        }
-        updateUI();
-        Log.d(TAG, "Loaded " + allFavorites.size() + " mock favorites as fallback");
     }
 
     private void filterFavorites(String query) {

@@ -206,10 +206,7 @@ public class DashboardRepository {
 
             @Override
             public void onFailure(Call<ApiResponse<List<Snippet>>> call, Throwable t) {
-                // Fallback to mock data for testing when API is unavailable
-                List<SnippetCard> mockCards = group.eleven.snippet_sharing_app.data.MockDataProvider
-                        .getMockSnippetCards(perPage);
-                result.setValue(Resource.success(mockCards));
+                result.setValue(Resource.error("Network error: " + t.getMessage(), null));
             }
         });
 
@@ -286,10 +283,7 @@ public class DashboardRepository {
 
             @Override
             public void onFailure(Call<ApiResponse<List<Snippet>>> call, Throwable t) {
-                // Fallback to mock data for testing
-                List<SnippetCard> mockCards = group.eleven.snippet_sharing_app.data.MockDataProvider
-                        .getMockSnippetCards(limit);
-                result.setValue(Resource.success(mockCards));
+                result.setValue(Resource.error("Network error: " + t.getMessage(), null));
             }
         });
 

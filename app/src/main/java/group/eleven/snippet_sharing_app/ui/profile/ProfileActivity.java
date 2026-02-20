@@ -26,7 +26,6 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
-import group.eleven.snippet_sharing_app.data.MockDataProvider;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
@@ -376,16 +375,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void loadFavorites() {
-        // TODO: Add getFavoriteSnippets to DashboardRepository
-        // For now, show empty state or mock
+        // TODO: Implement actual favorites API call
         showLoading(false);
-        loadMockContent(3);
-    }
-
-    private void loadMockContent(int count) {
-        List<SnippetCard> snippets = MockDataProvider.getMockSnippetCards(count);
-        adapter.setSnippets(snippets);
-        updateContentVisibility(snippets.isEmpty());
+        // Show empty state until favorites API is implemented
+        adapter.setSnippets(new ArrayList<>());
+        updateContentVisibility(true);
     }
 
     private void updateContentVisibility(boolean isEmpty) {

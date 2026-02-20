@@ -22,11 +22,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
-import group.eleven.snippet_sharing_app.data.MockDataProvider;
 import group.eleven.snippet_sharing_app.data.model.Comment;
 import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.data.repository.CommentRepository;
@@ -170,17 +170,13 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
                 updateEmptyState(resource.data.isEmpty());
                 tvCommentsTitle.setText("Comments (" + resource.data.size() + ")");
             } else if (resource.status == Resource.Status.ERROR) {
-                // Fall back to mock data for demo
-                loadMockCommentsFallback();
+                // Show empty state when API fails
+                adapter.setComments(new ArrayList<>());
+                updateEmptyState(true);
+                tvCommentsTitle.setText("Comments (0)");
+                Toast.makeText(requireContext(), "Unable to load comments", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void loadMockCommentsFallback() {
-        List<Comment> mockComments = MockDataProvider.getMockComments(snippetId, 10);
-        adapter.setComments(mockComments);
-        updateEmptyState(mockComments.isEmpty());
-        tvCommentsTitle.setText("Comments (" + mockComments.size() + ")");
     }
 
     private void postComment(String content) {

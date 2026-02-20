@@ -67,9 +67,7 @@ public class TeamRepository {
 
             @Override
             public void onFailure(Call<ApiResponse<List<Team>>> call, Throwable t) {
-                // Fallback to mock data for testing
-                List<Team> mockTeams = group.eleven.snippet_sharing_app.data.MockDataProvider.getMockTeams(6);
-                result.setValue(AuthRepository.Resource.success(mockTeams));
+                result.setValue(AuthRepository.Resource.error("Network error: " + t.getMessage()));
             }
         });
         return result;
