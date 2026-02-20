@@ -57,8 +57,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private FeedSnippetAdapter feedAdapter;
     private List<SnippetCard> snippetList = new ArrayList<>();
 
-    // Drawer header stats
-    private TextView tvDrawerSnippetsCount, tvDrawerForksCount, tvDrawerViewsCount;
+    // Drawer header views
+    private ImageView ivDrawerUserProfile;
+    private TextView tvDrawerSnippetsCount, tvDrawerFollowersCount, tvDrawerFollowingCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,22 +169,46 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Setup drawer header
         View headerView = binding.navigationView.getHeaderView(0);
         TextView tvUserName = headerView.findViewById(R.id.tvUserName);
+        TextView tvUserEmail = headerView.findViewById(R.id.tvUserEmail);
+        ivDrawerUserProfile = headerView.findViewById(R.id.ivUserProfile);
         tvDrawerSnippetsCount = headerView.findViewById(R.id.tvSnippetsCount);
-        tvDrawerForksCount = headerView.findViewById(R.id.tvForksCount);
-        tvDrawerViewsCount = headerView.findViewById(R.id.tvViewsCount);
+        tvDrawerFollowersCount = headerView.findViewById(R.id.tvFollowersCount);
+        tvDrawerFollowingCount = headerView.findViewById(R.id.tvFollowingCount);
+
+        // Setup close button
+        ImageView btnClose = headerView.findViewById(R.id.btnClose);
+        if (btnClose != null) {
+            btnClose.setOnClickListener(v -> binding.drawerLayout.closeDrawer(GravityCompat.START));
+        }
 
         User user = sessionManager.getUser();
         if (user != null) {
+            // Set display name
             String displayName = user.getFullName() != null && !user.getFullName().isEmpty()
                     ? user.getFullName()
                     : user.getUsername();
             tvUserName.setText(displayName);
+
+            // Set email
+            if (tvUserEmail != null && user.getEmail() != null) {
+                tvUserEmail.setText(user.getEmail());
+            }
+
+            // Load avatar image
+            if (ivDrawerUserProfile != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+                Glide.with(this)
+                        .load(user.getAvatarUrl())
+                        .placeholder(R.drawable.ic_user_avatar)
+                        .error(R.drawable.ic_user_avatar)
+                        .circleCrop()
+                        .into(ivDrawerUserProfile);
+            }
         }
 
         // Set placeholder stats (will be replaced with real data from API)
-        tvDrawerSnippetsCount.setText("--");
-        tvDrawerForksCount.setText("--");
-        tvDrawerViewsCount.setText("--");
+        if (tvDrawerSnippetsCount != null) tvDrawerSnippetsCount.setText("0");
+        if (tvDrawerFollowersCount != null) tvDrawerFollowersCount.setText("0");
+        if (tvDrawerFollowingCount != null) tvDrawerFollowingCount.setText("0");
     }
 
     private void setupUserInfo() {

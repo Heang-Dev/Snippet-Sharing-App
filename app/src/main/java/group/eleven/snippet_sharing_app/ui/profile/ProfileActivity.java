@@ -117,7 +117,14 @@ public class ProfileActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        toolbar.setNavigationOnClickListener(v -> finish());
+        toolbar.setNavigationOnClickListener(v -> navigateBackToHome());
+    }
+
+    private void navigateBackToHome() {
+        Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.home.HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
+        finish();
     }
 
     private void setupClickListeners() {
@@ -433,5 +440,12 @@ public class ProfileActivity extends AppCompatActivity {
             return String.format(Locale.getDefault(), "%.1fk", count / 1000.0);
         }
         return String.valueOf(count);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onBackPressed() {
+        // Navigate back to Home instead of just finishing
+        navigateBackToHome();
     }
 }

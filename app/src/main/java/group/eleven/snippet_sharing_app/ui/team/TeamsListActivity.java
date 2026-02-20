@@ -30,6 +30,8 @@ import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
 import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
 import group.eleven.snippet_sharing_app.ui.team.viewmodel.TeamViewModel;
+import group.eleven.snippet_sharing_app.utils.BottomNavHelper;
+import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 public class TeamsListActivity extends AppCompatActivity implements TeamListAdapter.OnItemClickListener, TeamInvitationAdapter.OnInvitationActionListener {
 
@@ -127,6 +129,9 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
     private void setupBottomNavigation() {
         // Set Teams as selected
         bottomNav.setSelectedItemId(R.id.nav_teams);
+
+        // Setup profile avatar in bottom nav
+        BottomNavHelper.setupProfileAvatar(this, bottomNav, new SessionManager(this));
 
         bottomNav.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();

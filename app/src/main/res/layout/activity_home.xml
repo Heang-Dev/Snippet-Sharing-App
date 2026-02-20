@@ -301,15 +301,21 @@
     <!-- Navigation Drawer -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="?attr/surfaceColor"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
         app:itemBackground="@drawable/nav_item_background_highlight"
+        app:itemHorizontalPadding="20dp"
+        app:itemIconPadding="16dp"
+        app:itemIconSize="22dp"
         app:itemIconTint="@color/nav_item_tint"
+        app:itemTextAppearance="@style/TextAppearance.SnippetApp.NavItem"
         app:itemTextColor="@color/nav_item_tint"
+        app:subheaderColor="?attr/textMutedColor"
+        app:subheaderTextAppearance="@style/TextAppearance.SnippetApp.NavSubheader"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
