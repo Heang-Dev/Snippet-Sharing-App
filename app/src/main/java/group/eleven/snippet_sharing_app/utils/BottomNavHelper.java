@@ -4,9 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +18,8 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import group.eleven.snippet_sharing_app.R;
@@ -61,59 +67,95 @@ public class BottomNavHelper {
         Log.d(TAG, "setupProfileAvatar: User=" + (user != null ? user.getUsername() : "null") +
                 ", avatarUrl=" + avatarUrl);
 
-        MenuItem profileItem = bottomNav.getMenu().findItem(R.id.nav_profile);
-        if (profileItem == null) {
-            Log.w(TAG, "setupProfileAvatar: nav_profile menu item not found");
-            return;
-        }
-
         if (avatarUrl != null && !avatarUrl.isEmpty()) {
-            loadAvatarIntoMenuItem(context, avatarUrl, profileItem);
+            loadAvatarIntoBottomNav(context, avatarUrl, bottomNav);
         } else {
             Log.d(TAG, "setupProfileAvatar: No avatar URL, using default icon");
         }
     }
 
     /**
-     * Load avatar image into menu item using Glide.
+     * Load avatar image into bottom navigation profile item.
+     * Uses direct ImageView manipulation to bypass icon tinting.
      */
-    private static void loadAvatarIntoMenuItem(Context context, String avatarUrl, MenuItem menuItem) {
-        // Use application context to avoid lifecycle issues
+    private static void loadAvatarIntoBottomNav(Context context, String avatarUrl, BottomNavigationView bottomNav) {
         Context appContext = context.getApplicationContext();
         int avatarSizePx = dpToPx(appContext, AVATAR_SIZE_DP);
-        Log.d(TAG, "loadAvatarIntoMenuItem: Loading avatar, size=" + avatarSizePx + "px, url=" + avatarUrl);
+        Log.d(TAG, "loadAvatarIntoBottomNav: Loading avatar, size=" + avatarSizePx + "px, url=" + avatarUrl);
 
-        Glide.with(appContext)
-                .asBitmap()
-                .load(avatarUrl)
-                .circleCrop()
-                .override(avatarSizePx, avatarSizePx)
-                .placeholder(R.drawable.ic_person)
-                .error(R.drawable.ic_person)
-                .into(new CustomTarget<Bitmap>(avatarSizePx, avatarSizePx) {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource,
-                                                @Nullable Transition<? super Bitmap> transition) {
-                        Log.d(TAG, "onResourceReady: Avatar loaded successfully, " +
-                                "bitmap size=" + resource.getWidth() + "x" + resource.getHeight());
-                        Drawable avatarDrawable = new BitmapDrawable(appContext.getResources(), resource);
-                        menuItem.setIcon(avatarDrawable);
-                        // Disable icon tinting to show the actual avatar colors
-                        menuItem.setIconTintList(null);
-                    }
+        // Find the profile item's ImageView directly
+        try {
+            BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNav.getChildAt(0);
+            if (menuView == null) {
+                Log.e(TAG, "loadAvatarIntoBottomNav: MenuView is null");
+                return;
+            }
 
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                        Log.d(TAG, "onLoadCleared: Load cleared");
-                        menuItem.setIcon(R.drawable.ic_person);
-                    }
+            // Find the profile item index (nav_profile is the last item, index 4)
+            int profileIndex = -1;
+            for (int i = 0; i < bottomNav.getMenu().size(); i++) {
+                if (bottomNav.getMenu().getItem(i).getItemId() == R.id.nav_profile) {
+                    profileIndex = i;
+                    break;
+                }
+            }
 
-                    @Override
-                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                        Log.e(TAG, "onLoadFailed: Failed to load avatar from " + avatarUrl);
-                        menuItem.setIcon(R.drawable.ic_person);
-                    }
-                });
+            if (profileIndex == -1) {
+                Log.e(TAG, "loadAvatarIntoBottomNav: nav_profile not found in menu");
+                return;
+            }
+
+            View itemView = menuView.getChildAt(profileIndex);
+            if (!(itemView instanceof BottomNavigationItemView)) {
+                Log.e(TAG, "loadAvatarIntoBottomNav: Item view is not BottomNavigationItemView");
+                return;
+            }
+
+            BottomNavigationItemView navItemView = (BottomNavigationItemView) itemView;
+
+            // Find the icon ImageView inside the item view
+            ImageView iconView = navItemView.findViewById(com.google.android.material.R.id.navigation_bar_item_icon_view);
+            if (iconView == null) {
+                Log.e(TAG, "loadAvatarIntoBottomNav: Icon ImageView not found");
+                return;
+            }
+
+            // Load avatar directly into the ImageView
+            Glide.with(appContext)
+                    .asBitmap()
+                    .load(avatarUrl)
+                    .circleCrop()
+                    .override(avatarSizePx, avatarSizePx)
+                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.ic_person)
+                    .into(new CustomTarget<Bitmap>(avatarSizePx, avatarSizePx) {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource,
+                                                    @Nullable Transition<? super Bitmap> transition) {
+                            Log.d(TAG, "onResourceReady: Avatar loaded successfully");
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                BitmapDrawable avatarDrawable = new BitmapDrawable(appContext.getResources(), resource);
+                                iconView.setImageDrawable(avatarDrawable);
+                                // Clear any color filter/tint on the ImageView
+                                iconView.setColorFilter(null);
+                                iconView.setImageTintList(null);
+                            });
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            Log.d(TAG, "onLoadCleared: Load cleared");
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                            Log.e(TAG, "onLoadFailed: Failed to load avatar from " + avatarUrl);
+                        }
+                    });
+
+        } catch (Exception e) {
+            Log.e(TAG, "loadAvatarIntoBottomNav: Error setting avatar", e);
+        }
     }
 
     /**
