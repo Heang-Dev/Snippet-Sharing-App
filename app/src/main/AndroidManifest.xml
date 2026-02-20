@@ -114,6 +114,11 @@
             android:theme="@style/Theme.Snippet_Sharing_App.Profile"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Explore Activity -->
+        <activity
+            android:name=".ui.explore.ExploreActivity"
+            android:exported="false" />
+
         <!-- Snippet Activities -->
         <activity
             android:name=".ui.snippet.CreateSnippetActivity"

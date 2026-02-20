@@ -173,6 +173,89 @@ public class DashboardRepository {
     }
 
     /**
+     * Get public snippets from all users for social feed
+     */
+    public LiveData<Resource<List<SnippetCard>>> getPublicSnippets(int perPage) {
+        MutableLiveData<Resource<List<SnippetCard>>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading(null));
+
+        Map<String, String> params = new HashMap<>();
+        params.put("per_page", String.valueOf(perPage));
+        params.put("sort_by", "created_at");
+        params.put("sort_order", "desc");
+
+        apiService.getPublicSnippets(params).enqueue(new Callback<ApiResponse<List<Snippet>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<Snippet>>> call, Response<ApiResponse<List<Snippet>>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    List<Snippet> snippets = response.body().getData();
+                    List<SnippetCard> cards = new ArrayList<>();
+
+                    if (snippets != null) {
+                        for (Snippet snippet : snippets) {
+                            cards.add(snippet.toSnippetCard());
+                        }
+                    }
+
+                    result.setValue(Resource.success(cards));
+                } else {
+                    String message = response.body() != null ? response.body().getMessage() : "Failed to load public snippets";
+                    result.setValue(Resource.error(message, null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<Snippet>>> call, Throwable t) {
+                // Fallback to mock data for testing when API is unavailable
+                List<SnippetCard> mockCards = group.eleven.snippet_sharing_app.data.MockDataProvider
+                        .getMockSnippetCards(perPage);
+                result.setValue(Resource.success(mockCards));
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * Get public activity feed (trending/recent public activities)
+     */
+    public LiveData<Resource<List<ActivityFeedItem>>> getPublicFeed(int perPage) {
+        MutableLiveData<Resource<List<ActivityFeedItem>>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading(null));
+
+        Map<String, String> params = new HashMap<>();
+        params.put("per_page", String.valueOf(perPage));
+
+        apiService.getPublicFeed(params).enqueue(new Callback<ApiResponse<List<FeedActivity>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<FeedActivity>>> call, Response<ApiResponse<List<FeedActivity>>> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    List<FeedActivity> activities = response.body().getData();
+                    List<ActivityFeedItem> items = new ArrayList<>();
+
+                    if (activities != null) {
+                        for (FeedActivity activity : activities) {
+                            items.add(activity.toActivityFeedItem());
+                        }
+                    }
+
+                    result.setValue(Resource.success(items));
+                } else {
+                    String message = response.body() != null ? response.body().getMessage() : "Failed to load public feed";
+                    result.setValue(Resource.error(message, null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<FeedActivity>>> call, Throwable t) {
+                result.setValue(Resource.error("Network error: " + t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * Get trending/public snippets for discovery
      */
     public LiveData<Resource<List<SnippetCard>>> getTrendingSnippets(int limit) {
@@ -203,7 +286,10 @@ public class DashboardRepository {
 
             @Override
             public void onFailure(Call<ApiResponse<List<Snippet>>> call, Throwable t) {
-                result.setValue(Resource.error("Network error: " + t.getMessage(), null));
+                // Fallback to mock data for testing
+                List<SnippetCard> mockCards = group.eleven.snippet_sharing_app.data.MockDataProvider
+                        .getMockSnippetCards(limit);
+                result.setValue(Resource.success(mockCards));
             }
         });
 

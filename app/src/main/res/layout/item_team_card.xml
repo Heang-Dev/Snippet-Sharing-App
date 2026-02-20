@@ -4,90 +4,139 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="4dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp"
-    app:contentPadding="16dp">
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="?attr/cardSurfaceColor"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
         <!-- Team Avatar -->
-        <ImageView
-            android:id="@+id/iv_team_avatar"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_icon_circle"
-            android:contentDescription="Team Avatar"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_collections"
-            app:tint="?attr/colorOnPrimary" />
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            app:cardCornerRadius="14dp"
+            app:cardBackgroundColor="?attr/tagBackgroundColor"
+            app:cardElevation="0dp">
 
-        <!-- Team Name -->
-        <TextView
-            android:id="@+id/tv_team_name"
+            <ImageView
+                android:id="@+id/iv_team_avatar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_users"
+                app:tint="?attr/accentColor" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Team Info -->
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/tv_role_badge"
-            app:layout_constraintStart_toEndOf="@+id/iv_team_avatar"
-            app:layout_constraintTop_toTopOf="@+id/iv_team_avatar"
-            tools:text="My Awesome Team Name" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="14dp">
 
-        <!-- Role Badge -->
-        <TextView
-            android:id="@+id/tv_role_badge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bg_glass_nav_pill"
-            android:paddingStart="8dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="4dp"
-            android:textColor="?attr/colorPrimaryVariant"
-            android:textSize="12sp"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/iv_team_avatar"
-            tools:text="Admin" />
+            <!-- Team Name & Role Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-        <!-- Member Count -->
-        <TextView
-            android:id="@+id/tv_member_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/iv_team_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/tv_team_name"
-            tools:text="5 Members" />
+                <TextView
+                    android:id="@+id/tv_team_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="?attr/textPrimaryColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="Frontend Masters" />
 
-        <!-- Snippet Count -->
-        <TextView
-            android:id="@+id/tv_snippet_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/tv_member_count"
-            app:layout_constraintTop_toBottomOf="@+id/tv_team_name"
-            tools:text=" | 20 Snippets" />
+                <TextView
+                    android:id="@+id/tv_role_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_tag_chip"
+                    android:backgroundTint="?attr/tagBackgroundColor"
+                    android:paddingStart="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="?attr/accentColor"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    tools:text="Admin" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <!-- Stats Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_person"
+                    app:tint="?attr/textMutedColor" />
+
+                <TextView
+                    android:id="@+id/tv_member_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="13sp"
+                    tools:text="5 members" />
+
+                <View
+                    android:layout_width="4dp"
+                    android:layout_height="4dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/circle_accent"
+                    android:alpha="0.3" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/ic_code"
+                    app:tint="?attr/textMutedColor" />
+
+                <TextView
+                    android:id="@+id/tv_snippet_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="13sp"
+                    tools:text="12 snippets" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Arrow -->
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_arrow_forward"
+            app:tint="?attr/textMutedColor" />
+
+    </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>

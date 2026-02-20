@@ -124,89 +124,9 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
     }
 
     private void loadMockNotifications() {
-        allNotifications = new ArrayList<>();
-
-        // Add mock notifications
-        allNotifications.add(new NotificationItem(
-                "1",
-                NotificationItem.TYPE_FOLLOW,
-                "New follower",
-                "Sarah Chen started following you",
-                "Just now",
-                false,
-                "Sarah Chen"
-        ));
-
-        allNotifications.add(new NotificationItem(
-                "2",
-                NotificationItem.TYPE_COMMENT,
-                "New comment",
-                "Mike Johnson commented on your snippet 'Python CSV Parser'",
-                "5 min ago",
-                false,
-                "Mike Johnson"
-        ));
-
-        allNotifications.add(new NotificationItem(
-                "3",
-                NotificationItem.TYPE_FORK,
-                "Snippet forked",
-                "Alex Rivera forked your snippet 'React Hook Utils'",
-                "1 hour ago",
-                false,
-                "Alex Rivera"
-        ));
-
-        allNotifications.add(new NotificationItem(
-                "4",
-                NotificationItem.TYPE_TEAM_INVITE,
-                "Team invitation",
-                "You've been invited to join 'Frontend Masters' team",
-                "2 hours ago",
-                true,
-                "Frontend Masters"
-        ));
-
-        allNotifications.add(new NotificationItem(
-                "5",
-                NotificationItem.TYPE_LIKE,
-                "New star",
-                "Emma Wilson starred your snippet 'Bash Init Script'",
-                "3 hours ago",
-                true,
-                "Emma Wilson"
-        ));
-
-        allNotifications.add(new NotificationItem(
-                "6",
-                NotificationItem.TYPE_MENTION,
-                "Mentioned you",
-                "David Lee mentioned you in a comment",
-                "Yesterday",
-                true,
-                "David Lee"
-        ));
-
-        allNotifications.add(new NotificationItem(
-                "7",
-                NotificationItem.TYPE_COMMENT,
-                "New comment",
-                "Lisa Park replied to your comment",
-                "Yesterday",
-                true,
-                "Lisa Park"
-        ));
-
-        allNotifications.add(new NotificationItem(
-                "8",
-                NotificationItem.TYPE_FOLLOW,
-                "New follower",
-                "James Wong started following you",
-                "2 days ago",
-                true,
-                "James Wong"
-        ));
-
+        // Use MockDataProvider for consistent, realistic test data
+        allNotifications = group.eleven.snippet_sharing_app.data.MockDataProvider
+                .getMockNotifications(12);
         filterNotifications();
     }
 

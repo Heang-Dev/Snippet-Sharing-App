@@ -3,14 +3,20 @@ package group.eleven.snippet_sharing_app.ui.team;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -18,9 +24,11 @@ import java.util.ArrayList;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.Team;
-import group.eleven.snippet_sharing_app.data.model.TeamInvitation; // ADDED THIS IMPORT
+import group.eleven.snippet_sharing_app.data.model.TeamInvitation;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
-import group.eleven.snippet_sharing_app.ui.team.TeamListAdapter;
+import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
+import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
+import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
 import group.eleven.snippet_sharing_app.ui.team.viewmodel.TeamViewModel;
 
 public class TeamsListActivity extends AppCompatActivity implements TeamListAdapter.OnItemClickListener, TeamInvitationAdapter.OnInvitationActionListener {
@@ -28,15 +36,20 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
     private RecyclerView rvTeams;
     private TeamListAdapter teamListAdapter;
     private TextView tvNoTeams;
+    private TextView tvTeamsCount;
     private FloatingActionButton fabCreateTeam;
+    private MaterialButton btnCreateTeam;
     private MaterialToolbar toolbar;
+    private LinearLayout layoutEmptyTeams;
+    private LinearLayout layoutInvitations;
+    private BottomNavigationView bottomNav;
+    private MaterialCardView cardDiscoverTeams;
 
     // For Team Invitations
     private RecyclerView rvTeamInvitations;
     private TeamInvitationAdapter teamInvitationAdapter;
     private TextView tvInvitationsHeader;
-    private TextView tvNoInvitations; // Added for when there are no invitations
-
+    private TextView tvNoInvitations;
 
     // ViewModel for team data
     private TeamViewModel teamViewModel;
@@ -46,9 +59,11 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teams_list);
 
+        setupStatusBar();
         initViews();
         setupToolbar();
-        setupRecyclerViews(); // Renamed to handle both
+        setupBottomNavigation();
+        setupRecyclerViews();
         setupViewModel();
         setupListeners();
 
@@ -57,30 +72,81 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
         fetchTeamInvitations();
     }
 
+    private void setupStatusBar() {
+        android.view.Window window = getWindow();
+        android.util.TypedValue typedValue = new android.util.TypedValue();
+        getTheme().resolveAttribute(R.attr.appBackgroundColor, typedValue, true);
+        int backgroundColor = typedValue.data;
+        window.setStatusBarColor(backgroundColor);
+
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller != null) {
+            boolean isLightBackground = isColorLight(backgroundColor);
+            controller.setAppearanceLightStatusBars(isLightBackground);
+        }
+    }
+
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * android.graphics.Color.red(color)
+                + 0.587 * android.graphics.Color.green(color)
+                + 0.114 * android.graphics.Color.blue(color)) / 255;
+        return darkness < 0.5;
+    }
+
     private void initViews() {
+        toolbar = findViewById(R.id.toolbar);
         rvTeams = findViewById(R.id.rv_teams);
         tvNoTeams = findViewById(R.id.tv_no_teams);
+        tvTeamsCount = findViewById(R.id.tvTeamsCount);
         fabCreateTeam = findViewById(R.id.fab_create_team);
-        toolbar = findViewById(R.id.toolbar);
+        btnCreateTeam = findViewById(R.id.btnCreateTeam);
+        layoutEmptyTeams = findViewById(R.id.layoutEmptyTeams);
+        layoutInvitations = findViewById(R.id.layoutInvitations);
+        bottomNav = findViewById(R.id.bottomNav);
+        cardDiscoverTeams = findViewById(R.id.cardDiscoverTeams);
 
         // Initialize invitation views
         rvTeamInvitations = findViewById(R.id.rv_team_invitations);
         tvInvitationsHeader = findViewById(R.id.tv_invitations_header);
-        tvNoInvitations = findViewById(R.id.tv_no_invitations); // Assuming you'll add this TextView to XML for "no invitations" state
+        tvNoInvitations = findViewById(R.id.tv_no_invitations);
     }
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    private void setupBottomNavigation() {
+        // Set Teams as selected
+        bottomNav.setSelectedItemId(R.id.nav_teams);
+
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_home) {
+                startActivity(new Intent(this, HomeActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_teams) {
+                // Already on teams
+                return true;
+            } else if (itemId == R.id.nav_snippets) {
+                startActivity(new Intent(this, MySnippetsActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (itemId == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            }
+            return false;
+        });
     }
 
     private void setupRecyclerViews() { // Renamed method
@@ -101,21 +167,26 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
         teamViewModel.getMyTeamsResult().observe(this, resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
                 // Show loading indicator
-                tvNoTeams.setVisibility(View.GONE);
+                layoutEmptyTeams.setVisibility(View.GONE);
                 rvTeams.setVisibility(View.GONE);
             } else if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
                 if (resource.getData() != null && !resource.getData().isEmpty()) {
                     teamListAdapter.setTeams(resource.getData());
                     rvTeams.setVisibility(View.VISIBLE);
-                    tvNoTeams.setVisibility(View.GONE);
+                    layoutEmptyTeams.setVisibility(View.GONE);
+                    tvTeamsCount.setText(resource.getData().size() + " teams");
+                    fabCreateTeam.setVisibility(View.VISIBLE);
                 } else {
                     rvTeams.setVisibility(View.GONE);
-                    tvNoTeams.setVisibility(View.VISIBLE);
+                    layoutEmptyTeams.setVisibility(View.VISIBLE);
+                    tvTeamsCount.setText("0 teams");
+                    fabCreateTeam.setVisibility(View.GONE); // Hide FAB when showing empty state with button
                 }
             } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
                 Toast.makeText(this, resource.getMessage(), Toast.LENGTH_LONG).show();
                 rvTeams.setVisibility(View.GONE);
-                tvNoTeams.setVisibility(View.VISIBLE); // Optionally show error message here
+                layoutEmptyTeams.setVisibility(View.VISIBLE);
+                tvTeamsCount.setText("0 teams");
             }
         });
 
@@ -136,11 +207,22 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
     }
 
     private void setupListeners() {
-        fabCreateTeam.setOnClickListener(v -> {
-            // Navigate to CreateTeamActivity
+        View.OnClickListener createTeamListener = v -> {
             Intent intent = new Intent(TeamsListActivity.this, CreateTeamActivity.class);
             startActivity(intent);
-        });
+        };
+
+        fabCreateTeam.setOnClickListener(createTeamListener);
+        if (btnCreateTeam != null) {
+            btnCreateTeam.setOnClickListener(createTeamListener);
+        }
+
+        // Discover teams card click (can be expanded later to show team search)
+        if (cardDiscoverTeams != null) {
+            cardDiscoverTeams.setOnClickListener(v -> {
+                Toast.makeText(this, "Team discovery coming soon!", Toast.LENGTH_SHORT).show();
+            });
+        }
     }
 
     private void fetchTeams() {
@@ -151,26 +233,20 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
         teamViewModel.fetchMyTeamInvitations();
         teamViewModel.getMyTeamInvitationsResult().observe(this, resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
-                tvInvitationsHeader.setVisibility(View.GONE);
-                rvTeamInvitations.setVisibility(View.GONE);
-                tvNoInvitations.setVisibility(View.GONE);
+                layoutInvitations.setVisibility(View.GONE);
             } else if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
                 if (resource.getData() != null && !resource.getData().isEmpty()) {
                     teamInvitationAdapter.setInvitations(resource.getData());
-                    tvInvitationsHeader.setVisibility(View.VISIBLE);
+                    layoutInvitations.setVisibility(View.VISIBLE);
                     rvTeamInvitations.setVisibility(View.VISIBLE);
                     tvNoInvitations.setVisibility(View.GONE);
                 } else {
-                    // No invitations
-                    tvInvitationsHeader.setVisibility(View.GONE);
-                    rvTeamInvitations.setVisibility(View.GONE);
-                    tvNoInvitations.setVisibility(View.VISIBLE); // Show "No invitations" message
+                    // No invitations - hide the entire section
+                    layoutInvitations.setVisibility(View.GONE);
                 }
             } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
-                Toast.makeText(this, "Invitations Error: " + resource.getMessage(), Toast.LENGTH_LONG).show();
-                tvInvitationsHeader.setVisibility(View.GONE);
-                rvTeamInvitations.setVisibility(View.GONE);
-                tvNoInvitations.setVisibility(View.VISIBLE); // Show "No invitations" or error message
+                // On error, hide invitations section
+                layoutInvitations.setVisibility(View.GONE);
             }
         });
     }

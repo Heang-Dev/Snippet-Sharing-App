@@ -4,15 +4,15 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_dashboard"
-        android:title="Home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/nav_home"
         android:orderInCategory="1"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_teams"
         android:icon="@drawable/ic_users"
-        android:title="Teams"
+        android:title="@string/nav_teams"
         android:orderInCategory="2"
         app:showAsAction="ifRoom" />
 
@@ -28,14 +28,14 @@
     <item
         android:id="@+id/nav_snippets"
         android:icon="@drawable/ic_code"
-        android:title="Snippet"
+        android:title="@string/nav_snippets"
         android:orderInCategory="4"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person"
-        android:title="Profile"
+        android:title="@string/nav_profile"
         android:orderInCategory="5"
         app:showAsAction="ifRoom" />
 

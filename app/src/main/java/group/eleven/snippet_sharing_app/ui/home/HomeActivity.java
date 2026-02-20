@@ -11,30 +11,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
-import group.eleven.snippet_sharing_app.data.SnippetManager;
-import group.eleven.snippet_sharing_app.data.model.ActivityFeedItem;
-import group.eleven.snippet_sharing_app.data.model.DashboardStats;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
@@ -45,11 +37,13 @@ import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
 import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
 import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
 import group.eleven.snippet_sharing_app.ui.notification.NotificationsActivity;
+import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
+import group.eleven.snippet_sharing_app.utils.BottomNavHelper;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
- * Home Activity - main dashboard with navigation drawer
+ * Home Activity - Social feed with Facebook-style layout
  */
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -60,12 +54,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DashboardRepository dashboardRepository;
     private ActionBarDrawerToggle drawerToggle;
 
-    private ActivityFeedAdapter activityFeedAdapter;
-    private SnippetCardAdapter snippetCardAdapter;
-    private List<SnippetCard> masterSnippetList = new ArrayList<>();
+    private FeedSnippetAdapter feedAdapter;
+    private List<SnippetCard> snippetList = new ArrayList<>();
 
-    // Stats TextViews
-    private TextView tvSnippetsCount, tvViewsCount, tvForksCount;
+    // Drawer header stats
     private TextView tvDrawerSnippetsCount, tvDrawerForksCount, tvDrawerViewsCount;
 
     @Override
@@ -101,11 +93,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             // Setup UI components
             setupUserInfo();
-            setupStatsCards();
-            setupActivityFeed();
-            setupRecentSnippets();
-            setupSearch(); // Initialize search listener
+            setupFeed();
+            setupSwipeRefresh();
             setupClickListeners();
+
+            // Load initial data
+            loadFeed();
 
             Log.d(TAG, "onCreate: Setup completed successfully");
 
@@ -118,10 +111,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d(TAG, "onRestart: Refreshing snippets list");
-        if (snippetCardAdapter != null) {
-            snippetCardAdapter.notifyDataSetChanged();
-        }
+        Log.d(TAG, "onRestart: Refreshing feed");
+        loadFeed();
     }
 
     /**
@@ -191,262 +182,246 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupUserInfo() {
-        // Notification icon click navigates to Notifications List
-        binding.ivNotification.setOnClickListener(v -> {
-            Intent intent = new Intent(this, NotificationsActivity.class);
-            startActivity(intent);
-        });
+        // Load user avatar in create post card
+        User user = sessionManager.getUser();
+        if (user != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(user.getAvatarUrl())
+                    .placeholder(R.drawable.ic_person)
+                    .error(R.drawable.ic_person)
+                    .into(binding.ivUserAvatar);
+        }
     }
 
-    private void setupStatsCards() {
-        // Setup Snippets stat card
-        View snippetsCard = binding.statSnippets;
-        ImageView ivSnippetsIcon = snippetsCard.findViewById(R.id.ivStatIconSnippets);
-        TextView tvSnippetsLabel = snippetsCard.findViewById(R.id.tvStatLabelSnippets);
-        tvSnippetsCount = snippetsCard.findViewById(R.id.tvStatCountSnippets);
-
-        ivSnippetsIcon.setImageResource(R.drawable.ic_code);
-        tvSnippetsLabel.setText(R.string.stats_snippets);
-        tvSnippetsCount.setText("--");
-
-        // Setup Views stat card (using favorites_received as popularity metric)
-        View viewsCard = binding.statViews;
-        ImageView ivViewsIcon = viewsCard.findViewById(R.id.ivStatIconViews);
-        TextView tvViewsLabel = viewsCard.findViewById(R.id.tvStatLabelViews);
-        tvViewsCount = viewsCard.findViewById(R.id.tvStatCountViews);
-
-        ivViewsIcon.setImageResource(R.drawable.ic_explore);
-        tvViewsLabel.setText(R.string.stats_views);
-        tvViewsCount.setText("--");
-
-        // Setup Forks stat card (using followers count)
-        View forksCard = binding.statForks;
-        ImageView ivForksIcon = forksCard.findViewById(R.id.ivStatIconForks);
-        TextView tvForksLabel = forksCard.findViewById(R.id.tvStatLabelForks);
-        tvForksCount = forksCard.findViewById(R.id.tvStatCountForks);
-
-        ivForksIcon.setImageResource(R.drawable.ic_collections);
-        tvForksLabel.setText(R.string.stats_forks);
-        tvForksCount.setText("--");
-
-        // Fetch real stats from API
-        loadDashboardStats();
-    }
-
-    private void loadDashboardStats() {
-        dashboardRepository.getDashboardStats().observe(this, resource -> {
-            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                DashboardStats stats = resource.data;
-
-                // Update stats cards
-                tvSnippetsCount.setText(String.valueOf(stats.getSnippetCount()));
-                tvViewsCount.setText(stats.getFormattedFavorites());
-                tvForksCount.setText(stats.getFormattedFollowers());
-
-                // Update drawer header stats
-                if (tvDrawerSnippetsCount != null) {
-                    tvDrawerSnippetsCount.setText(String.valueOf(stats.getSnippetCount()));
-                }
-                if (tvDrawerForksCount != null) {
-                    tvDrawerForksCount.setText(stats.getFormattedFollowers());
-                }
-                if (tvDrawerViewsCount != null) {
-                    tvDrawerViewsCount.setText(stats.getFormattedFavorites());
-                }
-            } else if (resource.status == Resource.Status.ERROR) {
-                Log.e(TAG, "Failed to load stats: " + resource.message);
-                // Keep showing "--" or set defaults
-                tvSnippetsCount.setText("0");
-                tvViewsCount.setText("0");
-                tvForksCount.setText("0");
+    private void setupFeed() {
+        // Setup RecyclerView with feed adapter
+        binding.rvRecentSnippets.setLayoutManager(new LinearLayoutManager(this));
+        feedAdapter = new FeedSnippetAdapter(new ArrayList<>());
+        feedAdapter.setOnFeedItemClickListener(new FeedSnippetAdapter.OnFeedItemClickListener() {
+            @Override
+            public void onSnippetClick(SnippetCard snippet) {
+                Toast.makeText(HomeActivity.this, "View: " + snippet.getTitle(), Toast.LENGTH_SHORT).show();
+                // TODO: Navigate to snippet detail
             }
-            // For LOADING status, keep showing "--"
-        });
-    }
 
-    private void setupActivityFeed() {
-        // Setup RecyclerView with empty list initially
-        activityFeedAdapter = new ActivityFeedAdapter(new ArrayList<>());
-        binding.rvActivityFeed.setLayoutManager(new LinearLayoutManager(this));
-        binding.rvActivityFeed.setAdapter(activityFeedAdapter);
-
-        // Fetch real activity feed from API
-        loadActivityFeed();
-    }
-
-    private void loadActivityFeed() {
-        dashboardRepository.getActivityFeed(5).observe(this, resource -> {
-            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                activityFeedAdapter.setActivities(resource.data);
-            } else if (resource.status == Resource.Status.ERROR) {
-                Log.e(TAG, "Failed to load activity feed: " + resource.message);
-                // Show placeholder message or empty state
-                List<ActivityFeedItem> placeholder = new ArrayList<>();
-                placeholder.add(new ActivityFeedItem(
-                        "Welcome", "to", "Snippet Sharing", "Just now", R.drawable.ic_code));
-                activityFeedAdapter.setActivities(placeholder);
+            @Override
+            public void onLikeClick(SnippetCard snippet, int position) {
+                boolean newLikeState = !snippet.isLiked();
+                int newCount = snippet.getLikesCount() + (newLikeState ? 1 : -1);
+                feedAdapter.updateLikeState(position, newLikeState, newCount);
+                // TODO: Call API to like/unlike
             }
-            // For LOADING, keep showing previous data or empty
+
+            @Override
+            public void onCommentClick(SnippetCard snippet) {
+                Toast.makeText(HomeActivity.this, "Comments - Coming Soon", Toast.LENGTH_SHORT).show();
+                // TODO: Navigate to comments
+            }
+
+            @Override
+            public void onShareClick(SnippetCard snippet) {
+                shareSnippet(snippet);
+            }
+
+            @Override
+            public void onAuthorClick(SnippetCard snippet) {
+                Toast.makeText(HomeActivity.this, "View Profile: " + snippet.getAuthorName(), Toast.LENGTH_SHORT).show();
+                // TODO: Navigate to user profile
+            }
+
+            @Override
+            public void onMoreOptionsClick(SnippetCard snippet, View anchor) {
+                showSnippetOptions(snippet, anchor);
+            }
         });
+        binding.rvRecentSnippets.setAdapter(feedAdapter);
+    }
+
+    private void setupSwipeRefresh() {
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary);
+        binding.swipeRefresh.setOnRefreshListener(this::loadFeed);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        loadRecentSnippets();
-    }
-
-    private void setupRecentSnippets() {
-        // Setup RecyclerView with empty list initially
-        binding.rvRecentSnippets.setLayoutManager(new LinearLayoutManager(this));
-        snippetCardAdapter = new SnippetCardAdapter(new ArrayList<>());
-        snippetCardAdapter.setOnSnippetClickListener(snippet -> {
-            Toast.makeText(this, "Clicked: " + snippet.getTitle(), Toast.LENGTH_SHORT).show();
-        });
-        binding.rvRecentSnippets.setAdapter(snippetCardAdapter);
-    }
-
-    private void loadRecentSnippets() {
-        dashboardRepository.getRecentSnippets(10).observe(this, resource -> {
-            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
-                masterSnippetList.clear();
-                masterSnippetList.addAll(resource.data);
-
-                if (binding != null && binding.etSearch != null) {
-                    filter(binding.etSearch.getText().toString());
-                } else {
-                    if (snippetCardAdapter != null) {
-                        snippetCardAdapter.filterList(resource.data);
-                    }
-                }
-            } else if (resource.status == Resource.Status.ERROR) {
-                Log.e(TAG, "Failed to load snippets: " + resource.message);
-                // Fallback to local storage if API fails
-                loadLocalSnippets();
-            }
-            // For LOADING, keep showing previous data
-        });
+        // Refresh bottom nav selection
+        if (binding.bottomNav != null) {
+            binding.bottomNav.setSelectedItemId(R.id.nav_home);
+        }
     }
 
     /**
-     * Fallback to local snippets when API fails
+     * Load public snippets for social feed
      */
-    private void loadLocalSnippets() {
-        try {
-            List<group.eleven.snippet_sharing_app.model.SnippetModel> models =
-                    group.eleven.snippet_sharing_app.data.SnippetRepository.getInstance().getRecentSnippets();
+    private void loadFeed() {
+        dashboardRepository.getPublicSnippets(20).observe(this, resource -> {
+            binding.swipeRefresh.setRefreshing(false);
 
-            List<SnippetCard> cards = new ArrayList<>();
-            for (group.eleven.snippet_sharing_app.model.SnippetModel model : models) {
-                int color = android.graphics.Color.WHITE;
-                try {
-                    color = android.graphics.Color.parseColor(model.getLanguageColor());
-                } catch (Exception e) {
-                    e.printStackTrace();
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                snippetList.clear();
+                snippetList.addAll(resource.data);
+                feedAdapter.setSnippets(snippetList);
+                updateEmptyState(snippetList.isEmpty());
+            } else if (resource.status == Resource.Status.ERROR) {
+                Log.e(TAG, "Failed to load feed: " + resource.message);
+                loadTrendingFallback();
+            } else if (resource.status == Resource.Status.LOADING) {
+                // Show loading state
+                if (snippetList.isEmpty()) {
+                    binding.swipeRefresh.setRefreshing(true);
                 }
-
-                cards.add(new SnippetCard(
-                        model.getTitle(),
-                        model.getLanguage(),
-                        model.getLastModifiedTime(),
-                        model.getCode() != null ? model.getCode() : "// No code preview",
-                        new String[] { model.getPrivacy() },
-                        color));
             }
-
-            masterSnippetList.clear();
-            masterSnippetList.addAll(cards);
-
-            if (snippetCardAdapter != null) {
-                snippetCardAdapter.filterList(cards);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to load local snippets", e);
-        }
-    }
-
-    private void setupSearch() {
-        binding.etSearch.setFocusable(false);
-        binding.etSearch.setClickable(true);
-        binding.etSearch.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this,
-                    group.eleven.snippet_sharing_app.ui.search.SearchActivity.class);
-            startActivity(intent);
         });
     }
 
-    private void filter(String text) {
-        List<SnippetCard> filteredList = new ArrayList<>();
-        if (text == null)
-            text = "";
+    private void loadTrendingFallback() {
+        dashboardRepository.getTrendingSnippets(15).observe(this, resource -> {
+            binding.swipeRefresh.setRefreshing(false);
 
-        for (SnippetCard snippet : masterSnippetList) {
-            if (snippet.getTitle().toLowerCase().contains(text.toLowerCase()) ||
-                    snippet.getLanguageBadge().toLowerCase().contains(text.toLowerCase())) {
-                filteredList.add(snippet);
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                snippetList.clear();
+                snippetList.addAll(resource.data);
+                feedAdapter.setSnippets(snippetList);
+                updateEmptyState(snippetList.isEmpty());
+            } else if (resource.status == Resource.Status.ERROR) {
+                Log.e(TAG, "Failed to load trending: " + resource.message);
+                loadLocalFallback();
             }
-        }
+        });
+    }
 
-        if (snippetCardAdapter != null) {
-            snippetCardAdapter.filterList(filteredList);
+    private void loadLocalFallback() {
+        try {
+            // Use MockDataProvider for realistic test data
+            List<SnippetCard> mockCards = group.eleven.snippet_sharing_app.data.MockDataProvider
+                    .getMockSnippetCards(15);
+
+            snippetList.clear();
+            snippetList.addAll(mockCards);
+            feedAdapter.setSnippets(snippetList);
+            updateEmptyState(snippetList.isEmpty());
+
+            Log.d(TAG, "Loaded " + mockCards.size() + " mock snippets for testing");
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to load mock data", e);
+            updateEmptyState(true);
         }
     }
 
-    // ...
+    private void updateEmptyState(boolean isEmpty) {
+        if (binding.emptyState != null) {
+            binding.emptyState.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+        }
+        binding.rvRecentSnippets.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+    }
+
+    private void shareSnippet(SnippetCard snippet) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, snippet.getTitle());
+        shareIntent.putExtra(Intent.EXTRA_TEXT,
+                snippet.getTitle() + "\n\n" + snippet.getCodePreview() + "\n\nShared via Snippet G11");
+        startActivity(Intent.createChooser(shareIntent, "Share snippet"));
+    }
+
+    private void showSnippetOptions(SnippetCard snippet, View anchor) {
+        android.widget.PopupMenu popup = new android.widget.PopupMenu(this, anchor);
+        popup.getMenuInflater().inflate(R.menu.menu_snippet_options, popup.getMenu());
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_copy_code) {
+                copyToClipboard(snippet.getCodePreview());
+                return true;
+            } else if (id == R.id.action_save) {
+                Toast.makeText(this, "Saved to favorites", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (id == R.id.action_report) {
+                Toast.makeText(this, "Report - Coming Soon", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        });
+        popup.show();
+    }
+
+    private void copyToClipboard(String text) {
+        android.content.ClipboardManager clipboard =
+                (android.content.ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText("code", text);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(this, "Code copied!", Toast.LENGTH_SHORT).show();
+    }
+
 
     private void setupClickListeners() {
-        // View All Activity
-        binding.tvViewAllActivity.setOnClickListener(v -> {
-            Toast.makeText(this, "View All Activity - Coming Soon", Toast.LENGTH_SHORT).show();
+        // Search icon
+        binding.ivSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
         });
 
-        // View toggle icons
-        binding.ivGridView.setOnClickListener(v -> {
-            Toast.makeText(this, "Grid View - Coming Soon", Toast.LENGTH_SHORT).show();
+        // Notification icon
+        binding.ivNotification.setOnClickListener(v -> {
+            Intent intent = new Intent(this, NotificationsActivity.class);
+            startActivity(intent);
         });
 
-        binding.ivListView.setOnClickListener(v -> {
-            Toast.makeText(this, "List View Active", Toast.LENGTH_SHORT).show();
+        // Create post card
+        binding.cardCreatePost.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CreateSnippetActivity.class);
+            startActivity(intent);
         });
 
-        // Bottom Navigation
-        com.google.android.material.bottomnavigation.BottomNavigationView bottomNav = findViewById(R.id.bottomNav);
-        com.google.android.material.floatingactionbutton.FloatingActionButton fab = findViewById(R.id.fab);
+        // Filter feed
+        binding.tvFilterFeed.setOnClickListener(v -> {
+            Toast.makeText(this, "Filter - Coming Soon", Toast.LENGTH_SHORT).show();
+        });
 
-        if (bottomNav != null) {
-            // Set Home as selected
-            bottomNav.setSelectedItemId(R.id.nav_home);
-
-            bottomNav.setOnItemSelectedListener(item -> {
-                int id = item.getItemId();
-                if (id == R.id.nav_home) {
-                    // Already on Home
-                    return true;
-                } else if (id == R.id.nav_teams) {
-                    Intent intent = new Intent(this,
-                            group.eleven.snippet_sharing_app.ui.team.TeamsListActivity.class);
-                    startActivity(intent);
-                    return false; // Don't switch tab visually, just launch activity
-                } else if (id == R.id.nav_snippets) {
-                    Intent intent = new Intent(this,
-                            group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
-                    startActivity(intent);
-                    return false;
-                } else if (id == R.id.nav_profile) {
-                    Intent intent = new Intent(this, ProfileActivity.class);
-                    startActivity(intent);
-                    return false;
-                }
-                return false;
-            });
-        }
-
-        if (fab != null) {
-            fab.setOnClickListener(v -> {
+        // Empty state create button
+        if (binding.btnCreateFirst != null) {
+            binding.btnCreateFirst.setOnClickListener(v -> {
                 Intent intent = new Intent(this, CreateSnippetActivity.class);
                 startActivity(intent);
             });
         }
+
+        // FAB
+        binding.fab.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CreateSnippetActivity.class);
+            startActivity(intent);
+        });
+
+        // Bottom Navigation
+        binding.bottomNav.setSelectedItemId(R.id.nav_home);
+        BottomNavHelper.setupProfileAvatar(this, binding.bottomNav, sessionManager);
+
+        binding.bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                return true;
+            } else if (id == R.id.nav_teams) {
+                Intent intent = new Intent(this, TeamsListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_snippets) {
+                Intent intent = new Intent(this,
+                        group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_profile) {
+                Intent intent = new Intent(this, ProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override

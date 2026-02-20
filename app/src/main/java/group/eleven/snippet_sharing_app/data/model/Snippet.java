@@ -314,13 +314,30 @@ public class Snippet {
      * Convert to SnippetCard for adapter compatibility
      */
     public SnippetCard toSnippetCard() {
+        String authorName = user != null ? user.getFullName() : null;
+        String authorAvatar = user != null ? user.getAvatarUrl() : null;
+        String authorUsername = user != null ? user.getUsername() : null;
+
+        if (authorName == null || authorName.isEmpty()) {
+            authorName = authorUsername;
+        }
+
         return new SnippetCard(
+                id,
                 title,
-                getLanguageBadge(),
+                description,
+                language != null ? language.getName() : getLanguageBadge(),
                 getFormattedUpdateTime(),
                 getCodePreview(),
                 getTagNames(),
-                getLanguageColor()
+                getLanguageColor(),
+                authorName,
+                authorAvatar,
+                authorUsername,
+                favoritesCount,
+                commentsCount,
+                isFavorited,
+                visibility != null ? visibility : "public"
         );
     }
 }
