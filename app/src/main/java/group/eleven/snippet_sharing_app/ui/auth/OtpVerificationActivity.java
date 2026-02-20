@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityOtpVerificationBinding;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 import java.util.Locale;
@@ -278,6 +280,12 @@ public class OtpVerificationActivity extends AppCompatActivity {
                 .setBackgroundTint(getColor(R.color.error))
                 .setTextColor(getColor(R.color.white))
                 .show();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

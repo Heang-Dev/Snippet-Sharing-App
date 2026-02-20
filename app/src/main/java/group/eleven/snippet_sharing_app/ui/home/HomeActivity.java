@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +41,7 @@ import group.eleven.snippet_sharing_app.ui.notification.NotificationsActivity;
 import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.utils.BottomNavHelper;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -579,6 +581,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             feedAdapter.updateCommentCount(snippetId, newCount);
         });
         bottomSheet.show(getSupportFragmentManager(), "CommentsBottomSheet");
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

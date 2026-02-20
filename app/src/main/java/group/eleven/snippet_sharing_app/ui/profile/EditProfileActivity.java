@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.data.repository.ProfileRepository;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -322,6 +324,12 @@ public class EditProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
             return null;
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

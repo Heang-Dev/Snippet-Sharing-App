@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityLoginBinding;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.utils.FormValidator;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -164,6 +166,12 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         Log.d(TAG, "navigateToHome: Finishing LoginActivity");
         finish();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

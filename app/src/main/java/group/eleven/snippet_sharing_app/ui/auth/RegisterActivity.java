@@ -3,6 +3,7 @@ package group.eleven.snippet_sharing_app.ui.auth;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityRegisterBinding;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.utils.FormValidator;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 
 /**
  * Register Activity - handles user registration
@@ -138,6 +140,12 @@ public class RegisterActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

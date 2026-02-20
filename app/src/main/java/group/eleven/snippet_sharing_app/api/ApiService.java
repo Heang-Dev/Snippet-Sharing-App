@@ -13,6 +13,7 @@ import group.eleven.snippet_sharing_app.data.model.Notification;
 import group.eleven.snippet_sharing_app.data.model.OtpVerifyResponse;
 import group.eleven.snippet_sharing_app.data.model.SearchResult;
 import group.eleven.snippet_sharing_app.data.model.Snippet;
+import group.eleven.snippet_sharing_app.data.model.Tag;
 import group.eleven.snippet_sharing_app.data.model.User;
 import group.eleven.snippet_sharing_app.data.model.UserResponse;
 import group.eleven.snippet_sharing_app.data.model.Team;
@@ -346,6 +347,26 @@ public interface ApiService {
      */
     @GET("categories/{slug}/snippets")
     Call<ApiResponse<List<Snippet>>> getSnippetsByCategory(@Path("slug") String slug, @QueryMap Map<String, String> params);
+
+    // ==================== Tags ====================
+
+    /**
+     * Get all tags
+     */
+    @GET("tags")
+    Call<ApiResponse<List<Tag>>> getTags();
+
+    /**
+     * Get popular tags
+     */
+    @GET("tags/popular")
+    Call<ApiResponse<List<Tag>>> getPopularTags();
+
+    /**
+     * Search tags
+     */
+    @GET("tags/search")
+    Call<ApiResponse<List<Tag>>> searchTags(@Query("q") String query);
 
     // ==================== Search ====================
 

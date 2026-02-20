@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -30,6 +31,7 @@ import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
 import group.eleven.snippet_sharing_app.data.repository.SearchRepository;
 import group.eleven.snippet_sharing_app.model.SearchResult;
 import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -350,6 +352,12 @@ public class SearchActivity extends AppCompatActivity {
         if (show) {
             updateHeaderCount(0);
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

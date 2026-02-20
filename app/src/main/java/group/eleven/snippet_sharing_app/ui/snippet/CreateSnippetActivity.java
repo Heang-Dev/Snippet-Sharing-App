@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
@@ -17,31 +19,40 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.data.model.Language;
+import group.eleven.snippet_sharing_app.data.repository.SnippetCreationRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityCreateSnippetBinding;
-import group.eleven.snippet_sharing_app.model.Language;
 import group.eleven.snippet_sharing_app.ui.category.SelectCategoryBottomSheet;
 import group.eleven.snippet_sharing_app.ui.tags.ManageTagsBottomSheet;
 import group.eleven.snippet_sharing_app.ui.team.SelectTeamDialogFragment;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
+import group.eleven.snippet_sharing_app.utils.Resource;
 
 public class CreateSnippetActivity extends AppCompatActivity {
 
     private ActivityCreateSnippetBinding binding;
-    private List<Language> allLanguages;
-    private List<Language> recentLanguages;
-    private Language selectedLanguage;
-    private ArrayList<String> currentSelectedTags = new ArrayList<>();
-    private String selectedCategoryId;
-    private int selectedTeamId = -1;
+    private SnippetCreationRepository repository;
 
-    private String snippetIdToEdit = null;
-    private boolean originalFavoriteStatus = false;
-    private String currentPrivacy = "Public";
+    // Languages
+    private List<Language> apiLanguages = new ArrayList<>();
+    private List<group.eleven.snippet_sharing_app.model.Language> localLanguages = new ArrayList<>();
+    private Language selectedApiLanguage;
+
+    // Selection state
+    private ArrayList<String> selectedTags = new ArrayList<>();
+    private String selectedCategoryId;
+    private String selectedCategoryName;
+    private String selectedTeamId;
+    private String selectedTeamName;
+    private String currentVisibility = "public";
+
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +60,14 @@ public class CreateSnippetActivity extends AppCompatActivity {
         binding = ActivityCreateSnippetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        repository = new SnippetCreationRepository(this);
+
         setupStatusBar();
-        initializeLanguages();
         setupHeaderAndInputs();
         setupQuickAccess();
         setupBottomSheets();
-
-        if (getIntent().hasExtra("SNIPPET_ID")) {
-            String id = getIntent().getStringExtra("SNIPPET_ID");
-            for (group.eleven.snippet_sharing_app.model.SnippetModel s : group.eleven.snippet_sharing_app.data.SnippetRepository
-                    .getInstance().getAllSnippets()) {
-                if (s.getId().equals(id)) {
-                    snippetIdToEdit = id;
-                    originalFavoriteStatus = s.isFavorite();
-                    startEditMode(s);
-                    break;
-                }
-            }
-        }
+        setupVisibilityTabs();
+        loadLanguages();
     }
 
     private void setupStatusBar() {
@@ -97,59 +98,147 @@ public class CreateSnippetActivity extends AppCompatActivity {
         return darkness < 0.5;
     }
 
-    private void initializeLanguages() {
-        allLanguages = new ArrayList<>();
-        allLanguages.add(new Language("JavaScript", "application/javascript", "JS", "#F7DF1E"));
-        allLanguages.add(new Language("Python", "text/x-python", "Py", "#3776AB"));
-        allLanguages.add(new Language("Java", "text/x-java-source", "Java", "#007396"));
-        allLanguages.add(new Language("HTML/CSS", "text/html", "HC", "#E34F26"));
-        allLanguages.add(new Language("Kotlin", "text/x-kotlin", "Kt", "#7F52FF"));
-        allLanguages.add(new Language("Swift", "text/x-swift", "Sw", "#F05138"));
-
-        if (!allLanguages.isEmpty()) {
-            selectedLanguage = allLanguages.get(0);
-            selectedLanguage.setSelected(true);
-            if (binding != null) {
-                binding.chipLanguage.setText(selectedLanguage.getName());
+    private void loadLanguages() {
+        repository.getLanguages().observe(this, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                apiLanguages = resource.data;
+                convertToLocalLanguages();
+                if (!apiLanguages.isEmpty()) {
+                    selectedApiLanguage = apiLanguages.get(0);
+                    binding.chipLanguage.setText(selectedApiLanguage.getDisplayName());
+                    updateFilename();
+                }
+            } else if (resource.status == Resource.Status.ERROR) {
+                initializeFallbackLanguages();
             }
-        }
-
-        recentLanguages = new ArrayList<>();
+        });
     }
 
-    private void startEditMode(group.eleven.snippet_sharing_app.model.SnippetModel snippet) {
-        binding.tvNewSnippet.setText("Edit Snippet");
-        binding.btnPublish.setText("Update");
-        binding.etTitle.setText(snippet.getTitle());
-        binding.etCode.setText(snippet.getCode());
-
-        for (Language l : allLanguages) {
-            if (l.getName().equalsIgnoreCase(snippet.getLanguage())) {
-                updateLanguageSelection(l);
-                break;
-            }
+    private void convertToLocalLanguages() {
+        localLanguages.clear();
+        for (Language lang : apiLanguages) {
+            group.eleven.snippet_sharing_app.model.Language local =
+                    new group.eleven.snippet_sharing_app.model.Language(
+                            lang.getDisplayName(),
+                            lang.getSlug(),
+                            getLanguageAbbr(lang.getName()),
+                            lang.getColor() != null ? lang.getColor() : "#666666"
+                    );
+            localLanguages.add(local);
         }
-
-        currentPrivacy = snippet.getPrivacy();
-        updatePrivacyUI(currentPrivacy);
     }
 
-    private void updatePrivacyUI(String privacy) {
+    private void initializeFallbackLanguages() {
+        apiLanguages = new ArrayList<>();
+        localLanguages = new ArrayList<>();
+
+        String[][] fallbackData = {
+                {"1", "JavaScript", "javascript", "JS", "#F7DF1E", "js"},
+                {"2", "Python", "python", "Py", "#3776AB", "py"},
+                {"3", "Java", "java", "Ja", "#007396", "java"},
+                {"4", "TypeScript", "typescript", "TS", "#3178C6", "ts"},
+                {"5", "Kotlin", "kotlin", "Kt", "#7F52FF", "kt"},
+                {"6", "Swift", "swift", "Sw", "#F05138", "swift"}
+        };
+
+        for (String[] data : fallbackData) {
+            Language apiLang = new Language();
+            apiLang.setId(data[0]);
+            apiLang.setName(data[1]);
+            apiLang.setSlug(data[2]);
+            apiLang.setColor(data[4]);
+            apiLang.setFileExtensions(new String[]{data[5]});
+            apiLanguages.add(apiLang);
+
+            group.eleven.snippet_sharing_app.model.Language local =
+                    new group.eleven.snippet_sharing_app.model.Language(data[1], data[2], data[3], data[4]);
+            localLanguages.add(local);
+        }
+
+        if (!apiLanguages.isEmpty()) {
+            selectedApiLanguage = apiLanguages.get(0);
+            binding.chipLanguage.setText(selectedApiLanguage.getDisplayName());
+            updateFilename();
+        }
+    }
+
+    private String getLanguageAbbr(String name) {
+        if (name == null) return "??";
+        switch (name.toLowerCase()) {
+            case "javascript": return "JS";
+            case "typescript": return "TS";
+            case "python": return "Py";
+            case "java": return "Ja";
+            case "kotlin": return "Kt";
+            case "swift": return "Sw";
+            case "html": return "HT";
+            case "css": return "CS";
+            case "php": return "PH";
+            case "ruby": return "Rb";
+            case "go": return "Go";
+            case "rust": return "Rs";
+            case "c#":
+            case "csharp": return "C#";
+            case "c++":
+            case "cpp": return "C+";
+            case "c": return "C";
+            default:
+                return name.length() >= 2 ? name.substring(0, 2) : name;
+        }
+    }
+
+    private void updateFilename() {
+        if (selectedApiLanguage != null && selectedApiLanguage.getFileExtensions() != null
+                && selectedApiLanguage.getFileExtensions().length > 0) {
+            binding.tvFilename.setText("snippet." + selectedApiLanguage.getFileExtensions()[0]);
+        } else {
+            binding.tvFilename.setText("snippet.txt");
+        }
+    }
+
+    private void setupHeaderAndInputs() {
+        binding.btnBack.setOnClickListener(v -> finish());
+        binding.btnPublish.setOnClickListener(v -> publishSnippet());
+    }
+
+    private void setupVisibilityTabs() {
+        updateVisibilityUI("public");
+
+        binding.tabPublic.setOnClickListener(v -> {
+            currentVisibility = "public";
+            updateVisibilityUI(currentVisibility);
+            binding.btnSelectTeam.setVisibility(View.GONE);
+        });
+
+        binding.tabTeam.setOnClickListener(v -> {
+            currentVisibility = "team";
+            updateVisibilityUI(currentVisibility);
+            binding.btnSelectTeam.setVisibility(View.VISIBLE);
+        });
+
+        binding.tabPrivate.setOnClickListener(v -> {
+            currentVisibility = "private";
+            updateVisibilityUI(currentVisibility);
+            binding.btnSelectTeam.setVisibility(View.GONE);
+        });
+    }
+
+    private void updateVisibilityUI(String visibility) {
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.accentColor, typedValue, true);
         int accentColor = typedValue.resourceId != 0
-            ? ContextCompat.getColor(this, typedValue.resourceId)
-            : typedValue.data;
+                ? ContextCompat.getColor(this, typedValue.resourceId)
+                : typedValue.data;
 
         getTheme().resolveAttribute(R.attr.textSecondaryColor, typedValue, true);
         int textSecondaryColor = typedValue.resourceId != 0
-            ? ContextCompat.getColor(this, typedValue.resourceId)
-            : typedValue.data;
+                ? ContextCompat.getColor(this, typedValue.resourceId)
+                : typedValue.data;
 
         int whiteColor = ContextCompat.getColor(this, R.color.white);
         int transparentColor = android.graphics.Color.TRANSPARENT;
 
-        // Reset all tabs to unselected state
+        // Reset all tabs
         binding.tabPublic.setCardBackgroundColor(transparentColor);
         binding.tabTeam.setCardBackgroundColor(transparentColor);
         binding.tabPrivate.setCardBackgroundColor(transparentColor);
@@ -157,65 +246,21 @@ public class CreateSnippetActivity extends AppCompatActivity {
         binding.tvTeamLabel.setTextColor(textSecondaryColor);
         binding.tvPrivateLabel.setTextColor(textSecondaryColor);
 
-        // Highlight selected tab
-        if (privacy.equalsIgnoreCase("Public")) {
-            binding.tabPublic.setCardBackgroundColor(accentColor);
-            binding.tvPublicLabel.setTextColor(whiteColor);
-        } else if (privacy.equalsIgnoreCase("Team")) {
-            binding.tabTeam.setCardBackgroundColor(accentColor);
-            binding.tvTeamLabel.setTextColor(whiteColor);
-        } else if (privacy.equalsIgnoreCase("Private")) {
-            binding.tabPrivate.setCardBackgroundColor(accentColor);
-            binding.tvPrivateLabel.setTextColor(whiteColor);
+        // Highlight selected
+        switch (visibility.toLowerCase()) {
+            case "public":
+                binding.tabPublic.setCardBackgroundColor(accentColor);
+                binding.tvPublicLabel.setTextColor(whiteColor);
+                break;
+            case "team":
+                binding.tabTeam.setCardBackgroundColor(accentColor);
+                binding.tvTeamLabel.setTextColor(whiteColor);
+                break;
+            case "private":
+                binding.tabPrivate.setCardBackgroundColor(accentColor);
+                binding.tvPrivateLabel.setTextColor(whiteColor);
+                break;
         }
-    }
-
-    private void setupHeaderAndInputs() {
-        binding.btnBack.setOnClickListener(v -> finish());
-        binding.btnPublish.setOnClickListener(v -> {
-            String title = binding.etTitle.getText().toString();
-            if (title.isEmpty()) {
-                Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String langName = selectedLanguage != null ? selectedLanguage.getName() : "Text";
-            String langColor = selectedLanguage != null ? selectedLanguage.getColorHex() : "#FFFFFF";
-
-            group.eleven.snippet_sharing_app.model.SnippetModel newSnippet = new group.eleven.snippet_sharing_app.model.SnippetModel(
-                    snippetIdToEdit != null ? snippetIdToEdit : String.valueOf(System.currentTimeMillis()),
-                    title,
-                    langName,
-                    langColor,
-                    currentPrivacy,
-                    snippetIdToEdit != null ? "v1.0.1" : "v1.0.0",
-                    "Just now",
-                    snippetIdToEdit != null ? originalFavoriteStatus : false,
-                    binding.etCode.getText().toString());
-
-            if (snippetIdToEdit != null) {
-                group.eleven.snippet_sharing_app.data.SnippetRepository.getInstance().updateSnippet(newSnippet);
-                Toast.makeText(this, "Snippet Updated successfully!", Toast.LENGTH_LONG).show();
-            } else {
-                group.eleven.snippet_sharing_app.data.SnippetRepository.getInstance().addSnippet(newSnippet);
-                Toast.makeText(this, "Snippet Published successfully!", Toast.LENGTH_LONG).show();
-            }
-            finish();
-        });
-
-        // Visibility tab listeners
-        binding.tabPublic.setOnClickListener(v -> {
-            currentPrivacy = "Public";
-            updatePrivacyUI(currentPrivacy);
-        });
-        binding.tabTeam.setOnClickListener(v -> {
-            currentPrivacy = "Team";
-            updatePrivacyUI(currentPrivacy);
-        });
-        binding.tabPrivate.setOnClickListener(v -> {
-            currentPrivacy = "Private";
-            updatePrivacyUI(currentPrivacy);
-        });
     }
 
     private void setupQuickAccess() {
@@ -245,37 +290,33 @@ public class CreateSnippetActivity extends AppCompatActivity {
         binding.btnSelectCategory.setOnClickListener(v -> showCategoryBottomSheet());
         binding.btnSelectTeam.setOnClickListener(v -> showTeamBottomSheet());
 
+        // Category selection result
         getSupportFragmentManager().setFragmentResultListener(SelectCategoryBottomSheet.REQUEST_KEY, this,
                 (requestKey, result) -> {
                     String id = result.getString("categoryId");
                     String name = result.getString("categoryName");
                     if (id != null && name != null) {
                         selectedCategoryId = id;
-                        // Update the text in the card
-                        TextView tv = binding.btnSelectCategory.findViewById(android.R.id.text1);
-                        if (tv == null) {
-                            // Find TextView inside the card
-                            View child = binding.btnSelectCategory.getChildAt(0);
-                            if (child instanceof android.widget.LinearLayout) {
-                                tv = (TextView) ((android.widget.LinearLayout) child).getChildAt(0);
-                            }
-                        }
+                        selectedCategoryName = name;
+                        binding.tvSelectedCategory.setText(name);
+                        binding.tvSelectedCategory.setTextColor(
+                                ContextCompat.getColor(this, R.color.primary));
                     }
                 });
 
+        // Team selection result
         getSupportFragmentManager().setFragmentResultListener(SelectTeamDialogFragment.REQUEST_KEY, this,
                 (requestKey, result) -> {
-                    int id = result.getInt("teamId", -1);
+                    String id = result.getString("teamId");
                     String name = result.getString("teamName");
-                    if (id != -1 && name != null) {
+                    if (id != null && name != null) {
                         selectedTeamId = id;
+                        selectedTeamName = name;
+                        binding.tvSelectedTeam.setText(name);
+                        binding.tvSelectedTeam.setTextColor(
+                                ContextCompat.getColor(this, R.color.primary));
                     }
                 });
-    }
-
-    private void showTeamBottomSheet() {
-        SelectTeamDialogFragment dialog = SelectTeamDialogFragment.newInstance(selectedTeamId);
-        dialog.show(getSupportFragmentManager(), "SelectTeamDialogFragment");
     }
 
     private void showLanguageBottomSheet() {
@@ -289,24 +330,27 @@ public class CreateSnippetActivity extends AppCompatActivity {
         ListView lvRecent = sheetView.findViewById(R.id.lvRecent);
         TextView tvRecentLabel = sheetView.findViewById(R.id.tvRecentLabel);
 
-        LanguageAdapter adapter = new LanguageAdapter(this, allLanguages);
+        // Mark selected language
+        for (int i = 0; i < localLanguages.size(); i++) {
+            group.eleven.snippet_sharing_app.model.Language local = localLanguages.get(i);
+            if (selectedApiLanguage != null && i < apiLanguages.size()
+                    && apiLanguages.get(i).getId().equals(selectedApiLanguage.getId())) {
+                local.setSelected(true);
+            } else {
+                local.setSelected(false);
+            }
+        }
+
+        LanguageAdapter adapter = new LanguageAdapter(this, localLanguages);
         lvLanguages.setAdapter(adapter);
 
-        LanguageAdapter recentAdapter = new LanguageAdapter(this, recentLanguages);
-        lvRecent.setAdapter(recentAdapter);
-
-        if (recentLanguages.isEmpty()) {
-            tvRecentLabel.setVisibility(View.GONE);
-            lvRecent.setVisibility(View.GONE);
-        } else {
-            tvRecentLabel.setVisibility(View.VISIBLE);
-            lvRecent.setVisibility(View.VISIBLE);
-        }
+        // Hide recent section
+        tvRecentLabel.setVisibility(View.GONE);
+        lvRecent.setVisibility(View.GONE);
 
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -314,59 +358,127 @@ public class CreateSnippetActivity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) {}
         });
 
         lvLanguages.setOnItemClickListener((parent, view, position, id) -> {
-            Language clickedLang = adapter.getItem(position);
-            updateLanguageSelection(clickedLang);
-            bottomSheetDialog.dismiss();
-        });
-
-        lvRecent.setOnItemClickListener((parent, view, position, id) -> {
-            Language clickedLang = recentAdapter.getItem(position);
-            updateLanguageSelection(clickedLang);
+            group.eleven.snippet_sharing_app.model.Language clickedLocal = adapter.getItem(position);
+            // Find corresponding API Language
+            for (int i = 0; i < localLanguages.size(); i++) {
+                if (localLanguages.get(i).getName().equals(clickedLocal.getName())) {
+                    if (i < apiLanguages.size()) {
+                        selectedApiLanguage = apiLanguages.get(i);
+                        binding.chipLanguage.setText(selectedApiLanguage.getDisplayName());
+                        updateFilename();
+                    }
+                    break;
+                }
+            }
             bottomSheetDialog.dismiss();
         });
 
         View closeBtn = sheetView.findViewById(R.id.btnClose);
-        if (closeBtn != null)
+        if (closeBtn != null) {
             closeBtn.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        }
 
         bottomSheetDialog.show();
     }
 
-    private void updateLanguageSelection(Language newLang) {
-        if (selectedLanguage != null)
-            selectedLanguage.setSelected(false);
-
-        selectedLanguage = newLang;
-        selectedLanguage.setSelected(true);
-
-        binding.chipLanguage.setText(selectedLanguage.getName());
-
-        if (recentLanguages.contains(newLang)) {
-            recentLanguages.remove(newLang);
-        }
-        recentLanguages.add(0, newLang);
-        if (recentLanguages.size() > 3) {
-            recentLanguages.remove(recentLanguages.size() - 1);
-        }
-    }
-
     private void showTagsBottomSheet() {
-        ManageTagsBottomSheet bottomSheet = ManageTagsBottomSheet.newInstance(currentSelectedTags);
+        ManageTagsBottomSheet bottomSheet = ManageTagsBottomSheet.newInstance(selectedTags);
         bottomSheet.setOnTagsSelectedListener(tags -> {
-            currentSelectedTags = new ArrayList<>(tags);
-            // Update can be done if needed
+            selectedTags = new ArrayList<>(tags);
+            updateSelectedTagsUI();
         });
         bottomSheet.show(getSupportFragmentManager(), "ManageTagsBottomSheet");
+    }
+
+    private void updateSelectedTagsUI() {
+        binding.chipGroupSelectedTags.removeAllViews();
+        if (selectedTags.isEmpty()) {
+            binding.chipGroupSelectedTags.setVisibility(View.GONE);
+        } else {
+            binding.chipGroupSelectedTags.setVisibility(View.VISIBLE);
+            for (String tag : selectedTags) {
+                Chip chip = (Chip) LayoutInflater.from(this)
+                        .inflate(R.layout.chip_item_display, binding.chipGroupSelectedTags, false);
+                chip.setText("#" + tag);
+                chip.setCloseIconVisible(true);
+                chip.setOnCloseIconClickListener(v -> {
+                    selectedTags.remove(tag);
+                    updateSelectedTagsUI();
+                });
+                binding.chipGroupSelectedTags.addView(chip);
+            }
+        }
     }
 
     private void showCategoryBottomSheet() {
         SelectCategoryBottomSheet bottomSheet = SelectCategoryBottomSheet.newInstance(selectedCategoryId);
         bottomSheet.show(getSupportFragmentManager(), "SelectCategoryBottomSheet");
+    }
+
+    private void showTeamBottomSheet() {
+        SelectTeamDialogFragment dialog = SelectTeamDialogFragment.newInstance(selectedTeamId);
+        dialog.show(getSupportFragmentManager(), "SelectTeamDialogFragment");
+    }
+
+    private void publishSnippet() {
+        String title = binding.etTitle.getText().toString().trim();
+        String code = binding.etCode.getText().toString();
+        String description = binding.etDescription.getText().toString().trim();
+
+        // Validation
+        if (title.isEmpty()) {
+            binding.etTitle.setError("Title is required");
+            binding.etTitle.requestFocus();
+            return;
+        }
+
+        if (code.isEmpty()) {
+            Toast.makeText(this, "Please enter some code", Toast.LENGTH_SHORT).show();
+            binding.etCode.requestFocus();
+            return;
+        }
+
+        if (selectedApiLanguage == null) {
+            Toast.makeText(this, "Please select a language", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (currentVisibility.equals("team") && (selectedTeamId == null || selectedTeamId.isEmpty())) {
+            Toast.makeText(this, "Please select a team for team visibility", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Disable button and show loading
+        if (isLoading) return;
+        isLoading = true;
+        binding.btnPublish.setEnabled(false);
+        binding.btnPublish.setText("Publishing...");
+
+        repository.createSnippet(
+                title,
+                code,
+                selectedApiLanguage.getId(),
+                currentVisibility,
+                description,
+                selectedTags,
+                selectedCategoryId,
+                selectedTeamId
+        ).observe(this, resource -> {
+            if (resource.status == Resource.Status.SUCCESS) {
+                Toast.makeText(this, "Snippet published successfully!", Toast.LENGTH_LONG).show();
+                setResult(RESULT_OK);
+                finish();
+            } else if (resource.status == Resource.Status.ERROR) {
+                isLoading = false;
+                binding.btnPublish.setEnabled(true);
+                binding.btnPublish.setText("Publish");
+                Toast.makeText(this, "Failed: " + resource.message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void makeBackgroundTransparent(View sheetView) {

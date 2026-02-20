@@ -83,7 +83,8 @@
             android:windowSoftInputMode="adjustResize" /> <!-- Home Activity -->
         <activity
             android:name=".ui.home.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- Edit Profile Activity -->
         <activity
@@ -126,11 +127,13 @@
         <!-- Snippet Activities -->
         <activity
             android:name=".ui.snippet.CreateSnippetActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".ui.mysnippets.MySnippetsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <!-- Favorites Activity -->
         <activity

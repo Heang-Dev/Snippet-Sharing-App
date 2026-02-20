@@ -2,6 +2,7 @@ package group.eleven.snippet_sharing_app.model;
 
 public class TeamModel {
     private int id;
+    private String actualId; // UUID string from API
     private String name;
     private int memberCount;
     private int colorHex; // Dynamic color for avatar background
@@ -19,6 +20,14 @@ public class TeamModel {
 
     public int getId() {
         return id;
+    }
+
+    public String getActualId() {
+        return actualId;
+    }
+
+    public void setActualId(String actualId) {
+        this.actualId = actualId;
     }
 
     public String getName() {

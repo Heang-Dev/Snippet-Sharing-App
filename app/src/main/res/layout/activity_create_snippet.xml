@@ -463,7 +463,8 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnManageTags"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
+                android:layout_height="wrap_content"
+                android:minHeight="46dp"
                 android:layout_marginTop="12dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
                 app:cardCornerRadius="10dp"
@@ -473,25 +474,40 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
 
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Manage Tags"
-                        android:textColor="?attr/textPrimaryColor"
-                        android:textSize="14sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/ic_arrow_forward"
-                        app:tint="?attr/textMutedColor" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Manage Tags"
+                            android:textColor="?attr/textPrimaryColor"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/ic_arrow_forward"
+                            app:tint="?attr/textMutedColor" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupSelectedTags"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"
+                        app:chipSpacingHorizontal="6dp"
+                        app:chipSpacingVertical="4dp" />
 
                 </LinearLayout>
 
@@ -517,6 +533,7 @@
                     android:paddingEnd="14dp">
 
                     <TextView
+                        android:id="@+id/tvSelectedCategory"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -543,7 +560,8 @@
                 app:cardCornerRadius="10dp"
                 app:cardElevation="0dp"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -554,6 +572,7 @@
                     android:paddingEnd="14dp">
 
                     <TextView
+                        android:id="@+id/tvSelectedTeam"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"

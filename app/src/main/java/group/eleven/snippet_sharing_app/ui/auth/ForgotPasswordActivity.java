@@ -2,6 +2,7 @@ package group.eleven.snippet_sharing_app.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityForgotPasswordBinding;
 import group.eleven.snippet_sharing_app.utils.FormValidator;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 
 /**
  * Forgot Password Activity - sends OTP to user's email
@@ -112,6 +114,12 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 .setBackgroundTint(getColor(R.color.error))
                 .setTextColor(getColor(R.color.white))
                 .show();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override

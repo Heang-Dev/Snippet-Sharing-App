@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import group.eleven.snippet_sharing_app.data.SnippetRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityMySnippetsBinding;
 import group.eleven.snippet_sharing_app.model.SnippetModel;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
+import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 
 public class MySnippetsActivity extends AppCompatActivity implements MySnippetAdapter.OnSnippetActionListener {
 
@@ -266,6 +268,12 @@ public class MySnippetsActivity extends AppCompatActivity implements MySnippetAd
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, snippet.getTitle());
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(shareIntent, "Share Snippet via"));
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 
     @Override
