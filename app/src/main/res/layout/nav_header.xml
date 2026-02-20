@@ -7,8 +7,8 @@
     android:orientation="vertical"
     android:paddingStart="16dp"
     android:paddingEnd="16dp"
-    android:paddingTop="40dp"
-    android:paddingBottom="12dp">
+    android:paddingTop="56dp"
+    android:paddingBottom="16dp">
 
     <!-- Profile Row -->
     <LinearLayout

@@ -143,6 +143,16 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Shared With Me Activity -->
+        <activity
+            android:name=".ui.shared.SharedWithMeActivity"
+            android:exported="false" />
+
+        <!-- Help & Support Activity -->
+        <activity
+            android:name=".ui.help.HelpSupportActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

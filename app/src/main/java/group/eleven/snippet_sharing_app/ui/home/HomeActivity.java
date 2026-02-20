@@ -458,7 +458,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_dashboard) {
-            Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
+            // Already on Dashboard/Home - just close drawer
         } else if (id == R.id.nav_all_snippets) {
             Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
             startActivity(intent);
@@ -466,7 +466,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_shared) {
-            Toast.makeText(this, "Shared with me - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.shared.SharedWithMeActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_teams) {
             Intent intent = new Intent(HomeActivity.this, TeamsListActivity.class);
             startActivity(intent);
@@ -477,7 +478,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, AccountSettingsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_help) {
-            Toast.makeText(this, "Help & Support - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.help.HelpSupportActivity.class);
+            startActivity(intent);
         }
 
         binding.drawerLayout.closeDrawer(GravityCompat.START);
