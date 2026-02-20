@@ -16,10 +16,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.data.model.Language;
+import group.eleven.snippet_sharing_app.data.repository.LanguageRepository;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
+import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
 import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
@@ -27,10 +32,16 @@ import group.eleven.snippet_sharing_app.ui.profile.NotificationSettingsActivity;
 
 public class BrowseLanguagesActivity extends AppCompatActivity {
 
+    private LanguageRepository languageRepository;
+    private GridLayout gridPopular;
+    private RecyclerView rvLanguages;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_languages);
+
+        languageRepository = new LanguageRepository(this);
 
         // Setup Header
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
@@ -39,27 +50,107 @@ public class BrowseLanguagesActivity extends AppCompatActivity {
         EditText etSearch = findViewById(R.id.etSearch);
         etSearch.setHint("Find a language...");
 
-        // Setup Popular Grid
-        setupPopularGrid();
+        gridPopular = findViewById(R.id.gridPopular);
+        rvLanguages = findViewById(R.id.rvLanguages);
 
-        // Setup All Languages List
-        setupAllLanguagesList();
+        // Load languages from API
+        loadPopularLanguages();
+        loadAllLanguages();
 
         // Setup Bottom Navigation
         setupBottomNavigation();
     }
 
-    private void setupPopularGrid() {
-        GridLayout grid = findViewById(R.id.gridPopular);
-        // Clean implementation: Inflate card views for top 4 languages
-        // JS
-        addPopularCard(grid, "JS", "JavaScript", "2,403 snippets", "#FFD600");
-        // Python
-        addPopularCard(grid, "Py", "Python", "1,892 snippets", "#2196F3");
-        // TS - TypeScript uses blue-ish text usually, using a nice blue
-        addPopularCard(grid, "TS", "TypeScript", "1,540 snippets", "#29B6F6");
-        // Rust
-        addPopularCard(grid, "Rs", "Rust", "982 snippets", "#FF5722");
+    private void loadPopularLanguages() {
+        languageRepository.getPopularLanguages().observe(this, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null && !resource.data.isEmpty()) {
+                gridPopular.removeAllViews();
+                int count = 0;
+                for (Language lang : resource.data) {
+                    if (count >= 4) break;
+                    String initial = getLanguageInitial(lang.getName());
+                    String color = lang.getColor() != null ? lang.getColor() : "#6B7280";
+                    String snippetCount = formatCount(lang.getSnippetCount()) + " snippets";
+                    addPopularCard(gridPopular, initial, lang.getDisplayName(), snippetCount, color);
+                    count++;
+                }
+            } else if (resource.status == Resource.Status.ERROR) {
+                // Fall back to hardcoded popular languages
+                setupPopularGridFallback();
+            }
+        });
+    }
+
+    private void loadAllLanguages() {
+        languageRepository.getLanguages().observe(this, resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null && !resource.data.isEmpty()) {
+                List<LanguageItem> items = convertToLanguageItems(resource.data);
+                rvLanguages.setLayoutManager(new LinearLayoutManager(this));
+                rvLanguages.setAdapter(new AllLanguageAdapter(items));
+            } else if (resource.status == Resource.Status.ERROR) {
+                // Fall back to hardcoded language list
+                setupAllLanguagesListFallback();
+            }
+        });
+    }
+
+    private List<LanguageItem> convertToLanguageItems(List<Language> languages) {
+        // Sort languages alphabetically
+        Collections.sort(languages, (a, b) ->
+            a.getName().compareToIgnoreCase(b.getName()));
+
+        List<LanguageItem> items = new ArrayList<>();
+        String currentLetter = "";
+
+        for (Language lang : languages) {
+            String firstLetter = lang.getName().substring(0, 1).toUpperCase();
+            if (!firstLetter.equals(currentLetter)) {
+                items.add(new LanguageItem(firstLetter)); // Header
+                currentLetter = firstLetter;
+            }
+            String initial = getLanguageInitial(lang.getName());
+            String color = lang.getColor() != null ? lang.getColor() : "#6B7280";
+            String count = formatCount(lang.getSnippetCount());
+            items.add(new LanguageItem(initial, lang.getDisplayName(), count, color));
+        }
+
+        return items;
+    }
+
+    private String getLanguageInitial(String name) {
+        if (name == null || name.isEmpty()) return "?";
+        if (name.length() <= 2) return name;
+        // Handle special cases
+        switch (name.toLowerCase()) {
+            case "javascript": return "JS";
+            case "typescript": return "TS";
+            case "python": return "Py";
+            case "c++": case "cpp": return "C++";
+            case "c#": case "csharp": return "C#";
+            case "golang": case "go": return "Go";
+            case "rust": return "Rs";
+            case "swift": return "Sw";
+            case "kotlin": return "Kt";
+            case "shell": case "bash": return "Sh";
+            case "html": return "Ht";
+            case "css": case "scss": return "Cs";
+            default: return name.substring(0, 2);
+        }
+    }
+
+    private String formatCount(int count) {
+        if (count >= 1000) {
+            return String.format("%.1fk", count / 1000.0);
+        }
+        return String.valueOf(count);
+    }
+
+    private void setupPopularGridFallback() {
+        gridPopular.removeAllViews();
+        addPopularCard(gridPopular, "JS", "JavaScript", "2,403 snippets", "#FFD600");
+        addPopularCard(gridPopular, "Py", "Python", "1,892 snippets", "#2196F3");
+        addPopularCard(gridPopular, "TS", "TypeScript", "1,540 snippets", "#29B6F6");
+        addPopularCard(gridPopular, "Rs", "Rust", "982 snippets", "#FF5722");
     }
 
     private void addPopularCard(GridLayout grid, String initial, String name, String count, String colorHex) {
@@ -86,9 +177,8 @@ public class BrowseLanguagesActivity extends AppCompatActivity {
         grid.addView(card);
     }
 
-    private void setupAllLanguagesList() {
-        RecyclerView rv = findViewById(R.id.rvLanguages);
-        rv.setLayoutManager(new LinearLayoutManager(this));
+    private void setupAllLanguagesListFallback() {
+        rvLanguages.setLayoutManager(new LinearLayoutManager(this));
 
         List<LanguageItem> items = new ArrayList<>();
         // C Section
@@ -117,7 +207,7 @@ public class BrowseLanguagesActivity extends AppCompatActivity {
         items.add(new LanguageItem("Sh", "Shell / Bash", "1.5k", "#4CAF50"));
         items.add(new LanguageItem("Sq", "SQL", "21k", "#E91E63"));
 
-        rv.setAdapter(new AllLanguageAdapter(items));
+        rvLanguages.setAdapter(new AllLanguageAdapter(items));
     }
 
     private void setupBottomNavigation() {

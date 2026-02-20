@@ -139,28 +139,32 @@ public class CreateSnippetActivity extends AppCompatActivity {
             ? ContextCompat.getColor(this, typedValue.resourceId)
             : typedValue.data;
 
-        getTheme().resolveAttribute(R.attr.surfaceVariantColor, typedValue, true);
-        int surfaceVariantColor = typedValue.resourceId != 0
-            ? ContextCompat.getColor(this, typedValue.resourceId)
-            : typedValue.data;
-
         getTheme().resolveAttribute(R.attr.textSecondaryColor, typedValue, true);
         int textSecondaryColor = typedValue.resourceId != 0
             ? ContextCompat.getColor(this, typedValue.resourceId)
             : typedValue.data;
 
-        // Reset all tabs
-        binding.tabPublic.setCardBackgroundColor(surfaceVariantColor);
-        binding.tabTeam.setTextColor(textSecondaryColor);
-        binding.tabPrivate.setTextColor(textSecondaryColor);
+        int whiteColor = ContextCompat.getColor(this, R.color.white);
+        int transparentColor = android.graphics.Color.TRANSPARENT;
+
+        // Reset all tabs to unselected state
+        binding.tabPublic.setCardBackgroundColor(transparentColor);
+        binding.tabTeam.setCardBackgroundColor(transparentColor);
+        binding.tabPrivate.setCardBackgroundColor(transparentColor);
+        binding.tvPublicLabel.setTextColor(textSecondaryColor);
+        binding.tvTeamLabel.setTextColor(textSecondaryColor);
+        binding.tvPrivateLabel.setTextColor(textSecondaryColor);
 
         // Highlight selected tab
         if (privacy.equalsIgnoreCase("Public")) {
             binding.tabPublic.setCardBackgroundColor(accentColor);
+            binding.tvPublicLabel.setTextColor(whiteColor);
         } else if (privacy.equalsIgnoreCase("Team")) {
-            binding.tabTeam.setTextColor(accentColor);
+            binding.tabTeam.setCardBackgroundColor(accentColor);
+            binding.tvTeamLabel.setTextColor(whiteColor);
         } else if (privacy.equalsIgnoreCase("Private")) {
-            binding.tabPrivate.setTextColor(accentColor);
+            binding.tabPrivate.setCardBackgroundColor(accentColor);
+            binding.tvPrivateLabel.setTextColor(whiteColor);
         }
     }
 

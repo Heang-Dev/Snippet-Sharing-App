@@ -27,6 +27,8 @@ import java.io.InputStream;
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.User;
+import group.eleven.snippet_sharing_app.data.repository.ProfileRepository;
+import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -49,6 +51,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     // Data
     private SessionManager sessionManager;
+    private ProfileRepository profileRepository;
     private ActivityResultLauncher<String> imagePickerLauncher;
     private String selectedImagePath = null;
 
@@ -58,6 +61,7 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         sessionManager = new SessionManager(this);
+        profileRepository = new ProfileRepository(this);
 
         initViews();
         setupToolbar();
@@ -198,6 +202,12 @@ public class EditProfileActivity extends AppCompatActivity {
                 etTwitter.setText(twitter);
             }
 
+            // Location
+            String location = user.getLocation();
+            if (location != null && !location.isEmpty()) {
+                etLocation.setText(location);
+            }
+
             // Avatar
             String avatarUrl = user.getAvatarUrl();
             if (avatarUrl != null && !avatarUrl.isEmpty()) {
@@ -246,33 +256,37 @@ public class EditProfileActivity extends AppCompatActivity {
         // Show loading
         showLoading(true);
 
-        // Update the user object in SessionManager
-        User user = sessionManager.getUser();
-        if (user != null) {
-            user.setFullName(fullName);
-            user.setUsername(username);
-            user.setBio(bio);
-            user.setWebsiteUrl(website);
-            user.setGithubUrl(github);
-            user.setTwitterUrl(twitter);
+        // Get location value
+        String location = etLocation.getText() != null ? etLocation.getText().toString().trim() : "";
 
-            // Update avatar if a new image was selected
-            if (selectedImagePath != null && !selectedImagePath.isEmpty()) {
-                // Use file:// URI for local images
-                user.setAvatarUrl("file://" + selectedImagePath);
+        // Call API to update profile
+        profileRepository.updateProfile(
+                fullName,
+                username,
+                bio,
+                website,
+                github,
+                twitter,
+                location,
+                selectedImagePath
+        ).observe(this, resource -> {
+            if (resource.status == Resource.Status.LOADING) {
+                // Still loading
+                return;
             }
 
-            // Save updated user to session
-            sessionManager.updateUser(user);
-        }
-
-        // TODO: Call API to update profile on server
-        // For now, just simulate success after a short delay
-        new android.os.Handler().postDelayed(() -> {
             showLoading(false);
-            Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
-            finish();
-        }, 500);
+
+            if (resource.status == Resource.Status.SUCCESS) {
+                Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
+            } else {
+                // Show error message
+                String errorMsg = resource.message != null ? resource.message : "Failed to update profile";
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void showLoading(boolean show) {

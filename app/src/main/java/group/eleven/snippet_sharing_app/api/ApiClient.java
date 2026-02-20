@@ -18,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ApiClient {
     private static final String BASE_URL = BuildConfig.API_BASE_URL;
+    private static final String STORAGE_BASE_URL = BuildConfig.STORAGE_BASE_URL;
     private static Retrofit retrofit = null;
     private static ApiService apiService = null;
 
@@ -78,5 +79,36 @@ public class ApiClient {
     public static synchronized void resetClient() {
         retrofit = null;
         apiService = null;
+    }
+
+    /**
+     * Get the storage base URL for constructing full URLs from relative paths
+     */
+    public static String getStorageBaseUrl() {
+        return STORAGE_BASE_URL;
+    }
+
+    /**
+     * Convert a relative storage path to a full URL
+     * @param relativePath The relative path (e.g., "/storage/avatars/image.jpg")
+     * @return The full URL (e.g., "http://10.0.2.2:8000/storage/avatars/image.jpg")
+     */
+    public static String getFullStorageUrl(String relativePath) {
+        if (relativePath == null || relativePath.isEmpty()) {
+            return null;
+        }
+        // If already a full URL, return as-is
+        if (relativePath.startsWith("http://") || relativePath.startsWith("https://")) {
+            return relativePath;
+        }
+        // If it's a local file path, return as-is
+        if (relativePath.startsWith("file://")) {
+            return relativePath;
+        }
+        // Remove leading slash if present for proper concatenation
+        if (relativePath.startsWith("/")) {
+            relativePath = relativePath.substring(1);
+        }
+        return STORAGE_BASE_URL + relativePath;
     }
 }

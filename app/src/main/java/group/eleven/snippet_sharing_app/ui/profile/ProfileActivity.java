@@ -29,8 +29,10 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.MockDataProvider;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.model.User;
+import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
 import group.eleven.snippet_sharing_app.ui.home.FeedSnippetAdapter;
 import group.eleven.snippet_sharing_app.ui.notification.NotificationsActivity;
+import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -61,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     // Data
     private SessionManager sessionManager;
+    private DashboardRepository dashboardRepository;
     private FeedSnippetAdapter adapter;
     private String currentTab = "snippets";
 
@@ -70,6 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         sessionManager = new SessionManager(this);
+        dashboardRepository = new DashboardRepository(this);
 
         initViews();
         setupToolbar();
@@ -275,8 +279,14 @@ public class ProfileActivity extends AppCompatActivity {
                 tvWebsite.setVisibility(View.GONE);
             }
 
-            // Location (not in current User model, hide for now)
-            tvLocation.setVisibility(View.GONE);
+            // Location
+            String location = user.getLocation();
+            if (location != null && !location.isEmpty()) {
+                tvLocation.setText(location);
+                tvLocation.setVisibility(View.VISIBLE);
+            } else {
+                tvLocation.setVisibility(View.GONE);
+            }
 
             // Social links
             String githubUrl = user.getGithubUrl();
@@ -308,53 +318,89 @@ public class ProfileActivity extends AppCompatActivity {
             llBadges.setVisibility(View.GONE);
         }
 
-        // Load stats (mock data for now - would come from API)
-        loadMockStats();
+        // Load stats from User object
+        loadUserStats(user);
     }
 
-    private void loadMockStats() {
-        // Generate realistic mock stats
-        Random random = new Random();
-        int snippets = random.nextInt(50) + 5;
-        int followers = random.nextInt(500) + 10;
-        int following = random.nextInt(200) + 5;
-        int likes = random.nextInt(1000) + 50;
-
-        tvSnippetsCount.setText(String.valueOf(snippets));
-        tvFollowersCount.setText(formatCount(followers));
-        tvFollowingCount.setText(String.valueOf(following));
-        tvLikesCount.setText(formatCount(likes));
+    private void loadUserStats(User user) {
+        if (user != null) {
+            // Use real stats from User object
+            tvSnippetsCount.setText(String.valueOf(user.getSnippetsCount()));
+            tvFollowersCount.setText(formatCount(user.getFollowersCount()));
+            tvFollowingCount.setText(String.valueOf(user.getFollowingCount()));
+            // Likes count - not in User model, use 0 as placeholder
+            tvLikesCount.setText("0");
+        } else {
+            tvSnippetsCount.setText("0");
+            tvFollowersCount.setText("0");
+            tvFollowingCount.setText("0");
+            tvLikesCount.setText("0");
+        }
     }
 
     private void loadContent(String type) {
-        List<SnippetCard> snippets;
+        showLoading(true);
 
         switch (type) {
             case "stars":
-                snippets = MockDataProvider.getMockSnippetCards(3);
                 tvEmptyTitle.setText("No starred snippets");
                 tvEmptyMessage.setText("Star snippets to save them for later!");
+                loadFavorites();
                 break;
             case "collections":
-                snippets = MockDataProvider.getMockSnippetCards(2);
                 tvEmptyTitle.setText("No collections yet");
                 tvEmptyMessage.setText("Create collections to organize your snippets!");
+                // Collections - fall back to mock for now
+                loadMockContent(2);
                 break;
             default: // snippets
-                snippets = MockDataProvider.getMockSnippetCards(5);
                 tvEmptyTitle.setText("No snippets yet");
                 tvEmptyMessage.setText("Create your first snippet to share!");
+                loadMySnippets();
                 break;
         }
+    }
 
+    private void loadMySnippets() {
+        dashboardRepository.getRecentSnippets(20).observe(this, resource -> {
+            showLoading(false);
+
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                adapter.setSnippets(resource.data);
+                updateContentVisibility(resource.data.isEmpty());
+            } else if (resource.status == Resource.Status.ERROR) {
+                // Fall back to mock data
+                loadMockContent(5);
+            }
+        });
+    }
+
+    private void loadFavorites() {
+        // TODO: Add getFavoriteSnippets to DashboardRepository
+        // For now, show empty state or mock
+        showLoading(false);
+        loadMockContent(3);
+    }
+
+    private void loadMockContent(int count) {
+        List<SnippetCard> snippets = MockDataProvider.getMockSnippetCards(count);
         adapter.setSnippets(snippets);
+        updateContentVisibility(snippets.isEmpty());
+    }
 
-        if (snippets.isEmpty()) {
+    private void updateContentVisibility(boolean isEmpty) {
+        if (isEmpty) {
             rvContent.setVisibility(View.GONE);
             layoutEmpty.setVisibility(View.VISIBLE);
         } else {
             rvContent.setVisibility(View.VISIBLE);
             layoutEmpty.setVisibility(View.GONE);
+        }
+    }
+
+    private void showLoading(boolean show) {
+        if (layoutLoading != null) {
+            layoutLoading.setVisibility(show ? View.VISIBLE : View.GONE);
         }
     }
 

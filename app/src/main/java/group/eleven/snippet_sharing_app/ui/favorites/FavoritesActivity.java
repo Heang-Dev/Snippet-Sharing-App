@@ -20,6 +20,7 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.MockDataProvider;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
+import group.eleven.snippet_sharing_app.data.repository.FavoritesRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityFavoritesBinding;
 import group.eleven.snippet_sharing_app.ui.explore.ExploreActivity;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
@@ -41,6 +42,7 @@ public class FavoritesActivity extends AppCompatActivity {
     private ActivityFavoritesBinding binding;
     private SessionManager sessionManager;
     private DashboardRepository dashboardRepository;
+    private FavoritesRepository favoritesRepository;
     private SnippetCardAdapter adapter;
     private List<SnippetCard> allFavorites = new ArrayList<>();
     private List<SnippetCard> filteredFavorites = new ArrayList<>();
@@ -56,6 +58,7 @@ public class FavoritesActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         dashboardRepository = new DashboardRepository(this);
+        favoritesRepository = new FavoritesRepository(this);
 
         setupToolbar();
         setupSearch();
@@ -178,21 +181,34 @@ public class FavoritesActivity extends AppCompatActivity {
     private void loadFavorites() {
         binding.swipeRefresh.setRefreshing(true);
 
-        // For now, use mock data with favorites filter
-        // In production, this would call an API endpoint for starred snippets
+        favoritesRepository.getFavoriteSnippets(30).observe(this, resource -> {
+            binding.swipeRefresh.setRefreshing(false);
+
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                allFavorites.clear();
+                allFavorites.addAll(resource.data);
+                updateUI();
+                Log.d(TAG, "Loaded " + allFavorites.size() + " favorites from API");
+            } else if (resource.status == Resource.Status.ERROR) {
+                Log.e(TAG, "Failed to load favorites: " + resource.message);
+                // Fall back to mock data for demo
+                loadMockFavoritesFallback();
+            }
+        });
+    }
+
+    private void loadMockFavoritesFallback() {
         List<SnippetCard> mockSnippets = MockDataProvider.getMockSnippetCards(10);
 
         // Simulate favorites by showing a subset of snippets
         allFavorites.clear();
         for (int i = 0; i < mockSnippets.size(); i++) {
-            // Show alternating snippets as favorites for demo
             if (i % 2 == 0) {
                 allFavorites.add(mockSnippets.get(i));
             }
         }
-
-        binding.swipeRefresh.setRefreshing(false);
         updateUI();
+        Log.d(TAG, "Loaded " + allFavorites.size() + " mock favorites as fallback");
     }
 
     private void filterFavorites(String query) {

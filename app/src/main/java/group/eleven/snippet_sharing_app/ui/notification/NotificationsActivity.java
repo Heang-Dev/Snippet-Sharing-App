@@ -1,6 +1,7 @@
 package group.eleven.snippet_sharing_app.ui.notification;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
@@ -20,15 +22,21 @@ import java.util.stream.Collectors;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.NotificationItem;
+import group.eleven.snippet_sharing_app.data.repository.NotificationRepository;
+import group.eleven.snippet_sharing_app.utils.Resource;
 
 public class NotificationsActivity extends AppCompatActivity implements NotificationAdapter.OnNotificationClickListener {
+
+    private static final String TAG = "NotificationsActivity";
 
     private MaterialToolbar toolbar;
     private TabLayout tabLayout;
     private RecyclerView rvNotifications;
     private LinearLayout layoutEmpty;
+    private SwipeRefreshLayout swipeRefresh;
 
     private NotificationAdapter adapter;
+    private NotificationRepository notificationRepository;
     private List<NotificationItem> allNotifications = new ArrayList<>();
     private boolean showUnreadOnly = false;
 
@@ -42,7 +50,8 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
         setupToolbar();
         setupRecyclerView();
         setupTabs();
-        loadMockNotifications();
+        setupSwipeRefresh();
+        loadNotifications();
     }
 
     private void setupStatusBar() {
@@ -67,10 +76,13 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
     }
 
     private void initViews() {
+        notificationRepository = new NotificationRepository(this);
+
         toolbar = findViewById(R.id.toolbar);
         tabLayout = findViewById(R.id.tabLayout);
         rvNotifications = findViewById(R.id.rvNotifications);
         layoutEmpty = findViewById(R.id.layoutEmpty);
+        swipeRefresh = findViewById(R.id.swipeRefresh);
     }
 
     private void setupToolbar() {
@@ -104,6 +116,13 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
         });
     }
 
+    private void setupSwipeRefresh() {
+        if (swipeRefresh != null) {
+            swipeRefresh.setColorSchemeResources(R.color.primary);
+            swipeRefresh.setOnRefreshListener(this::loadNotifications);
+        }
+    }
+
     private void filterNotifications() {
         List<NotificationItem> filtered;
         if (showUnreadOnly) {
@@ -123,18 +142,52 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
         rvNotifications.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
 
-    private void loadMockNotifications() {
-        // Use MockDataProvider for consistent, realistic test data
+    private void showLoading(boolean show) {
+        // Loading state handled by swipeRefresh
+        if (swipeRefresh != null && !show) {
+            swipeRefresh.setRefreshing(false);
+        }
+    }
+
+    /**
+     * Load notifications from API
+     */
+    private void loadNotifications() {
+        showLoading(true);
+
+        notificationRepository.getNotifications(30).observe(this, resource -> {
+            if (swipeRefresh != null) {
+                swipeRefresh.setRefreshing(false);
+            }
+            showLoading(false);
+
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                allNotifications.clear();
+                allNotifications.addAll(resource.data);
+                filterNotifications();
+                Log.d(TAG, "Loaded " + allNotifications.size() + " notifications from API");
+            } else if (resource.status == Resource.Status.ERROR) {
+                Log.e(TAG, "Failed to load notifications: " + resource.message);
+                // Fall back to mock data for demo
+                loadMockNotificationsFallback();
+            }
+        });
+    }
+
+    /**
+     * Fallback to mock data when API fails
+     */
+    private void loadMockNotificationsFallback() {
         allNotifications = group.eleven.snippet_sharing_app.data.MockDataProvider
                 .getMockNotifications(12);
         filterNotifications();
+        Log.d(TAG, "Loaded " + allNotifications.size() + " mock notifications as fallback");
     }
 
     @Override
     public void onNotificationClick(NotificationItem notification) {
-        // Mark as read
-        notification.setRead(true);
-        adapter.notifyDataSetChanged();
+        // Mark as read via API
+        markNotificationAsRead(notification);
 
         // Handle notification click based on type
         switch (notification.getType()) {
@@ -155,5 +208,26 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
             default:
                 break;
         }
+    }
+
+    /**
+     * Mark notification as read via API
+     */
+    private void markNotificationAsRead(NotificationItem notification) {
+        if (notification.isRead()) return;
+
+        // Optimistically update UI
+        notification.setRead(true);
+        adapter.notifyDataSetChanged();
+
+        // Call API to mark as read
+        notificationRepository.markAsRead(notification.getId()).observe(this, resource -> {
+            if (resource.status == Resource.Status.ERROR) {
+                Log.w(TAG, "Failed to mark notification as read: " + resource.message);
+                // Revert UI on error
+                notification.setRead(false);
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 }

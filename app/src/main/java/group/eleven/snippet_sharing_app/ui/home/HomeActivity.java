@@ -38,6 +38,7 @@ import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
 import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
 import group.eleven.snippet_sharing_app.ui.notification.NotificationsActivity;
 import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
+import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.utils.BottomNavHelper;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
@@ -52,6 +53,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private ActivityHomeBinding binding;
     private SessionManager sessionManager;
     private DashboardRepository dashboardRepository;
+    private AuthRepository authRepository;
     private ActionBarDrawerToggle drawerToggle;
 
     private FeedSnippetAdapter feedAdapter;
@@ -74,9 +76,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             // Setup theme-aware status bar
             setupStatusBar();
 
-            // Initialize session manager and repository
+            // Initialize session manager and repositories
             sessionManager = new SessionManager(this);
             dashboardRepository = new DashboardRepository(this);
+            authRepository = new AuthRepository(this);
 
             if (!sessionManager.isLoggedIn()) {
                 navigateToLogin();
@@ -205,10 +208,53 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        // Set placeholder stats (will be replaced with real data from API)
-        if (tvDrawerSnippetsCount != null) tvDrawerSnippetsCount.setText("0");
-        if (tvDrawerFollowersCount != null) tvDrawerFollowersCount.setText("0");
-        if (tvDrawerFollowingCount != null) tvDrawerFollowingCount.setText("0");
+        // Set stats from User object (loaded from session)
+        updateDrawerStats(user);
+
+        // Refresh user data from API to get latest stats
+        refreshUserProfile();
+    }
+
+    /**
+     * Update drawer header stats with user data
+     */
+    private void updateDrawerStats(User user) {
+        if (user != null) {
+            if (tvDrawerSnippetsCount != null) {
+                tvDrawerSnippetsCount.setText(String.valueOf(user.getSnippetsCount()));
+            }
+            if (tvDrawerFollowersCount != null) {
+                tvDrawerFollowersCount.setText(String.valueOf(user.getFollowersCount()));
+            }
+            if (tvDrawerFollowingCount != null) {
+                tvDrawerFollowingCount.setText(String.valueOf(user.getFollowingCount()));
+            }
+        } else {
+            if (tvDrawerSnippetsCount != null) tvDrawerSnippetsCount.setText("0");
+            if (tvDrawerFollowersCount != null) tvDrawerFollowersCount.setText("0");
+            if (tvDrawerFollowingCount != null) tvDrawerFollowingCount.setText("0");
+        }
+    }
+
+    /**
+     * Refresh user profile from API to get latest stats
+     */
+    private void refreshUserProfile() {
+        authRepository.getCurrentUser().observe(this, resource -> {
+            if (resource.isSuccess() && resource.getData() != null) {
+                User freshUser = resource.getData().getUser();
+                if (freshUser != null) {
+                    // Update session with fresh user data
+                    sessionManager.updateUser(freshUser);
+                    // Update drawer stats
+                    updateDrawerStats(freshUser);
+                    Log.d(TAG, "User profile refreshed: " + freshUser.toString());
+                }
+            } else if (resource.isError()) {
+                Log.w(TAG, "Failed to refresh user profile: " + resource.getMessage());
+                // Continue with cached data, don't show error to user
+            }
+        });
     }
 
     private void setupUserInfo() {

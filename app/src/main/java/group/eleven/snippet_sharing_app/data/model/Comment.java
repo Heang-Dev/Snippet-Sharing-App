@@ -31,7 +31,11 @@ public class Comment {
     @SerializedName("is_liked")
     private boolean isLiked;
 
-    // Author info
+    // Nested user object from API
+    @SerializedName("user")
+    private User user;
+
+    // Legacy author info (for backwards compatibility)
     private String authorName;
     private String authorUsername;
     private String authorAvatar;
@@ -62,9 +66,19 @@ public class Comment {
     public String getUpdatedAt() { return updatedAt; }
     public int getLikesCount() { return likesCount; }
     public boolean isLiked() { return isLiked; }
-    public String getAuthorName() { return authorName; }
-    public String getAuthorUsername() { return authorUsername; }
-    public String getAuthorAvatar() { return authorAvatar; }
+    public User getUser() { return user; }
+    public String getAuthorName() {
+        if (user != null && user.getFullName() != null) return user.getFullName();
+        return authorName;
+    }
+    public String getAuthorUsername() {
+        if (user != null && user.getUsername() != null) return user.getUsername();
+        return authorUsername;
+    }
+    public String getAuthorAvatar() {
+        if (user != null && user.getAvatarUrl() != null) return user.getAvatarUrl();
+        return authorAvatar;
+    }
 
     // Setters
     public void setId(String id) { this.id = id; }
@@ -75,6 +89,7 @@ public class Comment {
     public void setUpdatedAt(String updatedAt) { this.updatedAt = updatedAt; }
     public void setLikesCount(int likesCount) { this.likesCount = likesCount; }
     public void setLiked(boolean liked) { isLiked = liked; }
+    public void setUser(User user) { this.user = user; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }
     public void setAuthorUsername(String authorUsername) { this.authorUsername = authorUsername; }
     public void setAuthorAvatar(String authorAvatar) { this.authorAvatar = authorAvatar; }

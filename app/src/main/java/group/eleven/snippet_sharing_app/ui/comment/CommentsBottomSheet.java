@@ -29,6 +29,8 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.MockDataProvider;
 import group.eleven.snippet_sharing_app.data.model.Comment;
 import group.eleven.snippet_sharing_app.data.model.User;
+import group.eleven.snippet_sharing_app.data.repository.CommentRepository;
+import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 /**
@@ -51,6 +53,7 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
 
     private CommentsAdapter adapter;
     private SessionManager sessionManager;
+    private CommentRepository commentRepository;
 
     public static CommentsBottomSheet newInstance(String snippetId, String snippetTitle) {
         CommentsBottomSheet fragment = new CommentsBottomSheet();
@@ -69,6 +72,7 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
             snippetTitle = getArguments().getString(ARG_SNIPPET_TITLE);
         }
         sessionManager = new SessionManager(requireContext());
+        commentRepository = new CommentRepository(requireContext());
     }
 
     @NonNull
@@ -160,16 +164,47 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
     }
 
     private void loadComments() {
-        // Load mock comments for testing
+        commentRepository.getComments(snippetId, 30).observe(getViewLifecycleOwner(), resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                adapter.setComments(resource.data);
+                updateEmptyState(resource.data.isEmpty());
+                tvCommentsTitle.setText("Comments (" + resource.data.size() + ")");
+            } else if (resource.status == Resource.Status.ERROR) {
+                // Fall back to mock data for demo
+                loadMockCommentsFallback();
+            }
+        });
+    }
+
+    private void loadMockCommentsFallback() {
         List<Comment> mockComments = MockDataProvider.getMockComments(snippetId, 10);
         adapter.setComments(mockComments);
         updateEmptyState(mockComments.isEmpty());
-
-        // Update title with count
         tvCommentsTitle.setText("Comments (" + mockComments.size() + ")");
     }
 
     private void postComment(String content) {
+        // Disable send button while posting
+        ivSend.setEnabled(false);
+
+        commentRepository.addComment(snippetId, content).observe(getViewLifecycleOwner(), resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                adapter.addComment(resource.data);
+                etComment.setText("");
+                rvComments.scrollToPosition(0);
+                updateEmptyState(false);
+                tvCommentsTitle.setText("Comments (" + adapter.getItemCount() + ")");
+                Toast.makeText(requireContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
+                ivSend.setEnabled(true);
+            } else if (resource.status == Resource.Status.ERROR) {
+                // Fall back to local-only comment for demo
+                addLocalComment(content);
+                ivSend.setEnabled(true);
+            }
+        });
+    }
+
+    private void addLocalComment(String content) {
         User user = sessionManager.getUser();
         String authorName = user != null ? user.getFullName() : "You";
         String authorUsername = user != null ? user.getUsername() : "user";
@@ -191,13 +226,8 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
         etComment.setText("");
         rvComments.scrollToPosition(0);
         updateEmptyState(false);
-
-        // Update title
         tvCommentsTitle.setText("Comments (" + adapter.getItemCount() + ")");
-
         Toast.makeText(requireContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
-
-        // TODO: Call API to post comment
     }
 
     private void updateEmptyState(boolean isEmpty) {
