@@ -122,6 +122,10 @@ public class SnippetCard {
         this.likesCount = likesCount;
     }
 
+    public void setCommentsCount(int commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
     public String getVisibility() {
         return visibility != null ? visibility : "public";
     }

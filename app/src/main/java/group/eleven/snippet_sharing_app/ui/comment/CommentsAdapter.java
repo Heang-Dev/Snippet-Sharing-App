@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -56,12 +58,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void onLikeClick(Comment comment, int position);
         void onReplyClick(Comment comment);
         void onAuthorClick(Comment comment);
+        void onEditClick(Comment comment, int position);
+        void onDeleteClick(Comment comment, int position);
     }
+
+    private String currentUserId;
 
     public CommentsAdapter() {
         this.displayItems = new ArrayList<>();
         this.originalComments = new ArrayList<>();
         this.expandedParentIds = new HashSet<>();
+    }
+
+    public void setCurrentUserId(String userId) {
+        this.currentUserId = userId;
     }
 
     public void setOnCommentActionListener(OnCommentActionListener listener) {
@@ -142,6 +152,39 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    /**
+     * Remove a comment from the adapter
+     * @return number of items removed (including replies if root comment)
+     */
+    public int removeComment(Comment comment) {
+        int removedCount = 0;
+
+        if (comment.isReply()) {
+            // Remove reply from parent's replies list
+            for (Comment parent : originalComments) {
+                if (parent.getId().equals(comment.getParentId()) && parent.getReplies() != null) {
+                    parent.getReplies().removeIf(r -> r.getId().equals(comment.getId()));
+                    removedCount = 1;
+                    break;
+                }
+            }
+        } else {
+            // Remove root comment and count its replies
+            for (int i = 0; i < originalComments.size(); i++) {
+                if (originalComments.get(i).getId().equals(comment.getId())) {
+                    Comment removed = originalComments.remove(i);
+                    removedCount = 1 + (removed.hasReplies() ? removed.getRepliesCount() : 0);
+                    break;
+                }
+            }
+        }
+
+        if (removedCount > 0) {
+            rebuildDisplayList();
+        }
+        return removedCount;
+    }
+
     @Override
     public int getItemViewType(int position) {
         Object item = displayItems.get(position);
@@ -206,6 +249,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         TextView tvAuthorName, tvTimeAgo, tvCommentText, tvLikeText, tvLikesCount;
         LinearLayout btnLike, btnReply;
         ImageView ivLike;
+        ImageButton btnMoreOptions;
         View rootView;
 
         public CommentViewHolder(@NonNull View itemView) {
@@ -220,6 +264,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ivLike = itemView.findViewById(R.id.ivLike);
             tvLikeText = itemView.findViewById(R.id.tvLikeText);
             tvLikesCount = itemView.findViewById(R.id.tvLikesCount);
+            btnMoreOptions = itemView.findViewById(R.id.btnMoreOptions);
         }
 
         public void bind(Comment comment, int position) {
@@ -302,6 +347,31 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             btnReply.setOnClickListener(v -> {
                 if (listener != null) listener.onReplyClick(comment);
             });
+
+            // Show more options button only for user's own comments
+            boolean isOwnComment = currentUserId != null && currentUserId.equals(comment.getUserId());
+            btnMoreOptions.setVisibility(isOwnComment ? View.VISIBLE : View.GONE);
+
+            if (isOwnComment) {
+                btnMoreOptions.setOnClickListener(v -> showPopupMenu(v, comment, position));
+            }
+        }
+
+        private void showPopupMenu(View anchor, Comment comment, int position) {
+            PopupMenu popup = new PopupMenu(context, anchor);
+            popup.getMenuInflater().inflate(R.menu.menu_comment_options, popup.getMenu());
+            popup.setOnMenuItemClickListener(item -> {
+                int id = item.getItemId();
+                if (id == R.id.action_edit) {
+                    if (listener != null) listener.onEditClick(comment, position);
+                    return true;
+                } else if (id == R.id.action_delete) {
+                    if (listener != null) listener.onDeleteClick(comment, position);
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
         }
 
         private void updateLikeState(boolean isLiked) {

@@ -52,11 +52,24 @@
 
             <TextView
                 android:id="@+id/tvTimeAgo"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textColor="?attr/textMutedColor"
                 android:textSize="12sp"
                 tools:text="2h ago" />
+
+            <!-- More Options Button (Edit/Delete) - only visible for own comments -->
+            <ImageButton
+                android:id="@+id/btnMoreOptions"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="More options"
+                android:src="@drawable/ic_more_vert"
+                android:visibility="gone"
+                app:tint="?attr/textMutedColor"
+                tools:visibility="visible" />
 
         </LinearLayout>
 

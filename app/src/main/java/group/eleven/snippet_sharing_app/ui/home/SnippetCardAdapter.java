@@ -100,6 +100,20 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
         notifyDataSetChanged();
     }
 
+    /**
+     * Update the comment count for a specific snippet
+     */
+    public void updateCommentCount(String snippetId, int newCount) {
+        for (int i = 0; i < snippets.size(); i++) {
+            SnippetCard snippet = snippets.get(i);
+            if (snippet.getId() != null && snippet.getId().equals(snippetId)) {
+                snippet.setCommentsCount(newCount);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
     public void setOnSnippetClickListener(OnSnippetClickListener listener) {
         this.listener = listener;
     }

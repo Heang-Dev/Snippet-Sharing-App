@@ -2,9 +2,11 @@ package group.eleven.snippet_sharing_app.ui.comment;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,8 +45,22 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
     private static final String ARG_SNIPPET_ID = "snippet_id";
     private static final String ARG_SNIPPET_TITLE = "snippet_title";
 
+    /**
+     * Callback interface for comment count changes
+     */
+    public interface OnCommentCountChangeListener {
+        void onCommentCountChanged(String snippetId, int newCount);
+    }
+
+    private OnCommentCountChangeListener commentCountListener;
+
+    public void setOnCommentCountChangeListener(OnCommentCountChangeListener listener) {
+        this.commentCountListener = listener;
+    }
+
     private String snippetId;
     private String snippetTitle;
+    private int currentCommentCount = 0;
 
     private RecyclerView rvComments;
     private LinearLayout layoutEmpty;
@@ -148,6 +165,11 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
     private void setupRecyclerView() {
         adapter = new CommentsAdapter();
         adapter.setOnCommentActionListener(this);
+        // Set current user ID so adapter knows which comments to show edit/delete for
+        User currentUser = sessionManager.getUser();
+        if (currentUser != null) {
+            adapter.setCurrentUserId(currentUser.getId());
+        }
         rvComments.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvComments.setAdapter(adapter);
     }
@@ -186,9 +208,9 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                 adapter.setComments(resource.data);
                 // Count includes all comments (root + replies)
-                int totalCount = countAllComments(resource.data);
-                updateEmptyState(totalCount == 0);
-                tvCommentsTitle.setText("Comments (" + totalCount + ")");
+                currentCommentCount = countAllComments(resource.data);
+                updateEmptyState(currentCommentCount == 0);
+                tvCommentsTitle.setText("Comments (" + currentCommentCount + ")");
             } else if (resource.status == Resource.Status.ERROR) {
                 // Show empty state when API fails
                 adapter.setComments(new ArrayList<>());
@@ -228,7 +250,9 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
                 hideReplyIndicator(); // Clear reply state
                 rvComments.scrollToPosition(0);
                 updateEmptyState(false);
+                currentCommentCount++;
                 updateCommentsCount();
+                notifyCommentCountChanged();
                 String message = parentId != null ? "Reply posted!" : "Comment posted!";
                 Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
             } else if (resource.status == Resource.Status.ERROR) {
@@ -241,7 +265,16 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
      * Update the comments count in the title
      */
     private void updateCommentsCount() {
-        tvCommentsTitle.setText("Comments (" + adapter.getItemCount() + ")");
+        tvCommentsTitle.setText("Comments (" + currentCommentCount + ")");
+    }
+
+    /**
+     * Notify listener of comment count change
+     */
+    private void notifyCommentCountChanged() {
+        if (commentCountListener != null) {
+            commentCountListener.onCommentCountChanged(snippetId, currentCommentCount);
+        }
     }
 
     private void updateEmptyState(boolean isEmpty) {
@@ -308,5 +341,78 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
     public void onAuthorClick(Comment comment) {
         Toast.makeText(requireContext(), "View profile: " + comment.getDisplayName(), Toast.LENGTH_SHORT).show();
         // TODO: Navigate to user profile
+    }
+
+    @Override
+    public void onEditClick(Comment comment, int position) {
+        showEditDialog(comment, position);
+    }
+
+    @Override
+    public void onDeleteClick(Comment comment, int position) {
+        showDeleteConfirmation(comment, position);
+    }
+
+    private void showEditDialog(Comment comment, int position) {
+        EditText input = new EditText(requireContext());
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        input.setText(comment.getContent());
+        input.setSelection(comment.getContent().length());
+
+        int padding = (int) (16 * getResources().getDisplayMetrics().density);
+        input.setPadding(padding, padding, padding, padding);
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Edit Comment")
+                .setView(input)
+                .setPositiveButton("Save", (dialog, which) -> {
+                    String newContent = input.getText().toString().trim();
+                    if (!newContent.isEmpty() && !newContent.equals(comment.getContent())) {
+                        updateComment(comment, newContent, position);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void updateComment(Comment comment, String newContent, int position) {
+        commentRepository.updateComment(comment.getId(), newContent).observe(getViewLifecycleOwner(), resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                // Update the comment in the adapter
+                comment.setContent(newContent);
+                comment.setEdited(true);
+                adapter.updateComment(position, comment);
+                Toast.makeText(requireContext(), "Comment updated", Toast.LENGTH_SHORT).show();
+            } else if (resource.status == Resource.Status.ERROR) {
+                Toast.makeText(requireContext(), "Failed to update comment: " + resource.message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showDeleteConfirmation(Comment comment, int position) {
+        String message = comment.isReply() ? "Delete this reply?" : "Delete this comment and all its replies?";
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Delete Comment")
+                .setMessage(message)
+                .setPositiveButton("Delete", (dialog, which) -> deleteComment(comment, position))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void deleteComment(Comment comment, int position) {
+        commentRepository.deleteComment(comment.getId()).observe(getViewLifecycleOwner(), resource -> {
+            if (resource.status == Resource.Status.SUCCESS) {
+                // Remove from adapter and update count
+                int removedCount = adapter.removeComment(comment);
+                currentCommentCount -= removedCount;
+                updateCommentsCount();
+                notifyCommentCountChanged();
+                updateEmptyState(currentCommentCount == 0);
+                Toast.makeText(requireContext(), "Comment deleted", Toast.LENGTH_SHORT).show();
+            } else if (resource.status == Resource.Status.ERROR) {
+                Toast.makeText(requireContext(), "Failed to delete comment: " + resource.message, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

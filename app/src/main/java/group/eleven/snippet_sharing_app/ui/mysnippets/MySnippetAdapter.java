@@ -1,8 +1,8 @@
 package group.eleven.snippet_sharing_app.ui.mysnippets;
 
-import android.content.res.ColorStateList;
+import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -25,13 +26,9 @@ public class MySnippetAdapter extends RecyclerView.Adapter<MySnippetAdapter.Snip
 
     public interface OnSnippetActionListener {
         void onSnippetClick(SnippetModel snippet);
-
         void onFavoriteClick(SnippetModel snippet);
-
         void onEditClick(SnippetModel snippet);
-
         void onDeleteClick(SnippetModel snippet);
-
         void onShareClick(SnippetModel snippet);
     }
 
@@ -63,29 +60,28 @@ public class MySnippetAdapter extends RecyclerView.Adapter<MySnippetAdapter.Snip
 
     class SnippetViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvTime, tvLanguage, tvVersion;
-        ImageView ivSelection, ivPrivacy, btnEdit, btnDelete, btnShare, btnFavorite;
+        ImageView ivPrivacy, btnEdit, btnDelete, btnShare, btnFavorite;
+        Context context;
 
         public SnippetViewHolder(@NonNull View itemView) {
             super(itemView);
+            context = itemView.getContext();
             tvTitle = itemView.findViewById(R.id.tvSnippetTitle);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvLanguage = itemView.findViewById(R.id.tvLanguageTag);
             tvVersion = itemView.findViewById(R.id.tvVersionTag);
-            ivSelection = itemView.findViewById(R.id.ivSelection);
             ivPrivacy = itemView.findViewById(R.id.ivPrivacy);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnShare = itemView.findViewById(R.id.btnShare);
             btnFavorite = itemView.findViewById(R.id.btnFavorite);
 
-            // Click Listeners
-            View.OnClickListener selectListener = v -> {
+            // Item click
+            itemView.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION)
                     listener.onSnippetClick(snippets.get(pos));
-            };
-            ivSelection.setOnClickListener(selectListener);
-            itemView.setOnClickListener(selectListener);
+            });
 
             btnFavorite.setOnClickListener(v -> {
                 int pos = getAdapterPosition();
@@ -119,52 +115,54 @@ public class MySnippetAdapter extends RecyclerView.Adapter<MySnippetAdapter.Snip
             tvVersion.setText(snippet.getVersion());
 
             // Language Tag Color
-            // Set dynamic text color
             try {
                 tvLanguage.setTextColor(Color.parseColor(snippet.getLanguageColor()));
             } catch (Exception e) {
-                tvLanguage.setTextColor(Color.WHITE);
+                tvLanguage.setTextColor(getThemeColor(context, R.attr.textPrimaryColor));
             }
 
-            // Privacy Icon
+            // Privacy Icon - use theme-aware accent color
+            int accentColor = getThemeColor(context, R.attr.accentColor);
+            int secondaryColor = getThemeColor(context, R.attr.textSecondaryColor);
+            int infoColor = ContextCompat.getColor(context, R.color.info);
+
             switch (snippet.getPrivacy()) {
                 case "Public":
                     ivPrivacy.setImageResource(R.drawable.ic_globe);
-                    ivPrivacy.setColorFilter(Color.parseColor("#3DD68C")); // Green
+                    ivPrivacy.setColorFilter(accentColor);
                     break;
                 case "Private":
-                    ivPrivacy.setImageResource(R.drawable.ic_lock); // Assuming lock icon exists or using globe as
-                                                                    // placeholder for now if lock missing. I saw
-                                                                    // ic_lock exists.
-                    ivPrivacy.setColorFilter(Color.parseColor("#889990")); // Grey
+                    ivPrivacy.setImageResource(R.drawable.ic_lock);
+                    ivPrivacy.setColorFilter(secondaryColor);
                     break;
                 case "Team":
                     ivPrivacy.setImageResource(R.drawable.ic_users);
-                    ivPrivacy.setColorFilter(Color.parseColor("#29B6F6")); // Blue-ish for Team? Or just Grey. Detailed
-                                                                           // prompt says "Globe/Green for Public,
-                                                                           // Lock/Grey for Private". Doesn't specify
-                                                                           // Team color, I'll use a distinct one or
-                                                                           // Grey.
+                    ivPrivacy.setColorFilter(infoColor);
+                    break;
+                default:
+                    ivPrivacy.setImageResource(R.drawable.ic_globe);
+                    ivPrivacy.setColorFilter(accentColor);
                     break;
             }
 
-            // Selection State
-            if (snippet.isSelected()) {
-                ivSelection.setImageResource(R.drawable.ic_check_circle);
-                ivSelection.setColorFilter(Color.parseColor("#3DD68C"));
-            } else {
-                ivSelection.setImageResource(R.drawable.ic_radio_unchecked);
-                ivSelection.setColorFilter(Color.parseColor("#889990"));
-            }
-
             // Favorite State
+            int warningColor = ContextCompat.getColor(context, R.color.warning);
             if (snippet.isFavorite()) {
                 btnFavorite.setImageResource(R.drawable.ic_star_filled);
-                btnFavorite.setColorFilter(Color.parseColor("#F0E68C")); // Yellow
+                btnFavorite.setColorFilter(warningColor);
             } else {
                 btnFavorite.setImageResource(R.drawable.ic_star_outline);
-                btnFavorite.setColorFilter(Color.parseColor("#889990"));
+                btnFavorite.setColorFilter(secondaryColor);
             }
+        }
+
+        private int getThemeColor(Context context, int attr) {
+            TypedValue typedValue = new TypedValue();
+            context.getTheme().resolveAttribute(attr, typedValue, true);
+            if (typedValue.resourceId != 0) {
+                return ContextCompat.getColor(context, typedValue.resourceId);
+            }
+            return typedValue.data;
         }
     }
 }

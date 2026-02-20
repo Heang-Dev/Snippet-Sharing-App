@@ -574,6 +574,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         snippet.getId() != null ? snippet.getId() : "snippet_1",
                         snippet.getTitle()
                 );
+        bottomSheet.setOnCommentCountChangeListener((snippetId, newCount) -> {
+            // Update the snippet card's comment count
+            feedAdapter.updateCommentCount(snippetId, newCount);
+        });
         bottomSheet.show(getSupportFragmentManager(), "CommentsBottomSheet");
     }
 

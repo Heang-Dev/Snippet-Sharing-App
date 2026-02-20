@@ -1,162 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    android:background="@drawable/bg_card_my_snippet"
-    android:padding="16dp">
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="?attr/surfaceColor"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="?attr/borderColor"
+    app:strokeWidth="1dp">
 
-    <!-- Row 1: Selection, Title, Privacy -->
-    <ImageView
-        android:id="@+id/ivSelection"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_radio_unchecked"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tvSnippetTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="8dp"
-        android:text="Date Formatter Utility"
-        android:textColor="@color/text_primary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/ivPrivacy"
-        app:layout_constraintStart_toEndOf="@+id/ivSelection"
-        app:layout_constraintTop_toTopOf="@+id/ivSelection"
-        app:layout_constraintBottom_toBottomOf="@+id/ivSelection"/>
-
-    <ImageView
-        android:id="@+id/ivPrivacy"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/ic_globe"
-        app:tint="@color/neon_green"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvSnippetTitle"
-        app:layout_constraintBottom_toBottomOf="@+id/tvSnippetTitle"
-        tools:ignore="ContentDescription" />
-
-    <!-- Row 2: Metadata (Time) -->
-    <ImageView
-        android:id="@+id/ivClock"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_clock"
-        app:tint="@color/text_hint"
-        app:layout_constraintStart_toStartOf="@+id/tvSnippetTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvSnippetTitle"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="Modified 2h ago"
-        android:textColor="@color/text_hint"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivClock"
-        app:layout_constraintStart_toEndOf="@+id/ivClock"
-        app:layout_constraintTop_toTopOf="@+id/ivClock" />
-
-    <!-- Row 3: Tags -->
     <LinearLayout
-        android:id="@+id/llTags"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvSnippetTitle"
-        app:layout_constraintTop_toBottomOf="@+id/ivClock">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <!-- Language Tag -->
-        <TextView
-            android:id="@+id/tvLanguageTag"
+        <!-- Row 1: Title and Privacy Icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvSnippetTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Date Formatter Utility"
+                android:textColor="?attr/textPrimaryColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/ivPrivacy"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/ic_globe"
+                app:tint="?attr/accentColor"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
+        <!-- Row 2: Time -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_pill_inactive"
-            android:paddingStart="12dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="4dp"
-            android:text="JavaScript"
-            android:textColor="@color/lang_javascript"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <!-- Version Tag -->
-        <TextView
-            android:id="@+id/tvVersionTag"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_clock"
+                app:tint="?attr/textMutedColor"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Modified 2h ago"
+                android:textColor="?attr/textMutedColor"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Row 3: Tags -->
+        <LinearLayout
+            android:id="@+id/llTags"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/bg_pill_inactive"
-            android:paddingStart="10dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="4dp"
-            android:text="v1.2.0"
-            android:textColor="@color/text_hint"
-            android:textSize="12sp" />
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <!-- Language Tag -->
+            <TextView
+                android:id="@+id/tvLanguageTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_language_tag"
+                android:paddingStart="12dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="4dp"
+                android:text="JavaScript"
+                android:textColor="@color/lang_javascript"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <!-- Version Tag -->
+            <TextView
+                android:id="@+id/tvVersionTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_version_tag"
+                android:paddingStart="10dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="4dp"
+                android:text="v1.2.0"
+                android:textColor="?attr/textMutedColor"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <!-- Row 4: Actions -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Edit Button -->
+            <ImageView
+                android:id="@+id/btnEdit"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:src="@drawable/ic_edit"
+                app:tint="?attr/textSecondaryColor"
+                tools:ignore="ContentDescription" />
+
+            <!-- Delete Button -->
+            <ImageView
+                android:id="@+id/btnDelete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:src="@drawable/ic_delete"
+                app:tint="?attr/textSecondaryColor"
+                tools:ignore="ContentDescription" />
+
+            <!-- Share Button -->
+            <ImageView
+                android:id="@+id/btnShare"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginStart="12dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:src="@drawable/ic_share"
+                app:tint="?attr/textSecondaryColor"
+                tools:ignore="ContentDescription" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <!-- Favorite Button -->
+            <ImageView
+                android:id="@+id/btnFavorite"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="4dp"
+                android:src="@drawable/ic_star_outline"
+                app:tint="?attr/textSecondaryColor"
+                tools:ignore="ContentDescription" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <!-- Row 4: Actions -->
-    <LinearLayout
-        android:id="@+id/llActionsResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/tvSnippetTitle"
-        app:layout_constraintTop_toBottomOf="@+id/llTags">
-
-        <ImageView
-            android:id="@+id/btnEdit"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:padding="2dp"
-            android:src="@drawable/ic_edit"
-            app:tint="@color/icon_secondary" />
-
-        <ImageView
-            android:id="@+id/btnDelete"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:padding="2dp"
-            android:src="@drawable/ic_delete"
-            app:tint="@color/icon_secondary" />
-
-        <ImageView
-            android:id="@+id/btnShare"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
-            android:padding="2dp"
-            android:src="@drawable/ic_share"
-            app:tint="@color/icon_secondary" />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/btnFavorite"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_star_outline"
-        app:tint="@color/icon_secondary"
-        app:layout_constraintBottom_toBottomOf="@+id/llActionsResult"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/llActionsResult"
-        tools:ignore="ContentDescription" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

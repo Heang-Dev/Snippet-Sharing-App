@@ -1,23 +1,20 @@
 package group.eleven.snippet_sharing_app.ui.mysnippets;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,38 +22,37 @@ import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.SnippetRepository;
+import group.eleven.snippet_sharing_app.databinding.ActivityMySnippetsBinding;
 import group.eleven.snippet_sharing_app.model.SnippetModel;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
 
 public class MySnippetsActivity extends AppCompatActivity implements MySnippetAdapter.OnSnippetActionListener {
 
-    private RecyclerView rvSnippets;
+    private ActivityMySnippetsBinding binding;
     private MySnippetAdapter adapter;
     private List<SnippetModel> allSnippets = new ArrayList<>();
     private List<SnippetModel> filteredSnippets = new ArrayList<>();
 
-    // Filter Tabs
-    private TextView tabAll;
-    private LinearLayout tabPrivate, tabPublic, tabTeam;
     private String currentFilter = "All";
     private String currentSearchQuery = "";
     private boolean isSortAscending = true;
 
-    // UI Elements
-    private LinearLayout bottomActionBar;
-    private TextView tvSort;
-    private EditText etSearch; // New Search Bar
-    private ImageView btnBack; // New Back Button
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_snippets);
+        binding = ActivityMySnippetsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        initViews();
+        setupStatusBar();
+        setupToolbar();
         setupRecyclerView();
+        setupSearchBar();
+        setupFilterChips();
+        setupSortLabel();
+        setupSwipeRefresh();
+        setupEmptyState();
+
         loadData();
-        setupListeners();
     }
 
     @Override
@@ -65,158 +61,121 @@ public class MySnippetsActivity extends AppCompatActivity implements MySnippetAd
         loadData();
     }
 
-    private void initViews() {
-        rvSnippets = findViewById(R.id.rvSnippets);
-        tabAll = findViewById(R.id.tabAll);
-        tabPrivate = findViewById(R.id.tabPrivate);
-        tabPublic = findViewById(R.id.tabPublic);
-        tabTeam = findViewById(R.id.tabTeam);
-        bottomActionBar = findViewById(R.id.bottomActionBar);
-        etSearch = findViewById(R.id.etSearch); // Bind new search bar
-        btnBack = findViewById(R.id.btnBack); // Bind back button
-
-        // Sort TextView
-        LinearLayout llSortBar = findViewById(R.id.llSortBar);
-        if (llSortBar != null && llSortBar.getChildCount() > 0) {
-            View v = llSortBar.getChildAt(0);
-            if (v instanceof TextView) {
-                tvSort = (TextView) v;
-            }
+    private void setupStatusBar() {
+        Window window = getWindow();
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
+        int surfaceColor;
+        if (typedValue.resourceId != 0) {
+            surfaceColor = ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            surfaceColor = typedValue.data;
         }
+        window.setStatusBarColor(surfaceColor);
+        window.setNavigationBarColor(surfaceColor);
+
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller != null) {
+            boolean isLightBackground = isColorLight(surfaceColor);
+            controller.setAppearanceLightStatusBars(isLightBackground);
+            controller.setAppearanceLightNavigationBars(isLightBackground);
+        }
+    }
+
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * android.graphics.Color.red(color)
+                + 0.587 * android.graphics.Color.green(color)
+                + 0.114 * android.graphics.Color.blue(color)) / 255;
+        return darkness < 0.5;
+    }
+
+    private void setupToolbar() {
+        binding.btnBack.setOnClickListener(v -> finish());
+        binding.btnAdd.setOnClickListener(v -> {
+            startActivity(new Intent(this, CreateSnippetActivity.class));
+        });
     }
 
     private void setupRecyclerView() {
-        rvSnippets.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvSnippets.setLayoutManager(new LinearLayoutManager(this));
         adapter = new MySnippetAdapter(this);
-        rvSnippets.setAdapter(adapter);
+        binding.rvSnippets.setAdapter(adapter);
     }
 
-    private void loadData() {
-        allSnippets = new ArrayList<>(
-                SnippetRepository.getInstance().getAllSnippets());
-        filterSnippets();
+    private void setupSearchBar() {
+        binding.etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                currentSearchQuery = s.toString();
+                filterSnippets();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
-    private void setupListeners() {
-        findViewById(R.id.btnAdd).setOnClickListener(v -> {
-            startActivity(new Intent(this, CreateSnippetActivity.class));
+    private void setupFilterChips() {
+        binding.chipAll.setChecked(true);
+
+        binding.chipAll.setOnClickListener(v -> {
+            clearChipSelections();
+            binding.chipAll.setChecked(true);
+            currentFilter = "All";
+            filterSnippets();
         });
 
-        // Back Navigation
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> finish());
-        }
+        binding.chipPrivate.setOnClickListener(v -> {
+            clearChipSelections();
+            binding.chipPrivate.setChecked(true);
+            currentFilter = "Private";
+            filterSnippets();
+        });
 
-        setupFilterTab(tabAll, "All");
-        setupFilterTab(tabPrivate, "Private");
-        setupFilterTab(tabPublic, "Public");
-        setupFilterTab(tabTeam, "Team");
+        binding.chipPublic.setOnClickListener(v -> {
+            clearChipSelections();
+            binding.chipPublic.setChecked(true);
+            currentFilter = "Public";
+            filterSnippets();
+        });
 
-        // Search Input Logic
-        if (etSearch != null) {
-            etSearch.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    currentSearchQuery = s.toString();
-                    filterSnippets();
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                }
-            });
-        }
-
-        // Sort
-        if (tvSort != null) {
-            tvSort.setOnClickListener(v -> toggleSortOrder());
-        }
-
-        // Bottom Bar
-        setupBottomBar();
-
-        // View Toggle Buttons (Optional)
-        findViewById(R.id.btnViewList)
-                .setOnClickListener(v -> Toast.makeText(this, "List View Active", Toast.LENGTH_SHORT).show());
-        findViewById(R.id.btnViewGrid)
-                .setOnClickListener(v -> Toast.makeText(this, "Grid View Coming Soon", Toast.LENGTH_SHORT).show());
-    }
-
-    private void setupBottomBar() {
-        if (bottomActionBar == null)
-            return;
-        if (bottomActionBar.getChildCount() >= 3) {
-            View btnSelectAll = bottomActionBar.getChildAt(0); // Select All
-            View btnPrivacy = bottomActionBar.getChildAt(1); // Privacy
-            View btnDelete = bottomActionBar.getChildAt(2); // Delete
-
-            btnSelectAll.setOnClickListener(v -> toggleSelectAll());
-            btnPrivacy.setOnClickListener(v -> showBulkPrivacyDialog());
-            btnDelete.setOnClickListener(v -> confirmBulkDelete());
-        }
-        updateBottomBarVisibility();
-    }
-
-    private void setupFilterTab(View view, String filterType) {
-        view.setOnClickListener(v -> {
-            updateFilterUI(filterType);
-            currentFilter = filterType;
+        binding.chipTeam.setOnClickListener(v -> {
+            clearChipSelections();
+            binding.chipTeam.setChecked(true);
+            currentFilter = "Team";
             filterSnippets();
         });
     }
 
-    private void updateFilterUI(String filterType) {
-        setTabInactive(tabAll, false);
-        setTabInactive(tabPrivate, true);
-        setTabInactive(tabPublic, true);
-        setTabInactive(tabTeam, true);
-
-        switch (filterType) {
-            case "All":
-                setTabActive(tabAll, false);
-                break;
-            case "Private":
-                setTabActive(tabPrivate, true);
-                break;
-            case "Public":
-                setTabActive(tabPublic, true);
-                break;
-            case "Team":
-                setTabActive(tabTeam, true);
-                break;
-        }
+    private void clearChipSelections() {
+        binding.chipAll.setChecked(false);
+        binding.chipPrivate.setChecked(false);
+        binding.chipPublic.setChecked(false);
+        binding.chipTeam.setChecked(false);
     }
 
-    private void setTabActive(View view, boolean isIconTab) {
-        view.setBackgroundResource(R.drawable.bg_pill_active);
-        if (isIconTab) {
-            LinearLayout ll = (LinearLayout) view;
-            ImageView iv = (ImageView) ll.getChildAt(0);
-            TextView tv = (TextView) ll.getChildAt(1);
-            iv.setColorFilter(Color.parseColor("#05100B"), PorterDuff.Mode.SRC_IN);
-            tv.setTextColor(Color.parseColor("#05100B"));
-        } else {
-            TextView tv = (TextView) view;
-            tv.setTextColor(Color.parseColor("#05100B"));
-        }
+    private void setupSortLabel() {
+        binding.tvSortLabel.setOnClickListener(v -> toggleSortOrder());
     }
 
-    private void setTabInactive(View view, boolean isIconTab) {
-        view.setBackgroundResource(R.drawable.bg_pill_inactive);
-        if (isIconTab) {
-            LinearLayout ll = (LinearLayout) view;
-            ImageView iv = (ImageView) ll.getChildAt(0);
-            TextView tv = (TextView) ll.getChildAt(1);
-            iv.setColorFilter(Color.parseColor("#889990"), PorterDuff.Mode.SRC_IN);
-            tv.setTextColor(Color.parseColor("#889990"));
-        } else {
-            TextView tv = (TextView) view;
-            tv.setTextColor(Color.parseColor("#889990"));
-        }
+    private void setupSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener(this::loadData);
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary);
+    }
+
+    private void setupEmptyState() {
+        binding.btnCreateFirst.setOnClickListener(v -> {
+            startActivity(new Intent(this, CreateSnippetActivity.class));
+        });
+    }
+
+    private void loadData() {
+        binding.swipeRefresh.setRefreshing(false);
+        allSnippets = new ArrayList<>(SnippetRepository.getInstance().getAllSnippets());
+        filterSnippets();
     }
 
     private void filterSnippets() {
@@ -232,144 +191,49 @@ public class MySnippetsActivity extends AppCompatActivity implements MySnippetAd
             }
         }
 
-        // Sort Logic
-        // Since we don't hold timestamps, we respect repo order (Newest First) and just
-        // reverse if needed
-        // Assuming repo order is "Newest First" (default)
-
-        // If isSortAscending ("Newest First" in UI text implication? Actually "Newest"
-        // is usually Descending time)
-        // Let's assume repo gives Newest First.
-        // If user selects "Oldest First", we reverse.
-        // My UI text toggle was: "SORT BY Last Modified (Newest)/Oldest".
-
-        // If sorting Ascending (Oldest First) -> Reverse repo order
-        // If sorting Descending (Newest First) -> Keep repo order
-
-        // My variable is isSortAscending. Default true?
-        // Previously: "SORT BY Last Modified" text.
-        // Let's clarify: Repo is Newest First.
-        // If isSortAscending is false -> Newest First (default)
-        // If isSortAscending is true -> Oldest First
-
-        // Wait, toggleSortOrder logic:
-        // isSortAscending = !isSortAscending;
-        // Text: isSortAscending ? "Newest" : "Oldest" -> Previous code had logic but
-        // maybe labels confused
-        // Let's standardize:
-        // Default: Newest First.
-
-        if (!isSortAscending) { // If "Oldest First" requested (assuming flag means Ascending)
-            // Wait, confusing. Let's simplify.
-            // Default repo: Newest First.
-            // If we want Oldest First, we reverse.
-
-            // Let's re-implement toggle logic clearly below.
-        } else {
-            // Newest First
-        }
-
-        // Actually, let's just use the boolean to FLIP order if needed.
         if (!isSortAscending) {
             Collections.reverse(filteredSnippets);
         }
-        // If isSortAscending is TRUE (default), we Keep.
-        // Wait, previous code:
-        // "if (!isSortAscending) Collections.reverse(filteredSnippets);"
-
-        // I will stick to what works:
-        // Default: Newest First.
-        // If user toggles, we reverse perfectly.
 
         adapter.setSnippets(filteredSnippets);
-        updateBottomBarVisibility();
+        updateUI();
+    }
+
+    private void updateUI() {
+        int count = filteredSnippets.size();
+        String countText = count == 1 ? "1 snippet" : count + " snippets";
+        binding.tvSnippetCount.setText(countText);
+
+        if (count == 0) {
+            binding.rvSnippets.setVisibility(View.GONE);
+            binding.layoutEmpty.setVisibility(View.VISIBLE);
+        } else {
+            binding.rvSnippets.setVisibility(View.VISIBLE);
+            binding.layoutEmpty.setVisibility(View.GONE);
+        }
     }
 
     private void toggleSortOrder() {
         isSortAscending = !isSortAscending;
-        if (tvSort != null) {
-            tvSort.setText(isSortAscending ? "SORT BY Last Modified (Newest)" : "SORT BY Last Modified (Oldest)");
-        }
-        // Note: The logic in filterSnippets depends on this flag.
-        // If flag toggles, list reverses. Simple.
+        binding.tvSortLabel.setText(isSortAscending ? "Last Modified" : "Oldest First");
         filterSnippets();
-    }
-
-    // --- Selection & Bulk Logic ---
-
-    private void updateBottomBarVisibility() {
-        boolean anySelected = false;
-        for (SnippetModel s : filteredSnippets) {
-            if (s.isSelected()) {
-                anySelected = true;
-                break;
-            }
-        }
-
-        if (bottomActionBar != null) {
-            bottomActionBar.setVisibility(anySelected ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    private void toggleSelectAll() {
-        boolean allSelected = true;
-        for (SnippetModel s : filteredSnippets) {
-            if (!s.isSelected()) {
-                allSelected = false;
-                break;
-            }
-        }
-
-        boolean targetState = !allSelected;
-        for (SnippetModel s : filteredSnippets) {
-            s.setSelected(targetState);
-        }
-        adapter.notifyDataSetChanged();
-        updateBottomBarVisibility();
-    }
-
-    private void showBulkPrivacyDialog() {
-        Toast.makeText(this, "Bulk Privacy Update Coming Soon", Toast.LENGTH_SHORT).show();
-    }
-
-    private void confirmBulkDelete() {
-        List<SnippetModel> toDelete = new ArrayList<>();
-        for (SnippetModel s : filteredSnippets) {
-            if (s.isSelected())
-                toDelete.add(s);
-        }
-
-        if (toDelete.isEmpty())
-            return;
-
-        new AlertDialog.Builder(this)
-                .setTitle("Delete Snippets")
-                .setMessage("Are you sure you want to delete " + toDelete.size() + " selected snippets?")
-                .setPositiveButton("Delete", (dialog, which) -> {
-                    SnippetRepository.getInstance().deleteSnippets(toDelete);
-                    allSnippets.removeAll(toDelete);
-                    Toast.makeText(this, "Deleted " + toDelete.size() + " snippets", Toast.LENGTH_SHORT).show();
-                    filterSnippets();
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
     }
 
     // --- OnSnippetActionListener Implementation ---
 
     @Override
     public void onSnippetClick(SnippetModel snippet) {
-        snippet.setSelected(!snippet.isSelected());
-        adapter.notifyDataSetChanged();
-        updateBottomBarVisibility();
+        // Open snippet detail or edit
+        Intent intent = new Intent(this, CreateSnippetActivity.class);
+        intent.putExtra("SNIPPET_ID", snippet.getId());
+        startActivity(intent);
     }
 
     @Override
     public void onFavoriteClick(SnippetModel snippet) {
         snippet.setFavorite(!snippet.isFavorite());
         adapter.notifyDataSetChanged();
-        Toast.makeText(this, snippet.isFavorite() ? "Added to Favorites" : "Removed from Favorites", Toast.LENGTH_SHORT)
-                .show();
+        Toast.makeText(this, snippet.isFavorite() ? "Added to Favorites" : "Removed from Favorites", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -402,5 +266,11 @@ public class MySnippetsActivity extends AppCompatActivity implements MySnippetAd
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, snippet.getTitle());
         shareIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(shareIntent, "Share Snippet via"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
     }
 }

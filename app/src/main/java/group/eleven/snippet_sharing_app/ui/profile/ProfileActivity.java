@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,11 +77,40 @@ public class ProfileActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         dashboardRepository = new DashboardRepository(this);
 
+        setupStatusBar();
         initViews();
         setupToolbar();
         setupClickListeners();
         setupRecyclerView();
         setupTabs();
+    }
+
+    private void setupStatusBar() {
+        Window window = getWindow();
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
+        int surfaceColor;
+        if (typedValue.resourceId != 0) {
+            surfaceColor = ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            surfaceColor = typedValue.data;
+        }
+        window.setStatusBarColor(surfaceColor);
+        window.setNavigationBarColor(surfaceColor);
+
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller != null) {
+            boolean isLightBackground = isColorLight(surfaceColor);
+            controller.setAppearanceLightStatusBars(isLightBackground);
+            controller.setAppearanceLightNavigationBars(isLightBackground);
+        }
+    }
+
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * android.graphics.Color.red(color)
+                + 0.587 * android.graphics.Color.green(color)
+                + 0.114 * android.graphics.Color.blue(color)) / 255;
+        return darkness < 0.5;
     }
 
     @Override
@@ -124,6 +156,21 @@ public class ProfileActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
+
+        // Set navigation icon tint programmatically to ensure theme-awareness
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.textPrimaryColor, typedValue, true);
+        int textPrimaryColor;
+        if (typedValue.resourceId != 0) {
+            textPrimaryColor = ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            textPrimaryColor = typedValue.data;
+        }
+
+        if (toolbar.getNavigationIcon() != null) {
+            toolbar.getNavigationIcon().setTint(textPrimaryColor);
+        }
+
         toolbar.setNavigationOnClickListener(v -> navigateBackToHome());
     }
 
@@ -232,7 +279,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             @Override
             public void onCommentClick(SnippetCard snippet) {
-                // TODO: Show comments
+                showCommentsBottomSheet(snippet);
             }
 
             @Override
@@ -496,6 +543,19 @@ public class ProfileActivity extends AppCompatActivity {
         shareIntent.putExtra(Intent.EXTRA_TEXT,
                 snippet.getTitle() + "\n\n" + snippet.getCodePreview() + "\n\nShared via Snippet G11");
         startActivity(Intent.createChooser(shareIntent, "Share snippet"));
+    }
+
+    private void showCommentsBottomSheet(SnippetCard snippet) {
+        group.eleven.snippet_sharing_app.ui.comment.CommentsBottomSheet bottomSheet =
+                group.eleven.snippet_sharing_app.ui.comment.CommentsBottomSheet.newInstance(
+                        snippet.getId() != null ? snippet.getId() : "snippet_1",
+                        snippet.getTitle()
+                );
+        bottomSheet.setOnCommentCountChangeListener((snippetId, newCount) -> {
+            // Update the snippet card's comment count
+            adapter.updateCommentCount(snippetId, newCount);
+        });
+        bottomSheet.show(getSupportFragmentManager(), "CommentsBottomSheet");
     }
 
     private void openSocialLink(String type) {
