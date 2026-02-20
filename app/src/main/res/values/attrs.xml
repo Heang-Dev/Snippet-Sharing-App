@@ -37,6 +37,7 @@
     <attr name="inputBackgroundColor" format="color|reference" />
     <attr name="inputStrokeColor" format="color|reference" />
     <attr name="inputStrokeFocusColor" format="color|reference" />
+    <attr name="searchInputBackgroundColor" format="color|reference" />
 
     <!-- ========== NAVIGATION ATTRIBUTES ========== -->
     <attr name="bottomNavBackgroundColor" format="color|reference" />

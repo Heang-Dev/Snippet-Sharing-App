@@ -47,6 +47,7 @@
         <item name="inputBackgroundColor">@color/input_background</item>
         <item name="inputStrokeColor">@color/input_stroke</item>
         <item name="inputStrokeFocusColor">@color/input_stroke_focused</item>
+        <item name="searchInputBackgroundColor">@color/card_surface</item>
         <item name="bottomNavBackgroundColor">@color/bottom_nav_bg</item>
         <item name="navItemActiveColor">@color/nav_item_active</item>
         <item name="navItemInactiveColor">@color/nav_item_inactive</item>

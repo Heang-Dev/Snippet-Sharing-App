@@ -13,74 +13,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:background="@android:color/transparent"
+        android:background="?attr/surfaceColor"
         app:elevation="0dp">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="?attr/surfaceColor"
-            app:expandedTitleGravity="bottom|center"
-            app:collapsedTitleGravity="center"
-            app:expandedTitleTextColor="@android:color/white"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.Material3.TitleLarge">
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/surfaceColor"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="?attr/textPrimaryColor">
 
-            <!-- Header Background Gradient -->
-            <View
-                android:id="@+id/headerGradient"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_team_header_gradient"
-                app:layout_collapseMode="parallax" />
+            <!-- Edit Button -->
+            <TextView
+                android:id="@+id/tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="16dp"
+                android:text="Edit"
+                android:textColor="?attr/accentColor"
+                android:textSize="16sp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true" />
 
-            <!-- Team Avatar (centered in header) -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="40dp"
-                app:cardCornerRadius="48dp"
-                app:cardElevation="4dp"
-                app:strokeWidth="3dp"
-                app:strokeColor="@android:color/white"
-                app:layout_collapseMode="parallax">
-
-                <ImageView
-                    android:id="@+id/iv_team_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_users"
-                    android:padding="20dp"
-                    android:background="?attr/accentColor" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/ic_arrow_back"
-                app:navigationIconTint="@android:color/white">
-
-                <!-- Settings icon -->
-                <ImageView
-                    android:id="@+id/ivSettings"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_settings"
-                    app:tint="@android:color/white"
-                    android:contentDescription="Settings" />
-
-            </com.google.android.material.appbar.MaterialToolbar>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -95,7 +54,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Team Info Section -->
+            <!-- Team Header Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,40 +62,263 @@
                 android:gravity="center_horizontal"
                 android:background="?attr/surfaceColor"
                 android:paddingTop="16dp"
-                android:paddingBottom="20dp">
+                android:paddingBottom="24dp">
 
+                <!-- Team Avatar -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="50dp"
+                    app:cardBackgroundColor="?attr/tagBackgroundColor"
+                    app:cardElevation="2dp">
+
+                    <ImageView
+                        android:id="@+id/iv_team_avatar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_users"
+                        android:padding="24dp"
+                        app:tint="?attr/accentColor" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Team Name -->
                 <TextView
                     android:id="@+id/tv_team_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:text="Team Name"
                     android:textColor="?attr/textPrimaryColor"
-                    android:textSize="22sp"
+                    android:textSize="24sp"
                     android:textStyle="bold"
                     android:gravity="center" />
 
+                <!-- Member Count -->
                 <TextView
                     android:id="@+id/tv_member_count_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="0 members"
-                    android:textColor="?attr/accentColor"
-                    android:textSize="14sp" />
+                    android:textColor="?attr/textMutedColor"
+                    android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/tv_team_privacy"
+            </LinearLayout>
+
+            <!-- Action Buttons Row -->
+            <LinearLayout
+                android:id="@+id/ll_quick_actions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="?attr/surfaceColor"
+                android:paddingBottom="16dp"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:gravity="center">
+
+                <!-- Mute Button -->
+                <LinearLayout
+                    android:id="@+id/btn_mute"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardBackgroundColor="?attr/tagBackgroundColor"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/iv_mute_icon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_notification"
+                            app:tint="?attr/textPrimaryColor" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="mute"
+                        android:textColor="?attr/textPrimaryColor"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <!-- Search Button -->
+                <LinearLayout
+                    android:id="@+id/btn_search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardBackgroundColor="?attr/tagBackgroundColor"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_search"
+                            app:tint="?attr/textPrimaryColor" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="search"
+                        android:textColor="?attr/textPrimaryColor"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <!-- More Button -->
+                <LinearLayout
+                    android:id="@+id/btn_more"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        app:cardCornerRadius="16dp"
+                        app:cardBackgroundColor="?attr/tagBackgroundColor"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_more_horiz"
+                            app:tint="?attr/textPrimaryColor" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="more"
+                        android:textColor="?attr/textPrimaryColor"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- Tab Buttons -->
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="?attr/surfaceColor"
+                app:tabMode="scrollable"
+                app:tabGravity="start"
+                app:tabTextColor="?attr/textMutedColor"
+                app:tabSelectedTextColor="?attr/textPrimaryColor"
+                app:tabIndicatorColor="?attr/accentColor"
+                app:tabRippleColor="?attr/tagBackgroundColor">
+
+                <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_nav_badge"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="4dp"
-                    android:paddingBottom="4dp"
-                    android:text="private"
+                    android:text="Members" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Snippets" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Files" />
+
+            </com.google.android.material.tabs.TabLayout>
+
+            <!-- Divider -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:background="?attr/appBackgroundColor" />
+
+            <!-- Add Members Item -->
+            <LinearLayout
+                android:id="@+id/btn_invite_members"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="?attr/surfaceColor"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_person_add"
+                    app:tint="?attr/accentColor" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Add Members"
                     android:textColor="?attr/accentColor"
-                    android:textSize="12sp" />
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <!-- Members Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="?attr/surfaceColor">
+
+                <!-- Members List -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_team_members"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="5" />
 
             </LinearLayout>
 
@@ -146,7 +328,7 @@
                 android:layout_height="8dp"
                 android:background="?attr/appBackgroundColor" />
 
-            <!-- Description Section -->
+            <!-- Info Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -172,264 +354,22 @@
                     android:textSize="15sp"
                     android:lineSpacingExtra="4dp" />
 
-            </LinearLayout>
-
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="?attr/appBackgroundColor" />
-
-            <!-- Quick Actions Section -->
-            <LinearLayout
-                android:id="@+id/ll_quick_actions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="?attr/surfaceColor">
-
-                <!-- Invite Members -->
-                <LinearLayout
-                    android:id="@+id/btn_invite_members"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_person_add"
-                        app:tint="?attr/accentColor" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="Add Members"
-                        android:textColor="?attr/accentColor"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="56dp"
-                    android:background="?attr/dividerColor" />
-
-                <!-- Team Snippets -->
-                <LinearLayout
-                    android:id="@+id/btn_view_snippets"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_code"
-                        app:tint="?attr/iconTintColor" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="16dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Team Snippets"
-                            android:textColor="?attr/textPrimaryColor"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/tvSnippetsCount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 snippets"
-                            android:textColor="?attr/textMutedColor"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="?attr/textMutedColor" />
-
-                </LinearLayout>
-
-                <!-- Divider -->
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginStart="56dp"
-                    android:background="?attr/dividerColor" />
-
-                <!-- Notifications -->
-                <LinearLayout
-                    android:id="@+id/btn_notifications"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_notification"
-                        app:tint="?attr/iconTintColor" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="16dp"
-                        android:text="Notifications"
-                        android:textColor="?attr/textPrimaryColor"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tvNotificationStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Enabled"
-                        android:textColor="?attr/textMutedColor"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="?attr/appBackgroundColor" />
-
-            <!-- Members Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="?attr/surfaceColor">
-
-                <!-- Members Header -->
-                <LinearLayout
-                    android:id="@+id/ll_members_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/tvMembersCount"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="0 Members"
-                        android:textColor="?attr/accentColor"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="See All"
-                        android:textColor="?attr/accentColor"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <!-- Members List -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_team_members"
-                    android:layout_width="match_parent"
+                <!-- Privacy Badge -->
+                <TextView
+                    android:id="@+id/tv_team_privacy"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="5" />
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_nav_badge"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:text="private"
+                    android:textColor="?attr/accentColor"
+                    android:textSize="12sp" />
 
             </LinearLayout>
-
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="8dp"
-                android:background="?attr/appBackgroundColor" />
-
-            <!-- Recent Snippets Section -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="?attr/surfaceColor">
-
-                <!-- Snippets Header -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp">
-
-                    <TextView
-                        android:id="@+id/tv_snippets_header"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Recent Snippets"
-                        android:textColor="?attr/accentColor"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <!-- Snippets List -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_team_snippets"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="3" />
-
-            </LinearLayout>
-
-            <!-- Hidden Activity RecyclerView (kept for compatibility) -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_team_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <!-- Divider -->
             <View
@@ -460,22 +400,48 @@
             <!-- Bottom spacing -->
             <View
                 android:layout_width="match_parent"
-                android:layout_height="24dp" />
+                android:layout_height="32dp" />
+
+            <!-- Hidden views for compatibility -->
+            <TextView
+                android:id="@+id/tvMembersCount"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvSnippetsCount"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/btn_view_snippets"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/btn_create_snippet"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_team_snippets"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_team_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <!-- FAB for creating snippet -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_create_snippet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_add"
-        app:tint="@android:color/white"
-        app:backgroundTint="?attr/accentColor" />
 
     <!-- Loading Progress -->
     <ProgressBar
@@ -483,20 +449,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone" />
-
-    <!-- Settings button (hidden, ID kept for compatibility) -->
-    <View
-        android:id="@+id/btn_team_settings"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:visibility="gone" />
-
-    <!-- Activity count view (hidden, kept for compatibility) -->
-    <TextView
-        android:id="@+id/tvActivityCount"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
         android:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

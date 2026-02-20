@@ -9,18 +9,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog; // ADDED THIS IMPORT
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,43 +28,42 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.Team;
 import group.eleven.snippet_sharing_app.data.model.TeamMember;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
-import group.eleven.snippet_sharing_app.ui.home.ActivityFeedAdapter; // Assuming this adapter can be reused
-import group.eleven.snippet_sharing_app.ui.home.SnippetCardAdapter; // Assuming this adapter can be reused
 import group.eleven.snippet_sharing_app.ui.team.viewmodel.TeamViewModel;
-import group.eleven.snippet_sharing_app.utils.SessionManager; // To check current user's role
+import group.eleven.snippet_sharing_app.utils.SessionManager;
 
+/**
+ * TeamDashboardActivity - Team Info page (like Telegram group info)
+ * Accessed by clicking the header in TeamChatActivity
+ */
 public class TeamDashboardActivity extends AppCompatActivity implements TeamMemberAdapter.OnItemClickListener {
 
     public static final String EXTRA_TEAM_ID = "extra_team_id";
 
     private MaterialToolbar toolbar;
-    private CollapsingToolbarLayout collapsingToolbar;
+    private TextView tvEdit;
     private ImageView ivTeamAvatar;
-    private ImageView ivSettings;
     private TextView tvTeamName;
     private TextView tvTeamDescription;
     private TextView tvTeamPrivacy;
     private TextView tvMemberCountLabel;
-    private TextView tvMembersCount;
-    private TextView tvSnippetsCount;
     private LinearLayout llQuickActions;
+    private View btnMute;
+    private View btnSearch;
+    private View btnMore;
     private View btnInviteMembers;
-    private View btnViewSnippets;
-    private FloatingActionButton btnCreateSnippet;
     private View btnLeaveTeam;
+    private TabLayout tabLayout;
     private RecyclerView rvTeamMembers;
-    private RecyclerView rvTeamSnippets;
-    private RecyclerView rvTeamActivity;
     private ProgressBar progressBar;
 
     private TeamMemberAdapter teamMemberAdapter;
-    private TeamSnippetAdapter teamSnippetAdapter; // Changed to TeamSnippetAdapter
-    private ActivityFeedAdapter teamActivityAdapter; // Reusing existing adapter
+    private TeamSnippetAdapter teamSnippetAdapter;
 
     private TeamViewModel teamViewModel;
     private String teamId;
     private Team currentTeam;
     private SessionManager sessionManager;
+    private boolean isMuted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +78,7 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
         }
 
         initViews();
+        setupStatusBar();
         setupToolbar();
         setupRecyclerViews();
         setupViewModel();
@@ -89,61 +89,69 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
-        collapsingToolbar = findViewById(R.id.collapsingToolbar);
+        tvEdit = findViewById(R.id.tv_edit);
         ivTeamAvatar = findViewById(R.id.iv_team_avatar);
-        ivSettings = findViewById(R.id.ivSettings);
         tvTeamName = findViewById(R.id.tv_team_name);
         tvTeamDescription = findViewById(R.id.tv_team_description);
         tvTeamPrivacy = findViewById(R.id.tv_team_privacy);
         tvMemberCountLabel = findViewById(R.id.tv_member_count_label);
-        tvMembersCount = findViewById(R.id.tvMembersCount);
-        tvSnippetsCount = findViewById(R.id.tvSnippetsCount);
         llQuickActions = findViewById(R.id.ll_quick_actions);
+        btnMute = findViewById(R.id.btn_mute);
+        btnSearch = findViewById(R.id.btn_search);
+        btnMore = findViewById(R.id.btn_more);
         btnInviteMembers = findViewById(R.id.btn_invite_members);
-        btnViewSnippets = findViewById(R.id.btn_view_snippets);
-        btnCreateSnippet = findViewById(R.id.btn_create_snippet);
         btnLeaveTeam = findViewById(R.id.btn_leave_team);
+        tabLayout = findViewById(R.id.tab_layout);
         rvTeamMembers = findViewById(R.id.rv_team_members);
-        rvTeamSnippets = findViewById(R.id.rv_team_snippets);
-        rvTeamActivity = findViewById(R.id.rv_team_activity);
         progressBar = findViewById(R.id.progress_bar);
 
         sessionManager = new SessionManager(this);
+    }
+
+    private void setupStatusBar() {
+        android.view.Window window = getWindow();
+        android.util.TypedValue typedValue = new android.util.TypedValue();
+        getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
+        int statusBarColor;
+        if (typedValue.resourceId != 0) {
+            statusBarColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            statusBarColor = typedValue.data;
+        }
+        window.setStatusBarColor(statusBarColor);
+
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller != null) {
+            boolean isLightBackground = isColorLight(statusBarColor);
+            controller.setAppearanceLightStatusBars(isLightBackground);
+        }
+    }
+
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * android.graphics.Color.red(color)
+                + 0.587 * android.graphics.Color.green(color)
+                + 0.114 * android.graphics.Color.blue(color)) / 255;
+        return darkness < 0.5;
     }
 
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(""); // Will set title dynamically
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
     private void setupRecyclerViews() {
         teamMemberAdapter = new TeamMemberAdapter(this);
-        rvTeamMembers.setLayoutManager(new LinearLayoutManager(this)); // Vertical layout like Telegram
+        rvTeamMembers.setLayoutManager(new LinearLayoutManager(this));
+        rvTeamMembers.setNestedScrollingEnabled(false);
         rvTeamMembers.setAdapter(teamMemberAdapter);
 
-        teamSnippetAdapter = new TeamSnippetAdapter(new TeamSnippetAdapter.OnTeamSnippetClickListener() {
-            @Override
-            public void onTeamSnippetClick(group.eleven.snippet_sharing_app.data.model.TeamSnippet teamSnippet) {
-                // TODO: Navigate to team snippet detail
-                Toast.makeText(TeamDashboardActivity.this, "Team Snippet: " + teamSnippet.getTitle() + " clicked", Toast.LENGTH_SHORT).show();
-            }
+        teamSnippetAdapter = new TeamSnippetAdapter(teamSnippet -> {
+            Toast.makeText(this, "Snippet: " + teamSnippet.getTitle(), Toast.LENGTH_SHORT).show();
         });
-        rvTeamSnippets.setLayoutManager(new LinearLayoutManager(this));
-        rvTeamSnippets.setAdapter(teamSnippetAdapter);
-
-        teamActivityAdapter = new ActivityFeedAdapter(new ArrayList<>());
-        rvTeamActivity.setLayoutManager(new LinearLayoutManager(this));
-        rvTeamActivity.setAdapter(teamActivityAdapter);
     }
 
     private void setupViewModel() {
@@ -152,46 +160,24 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
         teamViewModel.getTeamDetailsResult().observe(this, resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
                 progressBar.setVisibility(View.VISIBLE);
-                // Hide other content
                 llQuickActions.setVisibility(View.GONE);
-                rvTeamMembers.setVisibility(View.GONE);
-                rvTeamSnippets.setVisibility(View.GONE);
-                rvTeamActivity.setVisibility(View.GONE);
             } else {
                 progressBar.setVisibility(View.GONE);
                 llQuickActions.setVisibility(View.VISIBLE);
-                rvTeamMembers.setVisibility(View.VISIBLE);
-                rvTeamSnippets.setVisibility(View.VISIBLE);
-                rvTeamActivity.setVisibility(View.VISIBLE);
             }
 
             if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
                 currentTeam = resource.getData();
                 if (currentTeam != null) {
                     displayTeamDetails(currentTeam);
-                    // Also fetch members, snippets, activity
                     fetchTeamMembers();
-                    fetchTeamSnippets();
-                    fetchTeamActivity(); // Now uncommented
                 }
             } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
                 Toast.makeText(this, "Error: " + resource.getMessage(), Toast.LENGTH_LONG).show();
-                finish(); // Go back if team details can't be loaded
+                finish();
             }
         });
 
-        // Observe team activity feed result
-        teamViewModel.getTeamActivityFeedResult().observe(this, resource -> {
-            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
-                if (resource.getData() != null) {
-                    teamActivityAdapter.setActivities(resource.getData());
-                }
-            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
-                Toast.makeText(this, "Error loading activity feed: " + resource.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Observe leave team result
         teamViewModel.getLeaveTeamResult().observe(this, resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
                 btnLeaveTeam.setClickable(false);
@@ -202,100 +188,107 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
             }
             if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
                 Toast.makeText(this, "Successfully left team!", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK); // Indicate a change happened
-                finish(); // Go back to teams list
+                setResult(RESULT_OK);
+                finish();
             } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
                 Toast.makeText(this, "Error leaving team: " + resource.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        // Observe team snippets result
-        teamViewModel.getTeamSnippetsResult().observe(this, resource -> {
-            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
-                if (resource.getData() != null) {
-                    teamSnippetAdapter.setTeamSnippets(resource.getData());
-                }
-            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
-                Toast.makeText(this, "Error loading snippets: " + resource.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setupListeners() {
-        // Settings button in toolbar
-        ivSettings.setOnClickListener(v -> {
+        tvEdit.setOnClickListener(v -> {
             Intent intent = new Intent(this, TeamSettingsActivity.class);
             intent.putExtra(TeamSettingsActivity.EXTRA_TEAM_ID, teamId);
             startActivity(intent);
         });
 
-        // Add members action
-        btnInviteMembers.setOnClickListener(v -> {
-            // TODO: Navigate to invite members page/dialog
-            Toast.makeText(this, "Invite Members Clicked", Toast.LENGTH_SHORT).show();
+        btnMute.setOnClickListener(v -> {
+            isMuted = !isMuted;
+            ImageView ivMuteIcon = findViewById(R.id.iv_mute_icon);
+            if (isMuted) {
+                ivMuteIcon.setImageResource(R.drawable.ic_notification_off);
+                Toast.makeText(this, "Notifications muted", Toast.LENGTH_SHORT).show();
+            } else {
+                ivMuteIcon.setImageResource(R.drawable.ic_notification);
+                Toast.makeText(this, "Notifications enabled", Toast.LENGTH_SHORT).show();
+            }
         });
 
-        // View all snippets
-        btnViewSnippets.setOnClickListener(v -> {
-            Intent intent = new Intent(this, TeamSnippetsActivity.class);
-            intent.putExtra(TeamSnippetsActivity.EXTRA_TEAM_ID, teamId);
-            startActivity(intent);
-        });
-
-        // FAB to create new snippet
-        btnCreateSnippet.setOnClickListener(v -> {
-            // TODO: Navigate to create snippet page (team context)
-            Toast.makeText(this, "Create Snippet Clicked", Toast.LENGTH_SHORT).show();
-        });
-
-        // Leave team
+        btnSearch.setOnClickListener(v -> Toast.makeText(this, "Search in team", Toast.LENGTH_SHORT).show());
+        btnMore.setOnClickListener(v -> showMoreOptionsMenu());
+        btnInviteMembers.setOnClickListener(v -> Toast.makeText(this, "Add Members", Toast.LENGTH_SHORT).show());
         btnLeaveTeam.setOnClickListener(v -> confirmLeaveTeam());
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        rvTeamMembers.setAdapter(teamMemberAdapter);
+                        fetchTeamMembers();
+                        break;
+                    case 1:
+                        rvTeamMembers.setAdapter(teamSnippetAdapter);
+                        fetchTeamSnippets();
+                        break;
+                    case 2:
+                        Toast.makeText(TeamDashboardActivity.this, "Files coming soon", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
+    }
+
+    private void showMoreOptionsMenu() {
+        String[] options = {"Share Team", "Report", "Copy Link"};
+        new AlertDialog.Builder(this)
+                .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0: Toast.makeText(this, "Share team", Toast.LENGTH_SHORT).show(); break;
+                        case 1: Toast.makeText(this, "Report team", Toast.LENGTH_SHORT).show(); break;
+                        case 2: Toast.makeText(this, "Link copied", Toast.LENGTH_SHORT).show(); break;
+                    }
+                })
+                .show();
     }
 
     private void confirmLeaveTeam() {
         new AlertDialog.Builder(this)
                 .setTitle("Leave Team")
-                .setMessage("Are you sure you want to leave '" + currentTeam.getName() + "'? You will lose access to team snippets and features.")
+                .setMessage("Are you sure you want to leave '" + currentTeam.getName() + "'?")
                 .setPositiveButton("Leave", (dialog, which) -> teamViewModel.leaveTeam(teamId))
                 .setNegativeButton("Cancel", null)
                 .show();
     }
 
     private void displayTeamDetails(Team team) {
-        // Set collapsing toolbar title
-        collapsingToolbar.setTitle(team.getName());
-
         tvTeamName.setText(team.getName());
         tvTeamDescription.setText(team.getDescription());
         tvTeamPrivacy.setText(team.getPrivacy());
 
-        // Load team avatar
         if (team.getAvatarUrl() != null && !team.getAvatarUrl().isEmpty()) {
+            ivTeamAvatar.setPadding(0, 0, 0, 0);
+            ivTeamAvatar.setImageTintList(null);
             Glide.with(this)
                     .load(team.getAvatarUrl())
                     .placeholder(R.drawable.ic_users)
                     .error(R.drawable.ic_users)
-                    .centerCrop()
+                    .circleCrop()
                     .into(ivTeamAvatar);
-            ivTeamAvatar.setPadding(0, 0, 0, 0); // Remove padding when showing actual image
         }
 
-        // Update member count label (Telegram style: "X members")
         int memberCount = team.getMemberCount();
         String memberText = memberCount == 1 ? "1 member" : memberCount + " members";
         tvMemberCountLabel.setText(memberText);
 
-        // Update members header with count
-        tvMembersCount.setText(memberCount + " Members");
-
-        // Update snippets count
-        int snippetCount = team.getSnippetCount();
-        String snippetText = snippetCount == 1 ? "1 snippet" : snippetCount + " snippets";
-        tvSnippetsCount.setText(snippetText);
-
-        // Control leave team button visibility
-        if (sessionManager.getCurrentUser() != null && team.getOwnerId().equals(sessionManager.getCurrentUser().getId())) {
-            btnLeaveTeam.setVisibility(View.GONE); // Owner cannot leave their own team directly
+        if (sessionManager.getCurrentUser() != null &&
+            team.getOwnerId().equals(sessionManager.getCurrentUser().getId())) {
+            btnLeaveTeam.setVisibility(View.GONE);
         } else {
             btnLeaveTeam.setVisibility(View.VISIBLE);
         }
@@ -308,47 +301,39 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
     private void fetchTeamMembers() {
         teamViewModel.fetchTeamMembers(teamId);
         teamViewModel.getTeamMembersResult().observe(this, resource -> {
-            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
-                if (resource.getData() != null) {
-                    teamMemberAdapter.setTeamMembers(resource.getData());
-                }
-            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
-                Toast.makeText(this, "Error loading members: " + resource.getMessage(), Toast.LENGTH_SHORT).show();
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS && resource.getData() != null) {
+                teamMemberAdapter.setTeamMembers(resource.getData());
             }
         });
     }
 
     private void fetchTeamSnippets() {
-        // Default filters for dashboard display
         Map<String, String> filters = new HashMap<>();
-        // TODO: Add actual filters if needed, e.g., filters.put("limit", "5");
         teamViewModel.fetchTeamSnippets(teamId, filters);
         teamViewModel.getTeamSnippetsResult().observe(this, resource -> {
-            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
-                if (resource.getData() != null) {
-                    teamSnippetAdapter.setTeamSnippets(resource.getData());
-                }
-            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
-                Toast.makeText(this, "Error loading snippets: " + resource.getMessage(), Toast.LENGTH_SHORT).show();
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS && resource.getData() != null) {
+                teamSnippetAdapter.setTeamSnippets(resource.getData());
             }
         });
     }
 
-    private void fetchTeamActivity() {
-        teamViewModel.fetchTeamActivity(teamId);
-    }
-
-    // region TeamMemberAdapter.OnItemClickListener
     @Override
     public void onItemClick(TeamMember member) {
-        // TODO: Navigate to member profile or show member details
-        Toast.makeText(this, "Member " + member.getUsername() + " clicked", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Member: " + member.getUsername(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onMoreOptionsClick(TeamMember member, View view) {
-        // TODO: Show a popup menu with options like "Change Role", "Remove Member"
-        Toast.makeText(this, "More options for " + member.getUsername(), Toast.LENGTH_SHORT).show();
+        String[] options = {"View Profile", "Message", "Remove from Team"};
+        new AlertDialog.Builder(this)
+                .setTitle(member.getUsername())
+                .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0: Toast.makeText(this, "View profile", Toast.LENGTH_SHORT).show(); break;
+                        case 1: Toast.makeText(this, "Message", Toast.LENGTH_SHORT).show(); break;
+                        case 2: Toast.makeText(this, "Remove member", Toast.LENGTH_SHORT).show(); break;
+                    }
+                })
+                .show();
     }
-    // endregion
 }

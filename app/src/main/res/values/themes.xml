@@ -77,6 +77,7 @@
         <item name="inputBackgroundColor">@color/light_input_background</item>
         <item name="inputStrokeColor">@color/light_input_stroke</item>
         <item name="inputStrokeFocusColor">@color/input_stroke_focused</item>
+        <item name="searchInputBackgroundColor">@color/light_card_surface</item>
 
         <!-- Navigation - Light -->
         <item name="bottomNavBackgroundColor">@color/light_nav_bg</item>

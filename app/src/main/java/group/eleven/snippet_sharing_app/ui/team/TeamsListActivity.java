@@ -263,9 +263,9 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
 
     @Override
     public void onItemClick(Team team) {
-        // Navigate to TeamDashboardActivity
-        Intent intent = new Intent(TeamsListActivity.this, TeamDashboardActivity.class);
-        intent.putExtra(TeamDashboardActivity.EXTRA_TEAM_ID, team.getId());
+        // Navigate to TeamChatActivity (main team screen with shared snippets)
+        Intent intent = new Intent(TeamsListActivity.this, TeamChatActivity.class);
+        intent.putExtra(TeamChatActivity.EXTRA_TEAM_ID, team.getId());
         startActivity(intent);
     }
 
