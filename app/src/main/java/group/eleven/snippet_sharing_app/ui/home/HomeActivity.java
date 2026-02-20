@@ -121,19 +121,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void setupStatusBar() {
         android.view.Window window = getWindow();
 
-        // Get the background color from theme
+        // Get the surface color from theme to match app bar
         android.util.TypedValue typedValue = new android.util.TypedValue();
-        getTheme().resolveAttribute(R.attr.appBackgroundColor, typedValue, true);
-        int backgroundColor = typedValue.data;
+        getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
+        int statusBarColor;
+        if (typedValue.resourceId != 0) {
+            statusBarColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            statusBarColor = typedValue.data;
+        }
 
-        // Set status bar color to match background
-        window.setStatusBarColor(backgroundColor);
+        // Set status bar color to match app bar surface
+        window.setStatusBarColor(statusBarColor);
 
         // Set status bar icon colors based on theme
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
             // Check if we're in light mode (background is light colored)
-            boolean isLightBackground = isColorLight(backgroundColor);
+            boolean isLightBackground = isColorLight(statusBarColor);
             // Light background = dark icons (true), Dark background = light icons (false)
             controller.setAppearanceLightStatusBars(isLightBackground);
         }

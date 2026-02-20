@@ -66,13 +66,18 @@ public class ExploreActivity extends AppCompatActivity {
     private void setupStatusBar() {
         android.view.Window window = getWindow();
         android.util.TypedValue typedValue = new android.util.TypedValue();
-        getTheme().resolveAttribute(R.attr.appBackgroundColor, typedValue, true);
-        int backgroundColor = typedValue.data;
-        window.setStatusBarColor(backgroundColor);
+        getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
+        int statusBarColor;
+        if (typedValue.resourceId != 0) {
+            statusBarColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            statusBarColor = typedValue.data;
+        }
+        window.setStatusBarColor(statusBarColor);
 
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
-            boolean isLightBackground = isColorLight(backgroundColor);
+            boolean isLightBackground = isColorLight(statusBarColor);
             controller.setAppearanceLightStatusBars(isLightBackground);
         }
     }

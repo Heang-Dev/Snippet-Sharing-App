@@ -1,39 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/profile_bg">
+    android:background="?attr/appBackgroundColor"
+    android:fitsSystemWindows="true">
 
+    <!-- App Bar -->
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:background="?attr/surfaceColor"
+        app:elevation="1dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?attr/surfaceColor"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationIconTint="@color/white">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Edit Profile"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-        </androidx.appcompat.widget.Toolbar>
+            app:navigationIconTint="?attr/textPrimaryColor"
+            app:title="Edit Profile"
+            app:titleTextColor="?attr/textPrimaryColor"
+            app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:fillViewport="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -42,9 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingStart="20dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="32dp">
 
-            <!-- Profile Image Edit Section -->
+            <!-- Profile Image Section -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -58,178 +60,174 @@
                     android:clickable="true"
                     android:focusable="true">
 
-                    <com.google.android.material.imageview.ShapeableImageView
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/ivProfile"
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:padding="2dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:src="@drawable/ic_person"
-                        android:scaleType="centerCrop"
-                        app:strokeColor="@color/profile_text_muted"
-                        app:strokeWidth="1dp"
-                        app:shapeAppearanceOverlay="@style/CircleImage" />
+                        app:civ_border_color="?attr/borderColor"
+                        app:civ_border_width="2dp" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_gravity="bottom|end"
-                        android:layout_marginEnd="6dp"
-                        android:layout_marginBottom="6dp"
-                        app:cardBackgroundColor="@color/profile_primary"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        app:cardBackgroundColor="@color/primary"
                         app:cardCornerRadius="16dp"
-                        app:cardElevation="2dp"
-                        app:strokeWidth="1dp"
-                        app:strokeColor="@color/profile_bg">
+                        app:cardElevation="2dp">
+
                         <ImageView
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:layout_gravity="center"
                             android:src="@drawable/ic_camera"
-                            app:tint="@color/profile_bg" />
+                            app:tint="@color/white" />
+
                     </com.google.android.material.card.MaterialCardView>
+
                 </FrameLayout>
 
                 <TextView
                     android:id="@+id/tvChangePhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:text="Change Profile Photo"
-                    android:textColor="@color/profile_primary"
+                    android:textColor="@color/primary"
                     android:textSize="14sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <!-- Basic Info Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="28dp"
+                android:letterSpacing="0.05"
                 android:text="BASIC INFO"
-                android:textColor="#818CF8"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.05" />
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <!-- Full Name Field -->
+            <!-- Full Name -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Full Name"
-                android:textColor="@color/profile_text_muted"
+                android:textColor="?attr/textSecondaryColor"
                 android:textSize="14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etFullName"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:hint="Full Name"
-                android:paddingHorizontal="16dp"
-                android:text="Alex Dev"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
+                android:background="@drawable/bg_edit_text"
+                android:hint="Enter your full name"
                 android:inputType="textPersonName"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:paddingHorizontal="16dp"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp" />
 
-            <!-- Username Field -->
+            <!-- Username -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Username"
-                    android:textColor="@color/profile_text_muted"
+                    android:textColor="?attr/textSecondaryColor"
                     android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/tvUsernameStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="● Available"
-                    android:textColor="@color/profile_primary"
+                    android:text="Available"
+                    android:textColor="@color/success"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etUsername"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:hint="Username"
-                android:paddingHorizontal="16dp"
-                android:text="@alexcodes"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
+                android:background="@drawable/bg_edit_text"
+                android:hint="@username"
                 android:inputType="text"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:paddingHorizontal="16dp"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp" />
 
-            <!-- Email Field -->
+            <!-- Email -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Email Address"
-                    android:textColor="@color/profile_text_muted"
+                    android:textColor="?attr/textSecondaryColor"
                     android:textSize="14sp" />
+
                 <TextView
                     android:id="@+id/tvEmailStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_pill_badge"
-                    android:backgroundTint="#064E3B"
-                    android:paddingHorizontal="10dp"
+                    android:backgroundTint="@color/success"
+                    android:paddingHorizontal="8dp"
                     android:paddingVertical="2dp"
                     android:text="Verified"
-                    android:textColor="@color/profile_primary"
+                    android:textColor="@color/white"
                     android:textSize="10sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:hint="Email Address"
-                android:paddingHorizontal="16dp"
-                android:text="alex@example.com"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
+                android:background="@drawable/bg_edit_text"
+                android:enabled="false"
+                android:hint="email@example.com"
                 android:inputType="textEmailAddress"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:paddingHorizontal="16dp"
+                android:textColor="?attr/textSecondaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp" />
 
-            <!-- Bio Field -->
+            <!-- Bio -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Bio"
-                android:textColor="@color/profile_text_muted"
+                android:textColor="?attr/textSecondaryColor"
                 android:textSize="14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -237,19 +235,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
+                android:background="@drawable/bg_edit_text"
                 android:gravity="top"
-                android:hint="Bio"
-                android:minLines="4"
-                android:padding="16dp"
-                android:text="Full-stack wizard building tools for builders. Love React, Python, and dark coffee."
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
+                android:hint="Tell us about yourself..."
                 android:inputType="textMultiLine"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:minLines="3"
+                android:padding="16dp"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tvBioCharCount"
@@ -257,166 +251,159 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="4dp"
-                android:text="82/160 characters"
-                android:textColor="@color/profile_text_muted"
+                android:text="0/160 characters"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="11sp" />
 
             <!-- Profile Details Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="28dp"
+                android:letterSpacing="0.05"
                 android:text="PROFILE DETAILS"
-                android:textColor="#818CF8"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:letterSpacing="0.05" />
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
-            <!-- Location Field -->
+            <!-- Website -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Website"
+                android:textColor="?attr/textSecondaryColor"
+                android:textSize="14sp" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etWebsite"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_edit_text"
+                android:drawablePadding="12dp"
+                android:drawableStart="@drawable/ic_link"
+                android:hint="https://yourwebsite.com"
+                android:inputType="textUri"
+                android:paddingHorizontal="16dp"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp"
+                app:drawableTint="?attr/textMutedColor" />
+
+            <!-- Location -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Location"
-                android:textColor="@color/profile_text_muted"
+                android:textColor="?attr/textSecondaryColor"
                 android:textSize="14sp" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etLocation"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:drawableStart="@drawable/ic_explore"
+                android:background="@drawable/bg_edit_text"
                 android:drawablePadding="12dp"
-                app:drawableTint="@color/profile_text_muted"
-                android:hint="Location"
-                android:paddingHorizontal="16dp"
-                android:text="Seattle, WA"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
+                android:drawableStart="@drawable/ic_location"
+                android:hint="City, Country"
                 android:inputType="text"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:paddingHorizontal="16dp"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp"
+                app:drawableTint="?attr/textMutedColor" />
 
-            <!-- Social Profiles Section -->
+            <!-- Social Links Section -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Social Profiles"
-                android:textColor="@color/profile_text_muted"
-                android:textSize="14sp" />
+                android:layout_marginTop="28dp"
+                android:letterSpacing="0.05"
+                android:text="SOCIAL LINKS"
+                android:textColor="@color/primary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
 
+            <!-- GitHub -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etGithub"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:drawableStart="@drawable/ic_code"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_edit_text"
                 android:drawablePadding="12dp"
-                app:drawableTint="@color/profile_text_muted"
+                android:drawableStart="@drawable/ic_github"
                 android:hint="GitHub URL"
-                android:paddingHorizontal="16dp"
-                android:text="github.com/alexcodes"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
                 android:inputType="textUri"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:paddingHorizontal="16dp"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp"
+                app:drawableTint="?attr/textMutedColor" />
 
+            <!-- Twitter -->
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etTwitter"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:drawableStart="@drawable/ic_google"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_edit_text"
                 android:drawablePadding="12dp"
-                app:drawableTint="@color/profile_text_muted"
+                android:drawableStart="@drawable/ic_twitter"
                 android:hint="Twitter URL"
-                android:paddingHorizontal="16dp"
-                android:text="twitter.com/alexcodes"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
                 android:inputType="textUri"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etLinkedin"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:drawableStart="@drawable/ic_person"
-                android:drawablePadding="12dp"
-                app:drawableTint="@color/profile_text_muted"
-                android:hint="LinkedIn URL"
                 android:paddingHorizontal="16dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
-                android:inputType="textUri"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etWebsite"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/bg_edit_text_dark"
-                android:drawableStart="@drawable/ic_explore"
-                android:drawablePadding="12dp"
-                app:drawableTint="@color/profile_text_muted"
-                android:hint="Website URL"
-                android:paddingHorizontal="16dp"
-                android:text="https://alex.dev"
-                android:textColor="@color/white"
-                android:textColorHint="@color/profile_text_muted"
-                android:inputType="textUri"
-                android:enabled="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true" />
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
+                android:textSize="15sp"
+                app:drawableTint="?attr/textMutedColor" />
 
             <!-- Save Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveChanges"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="52dp"
                 android:layout_marginTop="32dp"
                 android:text="Save Changes"
-                android:textColor="@color/profile_bg"
                 android:textAllCaps="false"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/profile_primary"
-                app:cornerRadius="16dp" />
+                app:backgroundTint="@color/primary"
+                app:cornerRadius="12dp" />
 
-            <!-- Deactivate Button -->
-            <TextView
-                android:id="@+id/tvDeactivateAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="32dp"
-                android:text="Deactivate Account"
-                android:textColor="#EF4444"
-                android:textSize="14sp"
-                android:textStyle="bold" />
+            <!-- Cancel Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="?attr/textSecondaryColor"
+                android:textSize="14sp" />
 
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/layoutLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/appBackgroundColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

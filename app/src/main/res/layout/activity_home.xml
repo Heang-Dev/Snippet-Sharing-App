@@ -15,13 +15,13 @@
         android:layout_height="match_parent"
         android:background="?attr/appBackgroundColor">
 
-        <!-- App Bar - Clean White Style -->
+        <!-- App Bar - Theme-aware Style -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:backgroundTint="@null"
+            android:fitsSystemWindows="true"
+            android:background="?attr/surfaceColor"
             app:elevation="1dp"
             app:liftOnScroll="false">
 
@@ -29,7 +29,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/white"
+                android:background="?attr/surfaceColor"
                 app:titleTextColor="?attr/textPrimaryColor">
 
                 <LinearLayout

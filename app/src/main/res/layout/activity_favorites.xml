@@ -13,14 +13,15 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/appBackgroundColor"
+        android:fitsSystemWindows="true"
+        android:background="?attr/surfaceColor"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/appBackgroundColor">
+            android:background="?attr/surfaceColor">
 
             <TextView
                 android:layout_width="wrap_content"

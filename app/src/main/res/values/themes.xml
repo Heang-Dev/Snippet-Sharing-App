@@ -10,7 +10,7 @@
     <style name="Base.Theme.SnippetApp" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary Colors - Comet Pink -->
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimaryDark">@color/white</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/on_primary</item>
         <item name="colorPrimaryContainer">@color/light_primary_container</item>
@@ -130,11 +130,9 @@
         <item name="android:navigationBarColor">@color/app_background</item>
     </style>
 
-    <!-- Profile Theme -->
+    <!-- Profile Theme - Inherits from base theme for proper light/dark support -->
     <style name="Theme.Snippet_Sharing_App.Profile" parent="Base.Theme.SnippetApp">
-        <item name="android:statusBarColor">@color/app_background_variant</item>
-        <item name="android:navigationBarColor">@color/app_background_variant</item>
-        <item name="appBackgroundColor">@color/app_background_variant</item>
+        <!-- No overrides - inherits all colors from base theme -->
     </style>
 
     <!-- Dark Auth Theme (legacy compatibility) -->
