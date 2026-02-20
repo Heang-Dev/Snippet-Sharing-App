@@ -10,7 +10,7 @@
     <style name="Base.Theme.SnippetApp" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary Colors -->
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimaryDark">@color/surface</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/on_primary</item>
 
@@ -19,9 +19,9 @@
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
 
-        <!-- System Bars -->
-        <item name="android:statusBarColor">@color/app_background</item>
-        <item name="android:navigationBarColor">@color/bottom_nav_bg</item>
+        <!-- System Bars - Match toolbar/app bar surface color -->
+        <item name="android:statusBarColor">@color/surface</item>
+        <item name="android:navigationBarColor">@color/surface</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
 
@@ -50,7 +50,7 @@
         <item name="inputStrokeColor">@color/input_stroke</item>
         <item name="inputStrokeFocusColor">@color/input_stroke_focused</item>
         <item name="searchInputBackgroundColor">@color/card_surface</item>
-        <item name="bottomNavBackgroundColor">@color/bottom_nav_bg</item>
+        <item name="bottomNavBackgroundColor">@color/surface</item>
         <item name="navItemActiveColor">@color/nav_item_active</item>
         <item name="navItemInactiveColor">@color/nav_item_inactive</item>
         <item name="buttonPrimaryColor">@color/button_primary</item>
@@ -79,4 +79,16 @@
         <item name="syntaxOperatorColor">@color/syntax_operator</item>
         <item name="syntaxVariableColor">@color/syntax_variable</item>
     </style>
+
+    <!-- Main App Theme (inherits from base) -->
+    <style name="Theme.Snippet_Sharing_App" parent="Base.Theme.SnippetApp" />
+
+    <!-- Profile Theme - Same as base for dark mode -->
+    <style name="Theme.Snippet_Sharing_App.Profile" parent="Base.Theme.SnippetApp" />
+
+    <!-- Auth Theme - Same as base for dark mode -->
+    <style name="Theme.SnippetApp.Auth" parent="Base.Theme.SnippetApp" />
+
+    <!-- Dark Auth Theme (legacy compatibility) -->
+    <style name="Theme.Snippet_Sharing_App.DarkAuth" parent="Base.Theme.SnippetApp" />
 </resources>

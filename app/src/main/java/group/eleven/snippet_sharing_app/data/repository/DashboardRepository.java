@@ -16,6 +16,7 @@ import group.eleven.snippet_sharing_app.data.model.ActivityFeedItem;
 import group.eleven.snippet_sharing_app.data.model.ApiResponse;
 import group.eleven.snippet_sharing_app.data.model.DashboardStats;
 import group.eleven.snippet_sharing_app.data.model.FeedActivity;
+import group.eleven.snippet_sharing_app.data.model.MessageResponse;
 import group.eleven.snippet_sharing_app.data.model.Snippet;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.utils.Resource;
@@ -283,6 +284,75 @@ public class DashboardRepository {
 
             @Override
             public void onFailure(Call<ApiResponse<List<Snippet>>> call, Throwable t) {
+                result.setValue(Resource.error("Network error: " + t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * Toggle like on a snippet (like if not liked, unlike if liked)
+     */
+    public LiveData<Resource<Boolean>> toggleLike(String snippetId, boolean currentlyLiked) {
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading(null));
+
+        Call<MessageResponse> call;
+        if (currentlyLiked) {
+            call = apiService.unlikeSnippet(snippetId);
+        } else {
+            call = apiService.likeSnippet(snippetId);
+        }
+
+        call.enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    // Return the new like state (opposite of current)
+                    result.setValue(Resource.success(!currentlyLiked));
+                } else {
+                    String message = response.body() != null ? response.body().getMessage() : "Failed to update like";
+                    result.setValue(Resource.error(message, null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                result.setValue(Resource.error("Network error: " + t.getMessage(), null));
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * Toggle favorite on a snippet
+     */
+    public LiveData<Resource<Boolean>> toggleFavorite(String snippetId, boolean currentlyFavorited) {
+        MutableLiveData<Resource<Boolean>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading(null));
+
+        Call<MessageResponse> call;
+        if (currentlyFavorited) {
+            call = apiService.removeFromFavorites(snippetId);
+        } else {
+            call = apiService.addToFavorites(snippetId);
+        }
+
+        call.enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    result.setValue(Resource.success(!currentlyFavorited));
+                } else {
+                    String message = response.body() != null ? response.body().getMessage() : "Failed to update favorite";
+                    result.setValue(Resource.error(message, null));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
                 result.setValue(Resource.error("Network error: " + t.getMessage(), null));
             }
         });

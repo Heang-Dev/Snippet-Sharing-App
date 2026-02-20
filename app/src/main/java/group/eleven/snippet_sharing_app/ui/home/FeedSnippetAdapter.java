@@ -1,8 +1,8 @@
 package group.eleven.snippet_sharing_app.ui.home;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
+import group.eleven.snippet_sharing_app.utils.SyntaxHighlighter;
 
 /**
  * Adapter for Facebook-style feed snippet cards
@@ -90,9 +91,11 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
         LinearLayout btnLike, btnComment, btnShare;
         ImageView ivLike;
         TextView tvLike;
+        SyntaxHighlighter syntaxHighlighter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            syntaxHighlighter = new SyntaxHighlighter(itemView.getContext());
 
             // Author header
             ivAuthorAvatar = itemView.findViewById(R.id.ivAuthorAvatar);
@@ -189,10 +192,12 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
                 // Use default background
             }
 
-            // Code preview
+            // Code preview with syntax highlighting
             String code = snippet.getCodePreview();
             if (code != null && !code.isEmpty()) {
-                tvCodePreview.setText(code);
+                SpannableString highlightedCode = syntaxHighlighter.highlightForLanguage(
+                        code, snippet.getLanguageBadge());
+                tvCodePreview.setText(highlightedCode);
             } else {
                 tvCodePreview.setText("// No code preview available");
             }

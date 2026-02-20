@@ -57,14 +57,21 @@ public class NotificationsActivity extends AppCompatActivity implements Notifica
     private void setupStatusBar() {
         android.view.Window window = getWindow();
         android.util.TypedValue typedValue = new android.util.TypedValue();
-        getTheme().resolveAttribute(R.attr.appBackgroundColor, typedValue, true);
-        int backgroundColor = typedValue.data;
-        window.setStatusBarColor(backgroundColor);
+        getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
+        int surfaceColor;
+        if (typedValue.resourceId != 0) {
+            surfaceColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
+        } else {
+            surfaceColor = typedValue.data;
+        }
+        window.setStatusBarColor(surfaceColor);
+        window.setNavigationBarColor(surfaceColor);
 
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
-            boolean isLightBackground = isColorLight(backgroundColor);
+            boolean isLightBackground = isColorLight(surfaceColor);
             controller.setAppearanceLightStatusBars(isLightBackground);
+            controller.setAppearanceLightNavigationBars(isLightBackground);
         }
     }
 

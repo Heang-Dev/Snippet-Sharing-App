@@ -1,5 +1,6 @@
 package group.eleven.snippet_sharing_app.ui.team;
 
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.TeamSnippet;
+import group.eleven.snippet_sharing_app.utils.SyntaxHighlighter;
 
 public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.ViewHolder> {
 
@@ -60,6 +62,7 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
         private final TextView tvSnippetTime;
         private final TextView tvCodePreview;
         private final MaterialCardView cardSnippet;
+        private final SyntaxHighlighter syntaxHighlighter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +71,7 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
             tvSnippetTime = itemView.findViewById(R.id.tvSnippetTime);
             tvCodePreview = itemView.findViewById(R.id.tvCode);
             cardSnippet = itemView.findViewById(R.id.cardSnippet);
+            syntaxHighlighter = new SyntaxHighlighter(itemView.getContext());
         }
 
         public void bind(TeamSnippet teamSnippet, OnTeamSnippetClickListener listener) {
@@ -81,7 +85,15 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
 
             tvSnippetTitle.setText(teamSnippet.getTitle());
             tvSnippetTime.setText(teamSnippet.getUpdatedAt());
-            tvCodePreview.setText(teamSnippet.getCode());
+
+            // Apply syntax highlighting to code
+            String code = teamSnippet.getCode();
+            if (code != null && !code.isEmpty()) {
+                SpannableString highlightedCode = syntaxHighlighter.highlightForLanguage(code, lang);
+                tvCodePreview.setText(highlightedCode);
+            } else {
+                tvCodePreview.setText("// No code preview");
+            }
 
             if (listener != null && cardSnippet != null) {
                 cardSnippet.setOnClickListener(v -> listener.onTeamSnippetClick(teamSnippet));

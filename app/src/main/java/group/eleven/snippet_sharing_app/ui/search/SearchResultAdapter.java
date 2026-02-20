@@ -1,7 +1,7 @@
 package group.eleven.snippet_sharing_app.ui.search;
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.model.SearchResult;
+import group.eleven.snippet_sharing_app.utils.SyntaxHighlighter;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapter.ViewHolder> {
 
@@ -48,6 +49,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
         TextView tvLanguageInitial, tvTitle, tvSubtitle, tvCode, tvUsername, tvStars, tvForks;
         CardView cvLanguage;
         ImageView ivBookmark;
+        SyntaxHighlighter syntaxHighlighter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +62,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             tvStars = itemView.findViewById(R.id.tvStars);
             tvForks = itemView.findViewById(R.id.tvForks);
             ivBookmark = itemView.findViewById(R.id.ivBookmark);
+            syntaxHighlighter = new SyntaxHighlighter(itemView.getContext());
         }
 
         public void bind(SearchResult item) {
@@ -73,7 +76,17 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
             tvTitle.setText(item.getTitle());
             tvSubtitle.setText(item.getSubtitle());
-            tvCode.setText(item.getCodeSnippet());
+
+            // Apply syntax highlighting to code
+            String code = item.getCodeSnippet();
+            if (code != null && !code.isEmpty()) {
+                SpannableString highlightedCode = syntaxHighlighter.highlightForLanguage(
+                        code, item.getLanguage());
+                tvCode.setText(highlightedCode);
+            } else {
+                tvCode.setText("// No code preview");
+            }
+
             tvUsername.setText(item.getUsername() + " • " + item.getTimestamp());
             tvStars.setText(String.valueOf(item.getStars()));
             tvForks.setText(String.valueOf(item.getForks()));

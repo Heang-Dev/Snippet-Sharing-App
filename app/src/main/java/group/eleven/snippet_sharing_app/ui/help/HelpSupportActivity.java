@@ -34,18 +34,20 @@ public class HelpSupportActivity extends AppCompatActivity {
         android.view.Window window = getWindow();
         android.util.TypedValue typedValue = new android.util.TypedValue();
         getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
-        int statusBarColor;
+        int surfaceColor;
         if (typedValue.resourceId != 0) {
-            statusBarColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
+            surfaceColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
         } else {
-            statusBarColor = typedValue.data;
+            surfaceColor = typedValue.data;
         }
-        window.setStatusBarColor(statusBarColor);
+        window.setStatusBarColor(surfaceColor);
+        window.setNavigationBarColor(surfaceColor);
 
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
-            boolean isLightBackground = isColorLight(statusBarColor);
+            boolean isLightBackground = isColorLight(surfaceColor);
             controller.setAppearanceLightStatusBars(isLightBackground);
+            controller.setAppearanceLightNavigationBars(isLightBackground);
         }
     }
 

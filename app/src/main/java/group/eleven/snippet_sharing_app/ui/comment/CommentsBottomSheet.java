@@ -184,6 +184,7 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
         ivSend.setEnabled(false);
 
         commentRepository.addComment(snippetId, content).observe(getViewLifecycleOwner(), resource -> {
+            ivSend.setEnabled(true);
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                 adapter.addComment(resource.data);
                 etComment.setText("");
@@ -191,39 +192,10 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
                 updateEmptyState(false);
                 tvCommentsTitle.setText("Comments (" + adapter.getItemCount() + ")");
                 Toast.makeText(requireContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
-                ivSend.setEnabled(true);
             } else if (resource.status == Resource.Status.ERROR) {
-                // Fall back to local-only comment for demo
-                addLocalComment(content);
-                ivSend.setEnabled(true);
+                Toast.makeText(requireContext(), "Failed to post comment: " + resource.message, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void addLocalComment(String content) {
-        User user = sessionManager.getUser();
-        String authorName = user != null ? user.getFullName() : "You";
-        String authorUsername = user != null ? user.getUsername() : "user";
-        String authorAvatar = user != null ? user.getAvatarUrl() : null;
-
-        Comment newComment = new Comment(
-                "comment-" + System.currentTimeMillis(),
-                snippetId,
-                content,
-                "Just now",
-                authorName,
-                authorUsername,
-                authorAvatar,
-                0,
-                false
-        );
-
-        adapter.addComment(newComment);
-        etComment.setText("");
-        rvComments.scrollToPosition(0);
-        updateEmptyState(false);
-        tvCommentsTitle.setText("Comments (" + adapter.getItemCount() + ")");
-        Toast.makeText(requireContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
     }
 
     private void updateEmptyState(boolean isEmpty) {

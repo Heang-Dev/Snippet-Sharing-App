@@ -120,31 +120,33 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * Setup status bar colors based on current theme (light/dark)
+     * Setup status bar and navigation bar colors based on current theme (light/dark)
      */
     private void setupStatusBar() {
         android.view.Window window = getWindow();
 
-        // Get the surface color from theme to match app bar
+        // Get the surface color from theme to match app bar and bottom nav
         android.util.TypedValue typedValue = new android.util.TypedValue();
         getTheme().resolveAttribute(R.attr.surfaceColor, typedValue, true);
-        int statusBarColor;
+        int surfaceColor;
         if (typedValue.resourceId != 0) {
-            statusBarColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
+            surfaceColor = androidx.core.content.ContextCompat.getColor(this, typedValue.resourceId);
         } else {
-            statusBarColor = typedValue.data;
+            surfaceColor = typedValue.data;
         }
 
-        // Set status bar color to match app bar surface
-        window.setStatusBarColor(statusBarColor);
+        // Set status bar and navigation bar colors to match surface
+        window.setStatusBarColor(surfaceColor);
+        window.setNavigationBarColor(surfaceColor);
 
-        // Set status bar icon colors based on theme
+        // Set icon colors based on theme
         WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
             // Check if we're in light mode (background is light colored)
-            boolean isLightBackground = isColorLight(statusBarColor);
+            boolean isLightBackground = isColorLight(surfaceColor);
             // Light background = dark icons (true), Dark background = light icons (false)
             controller.setAppearanceLightStatusBars(isLightBackground);
+            controller.setAppearanceLightNavigationBars(isLightBackground);
         }
     }
 
@@ -282,10 +284,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onLikeClick(SnippetCard snippet, int position) {
+                if (snippet.getId() == null) {
+                    Toast.makeText(HomeActivity.this, "Cannot like this snippet", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Optimistically update UI
                 boolean newLikeState = !snippet.isLiked();
                 int newCount = snippet.getLikesCount() + (newLikeState ? 1 : -1);
                 feedAdapter.updateLikeState(position, newLikeState, newCount);
-                // TODO: Call API to like/unlike
+
+                // Call API to persist like/unlike
+                dashboardRepository.toggleLike(snippet.getId(), snippet.isLiked()).observe(HomeActivity.this, resource -> {
+                    if (resource.status == Resource.Status.ERROR) {
+                        // Revert on error
+                        feedAdapter.updateLikeState(position, snippet.isLiked(), snippet.getLikesCount());
+                        Toast.makeText(HomeActivity.this, "Failed to update like", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
