@@ -21,7 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.navigation.NavigationView;
@@ -42,7 +44,7 @@ import group.eleven.snippet_sharing_app.ui.team.TeamsListActivity;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
 import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
 import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
-import group.eleven.snippet_sharing_app.ui.profile.NotificationSettingsActivity;
+import group.eleven.snippet_sharing_app.ui.notification.NotificationsActivity;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -76,7 +78,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             binding = ActivityHomeBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
 
-            // ... (window insets code) ...
+            // Setup theme-aware status bar
+            setupStatusBar();
 
             // Initialize session manager and repository
             sessionManager = new SessionManager(this);
@@ -121,6 +124,40 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * Setup status bar colors based on current theme (light/dark)
+     */
+    private void setupStatusBar() {
+        android.view.Window window = getWindow();
+
+        // Get the background color from theme
+        android.util.TypedValue typedValue = new android.util.TypedValue();
+        getTheme().resolveAttribute(R.attr.appBackgroundColor, typedValue, true);
+        int backgroundColor = typedValue.data;
+
+        // Set status bar color to match background
+        window.setStatusBarColor(backgroundColor);
+
+        // Set status bar icon colors based on theme
+        WindowInsetsControllerCompat controller = WindowCompat.getInsetsController(window, window.getDecorView());
+        if (controller != null) {
+            // Check if we're in light mode (background is light colored)
+            boolean isLightBackground = isColorLight(backgroundColor);
+            // Light background = dark icons (true), Dark background = light icons (false)
+            controller.setAppearanceLightStatusBars(isLightBackground);
+        }
+    }
+
+    /**
+     * Determine if a color is light or dark
+     */
+    private boolean isColorLight(int color) {
+        double darkness = 1 - (0.299 * android.graphics.Color.red(color)
+                + 0.587 * android.graphics.Color.green(color)
+                + 0.114 * android.graphics.Color.blue(color)) / 255;
+        return darkness < 0.5;
+    }
+
     private void setupNavigationDrawer() {
         // Setup drawer toggle
         drawerToggle = new ActionBarDrawerToggle(
@@ -154,9 +191,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setupUserInfo() {
-        // Notification icon click navigates to Notification Settings
+        // Notification icon click navigates to Notifications List
         binding.ivNotification.setOnClickListener(v -> {
-            Intent intent = new Intent(this, NotificationSettingsActivity.class);
+            Intent intent = new Intent(this, NotificationsActivity.class);
             startActivity(intent);
         });
     }

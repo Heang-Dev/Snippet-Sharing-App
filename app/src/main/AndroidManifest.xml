@@ -102,6 +102,11 @@
             android:theme="@style/Theme.Snippet_Sharing_App.Profile"
             android:windowSoftInputMode="adjustResize" />
 
+        <!-- Notifications List Activity -->
+        <activity
+            android:name=".ui.notification.NotificationsActivity"
+            android:exported="false" />
+
         <!-- Privacy Settings Activity -->
         <activity
             android:name=".ui.profile.PrivacySettingsActivity"
