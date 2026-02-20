@@ -165,6 +165,54 @@ public class ProfileActivity extends AppCompatActivity {
         if (cvWebsiteLink != null) {
             cvWebsiteLink.setOnClickListener(v -> openSocialLink("website"));
         }
+
+        // Stats click listeners - show bottom sheets
+        setupStatClickListeners();
+    }
+
+    private void setupStatClickListeners() {
+        User user = sessionManager.getUser();
+        String username = user != null ? user.getUsername() : null;
+
+        if (username == null) return;
+
+        // Followers click
+        View llStatFollowers = findViewById(R.id.llStatFollowers);
+        if (llStatFollowers != null) {
+            llStatFollowers.setOnClickListener(v -> {
+                UsersBottomSheet bottomSheet = UsersBottomSheet.newInstance(username, UsersBottomSheet.TYPE_FOLLOWERS);
+                bottomSheet.show(getSupportFragmentManager(), "FollowersBottomSheet");
+            });
+        }
+
+        // Following click
+        View llStatFollowing = findViewById(R.id.llStatFollowing);
+        if (llStatFollowing != null) {
+            llStatFollowing.setOnClickListener(v -> {
+                UsersBottomSheet bottomSheet = UsersBottomSheet.newInstance(username, UsersBottomSheet.TYPE_FOLLOWING);
+                bottomSheet.show(getSupportFragmentManager(), "FollowingBottomSheet");
+            });
+        }
+
+        // Snippets click - switch to snippets tab
+        View llStatSnippets = findViewById(R.id.llStatSnippets);
+        if (llStatSnippets != null) {
+            llStatSnippets.setOnClickListener(v -> {
+                currentTab = "snippets";
+                updateTabUI(tabSnippets);
+                loadContent("snippets");
+            });
+        }
+
+        // Likes click - switch to stars/favorites tab
+        View llStatLikes = findViewById(R.id.llStatLikes);
+        if (llStatLikes != null) {
+            llStatLikes.setOnClickListener(v -> {
+                currentTab = "stars";
+                updateTabUI(tabStars);
+                loadContent("stars");
+            });
+        }
     }
 
     private void setupRecyclerView() {

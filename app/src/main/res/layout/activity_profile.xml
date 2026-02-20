@@ -109,11 +109,14 @@
 
                         <!-- Snippets -->
                         <LinearLayout
+                            android:id="@+id/llStatSnippets"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
                             <TextView
                                 android:id="@+id/tvSnippetsCount"
@@ -135,11 +138,14 @@
 
                         <!-- Followers -->
                         <LinearLayout
+                            android:id="@+id/llStatFollowers"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
                             <TextView
                                 android:id="@+id/tvFollowersCount"
@@ -161,11 +167,14 @@
 
                         <!-- Following -->
                         <LinearLayout
+                            android:id="@+id/llStatFollowing"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
                             <TextView
                                 android:id="@+id/tvFollowingCount"
@@ -187,11 +196,14 @@
 
                         <!-- Likes -->
                         <LinearLayout
+                            android:id="@+id/llStatLikes"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:background="?attr/selectableItemBackground"
                             android:gravity="center"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:padding="8dp">
 
                             <TextView
                                 android:id="@+id/tvLikesCount"

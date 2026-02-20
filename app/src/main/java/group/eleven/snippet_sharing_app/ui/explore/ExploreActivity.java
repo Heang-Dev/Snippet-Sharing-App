@@ -3,14 +3,13 @@ package group.eleven.snippet_sharing_app.ui.explore;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +18,9 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityExploreBinding;
+import group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.ui.home.SnippetCardAdapter;
-import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
 import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
 import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
@@ -42,6 +41,7 @@ public class ExploreActivity extends AppCompatActivity {
     private DashboardRepository dashboardRepository;
     private SnippetCardAdapter snippetAdapter;
     private List<SnippetCard> allSnippets = new ArrayList<>();
+    private String currentLanguageFilter = null; // null means "All"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +59,8 @@ public class ExploreActivity extends AppCompatActivity {
         setupLanguageChips();
         setupSnippetsRecyclerView();
         setupBottomNavigation();
+        setupSwipeRefresh();
+        setupEmptyState();
 
         loadTrendingSnippets();
     }
@@ -104,6 +106,18 @@ public class ExploreActivity extends AppCompatActivity {
         });
     }
 
+    private void setupSwipeRefresh() {
+        binding.swipeRefresh.setOnRefreshListener(this::loadTrendingSnippets);
+        binding.swipeRefresh.setColorSchemeResources(R.color.primary);
+    }
+
+    private void setupEmptyState() {
+        binding.btnCreateFirst.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CreateSnippetActivity.class);
+            startActivity(intent);
+        });
+    }
+
     private void setupLanguageChips() {
         // Set "All" as initially selected
         binding.chipAll.setChecked(true);
@@ -112,37 +126,65 @@ public class ExploreActivity extends AppCompatActivity {
         binding.chipAll.setOnClickListener(v -> {
             clearChipSelections();
             binding.chipAll.setChecked(true);
-            loadTrendingSnippets();
+            currentLanguageFilter = null;
+            filterAndShowSnippets();
+            updateSectionTitle("Trending");
         });
 
         binding.chipJavascript.setOnClickListener(v -> {
             clearChipSelections();
             binding.chipJavascript.setChecked(true);
-            filterByLanguage("javascript");
+            currentLanguageFilter = "javascript";
+            filterAndShowSnippets();
+            updateSectionTitle("JavaScript");
         });
 
         binding.chipPython.setOnClickListener(v -> {
             clearChipSelections();
             binding.chipPython.setChecked(true);
-            filterByLanguage("python");
+            currentLanguageFilter = "python";
+            filterAndShowSnippets();
+            updateSectionTitle("Python");
         });
 
         binding.chipJava.setOnClickListener(v -> {
             clearChipSelections();
             binding.chipJava.setChecked(true);
-            filterByLanguage("java");
+            currentLanguageFilter = "java";
+            filterAndShowSnippets();
+            updateSectionTitle("Java");
         });
 
         binding.chipKotlin.setOnClickListener(v -> {
             clearChipSelections();
             binding.chipKotlin.setChecked(true);
-            filterByLanguage("kotlin");
+            currentLanguageFilter = "kotlin";
+            filterAndShowSnippets();
+            updateSectionTitle("Kotlin");
         });
 
         binding.chipTypescript.setOnClickListener(v -> {
             clearChipSelections();
             binding.chipTypescript.setChecked(true);
-            filterByLanguage("typescript");
+            currentLanguageFilter = "typescript";
+            filterAndShowSnippets();
+            updateSectionTitle("TypeScript");
+        });
+
+        binding.chipSwift.setOnClickListener(v -> {
+            clearChipSelections();
+            binding.chipSwift.setChecked(true);
+            currentLanguageFilter = "swift";
+            filterAndShowSnippets();
+            updateSectionTitle("Swift");
+        });
+
+        binding.chipGo.setOnClickListener(v -> {
+            clearChipSelections();
+            binding.chipGo.setChecked(true);
+            currentLanguageFilter = "go";
+            filterAndShowSnippets();
+            updateSectionTitle("Go");
         });
     }
 
@@ -153,21 +195,55 @@ public class ExploreActivity extends AppCompatActivity {
         binding.chipJava.setChecked(false);
         binding.chipKotlin.setChecked(false);
         binding.chipTypescript.setChecked(false);
+        binding.chipSwift.setChecked(false);
+        binding.chipGo.setChecked(false);
     }
 
-    private void filterByLanguage(String language) {
-        // Filter the loaded snippets by language
-        List<SnippetCard> filtered = new ArrayList<>();
-        for (SnippetCard snippet : allSnippets) {
-            if (snippet.getLanguageBadge().toLowerCase().contains(language.substring(0, 2).toLowerCase())) {
-                filtered.add(snippet);
+    private void filterAndShowSnippets() {
+        if (currentLanguageFilter == null) {
+            // Show all snippets
+            snippetAdapter.filterList(allSnippets);
+            updateUI(allSnippets.size());
+        } else {
+            // Filter by language
+            List<SnippetCard> filtered = new ArrayList<>();
+            for (SnippetCard snippet : allSnippets) {
+                String lang = snippet.getLanguageBadge();
+                if (lang != null && lang.toLowerCase().contains(currentLanguageFilter.toLowerCase())) {
+                    filtered.add(snippet);
+                }
             }
+            snippetAdapter.filterList(filtered);
+            updateUI(filtered.size());
         }
-        snippetAdapter.filterList(filtered);
+    }
 
-        if (filtered.isEmpty()) {
-            Toast.makeText(this, "No snippets found for " + language, Toast.LENGTH_SHORT).show();
+    private void updateSectionTitle(String category) {
+        if (category.equals("Trending")) {
+            binding.tvSectionTitle.setText(R.string.trending_now);
+        } else {
+            binding.tvSectionTitle.setText(category + " Snippets");
         }
+    }
+
+    private void updateUI(int count) {
+        if (count == 0) {
+            binding.rvSnippets.setVisibility(View.GONE);
+            binding.layoutEmpty.setVisibility(View.VISIBLE);
+            if (currentLanguageFilter != null) {
+                binding.tvEmptyTitle.setText("No " + currentLanguageFilter + " snippets");
+                binding.tvEmptyMessage.setText("Be the first to share a " + currentLanguageFilter + " snippet!");
+            } else {
+                binding.tvEmptyTitle.setText("No snippets found");
+                binding.tvEmptyMessage.setText("Be the first to share a snippet\nin this category!");
+            }
+        } else {
+            binding.rvSnippets.setVisibility(View.VISIBLE);
+            binding.layoutEmpty.setVisibility(View.GONE);
+        }
+
+        String countText = count == 1 ? "1 snippet" : count + " snippets";
+        binding.tvSnippetCount.setText(countText);
     }
 
     private void setupSnippetsRecyclerView() {
@@ -180,35 +256,44 @@ public class ExploreActivity extends AppCompatActivity {
     }
 
     private void loadTrendingSnippets() {
-        dashboardRepository.getTrendingSnippets(20).observe(this, resource -> {
+        binding.swipeRefresh.setRefreshing(true);
+
+        dashboardRepository.getTrendingSnippets(30).observe(this, resource -> {
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                binding.swipeRefresh.setRefreshing(false);
                 allSnippets.clear();
                 allSnippets.addAll(resource.data);
-                snippetAdapter.filterList(resource.data);
+                filterAndShowSnippets();
                 Log.d(TAG, "Loaded " + resource.data.size() + " trending snippets");
             } else if (resource.status == Resource.Status.ERROR) {
                 Log.e(TAG, "Failed to load trending snippets: " + resource.message);
                 // Try public snippets as fallback
                 loadPublicSnippetsFallback();
+            } else if (resource.status == Resource.Status.LOADING) {
+                // Keep showing refresh indicator
             }
         });
     }
 
     private void loadPublicSnippetsFallback() {
-        dashboardRepository.getPublicSnippets(20).observe(this, resource -> {
+        dashboardRepository.getPublicSnippets(30).observe(this, resource -> {
+            binding.swipeRefresh.setRefreshing(false);
+
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                 allSnippets.clear();
                 allSnippets.addAll(resource.data);
-                snippetAdapter.filterList(resource.data);
+                filterAndShowSnippets();
+                Log.d(TAG, "Loaded " + resource.data.size() + " public snippets as fallback");
             } else if (resource.status == Resource.Status.ERROR) {
                 Log.e(TAG, "Failed to load public snippets: " + resource.message);
-                Toast.makeText(this, "Failed to load snippets", Toast.LENGTH_SHORT).show();
+                updateUI(0);
+                Toast.makeText(this, "Unable to load snippets", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setupBottomNavigation() {
-        // No item selected since Explore is not in bottom nav anymore
+        // No item selected since Explore is not in bottom nav
         // Setup profile avatar
         BottomNavHelper.setupProfileAvatar(this, binding.bottomNav, sessionManager);
 
@@ -228,7 +313,7 @@ public class ExploreActivity extends AppCompatActivity {
                 finish();
                 return true;
             } else if (id == R.id.nav_favorites) {
-                Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class);
+                Intent intent = new Intent(this, FavoritesActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -248,6 +333,15 @@ public class ExploreActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CreateSnippetActivity.class);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data when returning to this screen
+        if (allSnippets.isEmpty()) {
+            loadTrendingSnippets();
+        }
     }
 
     @Override
