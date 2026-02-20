@@ -168,12 +168,20 @@ public class SnippetCreationRepository {
 
     /**
      * Create a new snippet
+     * @param title Snippet title
+     * @param code The code content
+     * @param language Language slug (e.g., "javascript", "python")
+     * @param privacy Privacy level: public, private, team, unlisted
+     * @param description Optional description
+     * @param tags List of tag names
+     * @param categoryId Optional category UUID
+     * @param teamId Team UUID (required if privacy is "team")
      */
     public LiveData<Resource<Snippet>> createSnippet(
             String title,
-            String content,
-            String languageId,
-            String visibility,
+            String code,
+            String language,
+            String privacy,
             String description,
             List<String> tags,
             String categoryId,
@@ -184,9 +192,9 @@ public class SnippetCreationRepository {
 
         Map<String, Object> data = new HashMap<>();
         data.put("title", title);
-        data.put("content", content);
-        data.put("language_id", languageId);
-        data.put("visibility", visibility.toLowerCase());
+        data.put("code", code);
+        data.put("language", language);
+        data.put("privacy", privacy.toLowerCase());
 
         if (description != null && !description.isEmpty()) {
             data.put("description", description);
@@ -196,11 +204,12 @@ public class SnippetCreationRepository {
             data.put("tags", tags);
         }
 
-        if (categoryId != null && !categoryId.isEmpty()) {
+        // Only include category_id if it's a valid UUID
+        if (categoryId != null && !categoryId.isEmpty() && isValidUUID(categoryId)) {
             data.put("category_id", categoryId);
         }
 
-        if (teamId != null && !teamId.isEmpty() && visibility.equalsIgnoreCase("team")) {
+        if (teamId != null && !teamId.isEmpty() && privacy.equalsIgnoreCase("team")) {
             data.put("team_id", teamId);
         }
 
@@ -225,5 +234,18 @@ public class SnippetCreationRepository {
         });
 
         return result;
+    }
+
+    /**
+     * Check if a string is a valid UUID format
+     */
+    private boolean isValidUUID(String str) {
+        if (str == null || str.isEmpty()) return false;
+        try {
+            java.util.UUID.fromString(str);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 }

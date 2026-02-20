@@ -58,6 +58,11 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         initViews();
+
+        // Setup keyboard dismiss on outside touch
+        View rootView = findViewById(android.R.id.content);
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, rootView);
+
         loadProfileImage();
         loadInitialSnippets();
         setupListeners();

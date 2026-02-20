@@ -63,6 +63,13 @@ public class CreateSnippetActivity extends AppCompatActivity {
         repository = new SnippetCreationRepository(this);
 
         setupStatusBar();
+
+        // Setup keyboard dismiss on outside touch
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
+
+        // Setup scroll to focused input when keyboard opens (for description field)
+        KeyboardUtils.setupScrollToFocusedInput(this, binding.getRoot());
+
         setupHeaderAndInputs();
         setupQuickAccess();
         setupBottomSheets();
@@ -461,7 +468,7 @@ public class CreateSnippetActivity extends AppCompatActivity {
         repository.createSnippet(
                 title,
                 code,
-                selectedApiLanguage.getId(),
+                selectedApiLanguage.getSlug(),  // Use slug, not UUID
                 currentVisibility,
                 description,
                 selectedTags,
@@ -489,5 +496,11 @@ public class CreateSnippetActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        KeyboardUtils.handleTouchOutsideEditText(this, event);
+        return super.dispatchTouchEvent(event);
     }
 }

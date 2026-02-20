@@ -2,7 +2,6 @@ package group.eleven.snippet_sharing_app.ui.team;
 
 import android.app.Dialog;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,14 +9,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SelectTeamDialogFragment extends DialogFragment {
+public class SelectTeamDialogFragment extends BottomSheetDialogFragment {
 
     public static final String REQUEST_KEY = "request_team_selection";
     public static final String ARG_SELECTED_ID = "arg_selected_team_id";
@@ -42,7 +45,7 @@ public class SelectTeamDialogFragment extends DialogFragment {
     private TeamAdapter adapter;
     private EditText etSearch;
     private ProgressBar progressBar;
-    private TextView tvEmpty;
+    private View layoutEmpty;
     private String selectedTeamId = null;
 
     private List<TeamModel> allTeams = new ArrayList<>();
@@ -56,7 +59,6 @@ public class SelectTeamDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    // Backwards compatibility
     public static SelectTeamDialogFragment newInstance(int selectedId) {
         return newInstance(selectedId > 0 ? String.valueOf(selectedId) : null);
     }
@@ -74,10 +76,26 @@ public class SelectTeamDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().requestFeature(android.view.Window.FEATURE_NO_TITLE);
-        }
+        dialog.setOnShowListener(dialogInterface -> {
+            BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) dialogInterface;
+            FrameLayout bottomSheet = bottomSheetDialog
+                    .findViewById(com.google.android.material.R.id.design_bottom_sheet);
+            if (bottomSheet != null) {
+                bottomSheet.setBackgroundResource(android.R.color.transparent);
+
+                // Height 70%
+                android.util.DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+                int height = (int) (displayMetrics.heightPixels * 0.70);
+                ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+                layoutParams.height = height;
+                bottomSheet.setLayoutParams(layoutParams);
+
+                BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                behavior.setSkipCollapsed(true);
+                behavior.setDraggable(true);
+            }
+        });
         return dialog;
     }
 
@@ -85,7 +103,7 @@ public class SelectTeamDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_select_team, container, false);
+        return inflater.inflate(R.layout.bottom_sheet_select_team, container, false);
     }
 
     @Override
@@ -101,7 +119,7 @@ public class SelectTeamDialogFragment extends DialogFragment {
         rvTeams = view.findViewById(R.id.rvTeams);
         etSearch = view.findViewById(R.id.etSearchTeams);
         progressBar = view.findViewById(R.id.progressBar);
-        tvEmpty = view.findViewById(R.id.tvEmpty);
+        layoutEmpty = view.findViewById(R.id.layoutEmpty);
 
         rvTeams.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new TeamAdapter(this::onTeamClick);
@@ -110,7 +128,7 @@ public class SelectTeamDialogFragment extends DialogFragment {
 
     private void loadTeamsFromApi() {
         if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
-        if (tvEmpty != null) tvEmpty.setVisibility(View.GONE);
+        if (layoutEmpty != null) layoutEmpty.setVisibility(View.GONE);
         rvTeams.setVisibility(View.GONE);
 
         apiService.getMyTeams().enqueue(new Callback<ApiResponse<TeamsResponse>>() {
@@ -161,20 +179,8 @@ public class SelectTeamDialogFragment extends DialogFragment {
 
     private void showEmptyState() {
         rvTeams.setVisibility(View.GONE);
-        if (tvEmpty != null) {
-            tvEmpty.setVisibility(View.VISIBLE);
-            tvEmpty.setText("No teams found. Join a team first.");
-        }
-    }
-
-    private int parseColor(String colorStr) {
-        if (colorStr == null || colorStr.isEmpty()) {
-            return Color.parseColor("#6366F1");
-        }
-        try {
-            return Color.parseColor(colorStr);
-        } catch (Exception e) {
-            return Color.parseColor("#6366F1");
+        if (layoutEmpty != null) {
+            layoutEmpty.setVisibility(View.VISIBLE);
         }
     }
 
@@ -196,9 +202,8 @@ public class SelectTeamDialogFragment extends DialogFragment {
     }
 
     private void setupListeners(View view) {
-        view.findViewById(R.id.ivClose).setOnClickListener(v -> dismiss());
-
-        view.findViewById(R.id.btnConfirm).setOnClickListener(v -> {
+        // Done button (same as category)
+        view.findViewById(R.id.tvDone).setOnClickListener(v -> {
             if (selectedTeamId != null) {
                 Bundle result = new Bundle();
                 result.putString("teamId", selectedTeamId);

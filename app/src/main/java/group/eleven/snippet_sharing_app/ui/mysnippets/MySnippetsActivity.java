@@ -46,6 +46,10 @@ public class MySnippetsActivity extends AppCompatActivity implements MySnippetAd
         setContentView(binding.getRoot());
 
         setupStatusBar();
+
+        // Setup keyboard dismiss on outside touch
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
+
         setupToolbar();
         setupRecyclerView();
         setupSearchBar();

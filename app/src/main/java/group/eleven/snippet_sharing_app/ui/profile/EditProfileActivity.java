@@ -66,6 +66,11 @@ public class EditProfileActivity extends AppCompatActivity {
         profileRepository = new ProfileRepository(this);
 
         initViews();
+
+        // Setup keyboard dismiss on outside touch
+        View rootView = findViewById(android.R.id.content);
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, rootView);
+
         setupToolbar();
         setupImagePicker();
         setupClickListeners();

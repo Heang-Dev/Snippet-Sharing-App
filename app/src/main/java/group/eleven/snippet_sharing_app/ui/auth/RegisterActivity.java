@@ -48,6 +48,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         authRepository = new AuthRepository(this);
 
+        // Setup keyboard dismiss on outside touch
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
+
+        // Setup scroll to focused input when keyboard opens (for confirm password field)
+        KeyboardUtils.setupScrollToFocusedInput(this, binding.getRoot());
+
         setupFormValidation();
         setupClickListeners();
     }

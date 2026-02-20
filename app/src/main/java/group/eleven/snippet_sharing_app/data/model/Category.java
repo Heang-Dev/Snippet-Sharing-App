@@ -34,8 +34,14 @@ public class Category {
     @SerializedName("snippet_count")
     private int snippetCount;
 
+    @SerializedName("snippets_count")
+    private int snippetsCount;
+
     @SerializedName("is_active")
     private boolean isActive;
+
+    @SerializedName("children")
+    private java.util.List<Category> children;
 
     // Getters
     public String getId() {
@@ -117,5 +123,22 @@ public class Category {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public int getSnippetsCount() {
+        // Return whichever is populated
+        return snippetsCount > 0 ? snippetsCount : snippetCount;
+    }
+
+    public void setSnippetsCount(int snippetsCount) {
+        this.snippetsCount = snippetsCount;
+    }
+
+    public java.util.List<Category> getChildren() {
+        return children;
+    }
+
+    public void setChildren(java.util.List<Category> children) {
+        this.children = children;
     }
 }

@@ -238,4 +238,11 @@
     <string name="create_category_subtitle">Add a new folder to your library</string>
     <string name="recent">RECENT</string>
     <string name="all_categories">ALL CATEGORIES</string>
+
+    <!-- Team Selection -->
+    <string name="select_team">Select Team</string>
+    <string name="search_teams_hint">Search teams...</string>
+    <string name="your_teams">YOUR TEAMS</string>
+    <string name="no_teams_found">No teams found. Join a team first.</string>
+    <string name="confirm_selection">Confirm Selection</string>
 </resources>

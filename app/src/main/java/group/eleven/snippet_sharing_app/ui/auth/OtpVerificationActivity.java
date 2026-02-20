@@ -83,6 +83,9 @@ public class OtpVerificationActivity extends AppCompatActivity {
         // Display email
         binding.tvEmail.setText(email);
 
+        // Setup keyboard dismiss on outside touch
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
+
         setupOtpInputs();
         setupClickListeners();
         startTimer();

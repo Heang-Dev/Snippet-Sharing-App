@@ -94,6 +94,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setDisplayShowTitleEnabled(false);
             }
 
+            // Setup keyboard dismiss on outside touch
+            KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
+
             // Setup navigation drawer
             setupNavigationDrawer();
 

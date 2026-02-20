@@ -63,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Setup keyboard dismiss on outside touch
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
+
         setupFormValidation();
         setupClickListeners();
     }

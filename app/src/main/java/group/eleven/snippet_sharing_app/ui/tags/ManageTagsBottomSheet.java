@@ -76,9 +76,9 @@ public class ManageTagsBottomSheet extends BottomSheetDialogFragment {
                 // Background transparent to show rounded corners from XML
                 bottomSheet.setBackgroundResource(android.R.color.transparent);
 
-                // Set height to 75% of screen height
+                // Set height to 70% of screen height (same as category/team)
                 android.util.DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-                int height = (int) (displayMetrics.heightPixels * 0.75);
+                int height = (int) (displayMetrics.heightPixels * 0.70);
 
                 ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
                 layoutParams.height = height;

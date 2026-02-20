@@ -69,6 +69,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
             return;
         }
 
+        // Setup keyboard dismiss on outside touch
+        KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
+
         setupFormValidation();
         setupClickListeners();
     }
