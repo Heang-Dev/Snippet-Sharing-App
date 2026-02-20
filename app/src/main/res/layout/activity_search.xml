@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:paddingBottom="100dp">
+        android:paddingBottom="24dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,11 +26,13 @@
 
                 <ImageView
                     android:id="@+id/btnBack"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
                     android:src="@drawable/ic_arrow_back"
                     app:tint="?attr/textPrimaryColor"
                     android:layout_centerVertical="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Back"/>
 
                 <TextView
@@ -44,9 +46,11 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_user_face"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/ic_person"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="?attr/dividerColor"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
@@ -54,7 +58,7 @@
             <!-- Search Bar Pill -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="52dp"
                 android:background="@drawable/bg_search_input"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
@@ -62,8 +66,8 @@
                 android:layout_marginBottom="16dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
                     android:src="@drawable/ic_search"
                     app:tint="?attr/textMutedColor"
                     android:contentDescription="Search icon"/>
@@ -77,33 +81,38 @@
                     android:hint="@string/search_hint"
                     android:textColorHint="?attr/textHintColor"
                     android:textColor="?attr/textPrimaryColor"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
                     android:inputType="text"
+                    android:imeOptions="actionSearch"
                     android:importantForAutofill="no"/>
 
                 <ImageView
                     android:id="@+id/btnClear"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="6dp"
                     android:src="@drawable/ic_close"
                     app:tint="?attr/textMutedColor"
-                    android:layout_marginEnd="12dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Clear search"/>
 
                 <View
                     android:layout_width="1dp"
-                    android:layout_height="24dp"
+                    android:layout_height="28dp"
                     android:background="?attr/dividerColor"
+                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="12dp"/>
 
                 <ImageView
                     android:id="@+id/btnFilter"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="4dp"
                     android:src="@drawable/ic_sliders"
                     app:tint="?attr/accentColor"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Filters"/>
             </LinearLayout>
 
@@ -114,93 +123,69 @@
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
                 android:clipToPadding="false"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="20dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <!-- Save Search -->
-                    <LinearLayout
+                    <!-- Save Search - Accent colored -->
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnSaveSearch"
+                        style="@style/Widget.Material3.Button.TonalButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_pill_green_solid"
+                        android:layout_height="36dp"
                         android:layout_marginEnd="8dp"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
-                        android:gravity="center_vertical">
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_bookmark"
-                            app:tint="@color/on_primary"
-                            android:contentDescription="Save"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/save_search"
-                            android:textColor="@color/on_primary"
-                            android:layout_marginStart="6dp"
-                            android:textSize="12sp"
-                            android:textStyle="bold"/>
-                    </LinearLayout>
+                        android:text="@string/save_search"
+                        android:textSize="12sp"
+                        android:textAllCaps="false"
+                        app:icon="@drawable/ic_bookmark"
+                        app:iconSize="16dp"
+                        app:iconPadding="4dp"
+                        app:backgroundTint="?attr/accentColor"
+                        android:textColor="@color/on_primary"
+                        app:iconTint="@color/on_primary"
+                        app:cornerRadius="18dp"/>
 
-                    <!-- Lang: All -->
-                    <LinearLayout
+                    <!-- Lang: All - Outline style -->
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnLanguageFilter"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_filter_chip"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp"
+                        android:layout_height="36dp"
                         android:layout_marginEnd="8dp"
-                        android:gravity="center_vertical">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/lang_all"
-                            android:textColor="?attr/textPrimaryColor"
-                            android:textSize="12sp"/>
-                         <ImageView
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:src="@drawable/ic_sort_down"
-                            app:tint="?attr/textMutedColor"
-                            android:layout_marginStart="4dp"
-                            android:contentDescription="Dropdown"/>
-                    </LinearLayout>
+                        android:text="@string/lang_all"
+                        android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:textColor="?attr/textPrimaryColor"
+                        app:icon="@drawable/ic_sort_down"
+                        app:iconSize="14dp"
+                        app:iconGravity="end"
+                        app:iconPadding="4dp"
+                        app:iconTint="?attr/textMutedColor"
+                        app:strokeColor="?attr/borderColor"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="18dp"/>
 
-                     <!-- Relevance -->
-                     <LinearLayout
-                         android:id="@+id/btnSortFilter"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:background="@drawable/bg_filter_chip"
-                         android:paddingStart="16dp"
-                         android:paddingEnd="16dp"
-                         android:paddingTop="8dp"
-                         android:paddingBottom="8dp"
-                         android:gravity="center_vertical">
-                         <ImageView
-                             android:layout_width="12dp"
-                             android:layout_height="12dp"
-                             android:src="@drawable/ic_sort"
-                             app:tint="?attr/textMutedColor"
-                             android:layout_marginEnd="6dp"
-                             android:contentDescription="Sort"/>
-                         <TextView
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="@string/relevance"
-                             android:textColor="?attr/textPrimaryColor"
-                             android:textSize="12sp"/>
-                     </LinearLayout>
+                    <!-- Relevance - Outline style -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSortFilter"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="@string/relevance"
+                        android:textSize="12sp"
+                        android:textAllCaps="false"
+                        android:textColor="?attr/textPrimaryColor"
+                        app:icon="@drawable/ic_sort"
+                        app:iconSize="14dp"
+                        app:iconGravity="start"
+                        app:iconPadding="4dp"
+                        app:iconTint="?attr/textMutedColor"
+                        app:strokeColor="?attr/borderColor"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="18dp"/>
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -227,8 +212,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="14ms"
-                    android:background="@drawable/bg_filter_chip"
-                    android:textColor="?attr/accentColor"
+                    android:background="@drawable/bg_time_badge"
+                    android:textColor="?attr/successColor"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:paddingTop="4dp"
@@ -244,56 +229,20 @@
                 android:nestedScrollingEnabled="false"/>
 
             <!-- Load More Button -->
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLoadMore"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_load_more_button"
-                android:gravity="center"
+                android:layout_marginTop="16dp"
                 android:text="@string/load_more"
                 android:textColor="?attr/accentColor"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"/>
+                android:textAllCaps="false"
+                app:strokeColor="?attr/accentColor"
+                app:strokeWidth="1dp"
+                app:cornerRadius="24dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- Bottom Navigation -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="?attr/bottomNavBackgroundColor"
-        android:elevation="8dp">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            app:itemActiveIndicatorStyle="@style/Widget.SnippetApp.BottomNavIndicator"
-            app:itemIconTint="@color/selector_bottom_nav_icon"
-            app:itemTextColor="@color/selector_bottom_nav"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_nav_menu" />
-
-        <!-- FAB -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="28dp"
-            android:contentDescription="@string/create_snippet"
-            app:backgroundTint="?attr/accentColor"
-            app:elevation="6dp"
-            app:fabCustomSize="56dp"
-            app:maxImageSize="24dp"
-            app:srcCompat="@drawable/ic_add"
-            app:tint="@color/on_primary" />
-
-    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
