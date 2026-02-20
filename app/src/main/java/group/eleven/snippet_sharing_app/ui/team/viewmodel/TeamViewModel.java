@@ -125,14 +125,15 @@ public class TeamViewModel extends AndroidViewModel {
     }
 
     public void respondToTeamInvitation(String invitationId, boolean accept) {
-        Map<String, String> responseData = new HashMap<>();
-        responseData.put("status", accept ? "accepted" : "rejected");
+        LiveData<AuthRepository.Resource<MessageResponse>> liveData = accept
+                ? teamRepository.acceptTeamInvitation(invitationId)
+                : teamRepository.declineTeamInvitation(invitationId);
 
-        teamRepository.respondToTeamInvitation(invitationId, responseData).observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+        liveData.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
             @Override
             public void onChanged(AuthRepository.Resource<MessageResponse> messageResponseResource) {
                 _respondToTeamInvitationResult.setValue(messageResponseResource);
-                teamRepository.respondToTeamInvitation(invitationId, responseData).removeObserver(this);
+                liveData.removeObserver(this);
             }
         });
     }

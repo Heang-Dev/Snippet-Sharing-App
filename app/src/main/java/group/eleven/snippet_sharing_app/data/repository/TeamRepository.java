@@ -344,13 +344,43 @@ public class TeamRepository {
     }
 
     /**
-     * Respond to a team invitation (accept/reject).
+     * Accept a team invitation.
      */
-    public LiveData<AuthRepository.Resource<MessageResponse>> respondToTeamInvitation(String invitationId, Map<String, String> responseData) {
+    public LiveData<AuthRepository.Resource<MessageResponse>> acceptTeamInvitation(String invitationId) {
         MutableLiveData<AuthRepository.Resource<MessageResponse>> result = new MutableLiveData<>();
         result.setValue(AuthRepository.Resource.loading());
 
-        apiService.respondToTeamInvitation(invitationId, responseData).enqueue(new Callback<MessageResponse>() {
+        apiService.acceptTeamInvitation(invitationId).enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    MessageResponse messageResponse = response.body();
+                    if (messageResponse.isSuccess()) {
+                        result.setValue(AuthRepository.Resource.success(messageResponse));
+                    } else {
+                        result.setValue(AuthRepository.Resource.error(messageResponse.getMessage()));
+                    }
+                } else {
+                    result.setValue(AuthRepository.Resource.error(parseError(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                result.setValue(AuthRepository.Resource.error(getNetworkError(t)));
+            }
+        });
+        return result;
+    }
+
+    /**
+     * Decline a team invitation.
+     */
+    public LiveData<AuthRepository.Resource<MessageResponse>> declineTeamInvitation(String invitationId) {
+        MutableLiveData<AuthRepository.Resource<MessageResponse>> result = new MutableLiveData<>();
+        result.setValue(AuthRepository.Resource.loading());
+
+        apiService.declineTeamInvitation(invitationId).enqueue(new Callback<MessageResponse>() {
             @Override
             public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

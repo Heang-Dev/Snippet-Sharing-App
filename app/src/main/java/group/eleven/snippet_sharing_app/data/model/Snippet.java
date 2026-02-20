@@ -15,9 +15,6 @@ public class Snippet {
     @SerializedName("user_id")
     private String userId;
 
-    @SerializedName("language_id")
-    private String languageId;
-
     @SerializedName("category_id")
     private String categoryId;
 
@@ -36,44 +33,42 @@ public class Snippet {
     @SerializedName("code")
     private String code;
 
-    @SerializedName("file_name")
-    private String fileName;
+    @SerializedName("privacy")
+    private String privacy;
 
-    @SerializedName("visibility")
-    private String visibility;
+    @SerializedName("view_count")
+    private int viewCount;
 
-    @SerializedName("expires_at")
-    private String expiresAt;
+    @SerializedName("favorite_count")
+    private int favoriteCount;
 
-    @SerializedName("views_count")
-    private int viewsCount;
+    @SerializedName("comment_count")
+    private int commentCount;
 
-    @SerializedName("favorites_count")
-    private int favoritesCount;
+    @SerializedName("fork_count")
+    private int forkCount;
 
-    @SerializedName("comments_count")
-    private int commentsCount;
+    @SerializedName("parent_snippet_id")
+    private String parentSnippetId;
 
-    @SerializedName("forks_count")
-    private int forksCount;
+    @SerializedName("is_fork")
+    private boolean isFork;
 
-    @SerializedName("forked_from_id")
-    private String forkedFromId;
+    @SerializedName("version_number")
+    private int versionNumber;
 
-    @SerializedName("version")
-    private int version;
+    @SerializedName("is_featured")
+    private boolean isFeatured;
 
-    @SerializedName("is_pinned")
-    private boolean isPinned;
+    // Language can be either a string or an object depending on the endpoint
+    @SerializedName("language")
+    private String languageString;
 
     @SerializedName("created_at")
     private String createdAt;
 
     @SerializedName("updated_at")
     private String updatedAt;
-
-    @SerializedName("language")
-    private SnippetLanguage language;
 
     @SerializedName("category")
     private SnippetCategory category;
@@ -89,34 +84,6 @@ public class Snippet {
 
     @SerializedName("is_owner")
     private boolean isOwner;
-
-    // Nested class for language
-    public static class SnippetLanguage {
-        @SerializedName("id")
-        private String id;
-
-        @SerializedName("name")
-        private String name;
-
-        @SerializedName("slug")
-        private String slug;
-
-        @SerializedName("display_name")
-        private String displayName;
-
-        @SerializedName("icon")
-        private String icon;
-
-        @SerializedName("color")
-        private String color;
-
-        public String getId() { return id; }
-        public String getName() { return name; }
-        public String getSlug() { return slug; }
-        public String getDisplayName() { return displayName; }
-        public String getIcon() { return icon; }
-        public String getColor() { return color != null ? color : "#FFFFFF"; }
-    }
 
     // Nested class for category
     public static class SnippetCategory {
@@ -189,26 +156,24 @@ public class Snippet {
     // Getters
     public String getId() { return id; }
     public String getUserId() { return userId; }
-    public String getLanguageId() { return languageId; }
     public String getCategoryId() { return categoryId; }
     public String getTeamId() { return teamId; }
     public String getTitle() { return title; }
     public String getSlug() { return slug; }
     public String getDescription() { return description; }
     public String getCode() { return code; }
-    public String getFileName() { return fileName; }
-    public String getVisibility() { return visibility; }
-    public String getExpiresAt() { return expiresAt; }
-    public int getViewsCount() { return viewsCount; }
-    public int getFavoritesCount() { return favoritesCount; }
-    public int getCommentsCount() { return commentsCount; }
-    public int getForksCount() { return forksCount; }
-    public String getForkedFromId() { return forkedFromId; }
-    public int getVersion() { return version; }
-    public boolean isPinned() { return isPinned; }
+    public String getPrivacy() { return privacy; }
+    public int getViewCount() { return viewCount; }
+    public int getFavoriteCount() { return favoriteCount; }
+    public int getCommentCount() { return commentCount; }
+    public int getForkCount() { return forkCount; }
+    public String getParentSnippetId() { return parentSnippetId; }
+    public boolean isFork() { return isFork; }
+    public int getVersionNumber() { return versionNumber; }
+    public boolean isFeatured() { return isFeatured; }
     public String getCreatedAt() { return createdAt; }
     public String getUpdatedAt() { return updatedAt; }
-    public SnippetLanguage getLanguage() { return language; }
+    public String getLanguageString() { return languageString; }
     public SnippetCategory getCategory() { return category; }
     public List<SnippetTag> getTags() { return tags; }
     public SnippetUser getUser() { return user; }
@@ -219,31 +184,46 @@ public class Snippet {
      * Get language name or default
      */
     public String getLanguageName() {
-        return language != null ? language.getName() : "Unknown";
+        return languageString != null && !languageString.isEmpty() ? languageString : "Unknown";
     }
 
     /**
-     * Get language color for badge
+     * Get language color for badge based on language name
      */
     public int getLanguageColor() {
-        if (language != null && language.getColor() != null) {
-            try {
-                return android.graphics.Color.parseColor(language.getColor());
-            } catch (Exception e) {
-                return android.graphics.Color.WHITE;
-            }
+        if (languageString == null) return android.graphics.Color.parseColor("#6B7280");
+
+        // Common language colors
+        switch (languageString.toLowerCase()) {
+            case "javascript": case "js": return android.graphics.Color.parseColor("#F7DF1E");
+            case "python": case "py": return android.graphics.Color.parseColor("#3776AB");
+            case "java": return android.graphics.Color.parseColor("#ED8B00");
+            case "typescript": case "ts": return android.graphics.Color.parseColor("#3178C6");
+            case "php": return android.graphics.Color.parseColor("#777BB4");
+            case "ruby": case "rb": return android.graphics.Color.parseColor("#CC342D");
+            case "go": case "golang": return android.graphics.Color.parseColor("#00ADD8");
+            case "rust": case "rs": return android.graphics.Color.parseColor("#DEA584");
+            case "swift": return android.graphics.Color.parseColor("#FA7343");
+            case "kotlin": case "kt": return android.graphics.Color.parseColor("#7F52FF");
+            case "c": return android.graphics.Color.parseColor("#A8B9CC");
+            case "cpp": case "c++": return android.graphics.Color.parseColor("#00599C");
+            case "csharp": case "c#": return android.graphics.Color.parseColor("#239120");
+            case "html": return android.graphics.Color.parseColor("#E34F26");
+            case "css": return android.graphics.Color.parseColor("#1572B6");
+            case "sql": return android.graphics.Color.parseColor("#4479A1");
+            case "shell": case "bash": return android.graphics.Color.parseColor("#4EAA25");
+            default: return android.graphics.Color.parseColor("#6B7280");
         }
-        return android.graphics.Color.WHITE;
     }
 
     /**
      * Get language badge text (first 2-3 chars)
      */
     public String getLanguageBadge() {
-        if (language != null && language.getName() != null) {
-            String name = language.getName();
-            if (name.length() <= 3) return name;
-            return name.substring(0, 2);
+        if (languageString != null && !languageString.isEmpty()) {
+            String name = languageString;
+            if (name.length() <= 3) return name.toUpperCase();
+            return name.substring(0, 2).toUpperCase();
         }
         return "??";
     }
@@ -271,7 +251,7 @@ public class Snippet {
      */
     public String[] getTagNames() {
         if (tags == null || tags.isEmpty()) {
-            return new String[] { visibility != null ? visibility : "private" };
+            return new String[] { privacy != null ? privacy : "public" };
         }
         String[] names = new String[Math.min(tags.size(), 3)];
         for (int i = 0; i < names.length; i++) {
@@ -326,7 +306,7 @@ public class Snippet {
                 id,
                 title,
                 description,
-                language != null ? language.getName() : getLanguageBadge(),
+                getLanguageName(),
                 getFormattedUpdateTime(),
                 getCodePreview(),
                 getTagNames(),
@@ -334,10 +314,10 @@ public class Snippet {
                 authorName,
                 authorAvatar,
                 authorUsername,
-                favoritesCount,
-                commentsCount,
+                favoriteCount,
+                commentCount,
                 isFavorited,
-                visibility != null ? visibility : "public"
+                privacy != null ? privacy : "public"
         );
     }
 }

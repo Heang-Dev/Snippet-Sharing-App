@@ -164,9 +164,9 @@ public class SearchActivity extends AppCompatActivity {
                 languageColor,
                 code.length() > 300 ? code.substring(0, 300) + "..." : code,
                 authorName,
-                snippet.getFavoritesCount(),
-                snippet.getCommentsCount(),
-                !"public".equals(snippet.getVisibility()),
+                snippet.getFavoriteCount(),
+                snippet.getCommentCount(),
+                !"public".equals(snippet.getPrivacy()),
                 timeAgo
         );
     }

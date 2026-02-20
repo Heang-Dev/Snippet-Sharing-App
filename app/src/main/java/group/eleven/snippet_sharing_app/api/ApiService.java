@@ -191,14 +191,20 @@ public interface ApiService {
     /**
      * Get a list of pending invitations for the current user.
      */
-    @GET("teams/invitations")
+    @GET("invitations")
     Call<ApiResponse<List<TeamInvitation>>> getMyTeamInvitations();
 
     /**
-     * Respond to a team invitation (accept/reject).
+     * Accept a team invitation.
      */
-    @POST("teams/invitations/{id}/respond")
-    Call<MessageResponse> respondToTeamInvitation(@Path("id") String invitationId, @Body Map<String, String> responseData);
+    @POST("invitations/{id}/accept")
+    Call<MessageResponse> acceptTeamInvitation(@Path("id") String invitationId);
+
+    /**
+     * Decline a team invitation.
+     */
+    @POST("invitations/{id}/decline")
+    Call<MessageResponse> declineTeamInvitation(@Path("id") String invitationId);
 
     /**
      * Get a list of snippets for a specific team.

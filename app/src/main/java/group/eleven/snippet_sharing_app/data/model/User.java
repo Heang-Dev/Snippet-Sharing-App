@@ -81,6 +81,9 @@ public class User {
     @SerializedName("following_count")
     private int followingCount;
 
+    @SerializedName("likes_received_count")
+    private int likesReceivedCount;
+
     @SerializedName("social_provider")
     private String socialProvider;
 
@@ -202,6 +205,10 @@ public class User {
 
     public int getFollowingCount() {
         return followingCount;
+    }
+
+    public int getLikesReceivedCount() {
+        return likesReceivedCount;
     }
 
     public String getSocialProvider() {

@@ -327,8 +327,7 @@ public class ProfileActivity extends AppCompatActivity {
             tvSnippetsCount.setText(String.valueOf(user.getSnippetsCount()));
             tvFollowersCount.setText(formatCount(user.getFollowersCount()));
             tvFollowingCount.setText(String.valueOf(user.getFollowingCount()));
-            // Likes count - not in User model, use 0 as placeholder
-            tvLikesCount.setText("0");
+            tvLikesCount.setText(String.valueOf(user.getLikesReceivedCount()));
         } else {
             tvSnippetsCount.setText("0");
             tvFollowersCount.setText("0");
@@ -349,8 +348,10 @@ public class ProfileActivity extends AppCompatActivity {
             case "collections":
                 tvEmptyTitle.setText("No collections yet");
                 tvEmptyMessage.setText("Create collections to organize your snippets!");
-                // Collections - fall back to mock for now
-                loadMockContent(2);
+                // TODO: Implement collections API call
+                showLoading(false);
+                adapter.setSnippets(new ArrayList<>());
+                updateContentVisibility(true);
                 break;
             default: // snippets
                 tvEmptyTitle.setText("No snippets yet");
@@ -368,8 +369,9 @@ public class ProfileActivity extends AppCompatActivity {
                 adapter.setSnippets(resource.data);
                 updateContentVisibility(resource.data.isEmpty());
             } else if (resource.status == Resource.Status.ERROR) {
-                // Fall back to mock data
-                loadMockContent(5);
+                // Show empty state when API fails
+                adapter.setSnippets(new ArrayList<>());
+                updateContentVisibility(true);
             }
         });
     }
