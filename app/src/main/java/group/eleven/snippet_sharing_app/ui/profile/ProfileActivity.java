@@ -53,6 +53,7 @@ public class ProfileActivity extends AppCompatActivity {
     private LinearLayout llSocialLinks;
     private TextView tvSnippetsCount, tvFollowersCount, tvFollowingCount, tvLikesCount;
     private TextView tabSnippets, tabStars, tabCollections;
+    private View tabIndicatorSnippets, tabIndicatorStars, tabIndicatorCollections;
     private RecyclerView rvContent;
     private LinearLayout layoutEmpty;
     private TextView tvEmptyTitle, tvEmptyMessage;
@@ -106,6 +107,9 @@ public class ProfileActivity extends AppCompatActivity {
         tabSnippets = findViewById(R.id.tabSnippets);
         tabStars = findViewById(R.id.tabStars);
         tabCollections = findViewById(R.id.tabCollections);
+        tabIndicatorSnippets = findViewById(R.id.tabIndicatorSnippets);
+        tabIndicatorStars = findViewById(R.id.tabIndicatorStars);
+        tabIndicatorCollections = findViewById(R.id.tabIndicatorCollections);
         rvContent = findViewById(R.id.rvContent);
         layoutEmpty = findViewById(R.id.layoutEmpty);
         tvEmptyTitle = findViewById(R.id.tvEmptyTitle);
@@ -288,7 +292,7 @@ public class ProfileActivity extends AppCompatActivity {
             // Badges (show verified if email verified)
             if (user.isEmailVerified()) {
                 llBadges.setVisibility(View.VISIBLE);
-                tvBadgeVerified.setText("Verified");
+                tvBadgeVerified.setText("✓");
             } else {
                 llBadges.setVisibility(View.GONE);
             }
@@ -356,14 +360,24 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void updateTabUI(TextView selectedTab) {
         resetTabs();
-        selectedTab.setBackgroundResource(R.drawable.bg_pill_badge);
-        selectedTab.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.primary));
-        selectedTab.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+        // Highlight selected tab
+        selectedTab.setTextColor(ContextCompat.getColor(this, R.color.primary));
         selectedTab.setTypeface(null, android.graphics.Typeface.BOLD);
+
+        // Show indicator for selected tab
+        if (selectedTab == tabSnippets) {
+            tabIndicatorSnippets.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+        } else if (selectedTab == tabStars) {
+            tabIndicatorStars.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+        } else if (selectedTab == tabCollections) {
+            tabIndicatorCollections.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+        }
     }
 
     private void resetTabs() {
         TextView[] tabs = {tabSnippets, tabStars, tabCollections};
+        View[] indicators = {tabIndicatorSnippets, tabIndicatorStars, tabIndicatorCollections};
 
         // Get the theme color for muted text
         TypedValue typedValue = new TypedValue();
@@ -372,10 +386,15 @@ public class ProfileActivity extends AppCompatActivity {
 
         for (TextView tab : tabs) {
             if (tab != null) {
-                tab.setBackground(null);
-                tab.setBackgroundTintList(null);
                 tab.setTextColor(mutedColor);
                 tab.setTypeface(null, android.graphics.Typeface.NORMAL);
+            }
+        }
+
+        // Hide all indicators
+        for (View indicator : indicators) {
+            if (indicator != null) {
+                indicator.setBackgroundColor(android.graphics.Color.TRANSPARENT);
             }
         }
     }

@@ -16,8 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,16 +38,20 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
     public static final String EXTRA_TEAM_ID = "extra_team_id";
 
     private MaterialToolbar toolbar;
+    private CollapsingToolbarLayout collapsingToolbar;
     private ImageView ivTeamAvatar;
+    private ImageView ivSettings;
     private TextView tvTeamName;
     private TextView tvTeamDescription;
     private TextView tvTeamPrivacy;
-    private LinearLayout llTeamStats;
+    private TextView tvMemberCountLabel;
+    private TextView tvMembersCount;
+    private TextView tvSnippetsCount;
     private LinearLayout llQuickActions;
-    private MaterialButton btnInviteMembers;
-    private MaterialButton btnCreateSnippet;
-    private MaterialButton btnTeamSettings;
-    private MaterialButton btnLeaveTeam;
+    private View btnInviteMembers;
+    private View btnViewSnippets;
+    private FloatingActionButton btnCreateSnippet;
+    private View btnLeaveTeam;
     private RecyclerView rvTeamMembers;
     private RecyclerView rvTeamSnippets;
     private RecyclerView rvTeamActivity;
@@ -84,15 +89,19 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
 
     private void initViews() {
         toolbar = findViewById(R.id.toolbar);
+        collapsingToolbar = findViewById(R.id.collapsingToolbar);
         ivTeamAvatar = findViewById(R.id.iv_team_avatar);
+        ivSettings = findViewById(R.id.ivSettings);
         tvTeamName = findViewById(R.id.tv_team_name);
         tvTeamDescription = findViewById(R.id.tv_team_description);
         tvTeamPrivacy = findViewById(R.id.tv_team_privacy);
-        llTeamStats = findViewById(R.id.ll_team_stats);
+        tvMemberCountLabel = findViewById(R.id.tv_member_count_label);
+        tvMembersCount = findViewById(R.id.tvMembersCount);
+        tvSnippetsCount = findViewById(R.id.tvSnippetsCount);
         llQuickActions = findViewById(R.id.ll_quick_actions);
         btnInviteMembers = findViewById(R.id.btn_invite_members);
+        btnViewSnippets = findViewById(R.id.btn_view_snippets);
         btnCreateSnippet = findViewById(R.id.btn_create_snippet);
-        btnTeamSettings = findViewById(R.id.btn_team_settings);
         btnLeaveTeam = findViewById(R.id.btn_leave_team);
         rvTeamMembers = findViewById(R.id.rv_team_members);
         rvTeamSnippets = findViewById(R.id.rv_team_snippets);
@@ -119,7 +128,7 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
 
     private void setupRecyclerViews() {
         teamMemberAdapter = new TeamMemberAdapter(this);
-        rvTeamMembers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        rvTeamMembers.setLayoutManager(new LinearLayoutManager(this)); // Vertical layout like Telegram
         rvTeamMembers.setAdapter(teamMemberAdapter);
 
         teamSnippetAdapter = new TeamSnippetAdapter(new TeamSnippetAdapter.OnTeamSnippetClickListener() {
@@ -145,14 +154,12 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
                 progressBar.setVisibility(View.VISIBLE);
                 // Hide other content
                 llQuickActions.setVisibility(View.GONE);
-                llTeamStats.setVisibility(View.GONE);
                 rvTeamMembers.setVisibility(View.GONE);
                 rvTeamSnippets.setVisibility(View.GONE);
                 rvTeamActivity.setVisibility(View.GONE);
             } else {
                 progressBar.setVisibility(View.GONE);
                 llQuickActions.setVisibility(View.VISIBLE);
-                llTeamStats.setVisibility(View.VISIBLE);
                 rvTeamMembers.setVisibility(View.VISIBLE);
                 rvTeamSnippets.setVisibility(View.VISIBLE);
                 rvTeamActivity.setVisibility(View.VISIBLE);
@@ -187,9 +194,11 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
         // Observe leave team result
         teamViewModel.getLeaveTeamResult().observe(this, resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
-                btnLeaveTeam.setEnabled(false);
+                btnLeaveTeam.setClickable(false);
+                btnLeaveTeam.setAlpha(0.5f);
             } else {
-                btnLeaveTeam.setEnabled(true);
+                btnLeaveTeam.setClickable(true);
+                btnLeaveTeam.setAlpha(1.0f);
             }
             if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
                 Toast.makeText(this, "Successfully left team!", Toast.LENGTH_SHORT).show();
@@ -213,19 +222,33 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
     }
 
     private void setupListeners() {
-        btnInviteMembers.setOnClickListener(v -> {
-            // TODO: Navigate to invite members page/dialog
-            Toast.makeText(this, "Invite Members Clicked", Toast.LENGTH_SHORT).show();
-        });
-        btnCreateSnippet.setOnClickListener(v -> {
-            // TODO: Navigate to create snippet page (team context)
-            Toast.makeText(this, "Create Snippet Clicked", Toast.LENGTH_SHORT).show();
-        });
-        btnTeamSettings.setOnClickListener(v -> {
+        // Settings button in toolbar
+        ivSettings.setOnClickListener(v -> {
             Intent intent = new Intent(this, TeamSettingsActivity.class);
             intent.putExtra(TeamSettingsActivity.EXTRA_TEAM_ID, teamId);
             startActivity(intent);
         });
+
+        // Add members action
+        btnInviteMembers.setOnClickListener(v -> {
+            // TODO: Navigate to invite members page/dialog
+            Toast.makeText(this, "Invite Members Clicked", Toast.LENGTH_SHORT).show();
+        });
+
+        // View all snippets
+        btnViewSnippets.setOnClickListener(v -> {
+            Intent intent = new Intent(this, TeamSnippetsActivity.class);
+            intent.putExtra(TeamSnippetsActivity.EXTRA_TEAM_ID, teamId);
+            startActivity(intent);
+        });
+
+        // FAB to create new snippet
+        btnCreateSnippet.setOnClickListener(v -> {
+            // TODO: Navigate to create snippet page (team context)
+            Toast.makeText(this, "Create Snippet Clicked", Toast.LENGTH_SHORT).show();
+        });
+
+        // Leave team
         btnLeaveTeam.setOnClickListener(v -> confirmLeaveTeam());
     }
 
@@ -239,53 +262,40 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
     }
 
     private void displayTeamDetails(Team team) {
-        toolbar.setTitle(team.getName());
+        // Set collapsing toolbar title
+        collapsingToolbar.setTitle(team.getName());
+
         tvTeamName.setText(team.getName());
         tvTeamDescription.setText(team.getDescription());
         tvTeamPrivacy.setText(team.getPrivacy());
 
-        Glide.with(this)
-                .load(team.getAvatarUrl())
-                .placeholder(R.drawable.ic_collections)
-                .error(R.drawable.ic_collections)
-                .into(ivTeamAvatar);
+        // Load team avatar
+        if (team.getAvatarUrl() != null && !team.getAvatarUrl().isEmpty()) {
+            Glide.with(this)
+                    .load(team.getAvatarUrl())
+                    .placeholder(R.drawable.ic_users)
+                    .error(R.drawable.ic_users)
+                    .centerCrop()
+                    .into(ivTeamAvatar);
+            ivTeamAvatar.setPadding(0, 0, 0, 0); // Remove padding when showing actual image
+        }
 
-        // Update stats (TODO: create helper method to set stat card values)
-        // For stat_members
-        TextView tvStatMembersCount = llTeamStats.findViewById(R.id.stat_members).findViewById(R.id.tvStatCount);
-        TextView tvStatMembersLabel = llTeamStats.findViewById(R.id.stat_members).findViewById(R.id.tvStatLabel);
-        ImageView ivStatMembersIcon = llTeamStats.findViewById(R.id.stat_members).findViewById(R.id.ivStatIcon);
-        tvStatMembersCount.setText(String.valueOf(team.getMemberCount()));
-        tvStatMembersLabel.setText("MEMBERS");
-        ivStatMembersIcon.setImageResource(R.drawable.ic_person); // Assuming ic_person exists
+        // Update member count label (Telegram style: "X members")
+        int memberCount = team.getMemberCount();
+        String memberText = memberCount == 1 ? "1 member" : memberCount + " members";
+        tvMemberCountLabel.setText(memberText);
 
-        // For stat_snippets
-        TextView tvStatSnippetsCount = llTeamStats.findViewById(R.id.stat_snippets).findViewById(R.id.tvStatCount);
-        TextView tvStatSnippetsLabel = llTeamStats.findViewById(R.id.stat_snippets).findViewById(R.id.tvStatLabel);
-        ImageView ivStatSnippetsIcon = llTeamStats.findViewById(R.id.stat_snippets).findViewById(R.id.ivStatIcon);
-        tvStatSnippetsCount.setText(String.valueOf(team.getSnippetCount()));
-        tvStatSnippetsLabel.setText("SNIPPETS");
-        ivStatSnippetsIcon.setImageResource(R.drawable.ic_code); // Assuming ic_code exists
+        // Update members header with count
+        tvMembersCount.setText(memberCount + " Members");
 
-        // For stat_activity (placeholder, actual value depends on backend)
-        TextView tvStatActivityCount = llTeamStats.findViewById(R.id.stat_activity).findViewById(R.id.tvStatCount);
-        TextView tvStatActivityLabel = llTeamStats.findViewById(R.id.stat_activity).findViewById(R.id.tvStatLabel);
-        ImageView ivStatActivityIcon = llTeamStats.findViewById(R.id.stat_activity).findViewById(R.id.ivStatIcon);
-        tvStatActivityCount.setText("N/A"); // Or fetch from team object if available
-        tvStatActivityLabel.setText("ACTIVITY");
-        ivStatActivityIcon.setImageResource(R.drawable.ic_activity); // Assuming ic_activity exists
-
-        // Hide percentage change views in stat cards for simplicity on dashboard
-        llTeamStats.findViewById(R.id.stat_members).findViewById(R.id.ivStatArrow).setVisibility(View.GONE);
-        llTeamStats.findViewById(R.id.stat_members).findViewById(R.id.tvStatPercentage).setVisibility(View.GONE);
-        llTeamStats.findViewById(R.id.stat_snippets).findViewById(R.id.ivStatArrow).setVisibility(View.GONE);
-        llTeamStats.findViewById(R.id.stat_snippets).findViewById(R.id.tvStatPercentage).setVisibility(View.GONE);
-        llTeamStats.findViewById(R.id.stat_activity).findViewById(R.id.ivStatArrow).setVisibility(View.GONE);
-        llTeamStats.findViewById(R.id.stat_activity).findViewById(R.id.tvStatPercentage).setVisibility(View.GONE);
+        // Update snippets count
+        int snippetCount = team.getSnippetCount();
+        String snippetText = snippetCount == 1 ? "1 snippet" : snippetCount + " snippets";
+        tvSnippetsCount.setText(snippetText);
 
         // Control leave team button visibility
         if (sessionManager.getCurrentUser() != null && team.getOwnerId().equals(sessionManager.getCurrentUser().getId())) {
-            btnLeaveTeam.setVisibility(View.GONE); // Owner cannot leave their own team directly (must transfer ownership)
+            btnLeaveTeam.setVisibility(View.GONE); // Owner cannot leave their own team directly
         } else {
             btnLeaveTeam.setVisibility(View.VISIBLE);
         }

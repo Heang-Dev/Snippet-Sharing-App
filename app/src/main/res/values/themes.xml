@@ -92,6 +92,7 @@
         <item name="iconPrimaryColor">@color/light_icon_primary</item>
         <item name="iconSecondaryColor">@color/light_icon_secondary</item>
         <item name="iconAccentColor">@color/icon_accent</item>
+        <item name="iconTintColor">@color/light_icon_secondary</item>
 
         <!-- Tags/Chips - Light -->
         <item name="tagBackgroundColor">@color/light_tag_background</item>

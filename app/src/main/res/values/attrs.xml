@@ -52,6 +52,7 @@
     <attr name="iconPrimaryColor" format="color|reference" />
     <attr name="iconSecondaryColor" format="color|reference" />
     <attr name="iconAccentColor" format="color|reference" />
+    <attr name="iconTintColor" format="color|reference" />
 
     <!-- ========== TAG/CHIP ATTRIBUTES ========== -->
     <attr name="tagBackgroundColor" format="color|reference" />

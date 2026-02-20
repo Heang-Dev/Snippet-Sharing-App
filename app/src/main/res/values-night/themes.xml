@@ -56,6 +56,7 @@
         <item name="iconPrimaryColor">@color/icon_primary</item>
         <item name="iconSecondaryColor">@color/icon_secondary</item>
         <item name="iconAccentColor">@color/icon_accent</item>
+        <item name="iconTintColor">@color/icon_secondary</item>
         <item name="tagBackgroundColor">@color/tag_background</item>
         <item name="tagTextColor">@color/tag_text</item>
         <item name="chipBackgroundColor">@color/chip_background</item>

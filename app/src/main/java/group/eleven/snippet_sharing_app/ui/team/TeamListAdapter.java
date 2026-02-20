@@ -90,13 +90,19 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamVi
 
             // Load team avatar using Glide
             if (team.getAvatarUrl() != null && !team.getAvatarUrl().isEmpty()) {
+                ivTeamAvatar.setPadding(0, 0, 0, 0); // Remove padding for actual image
+                ivTeamAvatar.setImageTintList(null); // Remove tint for actual image
                 Glide.with(itemView.getContext())
                         .load(team.getAvatarUrl())
-                        .placeholder(R.drawable.ic_collections) // Default placeholder
-                        .error(R.drawable.ic_collections) // Error placeholder
+                        .placeholder(R.drawable.ic_users)
+                        .error(R.drawable.ic_users)
+                        .circleCrop()
                         .into(ivTeamAvatar);
             } else {
-                ivTeamAvatar.setImageResource(R.drawable.ic_collections); // Fallback to default if no URL
+                // Show default icon with padding and tint
+                int padding = (int) (12 * itemView.getContext().getResources().getDisplayMetrics().density);
+                ivTeamAvatar.setPadding(padding, padding, padding, padding);
+                ivTeamAvatar.setImageResource(R.drawable.ic_users);
             }
 
 

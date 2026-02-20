@@ -79,11 +79,21 @@ public class TeamMemberAdapter extends RecyclerView.Adapter<TeamMemberAdapter.Te
             tvMemberRole.setText(member.getRole());
 
             // Load member avatar using Glide
-            Glide.with(itemView.getContext())
-                    .load(member.getAvatarUrl())
-                    .placeholder(R.drawable.ic_person) // Default placeholder
-                    .error(R.drawable.ic_person) // Error placeholder
-                    .into(ivMemberAvatar);
+            if (member.getAvatarUrl() != null && !member.getAvatarUrl().isEmpty()) {
+                ivMemberAvatar.setPadding(0, 0, 0, 0);
+                ivMemberAvatar.setImageTintList(null);
+                Glide.with(itemView.getContext())
+                        .load(member.getAvatarUrl())
+                        .placeholder(R.drawable.ic_person)
+                        .error(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(ivMemberAvatar);
+            } else {
+                // Show default icon with padding
+                int padding = (int) (10 * itemView.getContext().getResources().getDisplayMetrics().density);
+                ivMemberAvatar.setPadding(padding, padding, padding, padding);
+                ivMemberAvatar.setImageResource(R.drawable.ic_person);
+            }
 
             itemView.setOnClickListener(v -> listener.onItemClick(member));
             ivMenuOptions.setOnClickListener(v -> listener.onMoreOptionsClick(member, v));
