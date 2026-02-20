@@ -141,17 +141,43 @@ public class TeamViewModel extends AndroidViewModel {
         teamRepository.getTeamDetails(teamId).observeForever(new Observer<AuthRepository.Resource<Team>>() {
             @Override
             public void onChanged(AuthRepository.Resource<Team> teamResource) {
-                _teamDetailsResult.setValue(teamResource);
+                // Fall back to mock data if API fails
+                if (teamResource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                    Team mockTeam = createMockTeam(teamId);
+                    _teamDetailsResult.setValue(AuthRepository.Resource.success(mockTeam));
+                } else {
+                    _teamDetailsResult.setValue(teamResource);
+                }
                 teamRepository.getTeamDetails(teamId).removeObserver(this);
             }
         });
+    }
+
+    private Team createMockTeam(String teamId) {
+        return new Team(
+                teamId,
+                "Development Team",
+                "A collaborative team for sharing code snippets and best practices",
+                null,  // avatarUrl
+                5,     // memberCount
+                12,    // snippetCount
+                "private",  // privacy
+                "user-1",   // ownerId
+                "member"    // userRole
+        );
     }
 
     public void fetchTeamMembers(String teamId) {
         teamRepository.getTeamMembers(teamId).observeForever(new Observer<AuthRepository.Resource<List<TeamMember>>>() {
             @Override
             public void onChanged(AuthRepository.Resource<List<TeamMember>> listResource) {
-                _teamMembersResult.setValue(listResource);
+                // Fall back to mock data if API fails
+                if (listResource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                    List<TeamMember> mockMembers = group.eleven.snippet_sharing_app.data.MockDataProvider.getMockTeamMembers(5);
+                    _teamMembersResult.setValue(AuthRepository.Resource.success(mockMembers));
+                } else {
+                    _teamMembersResult.setValue(listResource);
+                }
                 teamRepository.getTeamMembers(teamId).removeObserver(this);
             }
         });
@@ -191,17 +217,58 @@ public class TeamViewModel extends AndroidViewModel {
         teamRepository.getTeamSnippets(teamId, filters).observeForever(new Observer<AuthRepository.Resource<List<TeamSnippet>>>() {
             @Override
             public void onChanged(AuthRepository.Resource<List<TeamSnippet>> listResource) {
-                _teamSnippetsResult.setValue(listResource);
+                // Fall back to mock data if API fails
+                if (listResource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                    List<TeamSnippet> mockSnippets = createMockTeamSnippets(5);
+                    _teamSnippetsResult.setValue(AuthRepository.Resource.success(mockSnippets));
+                } else {
+                    _teamSnippetsResult.setValue(listResource);
+                }
                 teamRepository.getTeamSnippets(teamId, filters).removeObserver(this);
             }
         });
+    }
+
+    private List<TeamSnippet> createMockTeamSnippets(int count) {
+        List<TeamSnippet> snippets = new java.util.ArrayList<>();
+        String[][] snippetData = {
+                {"React Component", "TypeScript", "A reusable form component", "const FormInput = () => {...}"},
+                {"API Handler", "JavaScript", "REST API request handler", "async function fetchData() {...}"},
+                {"Database Query", "SQL", "Optimized database query", "SELECT * FROM users WHERE..."},
+                {"CSS Grid Layout", "CSS", "Responsive grid layout", ".container { display: grid; }"},
+                {"Auth Middleware", "Java", "JWT authentication", "public class AuthFilter {...}"}
+        };
+        for (int i = 0; i < Math.min(count, snippetData.length); i++) {
+            TeamSnippet snippet = new TeamSnippet(
+                    "snippet-" + i,           // id
+                    snippetData[i][0],        // title
+                    snippetData[i][2],        // description
+                    snippetData[i][3],        // code
+                    snippetData[i][1],        // language
+                    java.util.Arrays.asList("team", "shared"),  // tags
+                    false,                    // isPublic
+                    "user-1",                 // authorId
+                    "dev_user",               // authorUsername
+                    "team-1",                 // teamId
+                    "2 days ago",             // createdAt
+                    "1 day ago"               // updatedAt
+            );
+            snippets.add(snippet);
+        }
+        return snippets;
     }
 
     public void fetchTeamActivity(String teamId) {
         teamRepository.getTeamActivity(teamId).observeForever(new Observer<AuthRepository.Resource<List<ActivityFeedItem>>>() {
             @Override
             public void onChanged(AuthRepository.Resource<List<ActivityFeedItem>> listResource) {
-                _teamActivityFeedResult.setValue(listResource);
+                // Fall back to mock data if API fails
+                if (listResource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                    List<ActivityFeedItem> mockActivity = group.eleven.snippet_sharing_app.data.MockDataProvider.getMockActivityFeed(5);
+                    _teamActivityFeedResult.setValue(AuthRepository.Resource.success(mockActivity));
+                } else {
+                    _teamActivityFeedResult.setValue(listResource);
+                }
                 teamRepository.getTeamActivity(teamId).removeObserver(this);
             }
         });

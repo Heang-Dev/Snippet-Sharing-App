@@ -255,7 +255,7 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
     public void onItemClick(Team team) {
         // Navigate to TeamDashboardActivity
         Intent intent = new Intent(TeamsListActivity.this, TeamDashboardActivity.class);
-        intent.putExtra("teamId", team.getId());
+        intent.putExtra(TeamDashboardActivity.EXTRA_TEAM_ID, team.getId());
         startActivity(intent);
     }
 

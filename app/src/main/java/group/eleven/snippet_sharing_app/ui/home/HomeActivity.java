@@ -214,8 +214,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onCommentClick(SnippetCard snippet) {
-                Toast.makeText(HomeActivity.this, "Comments - Coming Soon", Toast.LENGTH_SHORT).show();
-                // TODO: Navigate to comments
+                showCommentsBottomSheet(snippet);
             }
 
             @Override
@@ -485,6 +484,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    private void showCommentsBottomSheet(SnippetCard snippet) {
+        group.eleven.snippet_sharing_app.ui.comment.CommentsBottomSheet bottomSheet =
+                group.eleven.snippet_sharing_app.ui.comment.CommentsBottomSheet.newInstance(
+                        snippet.getId() != null ? snippet.getId() : "snippet_1",
+                        snippet.getTitle()
+                );
+        bottomSheet.show(getSupportFragmentManager(), "CommentsBottomSheet");
     }
 
     @Override

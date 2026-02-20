@@ -15,19 +15,21 @@
         android:layout_height="match_parent"
         android:background="?attr/appBackgroundColor">
 
-        <!-- App Bar - Facebook Style -->
+        <!-- App Bar - Clean White Style -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/appBackgroundColor"
-            app:elevation="2dp">
+            android:background="@color/white"
+            android:backgroundTint="@null"
+            app:elevation="1dp"
+            app:liftOnScroll="false">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/surfaceColor"
+                android:background="@color/white"
                 app:titleTextColor="?attr/textPrimaryColor">
 
                 <LinearLayout

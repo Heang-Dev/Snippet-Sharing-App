@@ -247,6 +247,10 @@
     <color name="graph_3">@color/graph_level_3</color>
     <color name="graph_4">@color/graph_level_4</color>
 
+    <!-- Surface colors used by bottom sheets -->
+    <color name="surface_light">#FFFFFF</color>
+    <color name="surface_dark">#241830</color>
+
     <!-- ========== LIGHT THEME COLORS ========== -->
     <!-- Background colors for light theme -->
     <color name="light_background">#FFFFFF</color>

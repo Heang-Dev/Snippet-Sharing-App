@@ -7,6 +7,7 @@ import java.util.Random;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.ActivityFeedItem;
+import group.eleven.snippet_sharing_app.data.model.Comment;
 import group.eleven.snippet_sharing_app.data.model.NotificationItem;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.model.Team;
@@ -522,5 +523,47 @@ public class MockDataProvider {
      */
     public static List<CodeSnippet> getAllCodeSnippets() {
         return Arrays.asList(CODE_SNIPPETS);
+    }
+
+    /**
+     * Get mock comments for a snippet
+     */
+    public static List<group.eleven.snippet_sharing_app.data.model.Comment> getMockComments(String snippetId, int count) {
+        String[][] commentData = {
+                {"This is exactly what I was looking for! Great work!", "sarah_codes", "Sarah Chen"},
+                {"Nice implementation. Have you considered adding error handling for edge cases?", "mike_js", "Mike Johnson"},
+                {"I've been using a similar approach in my projects. Works great!", "emma_py", "Emma Watson"},
+                {"Could you explain the async part a bit more? I'm new to this.", "alex_kotlin", "Alex Kim"},
+                {"Bookmarked! This will definitely come in handy.", "lisa_react", "Lisa Park"},
+                {"Love the clean code style. Following best practices 👍", "david_go", "David Smith"},
+                {"Would this work with TypeScript? Any modifications needed?", "nina_rust", "Nina Brown"},
+                {"Thanks for sharing! I learned something new today.", "chris_swift", "Chris Taylor"},
+                {"I modified this for my use case and it works perfectly!", "amy_flutter", "Amy Lee"},
+                {"The performance on this is really good. Did you benchmark it?", "john_dev", "John Developer"},
+                {"Simple and elegant solution. This is how code should be written.", "sarah_codes", "Sarah Chen"},
+                {"I had the same problem last week. Wish I had found this sooner!", "mike_js", "Mike Johnson"}
+        };
+
+        List<group.eleven.snippet_sharing_app.data.model.Comment> comments = new ArrayList<>();
+        int limit = Math.min(count, commentData.length);
+
+        for (int i = 0; i < limit; i++) {
+            String[] data = commentData[i % commentData.length];
+            int userIndex = i % USER_DATA.length;
+
+            comments.add(new group.eleven.snippet_sharing_app.data.model.Comment(
+                    "comment-" + (i + 1),
+                    snippetId,
+                    data[0],                                // content
+                    TIME_STRINGS[i % TIME_STRINGS.length],  // createdAt
+                    data[2],                                // authorName
+                    data[1],                                // authorUsername
+                    AVATAR_URLS[userIndex],                 // authorAvatar
+                    random.nextInt(25),                     // likesCount
+                    random.nextBoolean()                    // isLiked
+            ));
+        }
+
+        return comments;
     }
 }
