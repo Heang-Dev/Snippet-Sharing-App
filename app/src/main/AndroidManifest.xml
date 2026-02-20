@@ -128,6 +128,11 @@
             android:name=".ui.mysnippets.MySnippetsActivity"
             android:exported="false" />
 
+        <!-- Favorites Activity -->
+        <activity
+            android:name=".ui.favorites.FavoritesActivity"
+            android:exported="false" />
+
         <activity
             android:name=".ui.search.SearchActivity"
             android:exported="false"

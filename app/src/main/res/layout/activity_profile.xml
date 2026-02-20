@@ -1,30 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/appBackgroundColor">
+    android:background="?attr/appBackgroundColor"
+    android:fitsSystemWindows="true">
 
+    <!-- App Bar -->
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp">
+        android:background="?attr/surfaceColor"
+        app:elevation="1dp">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="?attr/surfaceColor"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationIconTint="?attr/textPrimaryColor">
+            app:navigationIconTint="?attr/textPrimaryColor"
+            app:title="Profile"
+            app:titleTextColor="?attr/textPrimaryColor">
 
             <ImageView
                 android:id="@+id/ivSettings"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="end"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="Settings"
+                android:padding="8dp"
                 android:src="@drawable/ic_settings"
                 app:tint="?attr/textPrimaryColor" />
 
@@ -32,20 +41,25 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Main Content -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="20dp"
-            android:gravity="center_horizontal">
+            android:paddingStart="16dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="32dp">
 
-            <!-- Profile Image and Online Status -->
+            <!-- Profile Image -->
             <FrameLayout
                 android:id="@+id/flProfileImage"
                 android:layout_width="wrap_content"
@@ -53,93 +67,72 @@
                 android:clickable="true"
                 android:focusable="true">
 
-                <com.google.android.material.imageview.ShapeableImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/ivProfile"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:padding="2dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:src="@drawable/ic_person"
-                    android:scaleType="centerCrop"
-                    app:strokeColor="@color/profile_text_muted"
-                    app:strokeWidth="1dp"
-                    app:shapeAppearanceOverlay="@style/CircleImage" />
+                    app:civ_border_color="?attr/borderColor"
+                    app:civ_border_width="2dp" />
 
+                <!-- Online Status Indicator -->
                 <View
                     android:id="@+id/vStatusIndicator"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@drawable/bg_online_indicator" />
+
             </FrameLayout>
 
-            <!-- Name and Username -->
+            <!-- Name -->
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Alex Dev"
+                android:layout_marginTop="16dp"
                 android:textColor="?attr/textPrimaryColor"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:text="Alex Dev" />
 
+            <!-- Username -->
             <TextView
                 android:id="@+id/tvUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@alexcodes"
-                android:textColor="?attr/textMutedColor"
-                android:textSize="16sp" />
+                android:layout_marginTop="4dp"
+                android:textColor="?attr/textSecondaryColor"
+                android:textSize="15sp"
+                tools:text="@alexcodes" />
 
-            <!-- Badges -->
+            <!-- Badges Row -->
             <LinearLayout
+                android:id="@+id/llBadges"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <TextView
-                    android:id="@+id/tvBadgeCore"
+                    android:id="@+id/tvBadgeVerified"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/bg_pill_badge"
-                    android:backgroundTint="@color/badge_blue"
+                    android:backgroundTint="@color/primary"
                     android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
-                    android:text="Core Team"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:id="@+id/tvBadgePro"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_pill_badge"
-                    android:backgroundTint="@color/badge_purple"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
-                    android:text="Pro Member"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:id="@+id/tvBadgeTop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_pill_badge"
-                    android:backgroundTint="@color/badge_orange"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
-                    android:text="Top Contributor"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textSize="11sp"
+                    android:paddingVertical="6dp"
+                    android:text="Verified"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <!-- Bio -->
@@ -147,216 +140,381 @@
                 android:id="@+id/tvBio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:text="Full-stack wizard building tools for builders. Love React, Python, and dark coffee."
-                android:textColor="?attr/textPrimaryColor"
-                android:textSize="15sp"
-                android:lineSpacingMultiplier="1.2" />
+                android:lineSpacingMultiplier="1.3"
+                android:textColor="?attr/textSecondaryColor"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:text="Full-stack developer. Love building tools and sharing knowledge."
+                tools:visibility="visible" />
 
-            <!-- Follow and Message Buttons -->
+            <!-- Action Buttons -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnFollow"
+                    android:id="@+id/btnEditProfile"
                     android:layout_width="0dp"
-                    android:layout_height="56dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
-                    android:text="Follow"
-                    android:textColor="@color/white"
+                    android:text="Edit Profile"
                     android:textAllCaps="false"
-                    android:textSize="16sp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
                     android:textStyle="bold"
-                    app:backgroundTint="@color/profile_primary"
-                    app:cornerRadius="28dp" />
+                    app:backgroundTint="@color/primary"
+                    app:cornerRadius="24dp" />
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cvMessage"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
+                    android:id="@+id/cvNotifications"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginStart="12dp"
                     app:cardBackgroundColor="?attr/cardSurfaceColor"
-                    app:cardCornerRadius="28dp"
+                    app:cardCornerRadius="24dp"
                     app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="#1A231C">
+                    app:strokeColor="?attr/borderColor"
+                    app:strokeWidth="1dp">
 
                     <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_notifications"
+                        android:src="@drawable/ic_bell"
                         app:tint="?attr/textPrimaryColor" />
 
                 </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
-            <!-- Metadata Row -->
+            <!-- Info Row: Joined, Location, Website -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tvJoinedDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_help"
-                    android:drawablePadding="6dp"
-                    app:drawableTint="@color/profile_primary"
-                    android:text="Joined Jan 2021"
+                    android:drawableStart="@drawable/ic_calendar"
+                    android:drawablePadding="4dp"
                     android:textColor="?attr/textMutedColor"
-                    android:textSize="13sp" />
+                    android:textSize="12sp"
+                    app:drawableTint="?attr/textMutedColor"
+                    tools:text="Joined Jan 2021" />
 
                 <TextView
                     android:id="@+id/tvLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:drawableStart="@drawable/ic_explore"
-                    android:drawablePadding="6dp"
-                    app:drawableTint="@color/profile_primary"
-                    android:text="Seattle, WA"
+                    android:drawableStart="@drawable/ic_location"
+                    android:drawablePadding="4dp"
                     android:textColor="?attr/textMutedColor"
-                    android:textSize="13sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:drawableTint="?attr/textMutedColor"
+                    tools:text="Seattle, WA"
+                    tools:visibility="visible" />
 
                 <TextView
                     android:id="@+id/tvWebsite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:drawableStart="@drawable/ic_code"
-                    android:drawablePadding="6dp"
-                    app:drawableTint="@color/profile_primary"
-                    android:text="alex.dev"
-                    android:textColor="?attr/textMutedColor"
-                    android:textSize="13sp" />
+                    android:drawableStart="@drawable/ic_link"
+                    android:drawablePadding="4dp"
+                    android:textColor="@color/primary"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:drawableTint="@color/primary"
+                    tools:text="alex.dev"
+                    tools:visibility="visible" />
+
             </LinearLayout>
 
-            <!-- Social Links Grid -->
+            <!-- Social Links -->
             <LinearLayout
+                android:id="@+id/llSocialLinks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                    <com.google.android.material.card.MaterialCardView android:layout_width="52dp" android:layout_height="52dp" app:cardBackgroundColor="?attr/cardSurfaceColor" app:cardCornerRadius="26dp" app:cardElevation="0dp">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@drawable/ic_github" app:tint="?attr/textPrimaryColor" />
-                    </com.google.android.material.card.MaterialCardView>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="GitHub" android:textColor="?attr/textMutedColor" android:textSize="12sp" />
-                </LinearLayout>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvGithub"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="12dp"
+                    app:cardBackgroundColor="?attr/cardSurfaceColor"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp">
 
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                    <com.google.android.material.card.MaterialCardView android:layout_width="52dp" android:layout_height="52dp" app:cardBackgroundColor="?attr/cardSurfaceColor" app:cardCornerRadius="26dp" app:cardElevation="0dp">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@drawable/ic_google" app:tint="?attr/textPrimaryColor" />
-                    </com.google.android.material.card.MaterialCardView>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Twitter" android:textColor="?attr/textMutedColor" android:textSize="12sp" />
-                </LinearLayout>
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_github"
+                        app:tint="?attr/textPrimaryColor" />
 
-                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                    <com.google.android.material.card.MaterialCardView android:layout_width="52dp" android:layout_height="52dp" app:cardBackgroundColor="?attr/cardSurfaceColor" app:cardCornerRadius="26dp" app:cardElevation="0dp">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@drawable/ic_explore" app:tint="?attr/textPrimaryColor" />
-                    </com.google.android.material.card.MaterialCardView>
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Website" android:textColor="?attr/textMutedColor" android:textSize="12sp" />
-                </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvTwitter"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginEnd="12dp"
+                    app:cardBackgroundColor="?attr/cardSurfaceColor"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_twitter"
+                        app:tint="?attr/textPrimaryColor" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cvWebsiteLink"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    app:cardBackgroundColor="?attr/cardSurfaceColor"
+                    app:cardCornerRadius="22dp"
+                    app:cardElevation="0dp">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_link"
+                        app:tint="?attr/textPrimaryColor" />
+
+                </com.google.android.material.card.MaterialCardView>
+
             </LinearLayout>
 
-            <!-- Stats Grid -->
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:columnCount="2">
-
-                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="6dp" app:cardBackgroundColor="?attr/cardSurfaceColor" app:cardCornerRadius="16dp" app:cardElevation="0dp">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Snippets" android:textColor="?attr/textMutedColor" android:textSize="14sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="142" android:textColor="?attr/textPrimaryColor" android:textSize="26sp" android:textStyle="bold" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="6dp" app:cardBackgroundColor="?attr/cardSurfaceColor" app:cardCornerRadius="16dp" app:cardElevation="0dp">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Followers" android:textColor="?attr/textMutedColor" android:textSize="14sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1.2k" android:textColor="?attr/textPrimaryColor" android:textSize="26sp" android:textStyle="bold" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="6dp" app:cardBackgroundColor="?attr/cardSurfaceColor" app:cardCornerRadius="16dp" app:cardElevation="0dp">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Following" android:textColor="?attr/textMutedColor" android:textSize="14sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="250" android:textColor="?attr/textPrimaryColor" android:textSize="26sp" android:textStyle="bold" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_columnWeight="1" android:layout_margin="6dp" app:cardBackgroundColor="?attr/cardSurfaceColor" app:cardCornerRadius="16dp" app:cardElevation="0dp">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Contribs" android:textColor="?attr/textMutedColor" android:textSize="14sp" />
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="450" android:textColor="?attr/textPrimaryColor" android:textSize="26sp" android:textStyle="bold" />
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-            </GridLayout>
-
-            <!-- Activity Section Header -->
+            <!-- Stats Cards -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:gravity="center_vertical">
-                <ImageView android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/ic_share_ios" app:tint="@color/profile_primary" />
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="8dp" android:text="Activity" android:textColor="?attr/textPrimaryColor" android:textSize="20sp" android:textStyle="bold" />
-            </LinearLayout>
+                android:orientation="vertical">
 
-            <!-- Activity Heatmap Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp">
-                <HorizontalScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="16dp" android:scrollbars="none">
-                    <GridLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:columnCount="22" android:rowCount="7">
-                        <!-- Simulated heat map cells -->
-                        <include layout="@layout/item_graph_block_level_0" /> <include layout="@layout/item_graph_block_level_1" /> <include layout="@layout/item_graph_block_level_0" /> <include layout="@layout/item_graph_block_level_2" />
-                        <include layout="@layout/item_graph_block_level_3" /> <include layout="@layout/item_graph_block_level_1" /> <include layout="@layout/item_graph_block_level_0" /> <include layout="@layout/item_graph_block_level_0" />
-                        <include layout="@layout/item_graph_block_level_2" /> <include layout="@layout/item_graph_block_level_0" /> <include layout="@layout/item_graph_block_level_1" /> <include layout="@layout/item_graph_block_level_0" />
-                        <include layout="@layout/item_graph_block_level_3" /> <include layout="@layout/item_graph_block_level_4" /> <include layout="@layout/item_graph_block_level_0" /> <include layout="@layout/item_graph_block_level_2" />
-                        <include layout="@layout/item_graph_block_level_1" /> <include layout="@layout/item_graph_block_level_0" /> <include layout="@layout/item_graph_block_level_0" /> <include layout="@layout/item_graph_block_level_1" />
-                    </GridLayout>
-                </HorizontalScrollView>
-            </com.google.android.material.card.MaterialCardView>
+                <!-- Row 1: Snippets and Followers -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="?attr/cardSurfaceColor"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?attr/borderColor"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Snippets"
+                                android:textColor="?attr/textMutedColor"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/tvSnippetsCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="0"
+                                android:textColor="?attr/textPrimaryColor"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="?attr/cardSurfaceColor"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?attr/borderColor"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Followers"
+                                android:textColor="?attr/textMutedColor"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/tvFollowersCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="0"
+                                android:textColor="?attr/textPrimaryColor"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <!-- Row 2: Following and Likes -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="?attr/cardSurfaceColor"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?attr/borderColor"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Following"
+                                android:textColor="?attr/textMutedColor"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/tvFollowingCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="0"
+                                android:textColor="?attr/textPrimaryColor"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        app:cardBackgroundColor="?attr/cardSurfaceColor"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp"
+                        app:strokeColor="?attr/borderColor"
+                        app:strokeWidth="1dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Total Likes"
+                                android:textColor="?attr/textMutedColor"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:id="@+id/tvLikesCount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="0"
+                                android:textColor="?attr/textPrimaryColor"
+                                android:textSize="28sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <!-- Tab Switcher -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="28dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="28dp"
-                app:cardElevation="0dp">
-                <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="horizontal" android:padding="4dp">
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp"
+                app:strokeColor="?attr/borderColor"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
                     <TextView
                         android:id="@+id/tabSnippets"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@drawable/bg_pill_badge"
-                        android:backgroundTint="@color/profile_primary"
+                        android:backgroundTint="@color/primary"
                         android:gravity="center"
                         android:text="Snippets"
                         android:textColor="@color/white"
+                        android:textSize="13sp"
                         android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/tabStars"
                         android:layout_width="0dp"
@@ -364,7 +522,9 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="Stars"
-                        android:textColor="?attr/textMutedColor" />
+                        android:textColor="?attr/textMutedColor"
+                        android:textSize="13sp" />
+
                     <TextView
                         android:id="@+id/tabCollections"
                         android:layout_width="0dp"
@@ -372,21 +532,79 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="Collections"
-                        android:textColor="?attr/textMutedColor" />
+                        android:textColor="?attr/textMutedColor"
+                        android:textSize="13sp" />
+
                 </LinearLayout>
+
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Snippet List -->
-            <LinearLayout
-                android:id="@+id/llContentList"
+            <!-- Content List (Snippets/Stars/Collections) -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-                <include layout="@layout/item_snippet_card_dark" />
-                <include layout="@layout/item_snippet_card_dark_python" />
-                <include layout="@layout/item_snippet_card_dark" />
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_feed_snippet" />
+
+            <!-- Empty State -->
+            <LinearLayout
+                android:id="@+id/layoutEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="32dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_code"
+                    app:tint="?attr/textMutedColor" />
+
+                <TextView
+                    android:id="@+id/tvEmptyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="No snippets yet"
+                    android:textColor="?attr/textSecondaryColor"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvEmptyMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Create your first snippet to share!"
+                    android:textColor="?attr/textMutedColor"
+                    android:textSize="14sp" />
+
             </LinearLayout>
+
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/layoutLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/appBackgroundColor"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

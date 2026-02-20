@@ -222,8 +222,8 @@ public class ExploreActivity extends AppCompatActivity {
                 overridePendingTransition(0, 0);
                 finish();
                 return true;
-            } else if (id == R.id.nav_snippets) {
-                Intent intent = new Intent(this, MySnippetsActivity.class);
+            } else if (id == R.id.nav_favorites) {
+                Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();

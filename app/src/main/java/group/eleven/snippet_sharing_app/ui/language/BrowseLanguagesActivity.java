@@ -136,8 +136,8 @@ public class BrowseLanguagesActivity extends AppCompatActivity {
                 } else if (id == R.id.nav_teams) {
                     startActivity(new android.content.Intent(this, group.eleven.snippet_sharing_app.ui.team.TeamsListActivity.class));
                     return false;
-                } else if (id == R.id.nav_snippets) {
-                    startActivity(new android.content.Intent(this, MySnippetsActivity.class));
+                } else if (id == R.id.nav_favorites) {
+                    startActivity(new android.content.Intent(this, group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class));
                     return false;
                 } else if (id == R.id.nav_profile) {
                     startActivity(new android.content.Intent(this, group.eleven.snippet_sharing_app.ui.profile.ProfileActivity.class));

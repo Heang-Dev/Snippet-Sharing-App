@@ -26,9 +26,9 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/nav_snippets"
-        android:icon="@drawable/ic_code"
-        android:title="@string/nav_snippets"
+        android:id="@+id/nav_favorites"
+        android:icon="@drawable/ic_star_filled"
+        android:title="@string/nav_favorites"
         android:orderInCategory="4"
         app:showAsAction="ifRoom" />
 

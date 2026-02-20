@@ -405,9 +405,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 overridePendingTransition(0, 0);
                 finish();
                 return true;
-            } else if (id == R.id.nav_snippets) {
+            } else if (id == R.id.nav_favorites) {
                 Intent intent = new Intent(this,
-                        group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+                        group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class);
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
@@ -433,7 +433,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_favorites) {
-            Toast.makeText(this, "Favorites - Coming Soon", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_shared) {
             Toast.makeText(this, "Shared with me - Coming Soon", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_teams) {

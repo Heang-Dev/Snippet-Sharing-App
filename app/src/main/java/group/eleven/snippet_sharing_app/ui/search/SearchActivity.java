@@ -123,9 +123,9 @@ public class SearchActivity extends AppCompatActivity {
                             group.eleven.snippet_sharing_app.ui.team.TeamsListActivity.class);
                     startActivity(intent);
                     return false;
-                } else if (id == R.id.nav_snippets) {
+                } else if (id == R.id.nav_favorites) {
                     android.content.Intent intent = new android.content.Intent(this,
-                            group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity.class);
+                            group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class);
                     startActivity(intent);
                     return false;
                 } else if (id == R.id.nav_profile) {

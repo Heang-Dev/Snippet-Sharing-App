@@ -134,8 +134,8 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
             } else if (itemId == R.id.nav_teams) {
                 // Already on teams
                 return true;
-            } else if (itemId == R.id.nav_snippets) {
-                startActivity(new Intent(this, MySnippetsActivity.class));
+            } else if (itemId == R.id.nav_favorites) {
+                startActivity(new Intent(this, group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity.class));
                 overridePendingTransition(0, 0);
                 finish();
                 return true;

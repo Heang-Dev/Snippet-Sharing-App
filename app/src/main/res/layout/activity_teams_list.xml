@@ -5,7 +5,6 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="?attr/appBackgroundColor"
     tools:context=".ui.team.TeamsListActivity">
 
@@ -261,32 +260,39 @@
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="?attr/bottomNavBackgroundColor"
-        app:itemIconTint="@color/selector_bottom_nav_icon"
-        app:itemTextColor="@color/selector_bottom_nav"
-        app:labelVisibilityMode="labeled"
-        app:itemActiveIndicatorStyle="@style/Widget.SnippetApp.BottomNavIndicator"
-        app:menu="@menu/bottom_nav_menu" />
+        android:background="?attr/surfaceColor"
+        android:elevation="8dp">
 
-    <!-- FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_create_team"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/bottomNav"
-        app:layout_anchorGravity="top|center"
-        app:fabCustomSize="64dp"
-        app:maxImageSize="32dp"
-        android:layout_marginBottom="8dp"
-        android:contentDescription="Create Team"
-        app:backgroundTint="@color/accent_pink"
-        app:elevation="12dp"
-        app:srcCompat="@drawable/ic_add"
-        app:tint="@color/white" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:itemActiveIndicatorStyle="@style/Widget.SnippetApp.BottomNavIndicator"
+            app:itemIconTint="@color/selector_bottom_nav_icon"
+            app:itemTextColor="@color/selector_bottom_nav"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
+
+        <!-- FAB -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_create_team"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="28dp"
+            android:contentDescription="Create Team"
+            app:backgroundTint="@color/primary"
+            app:elevation="6dp"
+            app:fabCustomSize="56dp"
+            app:maxImageSize="24dp"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@android:color/white" />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -252,31 +252,39 @@
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/bottom_nav_bg"
-        app:itemIconTint="@color/selector_bottom_nav"
-        app:itemTextColor="@color/selector_bottom_nav"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu" />
+        android:background="?attr/surfaceColor"
+        android:elevation="8dp">
 
-    <!-- FAB -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_anchor="@id/bottomNavigation"
-        app:layout_anchorGravity="top|center"
-        app:fabCustomSize="64dp"
-        app:maxImageSize="32dp"
-        android:layout_marginBottom="0dp"
-        android:contentDescription="Create Snippet"
-        app:backgroundTint="@color/accent_green"
-        app:elevation="12dp"
-        app:srcCompat="@drawable/ic_add"
-        app:tint="#000000" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            app:itemActiveIndicatorStyle="@style/Widget.SnippetApp.BottomNavIndicator"
+            app:itemIconTint="@color/selector_bottom_nav_icon"
+            app:itemTextColor="@color/selector_bottom_nav"
+            app:labelVisibilityMode="labeled"
+            app:menu="@menu/bottom_nav_menu" />
+
+        <!-- FAB -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="28dp"
+            android:contentDescription="Create Snippet"
+            app:backgroundTint="@color/primary"
+            app:elevation="6dp"
+            app:fabCustomSize="56dp"
+            app:maxImageSize="24dp"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@android:color/white" />
+
+    </FrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
