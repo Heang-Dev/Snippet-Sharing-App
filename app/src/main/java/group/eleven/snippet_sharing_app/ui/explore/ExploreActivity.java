@@ -18,14 +18,9 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
 import group.eleven.snippet_sharing_app.data.repository.DashboardRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityExploreBinding;
-import group.eleven.snippet_sharing_app.ui.favorites.FavoritesActivity;
-import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.ui.home.SnippetCardAdapter;
-import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
 import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
 import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
-import group.eleven.snippet_sharing_app.ui.team.TeamsListActivity;
-import group.eleven.snippet_sharing_app.utils.BottomNavHelper;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -55,10 +50,10 @@ public class ExploreActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         dashboardRepository = new DashboardRepository(this);
 
+        setupToolbar();
         setupSearchBar();
         setupLanguageChips();
         setupSnippetsRecyclerView();
-        setupBottomNavigation();
         setupSwipeRefresh();
         setupEmptyState();
 
@@ -91,6 +86,10 @@ public class ExploreActivity extends AppCompatActivity {
                 + 0.587 * android.graphics.Color.green(color)
                 + 0.114 * android.graphics.Color.blue(color)) / 255;
         return darkness < 0.5;
+    }
+
+    private void setupToolbar() {
+        binding.btnBack.setOnClickListener(v -> finish());
     }
 
     private void setupSearchBar() {
@@ -291,49 +290,6 @@ public class ExploreActivity extends AppCompatActivity {
                 updateUI(0);
                 Toast.makeText(this, "Unable to load snippets", Toast.LENGTH_SHORT).show();
             }
-        });
-    }
-
-    private void setupBottomNavigation() {
-        // No item selected since Explore is not in bottom nav
-        // Setup profile avatar
-        BottomNavHelper.setupProfileAvatar(this, binding.bottomNav, sessionManager);
-
-        binding.bottomNav.setOnItemSelectedListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.nav_home) {
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            } else if (id == R.id.nav_teams) {
-                Intent intent = new Intent(this, TeamsListActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            } else if (id == R.id.nav_favorites) {
-                Intent intent = new Intent(this, FavoritesActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            } else if (id == R.id.nav_profile) {
-                Intent intent = new Intent(this, ProfileActivity.class);
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-                return true;
-            }
-            return false;
-        });
-
-        // FAB click
-        binding.fab.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CreateSnippetActivity.class);
-            startActivity(intent);
         });
     }
 

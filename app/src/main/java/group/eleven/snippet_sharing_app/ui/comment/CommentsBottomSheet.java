@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -46,14 +47,21 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
 
     private RecyclerView rvComments;
     private LinearLayout layoutEmpty;
+    private LinearLayout layoutReplyIndicator;
     private TextView tvCommentsTitle;
+    private TextView tvReplyingTo;
     private ImageView ivClose, ivSend;
+    private ImageButton btnCancelReply;
     private CircleImageView ivUserAvatar;
     private TextInputEditText etComment;
 
     private CommentsAdapter adapter;
     private SessionManager sessionManager;
     private CommentRepository commentRepository;
+
+    // Track reply state
+    private String replyToCommentId = null;
+    private String replyToUsername = null;
 
     public static CommentsBottomSheet newInstance(String snippetId, String snippetTitle) {
         CommentsBottomSheet fragment = new CommentsBottomSheet();
@@ -127,9 +135,12 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
     private void initViews(View view) {
         rvComments = view.findViewById(R.id.rvComments);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
+        layoutReplyIndicator = view.findViewById(R.id.layoutReplyIndicator);
         tvCommentsTitle = view.findViewById(R.id.tvCommentsTitle);
+        tvReplyingTo = view.findViewById(R.id.tvReplyingTo);
         ivClose = view.findViewById(R.id.ivClose);
         ivSend = view.findViewById(R.id.ivSend);
+        btnCancelReply = view.findViewById(R.id.btnCancelReply);
         ivUserAvatar = view.findViewById(R.id.ivUserAvatar);
         etComment = view.findViewById(R.id.etComment);
     }
@@ -161,6 +172,13 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
                 postComment(commentText);
             }
         });
+
+        if (btnCancelReply != null) {
+            btnCancelReply.setOnClickListener(v -> {
+                hideReplyIndicator();
+                etComment.setText("");
+            });
+        }
     }
 
     private void loadComments() {
@@ -199,15 +217,20 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
         // Disable send button while posting
         ivSend.setEnabled(false);
 
-        commentRepository.addComment(snippetId, content).observe(getViewLifecycleOwner(), resource -> {
+        // Pass parent_id if replying to a comment
+        String parentId = replyToCommentId;
+
+        commentRepository.addComment(snippetId, content, parentId).observe(getViewLifecycleOwner(), resource -> {
             ivSend.setEnabled(true);
             if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
                 adapter.addComment(resource.data);
                 etComment.setText("");
+                hideReplyIndicator(); // Clear reply state
                 rvComments.scrollToPosition(0);
                 updateEmptyState(false);
                 updateCommentsCount();
-                Toast.makeText(requireContext(), "Comment posted!", Toast.LENGTH_SHORT).show();
+                String message = parentId != null ? "Reply posted!" : "Comment posted!";
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
             } else if (resource.status == Resource.Status.ERROR) {
                 Toast.makeText(requireContext(), "Failed to post comment: " + resource.message, Toast.LENGTH_SHORT).show();
             }
@@ -252,11 +275,33 @@ public class CommentsBottomSheet extends BottomSheetDialogFragment implements Co
 
     @Override
     public void onReplyClick(Comment comment) {
-        // Pre-fill with @mention
+        // Store reply state - reply to the root comment if this is already a reply
+        replyToCommentId = comment.isReply() ? comment.getParentId() : comment.getId();
+        replyToUsername = comment.getAuthorUsername();
+
+        // Show reply indicator
+        showReplyIndicator(comment.getDisplayName());
+
+        // Pre-fill with @mention and focus
         String mention = "@" + comment.getAuthorUsername() + " ";
         etComment.setText(mention);
         etComment.setSelection(mention.length());
         etComment.requestFocus();
+    }
+
+    private void showReplyIndicator(String displayName) {
+        if (layoutReplyIndicator != null) {
+            layoutReplyIndicator.setVisibility(View.VISIBLE);
+            tvReplyingTo.setText("Replying to " + displayName);
+        }
+    }
+
+    private void hideReplyIndicator() {
+        if (layoutReplyIndicator != null) {
+            layoutReplyIndicator.setVisibility(View.GONE);
+        }
+        replyToCommentId = null;
+        replyToUsername = null;
     }
 
     @Override

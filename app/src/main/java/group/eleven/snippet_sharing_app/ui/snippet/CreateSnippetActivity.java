@@ -171,7 +171,7 @@ public class CreateSnippetActivity extends AppCompatActivity {
     }
 
     private void setupHeaderAndInputs() {
-        binding.tvCancel.setOnClickListener(v -> finish());
+        binding.btnBack.setOnClickListener(v -> finish());
         binding.btnPublish.setOnClickListener(v -> {
             String title = binding.etTitle.getText().toString();
             if (title.isEmpty()) {

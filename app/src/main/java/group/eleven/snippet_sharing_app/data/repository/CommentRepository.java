@@ -62,13 +62,19 @@ public class CommentRepository {
 
     /**
      * Add a comment to a snippet
+     * @param snippetId The snippet ID
+     * @param content The comment content
+     * @param parentId Optional parent comment ID for replies (null for root comments)
      */
-    public LiveData<Resource<Comment>> addComment(String snippetId, String content) {
+    public LiveData<Resource<Comment>> addComment(String snippetId, String content, String parentId) {
         MutableLiveData<Resource<Comment>> result = new MutableLiveData<>();
         result.setValue(Resource.loading(null));
 
         Map<String, String> data = new HashMap<>();
         data.put("content", content);
+        if (parentId != null && !parentId.isEmpty()) {
+            data.put("parent_id", parentId);
+        }
 
         apiService.addComment(snippetId, data).enqueue(new Callback<ApiResponse<Comment>>() {
             @Override

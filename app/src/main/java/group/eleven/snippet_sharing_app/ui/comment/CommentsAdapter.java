@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
@@ -23,13 +25,32 @@ import group.eleven.snippet_sharing_app.api.ApiClient;
 import group.eleven.snippet_sharing_app.data.model.Comment;
 
 /**
- * Adapter for displaying comments in a list with reply support
+ * Adapter for displaying comments in a list with reply support and collapsible replies
  */
-public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
+public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Comment> flattenedComments;
+    private static final int VIEW_TYPE_COMMENT = 0;
+    private static final int VIEW_TYPE_VIEW_MORE = 1;
+    private static final int MAX_VISIBLE_REPLIES = 2;
+
+    private List<Object> displayItems; // Can hold Comment or ViewMoreItem
+    private List<Comment> originalComments; // Store original comments for expansion
+    private Set<String> expandedParentIds; // Track which parent comments have expanded replies
     private Context context;
     private OnCommentActionListener listener;
+
+    /**
+     * Represents a "View X more replies" item
+     */
+    private static class ViewMoreItem {
+        String parentId;
+        int remainingCount;
+
+        ViewMoreItem(String parentId, int remainingCount) {
+            this.parentId = parentId;
+            this.remainingCount = remainingCount;
+        }
+    }
 
     public interface OnCommentActionListener {
         void onLikeClick(Comment comment, int position);
@@ -38,7 +59,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     public CommentsAdapter() {
-        this.flattenedComments = new ArrayList<>();
+        this.displayItems = new ArrayList<>();
+        this.originalComments = new ArrayList<>();
+        this.expandedParentIds = new HashSet<>();
     }
 
     public void setOnCommentActionListener(OnCommentActionListener listener) {
@@ -46,83 +69,146 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     }
 
     /**
-     * Set comments and flatten replies for display
+     * Set comments and flatten replies for display with collapsible support
      */
     public void setComments(List<Comment> comments) {
-        flattenedComments = new ArrayList<>();
-        if (comments != null) {
-            for (Comment comment : comments) {
-                flattenedComments.add(comment);
-                // Add replies after parent comment
-                if (comment.hasReplies()) {
-                    flattenedComments.addAll(comment.getReplies());
+        originalComments = comments != null ? new ArrayList<>(comments) : new ArrayList<>();
+        rebuildDisplayList();
+    }
+
+    /**
+     * Rebuild the display list based on expanded state
+     */
+    private void rebuildDisplayList() {
+        displayItems = new ArrayList<>();
+        for (Comment comment : originalComments) {
+            displayItems.add(comment);
+            if (comment.hasReplies()) {
+                List<Comment> replies = comment.getReplies();
+                boolean isExpanded = expandedParentIds.contains(comment.getId());
+
+                if (isExpanded || replies.size() <= MAX_VISIBLE_REPLIES) {
+                    // Show all replies
+                    displayItems.addAll(replies);
+                } else {
+                    // Show only first MAX_VISIBLE_REPLIES and add "View more" item
+                    for (int i = 0; i < MAX_VISIBLE_REPLIES; i++) {
+                        displayItems.add(replies.get(i));
+                    }
+                    int remaining = replies.size() - MAX_VISIBLE_REPLIES;
+                    displayItems.add(new ViewMoreItem(comment.getId(), remaining));
                 }
             }
         }
         notifyDataSetChanged();
     }
 
+    /**
+     * Expand replies for a parent comment
+     */
+    private void expandReplies(String parentId) {
+        expandedParentIds.add(parentId);
+        rebuildDisplayList();
+    }
+
     public void addComment(Comment comment) {
-        // Add new comment at top if it's a root comment
         if (!comment.isReply()) {
-            flattenedComments.add(0, comment);
-            notifyItemInserted(0);
+            // Add new root comment at top
+            originalComments.add(0, comment);
         } else {
-            // Add reply after its parent
-            for (int i = 0; i < flattenedComments.size(); i++) {
-                if (flattenedComments.get(i).getId().equals(comment.getParentId())) {
-                    // Find the end of replies for this parent
-                    int insertPos = i + 1;
-                    while (insertPos < flattenedComments.size() &&
-                           flattenedComments.get(insertPos).isReply() &&
-                           comment.getParentId().equals(flattenedComments.get(insertPos).getParentId())) {
-                        insertPos++;
+            // Add reply to parent's replies list
+            for (Comment parent : originalComments) {
+                if (parent.getId().equals(comment.getParentId())) {
+                    if (parent.getReplies() == null) {
+                        parent.setReplies(new ArrayList<>());
                     }
-                    flattenedComments.add(insertPos, comment);
-                    notifyItemInserted(insertPos);
-                    return;
+                    parent.getReplies().add(comment);
+                    // Auto-expand when user posts a reply
+                    expandedParentIds.add(parent.getId());
+                    break;
                 }
             }
-            // If parent not found, add at top
-            flattenedComments.add(0, comment);
-            notifyItemInserted(0);
         }
+        rebuildDisplayList();
     }
 
     public void updateComment(int position, Comment comment) {
-        if (position >= 0 && position < flattenedComments.size()) {
-            flattenedComments.set(position, comment);
-            notifyItemChanged(position);
+        if (position >= 0 && position < displayItems.size()) {
+            Object item = displayItems.get(position);
+            if (item instanceof Comment) {
+                displayItems.set(position, comment);
+                notifyItemChanged(position);
+            }
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        Object item = displayItems.get(position);
+        return item instanceof ViewMoreItem ? VIEW_TYPE_VIEW_MORE : VIEW_TYPE_COMMENT;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_comment, parent, false);
-        return new ViewHolder(view);
+        if (viewType == VIEW_TYPE_VIEW_MORE) {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_view_more_replies, parent, false);
+            return new ViewMoreViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.item_comment, parent, false);
+            return new CommentViewHolder(view);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Comment comment = flattenedComments.get(position);
-        holder.bind(comment, position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        Object item = displayItems.get(position);
+        if (holder instanceof CommentViewHolder && item instanceof Comment) {
+            ((CommentViewHolder) holder).bind((Comment) item, position);
+        } else if (holder instanceof ViewMoreViewHolder && item instanceof ViewMoreItem) {
+            ((ViewMoreViewHolder) holder).bind((ViewMoreItem) item);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return flattenedComments.size();
+        return displayItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * ViewHolder for "View X more replies" item
+     */
+    public class ViewMoreViewHolder extends RecyclerView.ViewHolder {
+        TextView tvViewMore;
+        View rootView;
+
+        public ViewMoreViewHolder(@NonNull View itemView) {
+            super(itemView);
+            rootView = itemView;
+            tvViewMore = itemView.findViewById(R.id.tvViewMore);
+        }
+
+        public void bind(ViewMoreItem item) {
+            String text = "View " + item.remainingCount + " more " +
+                         (item.remainingCount == 1 ? "reply" : "replies");
+            tvViewMore.setText(text);
+
+            rootView.setOnClickListener(v -> expandReplies(item.parentId));
+        }
+    }
+
+    /**
+     * ViewHolder for comment items
+     */
+    public class CommentViewHolder extends RecyclerView.ViewHolder {
         CircleImageView ivAuthorAvatar;
         TextView tvAuthorName, tvTimeAgo, tvCommentText, tvLikeText, tvLikesCount;
         LinearLayout btnLike, btnReply;
         ImageView ivLike;
         View rootView;
 
-        public ViewHolder(@NonNull View itemView) {
+        public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
             ivAuthorAvatar = itemView.findViewById(R.id.ivAuthorAvatar);

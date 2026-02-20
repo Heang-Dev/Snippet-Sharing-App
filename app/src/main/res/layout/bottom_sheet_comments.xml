@@ -109,6 +109,47 @@
         android:layout_height="1dp"
         android:background="?attr/dividerColor" />
 
+    <!-- Reply Indicator (shown when replying to a comment) -->
+    <LinearLayout
+        android:id="@+id/layoutReplyIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/surfaceVariantColor"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_reply"
+            app:tint="?attr/textSecondaryColor" />
+
+        <TextView
+            android:id="@+id/tvReplyingTo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="?attr/textSecondaryColor"
+            android:textSize="13sp"
+            tools:text="Replying to John Doe" />
+
+        <ImageButton
+            android:id="@+id/btnCancelReply"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Cancel reply"
+            android:src="@drawable/ic_close"
+            app:tint="?attr/textSecondaryColor" />
+
+    </LinearLayout>
+
     <!-- Comment Input -->
     <LinearLayout
         android:layout_width="match_parent"
