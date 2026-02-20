@@ -21,6 +21,7 @@ import group.eleven.snippet_sharing_app.data.model.Team;
 import group.eleven.snippet_sharing_app.data.model.TeamInvitation;
 import group.eleven.snippet_sharing_app.data.model.TeamMember;
 import group.eleven.snippet_sharing_app.data.model.TeamSnippet;
+import group.eleven.snippet_sharing_app.data.model.TeamsResponse;
 import group.eleven.snippet_sharing_app.utils.SessionManager; // Import SessionManager
 
 import static group.eleven.snippet_sharing_app.data.repository.AuthRepository.Resource; // Explicitly import Resource
@@ -45,16 +46,17 @@ public class TeamRepository {
 
     /**
      * Get a list of teams the current user is a member of.
+     * Returns TeamsResponse with owned and member_of lists.
      */
-    public LiveData<AuthRepository.Resource<List<Team>>> getMyTeams() {
-        MutableLiveData<AuthRepository.Resource<List<Team>>> result = new MutableLiveData<>();
+    public LiveData<AuthRepository.Resource<TeamsResponse>> getMyTeams() {
+        MutableLiveData<AuthRepository.Resource<TeamsResponse>> result = new MutableLiveData<>();
         result.setValue(AuthRepository.Resource.loading());
 
-        apiService.getMyTeams().enqueue(new Callback<ApiResponse<List<Team>>>() {
+        apiService.getMyTeams().enqueue(new Callback<ApiResponse<TeamsResponse>>() {
             @Override
-            public void onResponse(Call<ApiResponse<List<Team>>> call, Response<ApiResponse<List<Team>>> response) {
+            public void onResponse(Call<ApiResponse<TeamsResponse>> call, Response<ApiResponse<TeamsResponse>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse<List<Team>> apiResponse = response.body();
+                    ApiResponse<TeamsResponse> apiResponse = response.body();
                     if (apiResponse.isSuccess()) {
                         result.setValue(AuthRepository.Resource.success(apiResponse.getData()));
                     } else {
@@ -66,7 +68,7 @@ public class TeamRepository {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<List<Team>>> call, Throwable t) {
+            public void onFailure(Call<ApiResponse<TeamsResponse>> call, Throwable t) {
                 result.setValue(AuthRepository.Resource.error("Network error: " + t.getMessage()));
             }
         });

@@ -25,7 +25,10 @@ import java.util.ArrayList;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.Team;
 import group.eleven.snippet_sharing_app.data.model.TeamInvitation;
+import group.eleven.snippet_sharing_app.data.model.TeamsResponse;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
+
+import java.util.List;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.ui.mysnippets.MySnippetsActivity;
 import group.eleven.snippet_sharing_app.ui.profile.ProfileActivity;
@@ -180,11 +183,14 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
                 layoutEmptyTeams.setVisibility(View.GONE);
                 rvTeams.setVisibility(View.GONE);
             } else if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
-                if (resource.getData() != null && !resource.getData().isEmpty()) {
-                    teamListAdapter.setTeams(resource.getData());
+                TeamsResponse teamsResponse = resource.getData();
+                List<Team> allTeams = teamsResponse != null ? teamsResponse.getAllTeams() : new ArrayList<>();
+
+                if (!allTeams.isEmpty()) {
+                    teamListAdapter.setTeams(allTeams);
                     rvTeams.setVisibility(View.VISIBLE);
                     layoutEmptyTeams.setVisibility(View.GONE);
-                    tvTeamsCount.setText(resource.getData().size() + " teams");
+                    tvTeamsCount.setText(allTeams.size() + " teams");
                     fabCreateTeam.setVisibility(View.VISIBLE);
                 } else {
                     rvTeams.setVisibility(View.GONE);

@@ -109,6 +109,16 @@
         <item name="warningColor">@color/warning</item>
         <item name="infoColor">@color/info</item>
 
+        <!-- Syntax Highlighting - Light Theme -->
+        <item name="syntaxKeywordColor">@color/light_syntax_keyword</item>
+        <item name="syntaxStringColor">@color/light_syntax_string</item>
+        <item name="syntaxNumberColor">@color/light_syntax_number</item>
+        <item name="syntaxCommentColor">@color/light_syntax_comment</item>
+        <item name="syntaxFunctionColor">@color/light_syntax_function</item>
+        <item name="syntaxTypeColor">@color/light_syntax_type</item>
+        <item name="syntaxOperatorColor">@color/light_syntax_operator</item>
+        <item name="syntaxVariableColor">@color/light_syntax_variable</item>
+
         <!-- Component Styles -->
         <item name="snippetCardStyle">@style/Widget.SnippetApp.Card.Snippet</item>
         <item name="searchBarStyle">@style/Widget.SnippetApp.SearchBar</item>

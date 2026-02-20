@@ -15,10 +15,10 @@ public class Team {
     @SerializedName("avatar_url")
     private String avatarUrl;
 
-    @SerializedName("member_count")
+    @SerializedName("members_count")
     private int memberCount;
 
-    @SerializedName("snippet_count")
+    @SerializedName("snippets_count")
     private int snippetCount;
 
     @SerializedName("privacy")
@@ -29,6 +29,9 @@ public class Team {
 
     @SerializedName("user_role") // Role of the current user in this team
     private String userRole; // e.g., "owner", "admin", "member"
+
+    // Default constructor for Gson
+    public Team() {}
 
     // Constructors
     public Team(String id, String name, String description, String avatarUrl, int memberCount, int snippetCount, String privacy, String ownerId, String userRole) {

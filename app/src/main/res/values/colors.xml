@@ -155,7 +155,7 @@
     <color name="code_pink">#FF6EB4</color>
     <color name="code_orange">#FF8C42</color>
 
-    <!-- ========== SYNTAX HIGHLIGHTING ========== -->
+    <!-- ========== SYNTAX HIGHLIGHTING (Dark Theme - Dracula-inspired) ========== -->
     <color name="syntax_keyword">#FF79C6</color>
     <color name="syntax_string">#F1FA8C</color>
     <color name="syntax_number">#BD93F9</color>
@@ -163,6 +163,7 @@
     <color name="syntax_function">#50FA7B</color>
     <color name="syntax_variable">#F8F8F2</color>
     <color name="syntax_operator">#FF79C6</color>
+    <color name="syntax_type">#8BE9FD</color>
 
     <!-- ========== ACTIVITY GRAPH COLORS ========== -->
     <!-- Purple gradient for activity -->
@@ -299,4 +300,14 @@
     <color name="light_secondary_container">#FFE8D8</color>
     <color name="light_on_secondary_container">#8B5A2B</color>
     <color name="light_error_container">#FFEBEE</color>
+
+    <!-- ========== SYNTAX HIGHLIGHTING (Light Theme - VS Code Light inspired) ========== -->
+    <color name="light_syntax_keyword">#AF00DB</color>
+    <color name="light_syntax_string">#A31515</color>
+    <color name="light_syntax_number">#098658</color>
+    <color name="light_syntax_comment">#008000</color>
+    <color name="light_syntax_function">#795E26</color>
+    <color name="light_syntax_variable">#001080</color>
+    <color name="light_syntax_operator">#000000</color>
+    <color name="light_syntax_type">#267F99</color>
 </resources>

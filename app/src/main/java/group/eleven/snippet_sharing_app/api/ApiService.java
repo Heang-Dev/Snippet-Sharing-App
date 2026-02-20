@@ -19,6 +19,7 @@ import group.eleven.snippet_sharing_app.data.model.Team;
 import group.eleven.snippet_sharing_app.data.model.TeamMember;
 import group.eleven.snippet_sharing_app.data.model.TeamInvitation;
 import group.eleven.snippet_sharing_app.data.model.TeamSnippet;
+import group.eleven.snippet_sharing_app.data.model.TeamsResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -138,7 +139,7 @@ public interface ApiService {
      * Get a list of teams the current user is a member of.
      */
     @GET("teams")
-    Call<ApiResponse<List<Team>>> getMyTeams();
+    Call<ApiResponse<TeamsResponse>> getMyTeams();
 
     /**
      * Create a new team.

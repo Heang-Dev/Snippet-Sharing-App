@@ -68,5 +68,15 @@
         <item name="errorColor">@color/error</item>
         <item name="warningColor">@color/warning</item>
         <item name="infoColor">@color/info</item>
+
+        <!-- Syntax Highlighting - Dark Theme (Dracula-inspired) -->
+        <item name="syntaxKeywordColor">@color/syntax_keyword</item>
+        <item name="syntaxStringColor">@color/syntax_string</item>
+        <item name="syntaxNumberColor">@color/syntax_number</item>
+        <item name="syntaxCommentColor">@color/syntax_comment</item>
+        <item name="syntaxFunctionColor">@color/syntax_function</item>
+        <item name="syntaxTypeColor">@color/syntax_type</item>
+        <item name="syntaxOperatorColor">@color/syntax_operator</item>
+        <item name="syntaxVariableColor">@color/syntax_variable</item>
     </style>
 </resources>

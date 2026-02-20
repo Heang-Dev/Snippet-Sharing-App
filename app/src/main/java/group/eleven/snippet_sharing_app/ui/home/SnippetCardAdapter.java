@@ -1,6 +1,8 @@
 package group.eleven.snippet_sharing_app.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import java.util.Map;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.SnippetCard;
+import group.eleven.snippet_sharing_app.utils.SyntaxHighlighter;
 
 /**
  * Adapter for snippet cards RecyclerView
@@ -181,6 +184,7 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
         private final TextView tvTag2;
         private final CardView cardView;
         private final ImageButton btnShare;
+        private final SyntaxHighlighter syntaxHighlighter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -193,6 +197,7 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
             tvTag1 = itemView.findViewById(R.id.tvTag1);
             tvTag2 = itemView.findViewById(R.id.tvTag2);
             btnShare = itemView.findViewById(R.id.btnShare);
+            syntaxHighlighter = new SyntaxHighlighter(itemView.getContext());
         }
 
         public void bind(SnippetCard snippet, OnSnippetClickListener listener) {
@@ -206,10 +211,16 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
                 tvCodeFilename.setText(generateFilename(snippet.getTitle(), snippet.getLanguageBadge()));
             }
 
-            // Display code preview
+            // Display code preview with syntax highlighting
             if (tvCode != null) {
                 String code = snippet.getCodePreview();
-                tvCode.setText(code != null && !code.isEmpty() ? code : "// No code preview");
+                if (code != null && !code.isEmpty()) {
+                    SpannableString highlightedCode = syntaxHighlighter.highlightForLanguage(
+                            code, snippet.getLanguageBadge());
+                    tvCode.setText(highlightedCode);
+                } else {
+                    tvCode.setText("// No code preview");
+                }
             }
 
             // Set tags

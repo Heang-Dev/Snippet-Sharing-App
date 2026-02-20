@@ -69,6 +69,16 @@
     <attr name="warningColor" format="color|reference" />
     <attr name="infoColor" format="color|reference" />
 
+    <!-- ========== SYNTAX HIGHLIGHTING ATTRIBUTES ========== -->
+    <attr name="syntaxKeywordColor" format="color|reference" />
+    <attr name="syntaxStringColor" format="color|reference" />
+    <attr name="syntaxNumberColor" format="color|reference" />
+    <attr name="syntaxCommentColor" format="color|reference" />
+    <attr name="syntaxFunctionColor" format="color|reference" />
+    <attr name="syntaxTypeColor" format="color|reference" />
+    <attr name="syntaxOperatorColor" format="color|reference" />
+    <attr name="syntaxVariableColor" format="color|reference" />
+
     <!-- ========== COMPONENT STYLE ATTRIBUTES ========== -->
     <attr name="snippetCardStyle" format="reference" />
     <attr name="searchBarStyle" format="reference" />
