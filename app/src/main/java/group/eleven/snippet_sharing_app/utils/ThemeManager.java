@@ -30,7 +30,7 @@ public class ThemeManager {
     // Theme mode constants
     public static final int MODE_SYSTEM = 0;  // Follow system theme
     public static final int MODE_DARK = 1;    // Always dark
-    public static final int MODE_LIGHT = 2;   // Always light (not used in this app)
+    public static final int MODE_LIGHT = 2;   // Always light (default for this app)
 
     private final Context context;
     private final SharedPreferences prefs;
@@ -84,8 +84,8 @@ public class ThemeManager {
      * Get current theme mode
      */
     public int getThemeMode() {
-        // Default to dark mode for this app
-        return prefs.getInt(KEY_THEME_MODE, MODE_DARK);
+        // Default to light mode for this app
+        return prefs.getInt(KEY_THEME_MODE, MODE_LIGHT);
     }
 
     /**

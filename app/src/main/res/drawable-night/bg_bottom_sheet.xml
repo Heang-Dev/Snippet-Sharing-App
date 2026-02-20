@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Light theme bottom sheet background -->
+<!-- Dark theme bottom sheet background -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/light_surface"/>
+    <solid android:color="@color/surface"/>
     <corners android:topLeftRadius="24dp" android:topRightRadius="24dp"/>
 </shape>

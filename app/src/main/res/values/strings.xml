@@ -221,4 +221,21 @@
     <string name="logout_confirm">Are you sure you want to log out?</string>
     <string name="delete_account">Delete Account</string>
     <string name="delete_account_confirm">This will permanently delete all your data. This action cannot be undone.</string>
+
+    <!-- Language Bottom Sheet -->
+    <string name="select_language">Select Language</string>
+    <string name="find_language_hint">Find a language...</string>
+    <string name="recently_used">RECENTLY USED</string>
+    <string name="all_languages">ALL LANGUAGES</string>
+    <string name="done">Done</string>
+    <string name="manage_tags">Manage Tags</string>
+    <string name="search_tags_hint">Search tags...</string>
+    <string name="suggestions">SUGGESTIONS</string>
+    <string name="popular">POPULAR</string>
+    <string name="select_category">Select Category</string>
+    <string name="search_categories_hint">Search categories...</string>
+    <string name="create_new_category">Create New Category</string>
+    <string name="create_category_subtitle">Add a new folder to your library</string>
+    <string name="recent">RECENT</string>
+    <string name="all_categories">ALL CATEGORIES</string>
 </resources>

@@ -13,7 +13,7 @@
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp"
-        android:background="@color/border" />
+        android:background="?attr/dividerColor" />
 
     <!-- Header Row -->
     <LinearLayout
@@ -27,8 +27,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Select Language"
-            android:textColor="@color/text_primary"
+            android:text="@string/select_language"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -36,9 +36,9 @@
             android:id="@+id/btnClose"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:pointerIcon="hand"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_close"
-            app:tint="@color/icon_secondary" />
+            app:tint="?attr/iconSecondaryColor" />
     </LinearLayout>
 
     <!-- Search Input -->
@@ -46,15 +46,15 @@
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@drawable/bg_search_field"
+        android:background="@drawable/bg_bottom_sheet_search_input"
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="12dp"
-        android:drawableTint="@color/icon_secondary"
-        android:hint="Find a language..."
+        android:drawableTint="?attr/iconSecondaryColor"
+        android:hint="@string/find_language_hint"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="@color/text_primary"
-        android:textColorHint="@color/text_muted" />
+        android:textColor="?attr/textPrimaryColor"
+        android:textColorHint="?attr/textMutedColor" />
 
     <!-- Recent Languages -->
     <TextView
@@ -63,8 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="12dp"
-        android:text="RECENTLY USED"
-        android:textColor="@color/text_secondary"
+        android:text="@string/recently_used"
+        android:textColor="?attr/textSecondaryColor"
         android:textSize="12sp"
         android:textStyle="bold"
         android:visibility="gone"/>
@@ -84,8 +84,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="12dp"
-        android:text="ALL LANGUAGES"
-        android:textColor="@color/text_secondary"
+        android:text="@string/all_languages"
+        android:textColor="?attr/textSecondaryColor"
         android:textSize="12sp"
         android:textStyle="bold" />
 
