@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_app_pattern"
+    android:background="@drawable/bg_auth_pattern"
     android:fillViewport="true">
 
     <LinearLayout
@@ -23,7 +23,7 @@
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="Back"
             android:layout_marginStart="-8dp"
-            app:tint="@color/text_primary" />
+            app:tint="?attr/textPrimaryColor" />
 
         <!-- App Logo -->
         <com.google.android.material.card.MaterialCardView
@@ -34,7 +34,7 @@
             app:cardCornerRadius="32dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp"
-            app:cardBackgroundColor="@color/surface_variant">
+            app:cardBackgroundColor="?attr/surfaceVariantColor">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="Register Now"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="26sp"
             android:fontFamily="sans-serif-medium" />
 
@@ -63,7 +63,7 @@
             android:layout_marginHorizontal="16dp"
             android:gravity="center"
             android:text="Create your account to start sharing\nand discovering code snippets."
-            android:textColor="@color/text_secondary"
+            android:textColor="?attr/textSecondaryColor"
             android:textSize="14sp"
             android:lineSpacingMultiplier="1.4" />
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
             android:text="Name"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="14sp" />
 
         <!-- Name Input -->
@@ -87,7 +87,7 @@
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
-            app:boxStrokeColor="@color/text_input_box_stroke"
+            app:boxStrokeColor="@color/text_input_box_stroke_themed"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -99,8 +99,8 @@
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -110,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Email"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="14sp" />
 
         <!-- Email Input -->
@@ -124,7 +124,7 @@
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
-            app:boxStrokeColor="@color/text_input_box_stroke"
+            app:boxStrokeColor="@color/text_input_box_stroke_themed"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -136,8 +136,8 @@
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Username"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="14sp" />
 
         <!-- Username Input -->
@@ -161,7 +161,7 @@
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
-            app:boxStrokeColor="@color/text_input_box_stroke"
+            app:boxStrokeColor="@color/text_input_box_stroke_themed"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -173,8 +173,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -184,7 +184,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Password"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="14sp" />
 
         <!-- Password Input -->
@@ -198,9 +198,9 @@
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
-            app:boxStrokeColor="@color/text_input_box_stroke"
+            app:boxStrokeColor="@color/text_input_box_stroke_themed"
             app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_secondary"
+            app:endIconTint="?attr/textSecondaryColor"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -212,8 +212,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -223,7 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="Confirm Password"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="14sp" />
 
         <!-- Confirm Password Input -->
@@ -237,9 +237,9 @@
             app:boxCornerRadiusTopEnd="8dp"
             app:boxCornerRadiusBottomStart="8dp"
             app:boxCornerRadiusBottomEnd="8dp"
-            app:boxStrokeColor="@color/text_input_box_stroke"
+            app:boxStrokeColor="@color/text_input_box_stroke_themed"
             app:endIconMode="password_toggle"
-            app:endIconTint="@color/text_secondary"
+            app:endIconTint="?attr/textSecondaryColor"
             app:hintEnabled="false"
             app:errorEnabled="true">
 
@@ -251,8 +251,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:imeOptions="actionDone"
-                android:textColor="@color/text_primary"
-                android:textColorHint="@color/text_hint"
+                android:textColor="?attr/textPrimaryColor"
+                android:textColorHint="?attr/textHintColor"
                 android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -267,13 +267,13 @@
                 android:id="@+id/cbTerms"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="@color/primary" />
+                android:buttonTint="?attr/accentColor" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="I agree to the terms &amp; conditions"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondaryColor"
                 android:textSize="13sp" />
         </LinearLayout>
 
@@ -291,7 +291,7 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textAllCaps="false"
-                app:backgroundTint="@color/primary"
+                app:backgroundTint="?attr/accentColor"
                 app:cornerRadius="8dp" />
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -325,7 +325,7 @@
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@drawable/bg_social_button"
+                android:background="@drawable/bg_social_button_themed"
                 android:src="@drawable/ic_google"
                 android:scaleType="center"
                 android:contentDescription="Google" />
@@ -335,7 +335,7 @@
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@drawable/bg_social_button"
+                android:background="@drawable/bg_social_button_themed"
                 android:src="@drawable/ic_apple"
                 android:scaleType="center"
                 android:contentDescription="Apple" />
@@ -345,7 +345,7 @@
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@drawable/bg_social_button"
+                android:background="@drawable/bg_social_button_themed"
                 android:src="@drawable/ic_facebook"
                 android:scaleType="center"
                 android:contentDescription="Facebook" />
@@ -363,7 +363,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Already Have An Account?"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondaryColor"
                 android:textSize="14sp" />
 
             <TextView
@@ -373,7 +373,7 @@
                 android:layout_marginStart="4dp"
                 android:padding="4dp"
                 android:text="Log In"
-                android:textColor="@color/primary"
+                android:textColor="?attr/accentColor"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-medium" />
         </LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_app_pattern"
+    android:background="@drawable/bg_auth_pattern"
     android:fillViewport="true">
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="Back"
             android:layout_marginStart="-8dp"
-            app:tint="@color/text_primary" />
+            app:tint="?attr/textPrimaryColor" />
 
         <!-- App Logo -->
         <com.google.android.material.card.MaterialCardView
@@ -35,7 +35,7 @@
             app:cardCornerRadius="36dp"
             app:cardElevation="0dp"
             app:strokeWidth="0dp"
-            app:cardBackgroundColor="@color/surface_variant">
+            app:cardBackgroundColor="?attr/surfaceVariantColor">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="Enter Your OTP"
-            android:textColor="@color/text_primary"
+            android:textColor="?attr/textPrimaryColor"
             android:textSize="26sp"
             android:fontFamily="sans-serif-medium" />
 
@@ -64,7 +64,7 @@
             android:layout_marginHorizontal="24dp"
             android:gravity="center"
             android:text="We've sent a 6-digit verification code\nto your email. Enter the code below."
-            android:textColor="@color/text_secondary"
+            android:textColor="?attr/textSecondaryColor"
             android:textSize="14sp"
             android:lineSpacingMultiplier="1.4" />
 
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:textColor="@color/primary"
+            android:textColor="?attr/accentColor"
             android:textSize="14sp"
             android:textStyle="bold"
             tools:text="example@email.com" />
@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Resend Code In 01:30s"
-            android:textColor="@color/text_secondary"
+            android:textColor="?attr/textSecondaryColor"
             android:textSize="14sp" />
 
         <!-- OTP Input Boxes -->
@@ -103,11 +103,11 @@
                 android:layout_width="48dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_box"
+                android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimaryColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -118,11 +118,11 @@
                 android:layout_width="48dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_box"
+                android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimaryColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -133,11 +133,11 @@
                 android:layout_width="48dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_box"
+                android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimaryColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -148,11 +148,11 @@
                 android:layout_width="48dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_box"
+                android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimaryColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -163,11 +163,11 @@
                 android:layout_width="48dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_box"
+                android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimaryColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -178,11 +178,11 @@
                 android:layout_width="48dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="4dp"
-                android:background="@drawable/bg_otp_box"
+                android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/textPrimaryColor"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:importantForAutofill="no"
@@ -203,7 +203,7 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textAllCaps="false"
-                app:backgroundTint="@color/primary"
+                app:backgroundTint="?attr/accentColor"
                 app:cornerRadius="8dp" />
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -236,7 +236,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Didn't receive the email?"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/textSecondaryColor"
                 android:textSize="14sp" />
 
             <TextView
@@ -246,7 +246,7 @@
                 android:layout_marginStart="4dp"
                 android:padding="4dp"
                 android:text="Click to resend"
-                android:textColor="@color/primary"
+                android:textColor="?attr/accentColor"
                 android:textSize="14sp"
                 android:fontFamily="sans-serif-medium" />
         </LinearLayout>
