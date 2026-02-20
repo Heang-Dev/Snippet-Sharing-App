@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
+    android:layout_marginBottom="8dp"
     app:cardBackgroundColor="?attr/cardSurfaceColor"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="12dp"
     app:cardElevation="0dp"
     app:strokeWidth="0dp">
 
@@ -14,15 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
+        android:padding="12dp"
         android:gravity="center_vertical">
 
         <!-- Team Avatar (Circular like Telegram) -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card_team_avatar"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
-            app:cardCornerRadius="26dp"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:cardCornerRadius="22dp"
             app:cardBackgroundColor="?attr/tagBackgroundColor"
             app:cardElevation="0dp">
 
@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_users"
-                android:padding="12dp"
+                android:padding="10dp"
                 app:tint="?attr/accentColor" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:layout_marginStart="14dp">
+            android:layout_marginStart="10dp">
 
             <!-- Team Name & Role Row -->
             <LinearLayout
@@ -60,7 +60,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="?attr/textPrimaryColor"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     tools:text="Frontend Masters" />
 
@@ -70,12 +70,12 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_tag_chip"
                     android:backgroundTint="?attr/tagBackgroundColor"
-                    android:paddingStart="10dp"
-                    android:paddingTop="4dp"
-                    android:paddingEnd="10dp"
-                    android:paddingBottom="4dp"
+                    android:paddingStart="6dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="6dp"
+                    android:paddingBottom="2dp"
                     android:textColor="?attr/accentColor"
-                    android:textSize="11sp"
+                    android:textSize="9sp"
                     android:textStyle="bold"
                     tools:text="Admin" />
 
@@ -86,12 +86,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="3dp"
                 android:gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
                     android:src="@drawable/ic_person"
                     app:tint="?attr/textMutedColor" />
 
@@ -99,22 +99,22 @@
                     android:id="@+id/tv_member_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="3dp"
                     android:textColor="?attr/textSecondaryColor"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     tools:text="5 members" />
 
                 <View
-                    android:layout_width="4dp"
-                    android:layout_height="4dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_width="3dp"
+                    android:layout_height="3dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/circle_accent"
                     android:alpha="0.3" />
 
                 <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
                     android:src="@drawable/ic_code"
                     app:tint="?attr/textMutedColor" />
 
@@ -122,9 +122,9 @@
                     android:id="@+id/tv_snippet_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="3dp"
                     android:textColor="?attr/textSecondaryColor"
-                    android:textSize="13sp"
+                    android:textSize="11sp"
                     tools:text="12 snippets" />
 
             </LinearLayout>
@@ -133,9 +133,9 @@
 
         <!-- Arrow -->
         <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="6dp"
             android:src="@drawable/ic_arrow_forward"
             app:tint="?attr/textMutedColor" />
 

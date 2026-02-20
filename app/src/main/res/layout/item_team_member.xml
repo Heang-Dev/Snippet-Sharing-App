@@ -6,19 +6,19 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
+    android:paddingStart="14dp"
+    android:paddingEnd="14dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true">
 
     <!-- Member Avatar (Circular) -->
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="44dp"
-        android:layout_height="44dp"
-        app:cardCornerRadius="22dp"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        app:cardCornerRadius="19dp"
         app:cardBackgroundColor="?attr/tagBackgroundColor"
         app:cardElevation="0dp">
 
@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_person"
-            android:padding="10dp"
+            android:padding="8dp"
             app:tint="?attr/accentColor" />
 
     </com.google.android.material.card.MaterialCardView>
@@ -38,7 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="14dp"
+        android:layout_marginStart="10dp"
         android:orientation="vertical">
 
         <TextView
@@ -48,16 +48,16 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="?attr/textPrimaryColor"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="john_doe" />
 
         <TextView
             android:id="@+id/tv_member_role"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="1dp"
             android:textColor="?attr/textMutedColor"
-            android:textSize="13sp"
+            android:textSize="11sp"
             tools:text="Admin" />
 
     </LinearLayout>
@@ -69,12 +69,12 @@
         android:layout_height="wrap_content"
         android:background="@drawable/bg_tag_chip"
         android:backgroundTint="?attr/tagBackgroundColor"
-        android:paddingStart="10dp"
-        android:paddingTop="4dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="4dp"
+        android:paddingStart="8dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="2dp"
         android:textColor="?attr/accentColor"
-        android:textSize="11sp"
+        android:textSize="10sp"
         android:visibility="gone"
         tools:text="Owner"
         tools:visibility="visible" />
@@ -82,9 +82,9 @@
     <!-- More options icon -->
     <ImageView
         android:id="@+id/iv_menu_options"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="6dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"

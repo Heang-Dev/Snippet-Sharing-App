@@ -184,4 +184,14 @@
     <!-- Team Management -->
     <string name="team_member_count">%1$d Members</string>
     <string name="team_snippet_count"> | %1$d Snippets</string>
+
+    <!-- Search Screen -->
+    <string name="search">Search</string>
+    <string name="save_search">Save Search</string>
+    <string name="lang_all">Lang: All</string>
+    <string name="relevance">Relevance</string>
+    <string name="results_found_placeholder">0 results found</string>
+    <string name="results_found">%1$d results found</string>
+    <string name="load_more">Load more results</string>
+    <string name="create_snippet">Create Snippet</string>
 </resources>

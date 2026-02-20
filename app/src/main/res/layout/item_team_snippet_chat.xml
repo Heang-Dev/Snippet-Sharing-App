@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:paddingTop="3dp"
+    android:paddingBottom="3dp">
+
+    <!-- Language Badge (small circle) -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="3dp"
+        app:cardCornerRadius="16dp"
+        app:cardBackgroundColor="?attr/tagBackgroundColor"
+        app:cardElevation="0dp">
+
+        <TextView
+            android:id="@+id/tvLanguageBadge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="JS"
+            android:textColor="?attr/accentColor"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Snippet Content Bubble -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardSnippet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="6dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="?attr/cardSurfaceColor"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Title Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvSnippetTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Snippet Title"
+                    android:textColor="?attr/textPrimaryColor"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <ImageView
+                    android:id="@+id/ivMore"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_help_outline"
+                    app:tint="?attr/textMutedColor" />
+
+            </LinearLayout>
+
+            <!-- Time -->
+            <TextView
+                android:id="@+id/tvSnippetTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:text="1 day ago"
+                android:textColor="?attr/textMutedColor"
+                android:textSize="10sp" />
+
+            <!-- Code Preview Container -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                app:cardCornerRadius="6dp"
+                app:cardBackgroundColor="?attr/codeBlockBackground"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Code Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="end|center_vertical"
+                        android:paddingEnd="6dp"
+                        android:background="?attr/codeBlockHeaderBackground">
+
+                        <View
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:background="@drawable/circle_dot"
+                            android:backgroundTint="#FF5F56" />
+
+                        <View
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:layout_marginStart="3dp"
+                            android:background="@drawable/circle_dot"
+                            android:backgroundTint="#FFBD2E" />
+
+                        <View
+                            android:layout_width="6dp"
+                            android:layout_height="6dp"
+                            android:layout_marginStart="3dp"
+                            android:background="@drawable/circle_dot"
+                            android:backgroundTint="#27C93F" />
+
+                    </LinearLayout>
+
+                    <!-- Code Content -->
+                    <TextView
+                        android:id="@+id/tvCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:fontFamily="monospace"
+                        android:text="code preview..."
+                        android:textColor="?attr/codeTextColor"
+                        android:textSize="11sp"
+                        android:maxLines="3"
+                        android:ellipsize="end"
+                        android:lineSpacingExtra="1dp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Tags and Share Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <!-- Tags -->
+                <LinearLayout
+                    android:id="@+id/llTags"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvTag1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_tag_chip"
+                        android:backgroundTint="?attr/tagBackgroundColor"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="Data"
+                        android:textColor="?attr/textSecondaryColor"
+                        android:textSize="9sp" />
+
+                    <TextView
+                        android:id="@+id/tvTag2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:background="@drawable/bg_tag_chip"
+                        android:backgroundTint="?attr/tagBackgroundColor"
+                        android:paddingStart="6dp"
+                        android:paddingEnd="6dp"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="Utils"
+                        android:textColor="?attr/textSecondaryColor"
+                        android:textSize="9sp" />
+
+                </LinearLayout>
+
+                <!-- Share Icon -->
+                <ImageView
+                    android:id="@+id/ivShare"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_share"
+                    app:tint="?attr/textMutedColor" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

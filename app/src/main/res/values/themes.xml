@@ -56,6 +56,8 @@
         <item name="cardInnerColor">@color/light_card_inner</item>
         <item name="codeBackgroundColor">@color/light_code_background</item>
         <item name="codeTextColor">@color/light_code_text</item>
+        <item name="codeBlockBackground">@color/light_code_background</item>
+        <item name="codeBlockHeaderBackground">@color/light_surface_variant</item>
 
         <!-- Text - Light -->
         <item name="textPrimaryColor">@color/light_text_primary</item>

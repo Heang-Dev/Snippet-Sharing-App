@@ -6,15 +6,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.TeamSnippet;
-import group.eleven.snippet_sharing_app.ui.home.SnippetCardAdapter;
 
 public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.ViewHolder> {
 
@@ -39,7 +39,7 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_snippet_card, parent, false); // Reuse existing snippet card layout
+                .inflate(R.layout.item_team_snippet_chat, parent, false);
         return new ViewHolder(view);
     }
 
@@ -57,27 +57,34 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
     static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvLanguageBadge;
         private final TextView tvSnippetTitle;
-        private final TextView tvSnippetTime; // Assuming team snippets also have updated_at
+        private final TextView tvSnippetTime;
         private final TextView tvCodePreview;
-        private final CardView cardView;
+        private final MaterialCardView cardSnippet;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardView = (CardView) itemView;
             tvLanguageBadge = itemView.findViewById(R.id.tvLanguageBadge);
             tvSnippetTitle = itemView.findViewById(R.id.tvSnippetTitle);
             tvSnippetTime = itemView.findViewById(R.id.tvSnippetTime);
             tvCodePreview = itemView.findViewById(R.id.tvCode);
+            cardSnippet = itemView.findViewById(R.id.cardSnippet);
         }
 
         public void bind(TeamSnippet teamSnippet, OnTeamSnippetClickListener listener) {
-            tvLanguageBadge.setText(teamSnippet.getLanguage()); // Assuming getLanguage() for badge
-            tvSnippetTitle.setText(teamSnippet.getTitle());
-            tvSnippetTime.setText(teamSnippet.getUpdatedAt()); // Using updatedAt for now
-            tvCodePreview.setText(teamSnippet.getCode()); // Using getCode() for preview
+            // Set language badge (abbreviate if needed)
+            String lang = teamSnippet.getLanguage();
+            if (lang != null && lang.length() > 4) {
+                tvLanguageBadge.setText(lang.substring(0, 4));
+            } else {
+                tvLanguageBadge.setText(lang != null ? lang : "");
+            }
 
-            if (listener != null) {
-                cardView.setOnClickListener(v -> listener.onTeamSnippetClick(teamSnippet));
+            tvSnippetTitle.setText(teamSnippet.getTitle());
+            tvSnippetTime.setText(teamSnippet.getUpdatedAt());
+            tvCodePreview.setText(teamSnippet.getCode());
+
+            if (listener != null && cardSnippet != null) {
+                cardSnippet.setOnClickListener(v -> listener.onTeamSnippetClick(teamSnippet));
             }
         }
     }

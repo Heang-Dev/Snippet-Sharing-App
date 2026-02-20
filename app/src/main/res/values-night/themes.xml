@@ -34,6 +34,8 @@
         <item name="cardInnerColor">@color/card_inner</item>
         <item name="codeBackgroundColor">@color/code_background</item>
         <item name="codeTextColor">@color/text_primary</item>
+        <item name="codeBlockBackground">@color/code_background</item>
+        <item name="codeBlockHeaderBackground">@color/surface_variant</item>
         <item name="textPrimaryColor">@color/text_primary</item>
         <item name="textSecondaryColor">@color/text_secondary</item>
         <item name="textMutedColor">@color/text_muted</item>

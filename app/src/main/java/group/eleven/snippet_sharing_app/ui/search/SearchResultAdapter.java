@@ -78,10 +78,8 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
             tvStars.setText(String.valueOf(item.getStars()));
             tvForks.setText(String.valueOf(item.getForks()));
 
-            // Bookmark state?
-            // item doesn't have isBookmarked state per prompt, so just default grey or
-            // tint.
-            ivBookmark.setColorFilter(Color.parseColor("#889990"));
+            // Bookmark tint is handled by XML layout using ?attr/iconSecondaryColor
+            // The layout already applies the correct theme-adaptive color
 
             // Private lock logic?
             if (item.isPrivate()) {

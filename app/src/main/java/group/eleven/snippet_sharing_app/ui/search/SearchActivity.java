@@ -18,8 +18,8 @@ import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.model.SearchResult;
-import group.eleven.snippet_sharing_app.ui.profile.AccountSettingsActivity;
-import group.eleven.snippet_sharing_app.ui.profile.NotificationSettingsActivity;
+import group.eleven.snippet_sharing_app.utils.BottomNavHelper;
+import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -27,6 +27,7 @@ public class SearchActivity extends AppCompatActivity {
     private SearchResultAdapter adapter;
     private EditText etSearch;
     private List<SearchResult> allResults;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        sessionManager = new SessionManager(this);
+
         rvSearchResults = findViewById(R.id.rvSearchResults);
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SearchResultAdapter();
@@ -109,6 +112,9 @@ public class SearchActivity extends AppCompatActivity {
             // Set Home as selected when coming from search
             bottomNav.setSelectedItemId(R.id.nav_home);
 
+            // Setup profile avatar in bottom nav
+            BottomNavHelper.setupProfileAvatar(this, bottomNav, sessionManager);
+
             bottomNav.setOnItemSelectedListener(item -> {
                 int id = item.getItemId();
                 if (id == R.id.nav_home) {
@@ -160,9 +166,9 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void updateHeaderCount(int count) {
-        TextView tvCount = findViewById(R.id.tvResultCount); // Ensure ID matches XML
+        TextView tvCount = findViewById(R.id.tvResultCount);
         if (tvCount != null) {
-            tvCount.setText(count + " results found");
+            tvCount.setText(getString(R.string.results_found, count));
         }
     }
 }

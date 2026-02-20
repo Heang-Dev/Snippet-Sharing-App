@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background"
+    android:background="?attr/appBackgroundColor"
     android:fitsSystemWindows="true">
 
     <androidx.core.widget.NestedScrollView
@@ -29,14 +29,15 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_arrow_back"
-                    app:tint="@color/text_primary"
-                    android:layout_centerVertical="true"/>
+                    app:tint="?attr/textPrimaryColor"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="Back"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Search"
-                    android:textColor="@color/text_primary"
+                    android:text="@string/search"
+                    android:textColor="?attr/textPrimaryColor"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:layout_centerInParent="true"/>
@@ -54,7 +55,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@drawable/bg_search_input_team"
+                android:background="@drawable/bg_search_input"
                 android:gravity="center_vertical"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
@@ -64,7 +65,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_search"
-                    app:tint="@color/text_muted"/>
+                    app:tint="?attr/textMutedColor"
+                    android:contentDescription="Search icon"/>
 
                 <EditText
                     android:id="@+id/etSearch"
@@ -72,27 +74,28 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="Search..."
-                    android:textColorHint="@color/text_muted"
-                    android:text="auth middleware"
-                    android:textColor="@color/text_primary"
+                    android:hint="@string/search_hint"
+                    android:textColorHint="?attr/textHintColor"
+                    android:textColor="?attr/textPrimaryColor"
                     android:textSize="14sp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"
-                    android:inputType="text"/>
+                    android:inputType="text"
+                    android:importantForAutofill="no"/>
 
                 <ImageView
                     android:id="@+id/btnClear"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_close"
-                    app:tint="@color/text_muted"
-                    android:layout_marginEnd="12dp"/>
+                    app:tint="?attr/textMutedColor"
+                    android:layout_marginEnd="12dp"
+                    android:contentDescription="Clear search"/>
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="24dp"
-                    android:background="#2C3E36"
+                    android:background="?attr/dividerColor"
                     android:layout_marginEnd="12dp"/>
 
                 <ImageView
@@ -100,7 +103,8 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_sliders"
-                    app:tint="@color/accent_green"/>
+                    app:tint="?attr/accentColor"
+                    android:contentDescription="Filters"/>
             </LinearLayout>
 
             <!-- Filters ScrollView -->
@@ -133,12 +137,13 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_bookmark"
-                            app:tint="#000000"/>
+                            app:tint="@color/on_primary"
+                            android:contentDescription="Save"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Save Search"
-                            android:textColor="#000000"
+                            android:text="@string/save_search"
+                            android:textColor="@color/on_primary"
                             android:layout_marginStart="6dp"
                             android:textSize="12sp"
                             android:textStyle="bold"/>
@@ -146,9 +151,10 @@
 
                     <!-- Lang: All -->
                     <LinearLayout
+                        android:id="@+id/btnLanguageFilter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bg_pill_inactive"
+                        android:background="@drawable/bg_filter_chip"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"
                         android:paddingTop="8dp"
@@ -158,22 +164,24 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Lang: All"
-                            android:textColor="@color/text_primary"
+                            android:text="@string/lang_all"
+                            android:textColor="?attr/textPrimaryColor"
                             android:textSize="12sp"/>
                          <ImageView
                             android:layout_width="12dp"
                             android:layout_height="12dp"
                             android:src="@drawable/ic_sort_down"
-                            app:tint="@color/text_muted"
-                            android:layout_marginStart="4dp"/>
+                            app:tint="?attr/textMutedColor"
+                            android:layout_marginStart="4dp"
+                            android:contentDescription="Dropdown"/>
                     </LinearLayout>
 
                      <!-- Relevance -->
                      <LinearLayout
+                         android:id="@+id/btnSortFilter"
                          android:layout_width="wrap_content"
                          android:layout_height="wrap_content"
-                         android:background="@drawable/bg_pill_inactive"
+                         android:background="@drawable/bg_filter_chip"
                          android:paddingStart="16dp"
                          android:paddingEnd="16dp"
                          android:paddingTop="8dp"
@@ -183,13 +191,14 @@
                              android:layout_width="12dp"
                              android:layout_height="12dp"
                              android:src="@drawable/ic_sort"
-                             app:tint="@color/text_muted"
-                             android:layout_marginEnd="6dp"/>
+                             app:tint="?attr/textMutedColor"
+                             android:layout_marginEnd="6dp"
+                             android:contentDescription="Sort"/>
                          <TextView
                              android:layout_width="wrap_content"
                              android:layout_height="wrap_content"
-                             android:text="Relevance"
-                             android:textColor="@color/text_primary"
+                             android:text="@string/relevance"
+                             android:textColor="?attr/textPrimaryColor"
                              android:textSize="12sp"/>
                      </LinearLayout>
                 </LinearLayout>
@@ -208,18 +217,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="124 results found"
-                    android:textColor="@color/text_primary"
+                    android:text="@string/results_found_placeholder"
+                    android:textColor="?attr/textPrimaryColor"
                     android:textSize="14sp"
                     android:textStyle="bold"/>
 
                 <TextView
+                    android:id="@+id/tvSearchTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="14ms"
-                    android:background="@drawable/bg_pill_active"
-                    android:backgroundTint="#0D1F16"
-                    android:textColor="@color/accent_green"
+                    android:background="@drawable/bg_filter_chip"
+                    android:textColor="?attr/accentColor"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:paddingTop="4dp"
@@ -240,10 +249,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/bg_button_dashed"
+                android:background="@drawable/bg_load_more_button"
                 android:gravity="center"
-                android:text="Load more results"
-                android:textColor="@color/accent_green"
+                android:text="@string/load_more"
+                android:textColor="?attr/accentColor"
                 android:textStyle="bold"
                 android:clickable="true"
                 android:focusable="true"/>
@@ -256,7 +265,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="?attr/surfaceColor"
+        android:background="?attr/bottomNavBackgroundColor"
         android:elevation="8dp">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -277,13 +286,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="28dp"
-            android:contentDescription="Create Snippet"
-            app:backgroundTint="@color/primary"
+            android:contentDescription="@string/create_snippet"
+            app:backgroundTint="?attr/accentColor"
             app:elevation="6dp"
             app:fabCustomSize="56dp"
             app:maxImageSize="24dp"
             app:srcCompat="@drawable/ic_add"
-            app:tint="@android:color/white" />
+            app:tint="@color/on_primary" />
 
     </FrameLayout>
 

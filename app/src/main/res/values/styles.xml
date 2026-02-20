@@ -269,4 +269,11 @@
     <style name="CardStyle" parent="Widget.SnippetApp.Card.Elevated">
         <item name="contentPadding">16dp</item>
     </style>
+
+    <!-- ========== TAB LAYOUT STYLES ========== -->
+    <style name="TabTextAppearance.Small" parent="TextAppearance.Material3.LabelMedium">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="fontFamily">sans-serif-medium</item>
+    </style>
 </resources>
