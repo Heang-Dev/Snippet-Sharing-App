@@ -10,6 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -27,6 +29,7 @@ import java.util.Map;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.Team;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
+import group.eleven.snippet_sharing_app.ui.snippet.CreateSnippetActivity;
 import group.eleven.snippet_sharing_app.ui.team.viewmodel.TeamViewModel;
 
 /**
@@ -36,6 +39,8 @@ import group.eleven.snippet_sharing_app.ui.team.viewmodel.TeamViewModel;
 public class TeamChatActivity extends AppCompatActivity {
 
     public static final String EXTRA_TEAM_ID = "extra_team_id";
+
+    private ActivityResultLauncher<Intent> createSnippetLauncher;
 
     private MaterialToolbar toolbar;
     private LinearLayout llTeamHeader;
@@ -58,6 +63,16 @@ public class TeamChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_chat);
+
+        // Register launcher before onCreate completes
+        createSnippetLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        fetchTeamSnippets();
+                    }
+                }
+        );
 
         teamId = getIntent().getStringExtra(EXTRA_TEAM_ID);
         if (teamId == null) {
@@ -187,21 +202,20 @@ public class TeamChatActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Attachment button - share snippet
-        ivAttachment.setOnClickListener(v -> {
-            // TODO: Open snippet picker or create new snippet for team
-            Toast.makeText(this, "Share Snippet", Toast.LENGTH_SHORT).show();
-        });
+        // Attachment button - open create snippet for team
+        ivAttachment.setOnClickListener(v -> openCreateSnippetForTeam());
 
-        // Send button
-        fabSend.setOnClickListener(v -> {
-            String message = etMessage.getText().toString().trim();
-            if (!message.isEmpty()) {
-                // TODO: Send message/snippet to team
-                Toast.makeText(this, "Message: " + message, Toast.LENGTH_SHORT).show();
-                etMessage.setText("");
-            }
-        });
+        // Send button - open create snippet for team
+        fabSend.setOnClickListener(v -> openCreateSnippetForTeam());
+    }
+
+    private void openCreateSnippetForTeam() {
+        Intent intent = new Intent(this, CreateSnippetActivity.class);
+        intent.putExtra("extra_team_id", teamId);
+        if (currentTeam != null) {
+            intent.putExtra("extra_team_name", currentTeam.getName());
+        }
+        createSnippetLauncher.launch(intent);
     }
 
     private void displayTeamHeader(Team team) {

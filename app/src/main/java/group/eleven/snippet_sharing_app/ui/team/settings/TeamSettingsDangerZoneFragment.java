@@ -40,10 +40,13 @@ public class TeamSettingsDangerZoneFragment extends Fragment {
     private Spinner spinnerNewOwner;
     private MaterialButton btnTransferOwnership;
     private MaterialButton btnDeleteTeam;
+    private MaterialButton btnLeaveTeam;
     private TextView tvTransferOwnershipDesc;
     private TextView tvDeleteTeamDesc;
     private TextView tvDeleteTeamHeader;
     private TextView tvTransferOwnershipHeader;
+    private TextView tvLeaveTeamHeader;
+    private TextView tvLeaveTeamDesc;
 
     private TeamViewModel teamViewModel;
     private String teamId;
@@ -85,10 +88,13 @@ public class TeamSettingsDangerZoneFragment extends Fragment {
         spinnerNewOwner = view.findViewById(R.id.spinner_new_owner);
         btnTransferOwnership = view.findViewById(R.id.btn_transfer_ownership);
         btnDeleteTeam = view.findViewById(R.id.btn_delete_team);
+        btnLeaveTeam = view.findViewById(R.id.btn_leave_team);
         tvTransferOwnershipDesc = view.findViewById(R.id.tv_transfer_ownership_desc);
         tvDeleteTeamDesc = view.findViewById(R.id.tv_delete_team_desc);
         tvDeleteTeamHeader = view.findViewById(R.id.tv_delete_team_header);
         tvTransferOwnershipHeader = view.findViewById(R.id.tv_transfer_ownership_header);
+        tvLeaveTeamHeader = view.findViewById(R.id.tv_leave_team_header);
+        tvLeaveTeamDesc = view.findViewById(R.id.tv_leave_team_desc);
     }
 
     private void setupViewModel() {
@@ -136,6 +142,25 @@ public class TeamSettingsDangerZoneFragment extends Fragment {
             }
         });
 
+        teamViewModel.getLeaveTeamResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
+                btnLeaveTeam.setEnabled(false);
+            } else {
+                btnLeaveTeam.setEnabled(true);
+            }
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
+                Toast.makeText(getContext(), "You have left the team.", Toast.LENGTH_SHORT).show();
+                if (getActivity() != null) {
+                    Intent intent = new Intent(getActivity(), TeamsListActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                Toast.makeText(getContext(), "Error leaving team: " + resource.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
         teamViewModel.getDeleteTeamResult().observe(getViewLifecycleOwner(), resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
                 btnDeleteTeam.setEnabled(false);
@@ -160,22 +185,23 @@ public class TeamSettingsDangerZoneFragment extends Fragment {
     private void setupListeners() {
         btnTransferOwnership.setOnClickListener(v -> confirmTransferOwnership());
         btnDeleteTeam.setOnClickListener(v -> confirmDeleteTeam());
+        btnLeaveTeam.setOnClickListener(v -> confirmLeaveTeam());
     }
 
     private void checkOwnerStatus() {
         String currentUserId = sessionManager.getCurrentUser() != null ? sessionManager.getCurrentUser().getId() : null;
-        if (currentTeam != null && currentUserId != null && currentTeam.getOwnerId().equals(currentUserId)) {
-            // Current user is the owner, enable danger zone actions
+        boolean isOwner = currentTeam != null && currentUserId != null && currentTeam.getOwnerId().equals(currentUserId);
+
+        if (isOwner) {
+            // Owner: show transfer & delete, hide leave
             spinnerNewOwner.setEnabled(true);
             btnTransferOwnership.setEnabled(true);
             btnDeleteTeam.setEnabled(true);
-            // Also enable the whole danger zone UI if it was disabled
+            tvLeaveTeamHeader.setVisibility(View.GONE);
+            tvLeaveTeamDesc.setVisibility(View.GONE);
+            btnLeaveTeam.setVisibility(View.GONE);
         } else {
-            // Current user is not the owner, disable danger zone actions
-            spinnerNewOwner.setEnabled(false);
-            btnTransferOwnership.setEnabled(false);
-            btnDeleteTeam.setEnabled(false);
-            // Hide/show messages indicating only owner can do this
+            // Non-owner: hide transfer & delete, show leave
             tvTransferOwnershipDesc.setText("Only the team owner can transfer ownership.");
             tvDeleteTeamDesc.setText("Only the team owner can delete the team.");
             btnTransferOwnership.setVisibility(View.GONE);
@@ -183,6 +209,13 @@ public class TeamSettingsDangerZoneFragment extends Fragment {
             btnDeleteTeam.setVisibility(View.GONE);
             tvTransferOwnershipHeader.setVisibility(View.GONE);
             tvDeleteTeamHeader.setVisibility(View.GONE);
+            tvTransferOwnershipDesc.setVisibility(View.GONE);
+            tvDeleteTeamDesc.setVisibility(View.GONE);
+
+            // Show leave team
+            tvLeaveTeamHeader.setVisibility(View.VISIBLE);
+            tvLeaveTeamDesc.setVisibility(View.VISIBLE);
+            btnLeaveTeam.setVisibility(View.VISIBLE);
         }
     }
 
@@ -239,5 +272,19 @@ public class TeamSettingsDangerZoneFragment extends Fragment {
             return;
         }
         teamViewModel.deleteTeam(teamId);
+    }
+
+    private void confirmLeaveTeam() {
+        String teamName = currentTeam != null ? currentTeam.getName() : "this team";
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Leave Team")
+                .setMessage("Are you sure you want to leave '" + teamName + "'? You will lose access to the team and its snippets.")
+                .setPositiveButton("Leave", (dialog, which) -> {
+                    if (teamId != null) {
+                        teamViewModel.leaveTeam(teamId);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

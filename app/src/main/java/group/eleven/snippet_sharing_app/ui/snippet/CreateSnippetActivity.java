@@ -75,6 +75,24 @@ public class CreateSnippetActivity extends AppCompatActivity {
         setupBottomSheets();
         setupVisibilityTabs();
         loadLanguages();
+        handleTeamIntent();
+    }
+
+    private void handleTeamIntent() {
+        String intentTeamId = getIntent().getStringExtra("extra_team_id");
+        String intentTeamName = getIntent().getStringExtra("extra_team_name");
+        if (intentTeamId != null && !intentTeamId.isEmpty()) {
+            selectedTeamId = intentTeamId;
+            selectedTeamName = intentTeamName;
+            currentVisibility = "team";
+            updateVisibilityUI("team");
+            binding.btnSelectTeam.setVisibility(View.VISIBLE);
+            if (intentTeamName != null) {
+                binding.tvSelectedTeam.setText(intentTeamName);
+                binding.tvSelectedTeam.setTextColor(
+                        ContextCompat.getColor(this, R.color.primary));
+            }
+        }
     }
 
     private void setupStatusBar() {

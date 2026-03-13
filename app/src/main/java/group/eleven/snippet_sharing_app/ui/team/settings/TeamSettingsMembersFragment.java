@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,12 +25,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.data.model.Team;
+import group.eleven.snippet_sharing_app.data.model.TeamMember;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
-import static group.eleven.snippet_sharing_app.data.repository.AuthRepository.Resource; // Static import for Resource
 import group.eleven.snippet_sharing_app.ui.team.TeamMemberAdapter;
 import group.eleven.snippet_sharing_app.ui.team.TeamSettingsActivity;
 import group.eleven.snippet_sharing_app.ui.team.viewmodel.TeamViewModel;
-import group.eleven.snippet_sharing_app.utils.FormValidator; // Assuming a static method for email validation
+import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 public class TeamSettingsMembersFragment extends Fragment implements TeamMemberAdapter.OnItemClickListener {
 
@@ -36,14 +39,15 @@ public class TeamSettingsMembersFragment extends Fragment implements TeamMemberA
     private TextInputEditText etInviteEmail;
     private MaterialButton btnSendInvite;
     private RecyclerView rvCurrentMembers;
-    private TextView tvPendingInvitationsHeader; // For visibility control
+    private TextView tvPendingInvitationsHeader;
     private RecyclerView rvPendingInvitations;
 
     private TeamMemberAdapter teamMemberAdapter;
-    // private TeamInvitationAdapter teamInvitationAdapter; // Will create later
 
     private TeamViewModel teamViewModel;
     private String teamId;
+    private String currentUserRole;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +55,7 @@ public class TeamSettingsMembersFragment extends Fragment implements TeamMemberA
         if (getActivity() instanceof TeamSettingsActivity) {
             teamId = ((TeamSettingsActivity) getActivity()).getTeamId();
         }
+        sessionManager = new SessionManager(requireContext());
     }
 
     @Nullable
@@ -69,7 +74,7 @@ public class TeamSettingsMembersFragment extends Fragment implements TeamMemberA
         super.onViewCreated(view, savedInstanceState);
         if (teamId != null) {
             teamViewModel.fetchTeamMembers(teamId);
-            teamViewModel.fetchMyTeamInvitations(); // Fetch invitations for the current user (as a placeholder for pending for this team)
+            teamViewModel.fetchTeamDetails(teamId);
         }
     }
 
@@ -83,22 +88,39 @@ public class TeamSettingsMembersFragment extends Fragment implements TeamMemberA
     }
 
     private void setupRecyclerViews() {
-        teamMemberAdapter = new TeamMemberAdapter(this); // 'this' for OnItemClickListener
+        teamMemberAdapter = new TeamMemberAdapter(this);
         rvCurrentMembers.setLayoutManager(new LinearLayoutManager(getContext()));
         rvCurrentMembers.setAdapter(teamMemberAdapter);
-
-        // teamInvitationAdapter = new TeamInvitationAdapter(getContext(), this); // Will create this later
-        // rvPendingInvitations.setLayoutManager(new LinearLayoutManager(getContext()));
-        // rvPendingInvitations.setAdapter(teamInvitationAdapter);
     }
 
     private void setupViewModel() {
         teamViewModel = new ViewModelProvider(requireActivity()).get(TeamViewModel.class);
 
+        // Observe team details to get current user role
+        teamViewModel.getTeamDetailsResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS && resource.getData() != null) {
+                Team team = resource.getData();
+                String currentUserId = sessionManager.getCurrentUser() != null ? sessionManager.getCurrentUser().getId() : null;
+                if (currentUserId != null && currentUserId.equals(team.getOwnerId())) {
+                    currentUserRole = "owner";
+                }
+            }
+        });
+
         teamViewModel.getTeamMembersResult().observe(getViewLifecycleOwner(), resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
                 if (resource.getData() != null) {
                     teamMemberAdapter.setTeamMembers(resource.getData());
+                    // Determine current user's role from the members list
+                    String currentUserId = sessionManager.getCurrentUser() != null ? sessionManager.getCurrentUser().getId() : null;
+                    if (currentUserId != null) {
+                        for (TeamMember m : resource.getData()) {
+                            if (currentUserId.equals(m.getUserId())) {
+                                currentUserRole = m.getRole();
+                                break;
+                            }
+                        }
+                    }
                 }
             } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
                 Toast.makeText(getContext(), "Error loading members: " + resource.getMessage(), Toast.LENGTH_LONG).show();
@@ -114,14 +136,31 @@ public class TeamSettingsMembersFragment extends Fragment implements TeamMemberA
 
             if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
                 Toast.makeText(getContext(), "Invitation sent!", Toast.LENGTH_SHORT).show();
-                etInviteEmail.setText(""); // Clear input
-                // Optionally refresh members or pending invitations
+                etInviteEmail.setText("");
             } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
                 Toast.makeText(getContext(), "Error sending invitation: " + resource.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
-        // TODO: Observe getMyTeamInvitationsResult once TeamInvitationAdapter is implemented
+        // Observe remove member result
+        teamViewModel.getRemoveTeamMemberResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
+                Toast.makeText(getContext(), "Member removed successfully", Toast.LENGTH_SHORT).show();
+                if (teamId != null) teamViewModel.fetchTeamMembers(teamId);
+            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                Toast.makeText(getContext(), "Error removing member: " + resource.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Observe role update result
+        teamViewModel.getUpdateTeamMemberRoleResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
+                Toast.makeText(getContext(), "Role updated successfully", Toast.LENGTH_SHORT).show();
+                if (teamId != null) teamViewModel.fetchTeamMembers(teamId);
+            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                Toast.makeText(getContext(), "Error updating role: " + resource.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void setupListeners() {
@@ -148,15 +187,85 @@ public class TeamSettingsMembersFragment extends Fragment implements TeamMemberA
         teamViewModel.inviteTeamMember(teamId, inviteData);
     }
 
-    @Override
-    public void onItemClick(group.eleven.snippet_sharing_app.data.model.TeamMember member) {
-        // TODO: Show member details or options
-        Toast.makeText(getContext(), "Member clicked: " + member.getUsername(), Toast.LENGTH_SHORT).show();
+    private boolean canManageMembers() {
+        return "owner".equalsIgnoreCase(currentUserRole) || "admin".equalsIgnoreCase(currentUserRole);
     }
 
     @Override
-    public void onMoreOptionsClick(group.eleven.snippet_sharing_app.data.model.TeamMember member, View view) {
-        // TODO: Show popup menu for member actions (e.g., Change Role, Remove Member)
-        Toast.makeText(getContext(), "More options for: " + member.getUsername(), Toast.LENGTH_SHORT).show();
+    public void onItemClick(TeamMember member) {
+        Toast.makeText(getContext(), member.getUsername() + " (" + member.getRole() + ")", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onMoreOptionsClick(TeamMember member, View view) {
+        if (!canManageMembers()) {
+            Toast.makeText(getContext(), "Only owners and admins can manage members", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Don't allow actions on the owner
+        if ("owner".equalsIgnoreCase(member.getRole())) {
+            Toast.makeText(getContext(), "Cannot modify the team owner", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        PopupMenu popupMenu = new PopupMenu(requireContext(), view);
+        popupMenu.inflate(R.menu.menu_member_options);
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_change_role) {
+                showChangeRoleDialog(member);
+                return true;
+            } else if (id == R.id.action_remove_member) {
+                showRemoveMemberDialog(member);
+                return true;
+            }
+            return false;
+        });
+
+        popupMenu.show();
+    }
+
+    private void showChangeRoleDialog(TeamMember member) {
+        String[] roles = {"admin", "member", "viewer"};
+        String[] roleLabels = {"Admin", "Member", "Viewer"};
+
+        int currentIndex = 0;
+        for (int i = 0; i < roles.length; i++) {
+            if (roles[i].equalsIgnoreCase(member.getRole())) {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Change Role for " + member.getUsername())
+                .setSingleChoiceItems(roleLabels, currentIndex, null)
+                .setPositiveButton("Update", (dialog, which) -> {
+                    int selectedIndex = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+                    String newRole = roles[selectedIndex];
+
+                    if (newRole.equalsIgnoreCase(member.getRole())) {
+                        return; // No change
+                    }
+
+                    Map<String, String> roleData = new HashMap<>();
+                    roleData.put("role", newRole);
+                    teamViewModel.updateTeamMemberRole(teamId, member.getUserId(), roleData);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showRemoveMemberDialog(TeamMember member) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Remove Member")
+                .setMessage("Are you sure you want to remove " + member.getUsername() + " from this team?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    teamViewModel.removeTeamMember(teamId, member.getUserId());
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

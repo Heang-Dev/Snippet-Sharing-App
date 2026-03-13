@@ -25,10 +25,14 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.data.repository.SnippetCreationRepository;
 import group.eleven.snippet_sharing_app.model.Tag;
+import group.eleven.snippet_sharing_app.utils.Resource;
 
 public class ManageTagsBottomSheet extends BottomSheetDialogFragment {
 
@@ -39,6 +43,7 @@ public class ManageTagsBottomSheet extends BottomSheetDialogFragment {
     private ChipGroup chipGroupPopular;
     private EditText etSearchTags;
     private OnTagsSelectedListener listener;
+    private SnippetCreationRepository repository;
 
     // Interface callback to return data
     public interface OnTagsSelectedListener {
@@ -163,39 +168,37 @@ public class ManageTagsBottomSheet extends BottomSheetDialogFragment {
         if (selectedTags == null)
             selectedTags = new ArrayList<>();
 
-        // Mock Data for All Tags (In real app, fetch from VM/Repo)
         allTags = new ArrayList<>();
-        allTags.add(new Tag("utility", 12));
-        allTags.add(new Tag("frontend", 8));
-        allTags.add(new Tag("react", 24));
-        allTags.add(new Tag("backend", 15));
-        allTags.add(new Tag("java", 30));
-        allTags.add(new Tag("android", 42));
-        allTags.add(new Tag("datetime", 5));
-        allTags.add(new Tag("formatting", 3));
-        allTags.add(new Tag("javascript", 100));
-
-        // Mock Data for Popular Tags
-        List<String> popularTags = new ArrayList<>();
-        popularTags.add("typescript");
-        popularTags.add("api");
-        popularTags.add("database");
-        popularTags.add("optimization");
-        popularTags.add("css-tricks");
-        popularTags.add("testing");
+        repository = new SnippetCreationRepository(requireContext());
 
         // Populate Selected Chips from state
         for (String tagName : selectedTags) {
             addChipToSelected(tagName);
         }
 
-        // Populate Popular Chips
-        for (String tagName : popularTags) {
-            addChipToPopular(tagName);
-        }
+        // Fetch tags from API
+        repository.getTags().observe(getViewLifecycleOwner(), resource -> {
+            if (resource.status == Resource.Status.SUCCESS && resource.data != null) {
+                allTags.clear();
+                for (group.eleven.snippet_sharing_app.data.model.Tag apiTag : resource.data) {
+                    allTags.add(new Tag(apiTag.getName(), apiTag.getUsageCount()));
+                }
 
-        // Initial Suggestion List
-        filterSuggestions("");
+                // Populate popular tags (top 6 by usage count)
+                chipGroupPopular.removeAllViews();
+                List<Tag> sorted = new ArrayList<>(allTags);
+                Collections.sort(sorted, (a, b) -> b.getSnippetCount() - a.getSnippetCount());
+                int popularCount = Math.min(6, sorted.size());
+                for (int i = 0; i < popularCount; i++) {
+                    addChipToPopular(sorted.get(i).getName());
+                }
+
+                filterSuggestions("");
+            } else if (resource.status == Resource.Status.ERROR) {
+                // Fallback: show empty state, user can still create new tags
+                filterSuggestions("");
+            }
+        });
     }
 
     private void setupListeners(View view) {

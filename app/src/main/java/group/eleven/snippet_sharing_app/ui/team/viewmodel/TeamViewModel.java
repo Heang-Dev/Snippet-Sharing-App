@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer; // Import Observer
+import androidx.lifecycle.Observer;
 
 import java.util.List;
 import java.util.Map;
@@ -65,12 +65,11 @@ public class TeamViewModel extends AndroidViewModel {
     private final MutableLiveData<AuthRepository.Resource<Team>> _createTeamResult = new MutableLiveData<>();
     public LiveData<AuthRepository.Resource<Team>> getCreateTeamResult() { return _createTeamResult; }
 
-    // Placeholder LiveData for other operations
-    private final LiveData<AuthRepository.Resource<Team>> updateTeamResult = new MutableLiveData<>();
-    private final LiveData<AuthRepository.Resource<MessageResponse>> inviteTeamMemberResult = new MutableLiveData<>();
-    private final LiveData<AuthRepository.Resource<MessageResponse>> removeTeamMemberResult = new MutableLiveData<>();
-    private final LiveData<AuthRepository.Resource<MessageResponse>> updateTeamMemberRoleResult = new MutableLiveData<>();
-    private final LiveData<AuthRepository.Resource<TeamSnippet>> createTeamSnippetResult = new MutableLiveData<>();
+    private final MutableLiveData<AuthRepository.Resource<Team>> _updateTeamResult = new MutableLiveData<>();
+    private final MutableLiveData<AuthRepository.Resource<MessageResponse>> _inviteTeamMemberResult = new MutableLiveData<>();
+    private final MutableLiveData<AuthRepository.Resource<MessageResponse>> _removeTeamMemberResult = new MutableLiveData<>();
+    private final MutableLiveData<AuthRepository.Resource<MessageResponse>> _updateTeamMemberRoleResult = new MutableLiveData<>();
+    private final MutableLiveData<AuthRepository.Resource<TeamSnippet>> _createTeamSnippetResult = new MutableLiveData<>();
 
 
     public TeamViewModel(@NonNull Application application) {
@@ -81,23 +80,23 @@ public class TeamViewModel extends AndroidViewModel {
     //region Public methods to expose LiveData results
 
     public LiveData<AuthRepository.Resource<Team>> getUpdateTeamResult() {
-        return updateTeamResult;
+        return _updateTeamResult;
     }
 
     public LiveData<AuthRepository.Resource<MessageResponse>> getInviteTeamMemberResult() {
-        return inviteTeamMemberResult;
+        return _inviteTeamMemberResult;
     }
 
     public LiveData<AuthRepository.Resource<MessageResponse>> getRemoveTeamMemberResult() {
-        return removeTeamMemberResult;
+        return _removeTeamMemberResult;
     }
 
     public LiveData<AuthRepository.Resource<MessageResponse>> getUpdateTeamMemberRoleResult() {
-        return updateTeamMemberRoleResult;
+        return _updateTeamMemberRoleResult;
     }
 
     public LiveData<AuthRepository.Resource<TeamSnippet>> getCreateTeamSnippetResult() {
-        return createTeamSnippetResult;
+        return _createTeamSnippetResult;
     }
 
     //endregion
@@ -105,137 +104,214 @@ public class TeamViewModel extends AndroidViewModel {
     //region Public methods to trigger actions in repository
 
     public void fetchMyTeams() {
-        teamRepository.getMyTeams().observeForever(new Observer<AuthRepository.Resource<TeamsResponse>>() {
+        LiveData<AuthRepository.Resource<TeamsResponse>> source = teamRepository.getMyTeams();
+        source.observeForever(new Observer<AuthRepository.Resource<TeamsResponse>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<TeamsResponse> teamsResponseResource) {
-                _myTeamsResult.setValue(teamsResponseResource);
-                teamRepository.getMyTeams().removeObserver(this);
+            public void onChanged(AuthRepository.Resource<TeamsResponse> resource) {
+                _myTeamsResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void fetchMyTeamInvitations() {
-        teamRepository.getMyTeamInvitations().observeForever(new Observer<AuthRepository.Resource<List<TeamInvitation>>>() {
+        LiveData<AuthRepository.Resource<List<TeamInvitation>>> source = teamRepository.getMyTeamInvitations();
+        source.observeForever(new Observer<AuthRepository.Resource<List<TeamInvitation>>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<List<TeamInvitation>> listResource) {
-                _myTeamInvitationsResult.setValue(listResource);
-                teamRepository.getMyTeamInvitations().removeObserver(this);
+            public void onChanged(AuthRepository.Resource<List<TeamInvitation>> resource) {
+                _myTeamInvitationsResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void respondToTeamInvitation(String invitationId, boolean accept) {
-        LiveData<AuthRepository.Resource<MessageResponse>> liveData = accept
+        LiveData<AuthRepository.Resource<MessageResponse>> source = accept
                 ? teamRepository.acceptTeamInvitation(invitationId)
                 : teamRepository.declineTeamInvitation(invitationId);
 
-        liveData.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+        source.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<MessageResponse> messageResponseResource) {
-                _respondToTeamInvitationResult.setValue(messageResponseResource);
-                liveData.removeObserver(this);
+            public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
+                _respondToTeamInvitationResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void fetchTeamDetails(String teamId) {
-        teamRepository.getTeamDetails(teamId).observeForever(new Observer<AuthRepository.Resource<Team>>() {
+        LiveData<AuthRepository.Resource<Team>> source = teamRepository.getTeamDetails(teamId);
+        source.observeForever(new Observer<AuthRepository.Resource<Team>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<Team> teamResource) {
-                _teamDetailsResult.setValue(teamResource);
-                teamRepository.getTeamDetails(teamId).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<Team> resource) {
+                _teamDetailsResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void fetchTeamMembers(String teamId) {
-        teamRepository.getTeamMembers(teamId).observeForever(new Observer<AuthRepository.Resource<List<TeamMember>>>() {
+        LiveData<AuthRepository.Resource<List<TeamMember>>> source = teamRepository.getTeamMembers(teamId);
+        source.observeForever(new Observer<AuthRepository.Resource<List<TeamMember>>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<List<TeamMember>> listResource) {
-                _teamMembersResult.setValue(listResource);
-                teamRepository.getTeamMembers(teamId).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<List<TeamMember>> resource) {
+                _teamMembersResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void transferOwnership(String teamId, Map<String, String> newOwnerData) {
-        teamRepository.transferTeamOwnership(teamId, newOwnerData).observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+        LiveData<AuthRepository.Resource<MessageResponse>> source = teamRepository.transferTeamOwnership(teamId, newOwnerData);
+        source.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<MessageResponse> messageResponseResource) {
-                _transferTeamOwnershipResult.setValue(messageResponseResource);
-                teamRepository.transferTeamOwnership(teamId, newOwnerData).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
+                _transferTeamOwnershipResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void deleteTeam(String teamId) {
-        teamRepository.deleteTeam(teamId).observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+        LiveData<AuthRepository.Resource<MessageResponse>> source = teamRepository.deleteTeam(teamId);
+        source.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<MessageResponse> messageResponseResource) {
-                _deleteTeamResult.setValue(messageResponseResource);
-                teamRepository.deleteTeam(teamId).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
+                _deleteTeamResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void leaveTeam(String teamId) {
-        teamRepository.leaveTeam(teamId).observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+        LiveData<AuthRepository.Resource<MessageResponse>> source = teamRepository.leaveTeam(teamId);
+        source.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<MessageResponse> messageResponseResource) {
-                _leaveTeamResult.setValue(messageResponseResource);
-                teamRepository.leaveTeam(teamId).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
+                _leaveTeamResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void fetchTeamSnippets(String teamId, Map<String, String> filters) {
-        teamRepository.getTeamSnippets(teamId, filters).observeForever(new Observer<AuthRepository.Resource<List<TeamSnippet>>>() {
+        LiveData<AuthRepository.Resource<List<TeamSnippet>>> source = teamRepository.getTeamSnippets(teamId, filters);
+        source.observeForever(new Observer<AuthRepository.Resource<List<TeamSnippet>>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<List<TeamSnippet>> listResource) {
-                _teamSnippetsResult.setValue(listResource);
-                teamRepository.getTeamSnippets(teamId, filters).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<List<TeamSnippet>> resource) {
+                _teamSnippetsResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void fetchTeamActivity(String teamId) {
-        teamRepository.getTeamActivity(teamId).observeForever(new Observer<AuthRepository.Resource<List<ActivityFeedItem>>>() {
+        LiveData<AuthRepository.Resource<List<ActivityFeedItem>>> source = teamRepository.getTeamActivity(teamId);
+        source.observeForever(new Observer<AuthRepository.Resource<List<ActivityFeedItem>>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<List<ActivityFeedItem>> listResource) {
-                _teamActivityFeedResult.setValue(listResource);
-                teamRepository.getTeamActivity(teamId).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<List<ActivityFeedItem>> resource) {
+                _teamActivityFeedResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void createTeam(Map<String, String> teamData) {
-        teamRepository.createTeam(teamData).observeForever(new Observer<AuthRepository.Resource<Team>>() {
+        LiveData<AuthRepository.Resource<Team>> source = teamRepository.createTeam(teamData);
+        source.observeForever(new Observer<AuthRepository.Resource<Team>>() {
             @Override
-            public void onChanged(AuthRepository.Resource<Team> teamResource) {
-                _createTeamResult.setValue(teamResource);
-                teamRepository.createTeam(teamData).removeObserver(this);
+            public void onChanged(AuthRepository.Resource<Team> resource) {
+                _createTeamResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
             }
         });
     }
 
     public void updateTeam(String teamId, Map<String, String> teamData) {
-        // Implement similarly to createTeam
+        LiveData<AuthRepository.Resource<Team>> source = teamRepository.updateTeam(teamId, teamData);
+        source.observeForever(new Observer<AuthRepository.Resource<Team>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<Team> resource) {
+                _updateTeamResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
     }
 
     public void inviteTeamMember(String teamId, Map<String, String> inviteData) {
-        // Implement similarly
+        LiveData<AuthRepository.Resource<MessageResponse>> source = teamRepository.inviteTeamMember(teamId, inviteData);
+        source.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
+                _inviteTeamMemberResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
     }
 
     public void removeTeamMember(String teamId, String memberId) {
-        // Implement similarly
+        LiveData<AuthRepository.Resource<MessageResponse>> source = teamRepository.removeTeamMember(teamId, memberId);
+        source.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
+                _removeTeamMemberResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
     }
 
     public void updateTeamMemberRole(String teamId, String memberId, Map<String, String> roleData) {
-        // Implement similarly
+        LiveData<AuthRepository.Resource<MessageResponse>> source = teamRepository.updateTeamMemberRole(teamId, memberId, roleData);
+        source.observeForever(new Observer<AuthRepository.Resource<MessageResponse>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
+                _updateTeamMemberRoleResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
     }
 
     public void createTeamSnippet(String teamId, Map<String, String> snippetData) {
-        // Implement similarly
+        LiveData<AuthRepository.Resource<TeamSnippet>> source = teamRepository.createTeamSnippet(teamId, snippetData);
+        source.observeForever(new Observer<AuthRepository.Resource<TeamSnippet>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<TeamSnippet> resource) {
+                _createTeamSnippetResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
     }
 
     //endregion

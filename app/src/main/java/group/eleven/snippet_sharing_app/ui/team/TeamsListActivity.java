@@ -235,11 +235,9 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
             btnCreateTeam.setOnClickListener(createTeamListener);
         }
 
-        // Discover teams card click (can be expanded later to show team search)
+        // Hide discover teams card - no backend endpoint for public team search yet
         if (cardDiscoverTeams != null) {
-            cardDiscoverTeams.setOnClickListener(v -> {
-                Toast.makeText(this, "Team discovery coming soon!", Toast.LENGTH_SHORT).show();
-            });
+            cardDiscoverTeams.setVisibility(View.GONE);
         }
     }
 
