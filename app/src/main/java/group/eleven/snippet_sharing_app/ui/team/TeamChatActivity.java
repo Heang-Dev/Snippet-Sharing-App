@@ -3,7 +3,6 @@ package group.eleven.snippet_sharing_app.ui.team;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,9 +48,7 @@ public class TeamChatActivity extends AppCompatActivity {
     private TextView tvMemberCount;
     private RecyclerView rvTeamMessages;
     private LinearLayout llEmptyState;
-    private EditText etMessage;
-    private ImageView ivAttachment;
-    private FloatingActionButton fabSend;
+    private MaterialButton btnShareSnippet;
     private ProgressBar progressBar;
 
     private TeamViewModel teamViewModel;
@@ -100,9 +97,7 @@ public class TeamChatActivity extends AppCompatActivity {
         tvMemberCount = findViewById(R.id.tv_member_count);
         rvTeamMessages = findViewById(R.id.rv_team_messages);
         llEmptyState = findViewById(R.id.ll_empty_state);
-        etMessage = findViewById(R.id.et_message);
-        ivAttachment = findViewById(R.id.iv_attachment);
-        fabSend = findViewById(R.id.fab_send);
+        btnShareSnippet = findViewById(R.id.btn_share_snippet);
         progressBar = findViewById(R.id.progress_bar);
     }
 
@@ -202,11 +197,8 @@ public class TeamChatActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Attachment button - open create snippet for team
-        ivAttachment.setOnClickListener(v -> openCreateSnippetForTeam());
-
-        // Send button - open create snippet for team
-        fabSend.setOnClickListener(v -> openCreateSnippetForTeam());
+        // Share snippet button - open create snippet for team
+        btnShareSnippet.setOnClickListener(v -> openCreateSnippetForTeam());
     }
 
     private void openCreateSnippetForTeam() {

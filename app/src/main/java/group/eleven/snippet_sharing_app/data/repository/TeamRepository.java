@@ -7,7 +7,15 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.gson.Gson;
 
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.OpenableColumns;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +34,9 @@ import group.eleven.snippet_sharing_app.utils.SessionManager; // Import SessionM
 
 import static group.eleven.snippet_sharing_app.data.repository.AuthRepository.Resource; // Explicitly import Resource
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,6 +114,90 @@ public class TeamRepository {
             }
         });
         return result;
+    }
+
+    /**
+     * Create a new team with avatar.
+     */
+    public LiveData<AuthRepository.Resource<Team>> createTeamWithAvatar(
+            Context context, String name, String description, String privacy, Uri avatarUri) {
+        MutableLiveData<AuthRepository.Resource<Team>> result = new MutableLiveData<>();
+        result.setValue(AuthRepository.Resource.loading());
+
+        File avatarFile = uriToFile(context, avatarUri);
+        if (avatarFile == null) {
+            result.setValue(AuthRepository.Resource.error("Failed to process avatar image."));
+            return result;
+        }
+
+        RequestBody avatarBody = RequestBody.create(MediaType.parse("image/*"), avatarFile);
+        MultipartBody.Part avatarPart = MultipartBody.Part.createFormData("avatar", avatarFile.getName(), avatarBody);
+
+        Map<String, RequestBody> teamData = new HashMap<>();
+        teamData.put("name", createPartFromString(name));
+        teamData.put("description", createPartFromString(description != null ? description : ""));
+        teamData.put("privacy", createPartFromString(privacy));
+
+        apiService.createTeamWithAvatar(avatarPart, teamData).enqueue(new Callback<ApiResponse<Team>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Team>> call, Response<ApiResponse<Team>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Team> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        result.setValue(AuthRepository.Resource.success(apiResponse.getData()));
+                    } else {
+                        result.setValue(AuthRepository.Resource.error(apiResponse.getMessage()));
+                    }
+                } else {
+                    result.setValue(AuthRepository.Resource.error(parseError(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Team>> call, Throwable t) {
+                result.setValue(AuthRepository.Resource.error(getNetworkError(t)));
+            }
+        });
+        return result;
+    }
+
+    private RequestBody createPartFromString(String value) {
+        return RequestBody.create(MediaType.parse("text/plain"), value);
+    }
+
+    private File uriToFile(Context context, Uri uri) {
+        try {
+            String fileName = getFileName(context, uri);
+            if (fileName == null) fileName = "avatar.jpg";
+            File file = new File(context.getCacheDir(), fileName);
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            if (inputStream == null) return null;
+            FileOutputStream outputStream = new FileOutputStream(file);
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+            outputStream.close();
+            inputStream.close();
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String getFileName(Context context, Uri uri) {
+        String name = null;
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        if (cursor != null) {
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            if (nameIndex >= 0 && cursor.moveToFirst()) {
+                name = cursor.getString(nameIndex);
+            }
+            cursor.close();
+        }
+        return name;
     }
 
     /**

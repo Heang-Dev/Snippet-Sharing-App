@@ -21,11 +21,11 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsDangerZoneFragment;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsGeneralFragment;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsMembersFragment;
-import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsPermissionsFragment;
 
 public class TeamSettingsActivity extends AppCompatActivity {
 
     public static final String EXTRA_TEAM_ID = "extra_team_id";
+    public static final String EXTRA_TAB_INDEX = "extra_tab_index";
 
     private MaterialToolbar toolbar;
     private TabLayout tabLayout;
@@ -48,6 +48,11 @@ public class TeamSettingsActivity extends AppCompatActivity {
         initViews();
         setupToolbar();
         setupViewPagerAndTabs();
+
+        int tabIndex = getIntent().getIntExtra(EXTRA_TAB_INDEX, 0);
+        if (tabIndex > 0) {
+            viewPager.setCurrentItem(tabIndex);
+        }
     }
 
     private void initViews() {
@@ -85,9 +90,6 @@ public class TeamSettingsActivity extends AppCompatActivity {
                             tab.setText("Members");
                             break;
                         case 2:
-                            tab.setText("Permissions");
-                            break;
-                        case 3:
                             tab.setText("Danger Zone");
                             break;
                     }
@@ -100,7 +102,7 @@ public class TeamSettingsActivity extends AppCompatActivity {
 
     private static class TeamSettingsPagerAdapter extends FragmentStateAdapter {
 
-        private static final int NUM_TABS = 4;
+        private static final int NUM_TABS = 3;
 
         public TeamSettingsPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -115,8 +117,6 @@ public class TeamSettingsActivity extends AppCompatActivity {
                 case 1:
                     return new TeamSettingsMembersFragment();
                 case 2:
-                    return new TeamSettingsPermissionsFragment();
-                case 3:
                     return new TeamSettingsDangerZoneFragment();
                 default:
                     return new TeamSettingsGeneralFragment();

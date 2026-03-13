@@ -1,5 +1,7 @@
 package group.eleven.snippet_sharing_app.ui.team;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -180,6 +182,16 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
             }
         });
 
+        teamViewModel.getRemoveTeamMemberResult().observe(this, resource -> {
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
+                Toast.makeText(this, "Member removed successfully", Toast.LENGTH_SHORT).show();
+                fetchTeamMembers();
+                fetchTeamDetails(); // Refresh member count
+            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                Toast.makeText(this, "Error removing member: " + resource.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
         teamViewModel.getLeaveTeamResult().observe(this, resource -> {
             if (resource.getStatus() == AuthRepository.Resource.Status.LOADING) {
                 btnLeaveTeam.setClickable(false);
@@ -219,7 +231,12 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
 
         btnSearch.setOnClickListener(v -> Toast.makeText(this, "Search in team", Toast.LENGTH_SHORT).show());
         btnMore.setOnClickListener(v -> showMoreOptionsMenu());
-        btnInviteMembers.setOnClickListener(v -> Toast.makeText(this, "Add Members", Toast.LENGTH_SHORT).show());
+        btnInviteMembers.setOnClickListener(v -> {
+            Intent intent = new Intent(this, TeamSettingsActivity.class);
+            intent.putExtra(TeamSettingsActivity.EXTRA_TEAM_ID, teamId);
+            intent.putExtra(TeamSettingsActivity.EXTRA_TAB_INDEX, 1); // Members tab
+            startActivity(intent);
+        });
         btnLeaveTeam.setOnClickListener(v -> confirmLeaveTeam());
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -251,9 +268,18 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
         new AlertDialog.Builder(this)
                 .setItems(options, (dialog, which) -> {
                     switch (which) {
-                        case 0: Toast.makeText(this, "Share team", Toast.LENGTH_SHORT).show(); break;
-                        case 1: Toast.makeText(this, "Report team", Toast.LENGTH_SHORT).show(); break;
-                        case 2: Toast.makeText(this, "Link copied", Toast.LENGTH_SHORT).show(); break;
+                        case 0:
+                            Toast.makeText(this, "Share team", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            Toast.makeText(this, "Report team", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Team Link", "snippetshare://team/" + teamId);
+                            clipboard.setPrimaryClip(clip);
+                            Toast.makeText(this, "Link copied to clipboard", Toast.LENGTH_SHORT).show();
+                            break;
                     }
                 })
                 .show();
@@ -326,16 +352,35 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
 
     @Override
     public void onMoreOptionsClick(TeamMember member, View view) {
-        String[] options = {"View Profile", "Message", "Remove from Team"};
+        // Don't allow actions on the owner
+        if ("owner".equalsIgnoreCase(member.getRole())) {
+            Toast.makeText(this, "Cannot modify the team owner", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] options = {"View Profile", "Remove from Team"};
         new AlertDialog.Builder(this)
                 .setTitle(member.getUsername())
                 .setItems(options, (dialog, which) -> {
                     switch (which) {
-                        case 0: Toast.makeText(this, "View profile", Toast.LENGTH_SHORT).show(); break;
-                        case 1: Toast.makeText(this, "Message", Toast.LENGTH_SHORT).show(); break;
-                        case 2: Toast.makeText(this, "Remove member", Toast.LENGTH_SHORT).show(); break;
+                        case 0:
+                            Toast.makeText(this, "View profile", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            confirmRemoveMember(member);
+                            break;
                     }
                 })
+                .show();
+    }
+
+    private void confirmRemoveMember(TeamMember member) {
+        new AlertDialog.Builder(this)
+                .setTitle("Remove Member")
+                .setMessage("Are you sure you want to remove " + member.getUsername() + " from this team?")
+                .setPositiveButton("Remove", (dialog, which) ->
+                        teamViewModel.removeTeamMember(teamId, member.getUserId()))
+                .setNegativeButton("Cancel", null)
                 .show();
     }
 }

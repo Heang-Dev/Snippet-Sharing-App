@@ -165,14 +165,16 @@ public class CreateTeamActivity extends AppCompatActivity {
             privacy = "invite-only";
         }
 
-        Map<String, String> teamData = new HashMap<>();
-        teamData.put("name", teamName);
-        teamData.put("description", teamDescription);
-        teamData.put("privacy", privacy);
-        // TODO: Handle avatar upload. This will likely involve converting Uri to a file and
-        //  then uploading it as a multipart request, which requires changes to ApiService.
-        //  For now, we'll proceed without avatar upload.
-
-        teamViewModel.createTeam(teamData);
+        if (selectedImageUri != null) {
+            // Use multipart request with avatar
+            teamViewModel.createTeamWithAvatar(teamName, teamDescription, privacy, selectedImageUri);
+        } else {
+            // Use regular request without avatar
+            Map<String, String> teamData = new HashMap<>();
+            teamData.put("name", teamName);
+            teamData.put("description", teamDescription);
+            teamData.put("privacy", privacy);
+            teamViewModel.createTeam(teamData);
+        }
     }
 }

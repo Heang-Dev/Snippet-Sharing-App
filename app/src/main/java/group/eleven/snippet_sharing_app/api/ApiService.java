@@ -149,6 +149,16 @@ public interface ApiService {
     Call<ApiResponse<Team>> createTeam(@Body Map<String, String> teamData);
 
     /**
+     * Create a new team with avatar.
+     */
+    @Multipart
+    @POST("teams")
+    Call<ApiResponse<Team>> createTeamWithAvatar(
+            @Part MultipartBody.Part avatar,
+            @PartMap Map<String, RequestBody> teamData
+    );
+
+    /**
      * Get details for a specific team.
      */
     @GET("teams/{id}")

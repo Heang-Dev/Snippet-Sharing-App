@@ -161,16 +161,16 @@
 
         </LinearLayout>
 
-        <!-- Input Container -->
+        <!-- Share Snippet Button Container -->
         <LinearLayout
             android:id="@+id/input_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="8dp"
+            android:gravity="center"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="10dp"
             android:paddingBottom="20dp"
             android:background="?attr/surfaceColor"
             android:elevation="2dp"
@@ -178,60 +178,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <!-- Attachment Button -->
-            <ImageView
-                android:id="@+id/iv_attachment"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:padding="6dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_attachment"
-                app:tint="?attr/iconTintColor"
-                android:clickable="true"
-                android:focusable="true" />
-
-            <!-- Message Input -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="6dp"
-                app:cardCornerRadius="20dp"
-                app:cardBackgroundColor="?attr/searchInputBackgroundColor"
-                app:cardElevation="0dp">
-
-                <EditText
-                    android:id="@+id/et_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="38dp"
-                    android:maxHeight="100dp"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:background="@android:color/transparent"
-                    android:hint="Message..."
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textColorHint="?attr/textMutedColor"
-                    android:textSize="14sp"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:maxLines="4" />
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Send/Share Snippet Button -->
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_send"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_send"
-                app:fabCustomSize="40dp"
-                app:maxImageSize="20dp"
-                app:tint="@android:color/white"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_share_snippet"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Share Snippet to Team"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                app:icon="@drawable/ic_code"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:cornerRadius="24dp"
                 app:backgroundTint="?attr/accentColor"
-                app:elevation="0dp" />
+                android:textColor="@android:color/white"
+                app:iconTint="@android:color/white" />
 
         </LinearLayout>
 

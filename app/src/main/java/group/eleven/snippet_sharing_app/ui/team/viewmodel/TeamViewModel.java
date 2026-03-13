@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import android.net.Uri;
+
 import java.util.List;
 import java.util.Map;
 
@@ -294,6 +296,20 @@ public class TeamViewModel extends AndroidViewModel {
             @Override
             public void onChanged(AuthRepository.Resource<MessageResponse> resource) {
                 _updateTeamMemberRoleResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
+    }
+
+    public void createTeamWithAvatar(String name, String description, String privacy, Uri avatarUri) {
+        LiveData<AuthRepository.Resource<Team>> source = teamRepository.createTeamWithAvatar(
+                getApplication(), name, description, privacy, avatarUri);
+        source.observeForever(new Observer<AuthRepository.Resource<Team>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<Team> resource) {
+                _createTeamResult.setValue(resource);
                 if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
                     source.removeObserver(this);
                 }
