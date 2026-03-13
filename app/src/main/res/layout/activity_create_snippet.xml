@@ -51,7 +51,7 @@
                 android:textSize="13sp"
                 android:textColor="@color/white"
                 app:backgroundTint="?attr/accentColor"
-                app:cornerRadius="18dp"
+                app:cornerRadius="0dp"
                 android:minHeight="36dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
@@ -104,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
                     app:cardBackgroundColor="?attr/tagBackgroundColor"
-                    app:cardCornerRadius="16dp"
+                    app:cardCornerRadius="0dp"
                     app:cardElevation="0dp"
                     android:layout_marginEnd="8dp">
 
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="28dp"
                     app:cardBackgroundColor="?attr/surfaceVariantColor"
-                    app:cardCornerRadius="14dp"
+                    app:cardCornerRadius="0dp"
                     app:cardElevation="0dp">
 
                     <TextView
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardBackgroundColor="?attr/codeBlockBackground"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -349,7 +349,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 app:cardBackgroundColor="?attr/surfaceVariantColor"
-                app:cardCornerRadius="22dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp">
 
                 <LinearLayout
@@ -365,7 +365,7 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         app:cardBackgroundColor="?attr/accentColor"
-                        app:cardCornerRadius="19dp"
+                        app:cardCornerRadius="0dp"
                         app:cardElevation="0dp"
                         android:layout_marginEnd="2dp">
 
@@ -387,7 +387,7 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         app:cardBackgroundColor="@android:color/transparent"
-                        app:cardCornerRadius="19dp"
+                        app:cardCornerRadius="0dp"
                         app:cardElevation="0dp"
                         android:layout_marginEnd="2dp">
 
@@ -408,7 +408,7 @@
                         android:layout_weight="1"
                         android:layout_height="match_parent"
                         app:cardBackgroundColor="@android:color/transparent"
-                        app:cardCornerRadius="19dp"
+                        app:cardCornerRadius="0dp"
                         app:cardElevation="0dp">
 
                         <TextView
@@ -441,7 +441,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp">
 
                 <EditText
@@ -467,7 +467,7 @@
                 android:minHeight="46dp"
                 android:layout_marginTop="12dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true">
@@ -519,7 +519,7 @@
                 android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true">
@@ -557,7 +557,7 @@
                 android:layout_height="46dp"
                 android:layout_marginTop="8dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 android:clickable="true"
                 android:focusable="true"

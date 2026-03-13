@@ -13,7 +13,7 @@
         android:id="@+id/cvLanguage"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="0dp"
         app:cardBackgroundColor="@color/lang_typescript"
         app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
