@@ -146,7 +146,7 @@
                         app:backgroundTint="?attr/accentColor"
                         android:textColor="@color/on_primary"
                         app:iconTint="@color/on_primary"
-                        app:cornerRadius="18dp"/>
+                        app:cornerRadius="0dp"/>
 
                     <!-- Lang: All - Outline style -->
                     <com.google.android.material.button.MaterialButton
@@ -166,7 +166,7 @@
                         app:iconTint="?attr/textMutedColor"
                         app:strokeColor="?attr/borderColor"
                         app:strokeWidth="1dp"
-                        app:cornerRadius="18dp"/>
+                        app:cornerRadius="0dp"/>
 
                     <!-- Relevance - Outline style -->
                     <com.google.android.material.button.MaterialButton
@@ -185,7 +185,7 @@
                         app:iconTint="?attr/textMutedColor"
                         app:strokeColor="?attr/borderColor"
                         app:strokeWidth="1dp"
-                        app:cornerRadius="18dp"/>
+                        app:cornerRadius="0dp"/>
                 </LinearLayout>
             </HorizontalScrollView>
 
@@ -240,7 +240,7 @@
                 android:textAllCaps="false"
                 app:strokeColor="?attr/accentColor"
                 app:strokeWidth="1dp"
-                app:cornerRadius="24dp"/>
+                app:cornerRadius="0dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

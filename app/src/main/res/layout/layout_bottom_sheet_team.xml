@@ -116,6 +116,6 @@
         android:textColor="@color/on_primary"
         android:textStyle="bold"
         app:backgroundTint="@color/neon_green"
-        app:cornerRadius="28dp"/>
+        app:cornerRadius="0dp"/>
 
 </LinearLayout>
