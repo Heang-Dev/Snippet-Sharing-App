@@ -82,7 +82,7 @@ public class PrivacySettingsActivity extends AppCompatActivity {
     private void updateUI(boolean isPublic) {
         int activeColor = ContextCompat.getColor(this, R.color.profile_primary);
         int inactiveColor = ContextCompat.getColor(this, R.color.profile_text_muted);
-        int activeBg = android.graphics.Color.parseColor("#111B13");
+        int activeBg = android.graphics.Color.parseColor("#1A1400");
         int normalBg = ContextCompat.getColor(this, R.color.profile_card);
 
         if (isPublic) {

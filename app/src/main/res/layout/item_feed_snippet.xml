@@ -138,7 +138,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="12dp"
             app:cardBackgroundColor="?attr/cardSurfaceColor"
-            app:cardCornerRadius="12dp"
+            app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
             app:strokeColor="?attr/borderColor"
             app:strokeWidth="1dp">
@@ -251,7 +251,7 @@
                 android:paddingTop="4dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/primary"
+                android:textColor="?attr/accentColor"
                 android:textSize="12sp"
                 tools:text="#react" />
 
@@ -265,7 +265,7 @@
                 android:paddingTop="4dp"
                 android:paddingEnd="10dp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/primary"
+                android:textColor="?attr/accentColor"
                 android:textSize="12sp"
                 tools:text="#hooks" />
 

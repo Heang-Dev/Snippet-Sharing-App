@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="32dp">
+    android:padding="@dimen/spacing_2xl">
 
     <!-- Illustration -->
     <ImageView
@@ -20,9 +20,9 @@
         android:layout_height="wrap_content"
         android:textSize="28sp"
         android:textColor="?attr/textPrimaryColor"
-        android:textStyle="bold"
+        android:fontFamily="sans-serif-bold"
         android:gravity="center"
-        android:layout_marginTop="48dp" />
+        android:layout_marginTop="@dimen/spacing_4xl" />
 
     <!-- Description -->
     <TextView
@@ -33,7 +33,7 @@
         android:textColor="?attr/textSecondaryColor"
         android:gravity="center"
         android:lineSpacingMultiplier="1.4"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="16dp" />
+        android:layout_marginTop="@dimen/spacing_base"
+        android:layout_marginHorizontal="@dimen/spacing_base" />
 
 </LinearLayout>

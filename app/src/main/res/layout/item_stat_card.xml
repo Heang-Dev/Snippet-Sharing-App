@@ -28,7 +28,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_code"
-                app:tint="@color/primary" />
+                app:tint="?attr/accentColor" />
 
             <!-- Label -->
             <TextView

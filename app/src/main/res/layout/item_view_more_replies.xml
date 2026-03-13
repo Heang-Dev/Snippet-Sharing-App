@@ -16,14 +16,14 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_expand_more"
-        app:tint="@color/primary" />
+        app:tint="?attr/accentColor" />
 
     <TextView
         android:id="@+id/tvViewMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:textColor="@color/primary"
+        android:textColor="?attr/accentColor"
         android:textSize="13sp"
         android:textStyle="bold"
         tools:text="View 3 more replies" />

@@ -50,7 +50,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             app:cardBackgroundColor="?attr/tagBackgroundColor"
-            app:cardCornerRadius="40dp"
+            app:cardCornerRadius="0dp"
             app:cardElevation="0dp">
 
             <ImageView

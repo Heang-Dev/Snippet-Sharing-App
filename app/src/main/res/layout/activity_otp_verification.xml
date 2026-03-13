@@ -39,7 +39,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="@dimen/avatar_xl"
                 android:layout_height="@dimen/avatar_xl"
-                app:cardCornerRadius="36dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeWidth="2dp"
                 app:strokeColor="@color/primary_950"

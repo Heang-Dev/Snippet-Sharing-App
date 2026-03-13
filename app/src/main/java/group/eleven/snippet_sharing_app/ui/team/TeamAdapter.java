@@ -94,13 +94,13 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                 // Green border + faint green fill
                 rootView.setBackgroundResource(R.drawable.bg_team_item_selected);
                 ivSelection.setImageResource(R.drawable.ic_check_circle);
-                ivSelection.setColorFilter(Color.parseColor("#3DD68C")); // Green tint
+                ivSelection.setColorFilter(Color.parseColor("#FFBA0A")); // Gold tint
             } else {
                 // Transparent
                 rootView.setBackgroundResource(0); // or transparent
                 ivSelection.setImageResource(R.drawable.ic_radio_unchecked); // Need proper icon or shape
                 ivSelection.clearColorFilter();
-                ivSelection.setColorFilter(Color.parseColor("#889990")); // Grey tint
+                ivSelection.setColorFilter(Color.parseColor("#6B6B6B")); // Grey tint
             }
         }
     }

@@ -40,7 +40,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    app:cardCornerRadius="18dp"
+                    app:cardCornerRadius="0dp"
                     app:cardBackgroundColor="?attr/tagBackgroundColor"
                     app:cardElevation="0dp">
 
@@ -129,7 +129,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
-                app:cardCornerRadius="28dp"
+                app:cardCornerRadius="0dp"
                 app:cardBackgroundColor="?attr/tagBackgroundColor"
                 app:cardElevation="0dp">
 
@@ -188,7 +188,7 @@
                 app:icon="@drawable/ic_code"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp"
-                app:cornerRadius="24dp"
+                app:cornerRadius="0dp"
                 app:backgroundTint="?attr/accentColor"
                 android:textColor="@android:color/white"
                 app:iconTint="@android:color/white" />

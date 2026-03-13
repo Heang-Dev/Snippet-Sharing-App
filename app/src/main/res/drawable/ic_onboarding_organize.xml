@@ -8,20 +8,20 @@
     <!-- Background circle - Light pink (original size) -->
     <path
         android:pathData="M80,80m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"
-        android:fillColor="#F8D8E8"/>
+        android:fillColor="#481F00"/>
 
     <!-- Folder shape (smaller) -->
     <path
         android:pathData="M48,62 L68,62 L74,55 L112,55 L112,108 L48,108 Z"
         android:fillColor="#FFFFFF"
         android:strokeWidth="2.5"
-        android:strokeColor="#E056A0"/>
+        android:strokeColor="#FFBA0A"/>
 
     <!-- Folder tab -->
     <path
         android:pathData="M48,62 L68,62 L74,55"
         android:strokeWidth="2.5"
-        android:strokeColor="#E056A0"
+        android:strokeColor="#FFBA0A"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:fillColor="#00000000"/>
@@ -30,33 +30,33 @@
     <path
         android:pathData="M48,62 L112,62"
         android:strokeWidth="2.5"
-        android:strokeColor="#E056A0"/>
+        android:strokeColor="#FFBA0A"/>
 
     <!-- Code file 1 -->
     <path
         android:pathData="M58,75 L85,75"
         android:strokeWidth="2.5"
-        android:strokeColor="#FF8C42"
+        android:strokeColor="#E28C00"
         android:strokeLineCap="round"/>
 
     <!-- Code file 2 -->
     <path
         android:pathData="M58,85 L100,85"
         android:strokeWidth="2.5"
-        android:strokeColor="#E056A0"
+        android:strokeColor="#FFBA0A"
         android:strokeLineCap="round"/>
 
     <!-- Code file 3 -->
     <path
         android:pathData="M58,95 L74,95"
         android:strokeWidth="2.5"
-        android:strokeColor="#F078B8"
+        android:strokeColor="#FFD81B"
         android:strokeLineCap="round"/>
 
     <!-- Checkmark badge -->
     <path
         android:pathData="M108,42m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0"
-        android:fillColor="#E056A0"/>
+        android:fillColor="#FFBA0A"/>
 
     <path
         android:pathData="M103,42 L106,45 L113,38"

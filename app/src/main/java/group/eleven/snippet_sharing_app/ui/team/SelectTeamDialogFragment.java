@@ -174,7 +174,7 @@ public class SelectTeamDialogFragment extends BottomSheetDialogFragment {
     }
 
     private int getDefaultTeamColor() {
-        return Color.parseColor("#6366F1");
+        return Color.parseColor("#FFBA0A");
     }
 
     private void showEmptyState() {

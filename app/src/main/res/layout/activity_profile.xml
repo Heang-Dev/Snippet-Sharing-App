@@ -265,7 +265,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/bg_pill_badge"
-                                android:backgroundTint="@color/primary"
+                                android:backgroundTint="?attr/buttonPrimaryColor"
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="2dp"
                                 android:text="✓"
@@ -340,10 +340,10 @@
                         android:layout_marginStart="16dp"
                         android:drawableStart="@drawable/ic_link"
                         android:drawablePadding="4dp"
-                        android:textColor="@color/primary"
+                        android:textColor="?attr/accentColor"
                         android:textSize="12sp"
                         android:visibility="gone"
-                        app:drawableTint="@color/primary"
+                        app:drawableTint="?attr/accentColor"
                         tools:text="alex.dev"
                         tools:visibility="visible" />
 
@@ -413,8 +413,8 @@
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        app:backgroundTint="@color/primary"
-                        app:cornerRadius="10dp" />
+                        app:backgroundTint="?attr/buttonPrimaryColor"
+                        app:cornerRadius="0dp" />
 
                     <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cvNotifications"
@@ -424,7 +424,7 @@
                         android:clickable="true"
                         android:focusable="true"
                         app:cardBackgroundColor="?attr/cardSurfaceColor"
-                        app:cardCornerRadius="10dp"
+                        app:cardCornerRadius="0dp"
                         app:cardElevation="0dp"
                         app:strokeColor="?attr/borderColor"
                         app:strokeWidth="1dp">
@@ -463,7 +463,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:text="Snippets"
-                    android:textColor="@color/primary"
+                    android:textColor="?attr/accentColor"
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
@@ -502,7 +502,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/primary" />
+                    android:background="?attr/accentColor" />
 
                 <View
                     android:id="@+id/tabIndicatorStars"

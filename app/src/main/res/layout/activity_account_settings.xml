@@ -227,7 +227,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -312,7 +312,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -387,7 +387,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -440,7 +440,7 @@
                         android:textAllCaps="false"
                         android:textColor="?attr/textPrimaryColor"
                         android:textSize="12sp"
-                        app:cornerRadius="18dp"
+                        app:cornerRadius="0dp"
                         app:strokeColor="?attr/borderColor" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -451,7 +451,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -505,7 +505,7 @@
                         android:textAllCaps="false"
                         android:textColor="?attr/textPrimaryColor"
                         android:textSize="12sp"
-                        app:cornerRadius="18dp"
+                        app:cornerRadius="0dp"
                         app:strokeColor="?attr/borderColor" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -673,7 +673,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -735,7 +735,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -838,7 +838,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -877,7 +877,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 app:cardBackgroundColor="?attr/cardSurfaceColor"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="0dp"
                 app:cardElevation="0dp"
                 app:strokeColor="?attr/borderColor"
                 app:strokeWidth="1dp">
@@ -935,7 +935,7 @@
                 android:textAllCaps="false"
                 android:textColor="?attr/textPrimaryColor"
                 android:textSize="15sp"
-                app:cornerRadius="12dp"
+                app:cornerRadius="0dp"
                 app:icon="@drawable/ic_logout"
                 app:iconGravity="textStart"
                 app:iconTint="?attr/textPrimaryColor"
@@ -952,7 +952,7 @@
                 android:textAllCaps="false"
                 android:textColor="?attr/errorColor"
                 android:textSize="15sp"
-                app:cornerRadius="12dp"
+                app:cornerRadius="0dp"
                 app:icon="@drawable/ic_delete"
                 app:iconGravity="textStart"
                 app:iconTint="?attr/errorColor"

@@ -181,7 +181,7 @@
 
     <style name="ShapeAppearance.SnippetApp.BottomNavIndicator" parent="ShapeAppearance.Material3.Corner.Small">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/radius_md</item>
+        <item name="cornerSize">0dp</item>
     </style>
 
     <!-- ========== BOTTOM SHEET ========== -->
@@ -204,6 +204,12 @@
         <item name="fabCustomSize">@dimen/fab_size</item>
         <item name="maxImageSize">@dimen/icon_lg</item>
         <item name="elevation">8dp</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SnippetApp.Sharp</item>
+    </style>
+
+    <style name="ShapeAppearance.SnippetApp.Sharp" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">0dp</item>
     </style>
 
     <!-- ========== SWITCH ========== -->

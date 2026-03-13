@@ -84,7 +84,7 @@ public class LanguageAdapter extends BaseAdapter {
             ivCheck.setVisibility(View.VISIBLE);
             convertView.setBackgroundResource(R.drawable.bg_badge_draft);
             convertView
-                    .setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#2600e676")));
+                    .setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#26FFBA0A")));
         } else {
             ivCheck.setVisibility(View.GONE);
             convertView.setBackground(null); // Or transparent

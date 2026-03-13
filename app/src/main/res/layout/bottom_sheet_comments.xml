@@ -213,7 +213,7 @@
             android:contentDescription="Send"
             android:padding="8dp"
             android:src="@drawable/ic_arrow_forward"
-            app:tint="@color/primary" />
+            app:tint="?attr/accentColor" />
 
     </LinearLayout>
 

@@ -22,14 +22,14 @@
     <dimen name="screen_padding_horizontal">24dp</dimen>
     <dimen name="screen_padding_vertical">16dp</dimen>
 
-    <!-- ========== CORNER RADII ========== -->
-    <dimen name="radius_xs">4dp</dimen>
-    <dimen name="radius_sm">8dp</dimen>
-    <dimen name="radius_md">12dp</dimen>
-    <dimen name="radius_lg">16dp</dimen>
-    <dimen name="radius_xl">20dp</dimen>
-    <dimen name="radius_2xl">24dp</dimen>
-    <dimen name="radius_full">100dp</dimen>
+    <!-- ========== CORNER RADII (Sharp / Binance style) ========== -->
+    <dimen name="radius_xs">0dp</dimen>
+    <dimen name="radius_sm">0dp</dimen>
+    <dimen name="radius_md">0dp</dimen>
+    <dimen name="radius_lg">0dp</dimen>
+    <dimen name="radius_xl">0dp</dimen>
+    <dimen name="radius_2xl">0dp</dimen>
+    <dimen name="radius_full">0dp</dimen>
 
     <!-- ========== BUTTON SIZES ========== -->
     <dimen name="button_height_sm">36dp</dimen>
@@ -38,7 +38,7 @@
 
     <!-- ========== INPUT SIZES ========== -->
     <dimen name="input_height">52dp</dimen>
-    <dimen name="input_corner_radius">12dp</dimen>
+    <dimen name="input_corner_radius">0dp</dimen>
 
     <!-- ========== ICON SIZES ========== -->
     <dimen name="icon_xs">16dp</dimen>
@@ -63,7 +63,7 @@
     <!-- Cards -->
     <dimen name="card_spacing">12dp</dimen>
     <dimen name="card_padding">16dp</dimen>
-    <dimen name="snippet_card_corner">12dp</dimen>
+    <dimen name="snippet_card_corner">0dp</dimen>
     <dimen name="code_preview_height">100dp</dimen>
 
     <!-- FAB -->
@@ -86,10 +86,10 @@
 
     <!-- Chip -->
     <dimen name="chip_height">32dp</dimen>
-    <dimen name="chip_corner_radius">16dp</dimen>
+    <dimen name="chip_corner_radius">0dp</dimen>
 
     <!-- Bottom Sheet -->
-    <dimen name="bottom_sheet_corner">24dp</dimen>
+    <dimen name="bottom_sheet_corner">0dp</dimen>
     <dimen name="bottom_sheet_handle_width">32dp</dimen>
     <dimen name="bottom_sheet_handle_height">4dp</dimen>
 </resources>

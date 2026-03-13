@@ -63,7 +63,7 @@
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="12dp"
                     app:cardBackgroundColor="?attr/cardSurfaceColor"
-                    app:cardCornerRadius="24dp"
+                    app:cardCornerRadius="0dp"
                     app:cardElevation="0dp"
                     app:strokeWidth="0dp">
 
@@ -165,7 +165,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         app:cardBackgroundColor="?attr/tagBackgroundColor"
-                        app:cardCornerRadius="40dp"
+                        app:cardCornerRadius="0dp"
                         app:cardElevation="0dp">
 
                         <ImageView
@@ -205,7 +205,7 @@
                         android:text="Explore Snippets"
                         android:textColor="@color/white"
                         app:backgroundTint="?attr/accentColor"
-                        app:cornerRadius="24dp" />
+                        app:cornerRadius="0dp" />
 
                 </LinearLayout>
 
@@ -242,7 +242,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="28dp"
             android:contentDescription="Create Snippet"
-            app:backgroundTint="@color/primary"
+            app:backgroundTint="?attr/buttonPrimaryColor"
             app:elevation="6dp"
             app:fabCustomSize="56dp"
             app:maxImageSize="24dp"

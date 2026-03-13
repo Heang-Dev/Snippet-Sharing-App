@@ -7,6 +7,6 @@
         android:color="@color/border"
         android:dashWidth="6dp"
         android:dashGap="4dp" />
-    <corners android:radius="16dp" />
+    <corners android:radius="0dp" />
     <solid android:color="@android:color/transparent" />
 </shape>
