@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- ============================================== -->
-    <!-- COMPONENT STYLES - Snippet Sharing App        -->
+    <!-- COMPONENT STYLES - Selective Yellow Theme      -->
     <!-- ============================================== -->
 
-    <!-- ========== BASE STYLES (required for style hierarchy) ========== -->
+    <!-- ========== BASE STYLES ========== -->
     <style name="Widget.SnippetApp" parent="android:Widget" />
     <style name="TextAppearance.SnippetApp" parent="TextAppearance.Material3.BodyMedium" />
     <style name="ShapeAppearance.SnippetApp" parent="ShapeAppearance.Material3.Corner.Medium" />
@@ -12,49 +12,51 @@
     <!-- ========== CARD STYLES ========== -->
     <style name="Widget.SnippetApp.Card" parent="Widget.Material3.CardView.Filled">
         <item name="cardBackgroundColor">?attr/cardSurfaceColor</item>
-        <item name="cardCornerRadius">16dp</item>
+        <item name="cardCornerRadius">@dimen/radius_lg</item>
         <item name="cardElevation">0dp</item>
-        <item name="strokeWidth">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">?attr/dividerColor</item>
     </style>
 
     <style name="Widget.SnippetApp.Card.Elevated" parent="Widget.SnippetApp.Card">
         <item name="cardBackgroundColor">?attr/surfaceElevatedColor</item>
         <item name="cardElevation">2dp</item>
+        <item name="strokeWidth">0dp</item>
     </style>
 
     <style name="Widget.SnippetApp.Card.Snippet" parent="Widget.SnippetApp.Card">
-        <item name="cardCornerRadius">12dp</item>
-        <item name="android:layout_marginBottom">12dp</item>
+        <item name="cardCornerRadius">@dimen/radius_md</item>
+        <item name="android:layout_marginBottom">@dimen/card_spacing</item>
     </style>
 
     <style name="Widget.SnippetApp.Card.Code" parent="Widget.SnippetApp.Card">
         <item name="cardBackgroundColor">?attr/codeBackgroundColor</item>
-        <item name="cardCornerRadius">8dp</item>
+        <item name="cardCornerRadius">@dimen/radius_sm</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">?attr/dividerColor</item>
     </style>
 
     <style name="Widget.SnippetApp.Card.Inner" parent="Widget.SnippetApp.Card">
         <item name="cardBackgroundColor">?attr/cardInnerColor</item>
-        <item name="cardCornerRadius">8dp</item>
+        <item name="cardCornerRadius">@dimen/radius_sm</item>
     </style>
 
     <!-- ========== BUTTON STYLES ========== -->
     <style name="Widget.SnippetApp.Button" parent="Widget.Material3.Button">
         <item name="android:textColor">@color/on_primary</item>
         <item name="backgroundTint">?attr/buttonPrimaryColor</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="cornerRadius">@dimen/radius_md</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:paddingTop">14dp</item>
-        <item name="android:paddingBottom">14dp</item>
-        <item name="android:minHeight">52dp</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
+        <item name="android:minHeight">@dimen/button_height_lg</item>
     </style>
 
     <style name="Widget.SnippetApp.Button.Secondary" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:textColor">?attr/accentColor</item>
         <item name="strokeColor">?attr/accentColor</item>
         <item name="strokeWidth">1dp</item>
-        <item name="cornerRadius">12dp</item>
+        <item name="cornerRadius">@dimen/radius_md</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
     </style>
@@ -68,6 +70,7 @@
 
     <style name="Widget.SnippetApp.Button.Danger" parent="Widget.SnippetApp.Button">
         <item name="backgroundTint">?attr/buttonDangerColor</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Widget.SnippetApp.Button.Icon" parent="Widget.Material3.Button.IconButton">
@@ -85,15 +88,15 @@
         <item name="strokeColor">?attr/borderColor</item>
         <item name="backgroundTint">?attr/cardSurfaceColor</item>
         <item name="iconTint">@null</item>
-        <item name="iconPadding">8dp</item>
+        <item name="iconPadding">@dimen/spacing_sm</item>
     </style>
 
     <!-- ========== TEXT INPUT STYLES ========== -->
     <style name="Widget.SnippetApp.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
-        <item name="boxCornerRadiusTopStart">12dp</item>
-        <item name="boxCornerRadiusTopEnd">12dp</item>
-        <item name="boxCornerRadiusBottomStart">12dp</item>
-        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_md</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_md</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_md</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_md</item>
         <item name="boxStrokeColor">@color/selector_input_stroke</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeWidthFocused">2dp</item>
@@ -108,30 +111,30 @@
     </style>
 
     <style name="Widget.SnippetApp.TextInput.Dense" parent="Widget.SnippetApp.TextInput">
-        <item name="boxCornerRadiusTopStart">8dp</item>
-        <item name="boxCornerRadiusTopEnd">8dp</item>
-        <item name="boxCornerRadiusBottomStart">8dp</item>
-        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="boxCornerRadiusTopStart">@dimen/radius_sm</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/radius_sm</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/radius_sm</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/radius_sm</item>
     </style>
 
     <!-- Legacy input styles -->
     <style name="TextInputLayout" parent="Widget.SnippetApp.TextInput" />
     <style name="DarkTextInputLayout" parent="Widget.SnippetApp.TextInput" />
 
-    <!-- ========== SEARCH BAR STYLE ========== -->
+    <!-- ========== SEARCH BAR ========== -->
     <style name="Widget.SnippetApp.SearchBar">
         <item name="android:background">@drawable/bg_search_bar</item>
-        <item name="android:paddingStart">16dp</item>
-        <item name="android:paddingEnd">16dp</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">@dimen/spacing_base</item>
+        <item name="android:paddingEnd">@dimen/spacing_base</item>
+        <item name="android:minHeight">@dimen/button_height_md</item>
     </style>
 
     <!-- ========== CHIP STYLES ========== -->
     <style name="Widget.SnippetApp.Chip" parent="Widget.Material3.Chip.Filter">
         <item name="chipBackgroundColor">@color/selector_chip_background</item>
         <item name="android:textColor">@color/selector_chip_text</item>
-        <item name="chipCornerRadius">20dp</item>
-        <item name="chipMinHeight">32dp</item>
+        <item name="chipCornerRadius">@dimen/radius_xl</item>
+        <item name="chipMinHeight">@dimen/chip_height</item>
         <item name="chipStrokeColor">?attr/borderColor</item>
         <item name="chipStrokeWidth">1dp</item>
         <item name="checkedIconVisible">false</item>
@@ -141,7 +144,7 @@
     <style name="Widget.SnippetApp.Chip.Suggestion" parent="Widget.Material3.Chip.Suggestion">
         <item name="chipBackgroundColor">?attr/chipBackgroundColor</item>
         <item name="android:textColor">?attr/textSecondaryColor</item>
-        <item name="chipCornerRadius">16dp</item>
+        <item name="chipCornerRadius">@dimen/chip_corner_radius</item>
         <item name="chipMinHeight">28dp</item>
     </style>
 
@@ -150,13 +153,13 @@
         <item name="android:background">@drawable/bg_tag</item>
         <item name="android:textColor">?attr/tagTextColor</item>
         <item name="android:textSize">11sp</item>
-        <item name="android:paddingStart">12dp</item>
-        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingStart">@dimen/spacing_md</item>
+        <item name="android:paddingEnd">@dimen/spacing_md</item>
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
     </style>
 
-    <!-- ========== BOTTOM NAVIGATION STYLE ========== -->
+    <!-- ========== BOTTOM NAVIGATION ========== -->
     <style name="Widget.SnippetApp.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
         <item name="backgroundTint">?attr/bottomNavBackgroundColor</item>
         <item name="itemIconTint">@color/selector_bottom_nav</item>
@@ -166,71 +169,66 @@
     </style>
 
     <style name="Widget.SnippetApp.BottomNavigation.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/surface_elevated</item>
+        <item name="android:color">@color/primary_950</item>
     </style>
 
-    <!-- Bottom Nav Indicator - Square shape with small rounded corners -->
     <style name="Widget.SnippetApp.BottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/accent_pink</item>
-        <item name="android:width">48dp</item>
-        <item name="android:height">48dp</item>
+        <item name="android:color">@color/primary_950</item>
+        <item name="android:width">@dimen/spacing_4xl</item>
+        <item name="android:height">@dimen/spacing_4xl</item>
         <item name="shapeAppearance">@style/ShapeAppearance.SnippetApp.BottomNavIndicator</item>
     </style>
 
     <style name="ShapeAppearance.SnippetApp.BottomNavIndicator" parent="ShapeAppearance.Material3.Corner.Small">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">12dp</item>
+        <item name="cornerSize">@dimen/radius_md</item>
     </style>
 
-    <!-- ========== BOTTOM SHEET STYLE ========== -->
+    <!-- ========== BOTTOM SHEET ========== -->
     <style name="Widget.SnippetApp.BottomSheet" parent="Widget.Material3.BottomSheet">
         <item name="backgroundTint">?attr/surfaceColor</item>
         <item name="shapeAppearance">@style/ShapeAppearance.SnippetApp.BottomSheet</item>
     </style>
 
     <style name="ShapeAppearance.SnippetApp.BottomSheet" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
-        <item name="cornerSizeTopLeft">24dp</item>
-        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeTopLeft">@dimen/bottom_sheet_corner</item>
+        <item name="cornerSizeTopRight">@dimen/bottom_sheet_corner</item>
         <item name="cornerSizeBottomLeft">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
-    <!-- ========== FAB STYLE ========== -->
+    <!-- ========== FAB ========== -->
     <style name="Widget.SnippetApp.FAB" parent="Widget.Material3.FloatingActionButton.Primary">
         <item name="backgroundTint">?attr/accentColor</item>
         <item name="tint">@color/on_primary</item>
-        <item name="fabCustomSize">64dp</item>
-        <item name="maxImageSize">32dp</item>
+        <item name="fabCustomSize">@dimen/fab_size</item>
+        <item name="maxImageSize">@dimen/icon_lg</item>
         <item name="elevation">8dp</item>
     </style>
 
-    <!-- ========== SWITCH STYLE ========== -->
+    <!-- ========== SWITCH ========== -->
     <style name="Widget.SnippetApp.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
         <item name="trackTint">@color/selector_switch_track</item>
         <item name="thumbTint">@color/white</item>
     </style>
-
-    <!-- Legacy switch style -->
     <style name="CustomSwitchStyle" parent="Widget.SnippetApp.Switch" />
 
-    <!-- ========== CHECKBOX STYLE ========== -->
+    <!-- ========== CHECKBOX ========== -->
     <style name="Widget.SnippetApp.Checkbox" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">?attr/accentColor</item>
         <item name="android:textColor">?attr/textSecondaryColor</item>
         <item name="android:textSize">14sp</item>
     </style>
-
-    <!-- Legacy checkbox style -->
     <style name="DarkCheckbox" parent="Widget.SnippetApp.Checkbox" />
 
-    <!-- ========== DIVIDER STYLE ========== -->
+    <!-- ========== DIVIDER ========== -->
     <style name="Widget.SnippetApp.Divider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
         <item name="android:background">?attr/dividerColor</item>
     </style>
 
-    <!-- ========== TOOLBAR STYLE ========== -->
+    <!-- ========== TOOLBAR ========== -->
     <style name="Widget.SnippetApp.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="android:background">?attr/appBackgroundColor</item>
         <item name="titleTextColor">?attr/textPrimaryColor</item>
@@ -238,7 +236,7 @@
         <item name="navigationIconTint">?attr/iconPrimaryColor</item>
     </style>
 
-    <!-- ========== PROGRESS INDICATOR STYLE ========== -->
+    <!-- ========== PROGRESS INDICATORS ========== -->
     <style name="Widget.SnippetApp.ProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
         <item name="indicatorColor">?attr/accentColor</item>
         <item name="trackColor">?attr/surfaceVariantColor</item>
@@ -249,28 +247,28 @@
         <item name="trackColor">?attr/surfaceVariantColor</item>
     </style>
 
-    <!-- ========== SNACKBAR STYLE ========== -->
+    <!-- ========== SNACKBAR ========== -->
     <style name="Widget.SnippetApp.Snackbar" parent="Widget.Material3.Snackbar">
         <item name="backgroundTint">?attr/surfaceElevatedColor</item>
         <item name="actionTextColorAlpha">1.0</item>
     </style>
 
-    <!-- ========== DIALOG STYLE ========== -->
+    <!-- ========== DIALOG ========== -->
     <style name="Widget.SnippetApp.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="colorSurface">?attr/surfaceColor</item>
-        <item name="dialogCornerRadius">16dp</item>
+        <item name="dialogCornerRadius">@dimen/radius_lg</item>
     </style>
 
-    <!-- ========== LEGACY COMPATIBILITY STYLES ========== -->
+    <!-- ========== LEGACY COMPATIBILITY ========== -->
     <style name="CircleImage" parent="">
         <item name="cornerSize">50%</item>
     </style>
 
     <style name="CardStyle" parent="Widget.SnippetApp.Card.Elevated">
-        <item name="contentPadding">16dp</item>
+        <item name="contentPadding">@dimen/card_padding</item>
     </style>
 
-    <!-- ========== TAB LAYOUT STYLES ========== -->
+    <!-- ========== TAB LAYOUT ========== -->
     <style name="TabTextAppearance.Small" parent="TextAppearance.Material3.LabelMedium">
         <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">false</item>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="@color/error" android:state_enabled="true" android:state_focused="false" android:state_hovered="false" android:state_activated="true" />
-    <item android:color="@color/accent_green" android:state_focused="true" />
+    <item android:color="@color/primary_500" android:state_focused="true" />
     <item android:color="@color/border" android:state_hovered="true" />
     <item android:color="@color/input_stroke" android:state_enabled="true" />
     <item android:color="@color/border" android:state_enabled="false" />

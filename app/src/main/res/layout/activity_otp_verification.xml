@@ -4,105 +4,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_auth_pattern"
-    android:fillViewport="true">
+    android:background="?attr/appBackgroundColor"
+    android:fillViewport="true"
+    android:overScrollMode="never">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="24dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="32dp">
+        android:paddingHorizontal="@dimen/screen_padding_horizontal"
+        android:paddingTop="@dimen/spacing_base"
+        android:paddingBottom="@dimen/spacing_2xl">
 
-        <!-- Back Button -->
+        <!-- Top Bar: Back -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/spacing_3xl"
+            android:layout_height="@dimen/spacing_3xl"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="Back"
             android:layout_marginStart="-8dp"
             app:tint="?attr/textPrimaryColor" />
 
-        <!-- App Logo -->
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
-            app:cardCornerRadius="36dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0dp"
-            app:cardBackgroundColor="?attr/surfaceVariantColor">
+        <!-- Hero Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing_2xl">
 
-            <ImageView
+            <!-- App Logo -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="@dimen/avatar_xl"
+                android:layout_height="@dimen/avatar_xl"
+                app:cardCornerRadius="36dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/primary_950"
+                app:cardBackgroundColor="?attr/surfaceColor">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_launcher_foreground"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/app_name" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Title -->
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_launcher_foreground"
-                android:scaleType="centerCrop"
-                android:contentDescription="@string/app_name" />
-        </com.google.android.material.card.MaterialCardView>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:gravity="center"
+                android:text="Verify Your Email"
+                android:textColor="?attr/textPrimaryColor"
+                android:textSize="28sp"
+                android:fontFamily="sans-serif-bold" />
 
-        <!-- Title -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="Enter Your OTP"
-            android:textColor="?attr/textPrimaryColor"
-            android:textSize="26sp"
-            android:fontFamily="sans-serif-medium" />
+            <!-- Subtitle -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_sm"
+                android:gravity="center"
+                android:text="Enter the 6-digit code sent to"
+                android:textColor="?attr/textMutedColor"
+                android:textSize="14sp" />
 
-        <!-- Subtitle -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginHorizontal="24dp"
-            android:gravity="center"
-            android:text="We've sent a 6-digit verification code\nto your email. Enter the code below."
-            android:textColor="?attr/textSecondaryColor"
-            android:textSize="14sp"
-            android:lineSpacingMultiplier="1.4" />
+            <!-- Email Display -->
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_xs"
+                android:gravity="center"
+                android:textColor="?attr/accentColor"
+                android:textSize="14sp"
+                android:fontFamily="sans-serif-bold"
+                tools:text="example@email.com" />
+        </LinearLayout>
 
-        <!-- Email Display -->
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:textColor="?attr/accentColor"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:text="example@email.com" />
-
-        <!-- Resend Timer -->
+        <!-- Timer -->
         <TextView
             android:id="@+id/tvTimer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="@dimen/spacing_2xl"
+            android:gravity="center"
             android:text="Resend Code In 01:30s"
-            android:textColor="?attr/textSecondaryColor"
+            android:textColor="?attr/textMutedColor"
             android:textSize="14sp" />
 
         <!-- OTP Input Boxes -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/spacing_md"
             android:gravity="center"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/etOtp1"
-                android:layout_width="48dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
+                android:layout_width="@dimen/otp_box_size"
+                android:layout_height="@dimen/otp_box_size"
+                android:layout_marginHorizontal="@dimen/otp_box_spacing"
                 android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
@@ -115,9 +123,9 @@
 
             <EditText
                 android:id="@+id/etOtp2"
-                android:layout_width="48dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
+                android:layout_width="@dimen/otp_box_size"
+                android:layout_height="@dimen/otp_box_size"
+                android:layout_marginHorizontal="@dimen/otp_box_spacing"
                 android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
@@ -130,9 +138,9 @@
 
             <EditText
                 android:id="@+id/etOtp3"
-                android:layout_width="48dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
+                android:layout_width="@dimen/otp_box_size"
+                android:layout_height="@dimen/otp_box_size"
+                android:layout_marginHorizontal="@dimen/otp_box_spacing"
                 android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
@@ -145,9 +153,9 @@
 
             <EditText
                 android:id="@+id/etOtp4"
-                android:layout_width="48dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
+                android:layout_width="@dimen/otp_box_size"
+                android:layout_height="@dimen/otp_box_size"
+                android:layout_marginHorizontal="@dimen/otp_box_spacing"
                 android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
@@ -160,9 +168,9 @@
 
             <EditText
                 android:id="@+id/etOtp5"
-                android:layout_width="48dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
+                android:layout_width="@dimen/otp_box_size"
+                android:layout_height="@dimen/otp_box_size"
+                android:layout_marginHorizontal="@dimen/otp_box_spacing"
                 android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
@@ -175,9 +183,9 @@
 
             <EditText
                 android:id="@+id/etOtp6"
-                android:layout_width="48dp"
-                android:layout_height="52dp"
-                android:layout_marginHorizontal="4dp"
+                android:layout_width="@dimen/otp_box_size"
+                android:layout_height="@dimen/otp_box_size"
+                android:layout_marginHorizontal="@dimen/otp_box_spacing"
                 android:background="@drawable/bg_otp_box_themed"
                 android:gravity="center"
                 android:inputType="number"
@@ -189,33 +197,29 @@
                 tools:ignore="LabelFor" />
         </LinearLayout>
 
-        <!-- Verify Button with Progress -->
+        <!-- Verify Button -->
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="28dp">
+            android:layout_height="@dimen/button_height_lg"
+            android:layout_marginTop="@dimen/spacing_2xl">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnVerify"
+                style="@style/Widget.SnippetApp.Button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Verify"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textAllCaps="false"
-                app:backgroundTint="?attr/accentColor"
-                app:cornerRadius="8dp" />
+                android:text="Verify" />
 
             <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/progressIndicator"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="@dimen/icon_md"
+                android:layout_height="@dimen/icon_md"
                 android:layout_gravity="center"
                 android:indeterminate="true"
                 android:visibility="gone"
                 app:indicatorSize="24dp"
                 app:trackThickness="3dp"
-                app:indicatorColor="@color/white" />
+                app:indicatorColor="@color/on_primary" />
         </FrameLayout>
 
         <!-- Spacer -->
@@ -223,7 +227,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:minHeight="32dp" />
+            android:minHeight="@dimen/spacing_2xl" />
 
         <!-- Resend Code Link -->
         <LinearLayout
@@ -235,20 +239,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Didn't receive the email?"
-                android:textColor="?attr/textSecondaryColor"
+                android:text="Didn't receive code?"
+                android:textColor="?attr/textMutedColor"
                 android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvResendCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:padding="4dp"
-                android:text="Click to resend"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:padding="@dimen/spacing_xs"
+                android:text="Resend"
                 android:textColor="?attr/accentColor"
                 android:textSize="14sp"
-                android:fontFamily="sans-serif-medium" />
+                android:fontFamily="sans-serif-bold" />
         </LinearLayout>
 
     </LinearLayout>

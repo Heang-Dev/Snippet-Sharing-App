@@ -1,19 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Navigation Drawer -->
-    <dimen name="nav_header_height">220dp</dimen>
-    
-    <!-- Stats Cards -->
-    <dimen name="stat_card_height">120dp</dimen>
-    
-    <!-- Snippet Cards -->
+    <!-- ============================================== -->
+    <!-- DESIGN SYSTEM - Spacing & Sizing               -->
+    <!-- 4dp base grid system                           -->
+    <!-- ============================================== -->
+
+    <!-- ========== SPACING SCALE ========== -->
+    <dimen name="spacing_xxs">2dp</dimen>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">12dp</dimen>
+    <dimen name="spacing_base">16dp</dimen>
+    <dimen name="spacing_lg">20dp</dimen>
+    <dimen name="spacing_xl">24dp</dimen>
+    <dimen name="spacing_2xl">32dp</dimen>
+    <dimen name="spacing_3xl">40dp</dimen>
+    <dimen name="spacing_4xl">48dp</dimen>
+    <dimen name="spacing_5xl">64dp</dimen>
+
+    <!-- ========== SCREEN PADDING ========== -->
+    <dimen name="screen_padding_horizontal">24dp</dimen>
+    <dimen name="screen_padding_vertical">16dp</dimen>
+
+    <!-- ========== CORNER RADII ========== -->
+    <dimen name="radius_xs">4dp</dimen>
+    <dimen name="radius_sm">8dp</dimen>
+    <dimen name="radius_md">12dp</dimen>
+    <dimen name="radius_lg">16dp</dimen>
+    <dimen name="radius_xl">20dp</dimen>
+    <dimen name="radius_2xl">24dp</dimen>
+    <dimen name="radius_full">100dp</dimen>
+
+    <!-- ========== BUTTON SIZES ========== -->
+    <dimen name="button_height_sm">36dp</dimen>
+    <dimen name="button_height_md">48dp</dimen>
+    <dimen name="button_height_lg">56dp</dimen>
+
+    <!-- ========== INPUT SIZES ========== -->
+    <dimen name="input_height">52dp</dimen>
+    <dimen name="input_corner_radius">12dp</dimen>
+
+    <!-- ========== ICON SIZES ========== -->
+    <dimen name="icon_xs">16dp</dimen>
+    <dimen name="icon_sm">20dp</dimen>
+    <dimen name="icon_md">24dp</dimen>
+    <dimen name="icon_lg">32dp</dimen>
+    <dimen name="icon_xl">48dp</dimen>
+
+    <!-- ========== AVATAR SIZES ========== -->
+    <dimen name="avatar_sm">32dp</dimen>
+    <dimen name="avatar_md">40dp</dimen>
+    <dimen name="avatar_lg">56dp</dimen>
+    <dimen name="avatar_xl">72dp</dimen>
+    <dimen name="avatar_2xl">96dp</dimen>
+
+    <!-- ========== COMPONENT SPECIFIC ========== -->
+    <!-- Navigation -->
+    <dimen name="nav_header_height">200dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+
+    <!-- Cards -->
+    <dimen name="card_spacing">12dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
     <dimen name="snippet_card_corner">12dp</dimen>
     <dimen name="code_preview_height">100dp</dimen>
-    
+
     <!-- FAB -->
     <dimen name="fab_margin">16dp</dimen>
-    
-    <!-- Spacing -->
+    <dimen name="fab_size">56dp</dimen>
+
+    <!-- Sections -->
     <dimen name="section_spacing">24dp</dimen>
-    <dimen name="card_spacing">12dp</dimen>
+    <dimen name="section_title_margin_bottom">12dp</dimen>
+
+    <!-- Stat Cards -->
+    <dimen name="stat_card_height">100dp</dimen>
+
+    <!-- OTP -->
+    <dimen name="otp_box_size">52dp</dimen>
+    <dimen name="otp_box_spacing">8dp</dimen>
+
+    <!-- Divider -->
+    <dimen name="divider_height">1dp</dimen>
+
+    <!-- Chip -->
+    <dimen name="chip_height">32dp</dimen>
+    <dimen name="chip_corner_radius">16dp</dimen>
+
+    <!-- Bottom Sheet -->
+    <dimen name="bottom_sheet_corner">24dp</dimen>
+    <dimen name="bottom_sheet_handle_width">32dp</dimen>
+    <dimen name="bottom_sheet_handle_height">4dp</dimen>
 </resources>

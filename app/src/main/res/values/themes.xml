@@ -1,107 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- ============================================== -->
-    <!-- UNIFIED THEME SYSTEM - Code Dash              -->
-    <!-- Space/Comet Theme with Pink/Orange accents    -->
+    <!-- SNIPPET SHARING G11 - Dark-Only Theme          -->
+    <!-- Selective Yellow (#FFBA0A) + Pure Dark (#121212)-->
     <!-- ============================================== -->
 
-    <!-- ========== BASE LIGHT THEME ========== -->
-    <!-- Light theme - clean white/gray aesthetic with pink accents -->
-    <style name="Base.Theme.SnippetApp" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Primary Colors - Comet Pink -->
+    <!-- ========== BASE THEME (DARK-ONLY) ========== -->
+    <style name="Base.Theme.SnippetApp" parent="Theme.Material3.Dark.NoActionBar">
+        <!-- Primary Colors - Selective Yellow -->
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/on_primary</item>
-        <item name="colorPrimaryContainer">@color/light_primary_container</item>
-        <item name="colorOnPrimaryContainer">@color/light_on_primary_container</item>
+        <item name="colorPrimaryContainer">@color/primary_950</item>
+        <item name="colorOnPrimaryContainer">@color/primary_400</item>
 
-        <!-- Secondary Colors - Comet Orange -->
-        <item name="colorSecondary">@color/accent_orange</item>
-        <item name="colorSecondaryVariant">@color/primary_light</item>
+        <!-- Secondary Colors - Gold variants -->
+        <item name="colorSecondary">@color/primary_600</item>
+        <item name="colorSecondaryVariant">@color/primary_700</item>
         <item name="colorOnSecondary">@color/on_primary</item>
-        <item name="colorSecondaryContainer">@color/light_secondary_container</item>
-        <item name="colorOnSecondaryContainer">@color/light_on_secondary_container</item>
+        <item name="colorSecondaryContainer">@color/primary_950</item>
+        <item name="colorOnSecondaryContainer">@color/primary_500</item>
 
-        <!-- Background & Surface - Light Colors -->
-        <item name="android:colorBackground">@color/light_background</item>
-        <item name="colorSurface">@color/light_surface</item>
-        <item name="colorSurfaceVariant">@color/light_surface_variant</item>
-        <item name="colorOnSurface">@color/light_text_primary</item>
-        <item name="colorOnSurfaceVariant">@color/light_text_secondary</item>
+        <!-- Background & Surface -->
+        <item name="android:colorBackground">@color/app_background</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="colorSurfaceVariant">@color/surface_variant</item>
+        <item name="colorOnSurface">@color/text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/text_secondary</item>
 
         <!-- Error Colors -->
         <item name="colorError">@color/error</item>
         <item name="colorOnError">@color/white</item>
-        <item name="colorErrorContainer">@color/light_error_container</item>
+        <item name="colorErrorContainer">@color/error_bg</item>
         <item name="colorOnErrorContainer">@color/error</item>
 
         <!-- Outline -->
-        <item name="colorOutline">@color/light_border</item>
-        <item name="colorOutlineVariant">@color/light_divider</item>
+        <item name="colorOutline">@color/border</item>
+        <item name="colorOutlineVariant">@color/divider</item>
 
-        <!-- System Bars - Light -->
-        <item name="android:statusBarColor">@color/white</item>
-        <item name="android:navigationBarColor">@color/light_nav_bg</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <!-- System Bars - Pure dark, immersive -->
+        <item name="android:statusBarColor">@color/app_background</item>
+        <item name="android:navigationBarColor">@color/app_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
 
         <!-- ========== CUSTOM THEME ATTRIBUTES ========== -->
-        <!-- Backgrounds - Light -->
-        <item name="appBackgroundColor">@color/light_background</item>
-        <item name="surfaceColor">@color/light_surface</item>
-        <item name="surfaceVariantColor">@color/light_surface_variant</item>
-        <item name="surfaceElevatedColor">@color/light_surface_elevated</item>
-        <item name="cardSurfaceColor">@color/light_card_surface</item>
-        <item name="cardInnerColor">@color/light_card_inner</item>
-        <item name="codeBackgroundColor">@color/light_code_background</item>
-        <item name="codeTextColor">@color/light_code_text</item>
-        <item name="codeBlockBackground">@color/light_code_background</item>
-        <item name="codeBlockHeaderBackground">@color/light_surface_variant</item>
+        <!-- Backgrounds -->
+        <item name="appBackgroundColor">@color/app_background</item>
+        <item name="surfaceColor">@color/surface</item>
+        <item name="surfaceVariantColor">@color/surface_variant</item>
+        <item name="surfaceElevatedColor">@color/surface_elevated</item>
+        <item name="cardSurfaceColor">@color/card_surface</item>
+        <item name="cardInnerColor">@color/card_inner</item>
+        <item name="codeBackgroundColor">@color/code_background</item>
+        <item name="codeTextColor">@color/text_primary</item>
+        <item name="codeBlockBackground">@color/code_background</item>
+        <item name="codeBlockHeaderBackground">@color/surface_variant</item>
 
-        <!-- Text - Light -->
-        <item name="textPrimaryColor">@color/light_text_primary</item>
-        <item name="textSecondaryColor">@color/light_text_secondary</item>
-        <item name="textMutedColor">@color/light_text_muted</item>
-        <item name="textHintColor">@color/light_text_hint</item>
-        <item name="textLinkColor">@color/text_link</item>
+        <!-- Text -->
+        <item name="textPrimaryColor">@color/text_primary</item>
+        <item name="textSecondaryColor">@color/text_secondary</item>
+        <item name="textMutedColor">@color/text_muted</item>
+        <item name="textHintColor">@color/text_hint</item>
+        <item name="textLinkColor">@color/primary_500</item>
 
         <!-- Accent -->
-        <item name="accentColor">@color/accent_pink</item>
-        <item name="accentVariantColor">@color/neon_pink</item>
+        <item name="accentColor">@color/primary_500</item>
+        <item name="accentVariantColor">@color/primary_400</item>
 
-        <!-- Border/Divider - Light -->
-        <item name="dividerColor">@color/light_divider</item>
-        <item name="borderColor">@color/light_border</item>
-        <item name="borderFocusColor">@color/border_focus</item>
+        <!-- Border/Divider -->
+        <item name="dividerColor">@color/divider</item>
+        <item name="borderColor">@color/border</item>
+        <item name="borderFocusColor">@color/primary_500</item>
 
-        <!-- Input - Light -->
-        <item name="inputBackgroundColor">@color/light_input_background</item>
-        <item name="inputStrokeColor">@color/light_input_stroke</item>
-        <item name="inputStrokeFocusColor">@color/input_stroke_focused</item>
-        <item name="searchInputBackgroundColor">@color/light_card_surface</item>
+        <!-- Input -->
+        <item name="inputBackgroundColor">@color/input_background</item>
+        <item name="inputStrokeColor">@color/input_stroke</item>
+        <item name="inputStrokeFocusColor">@color/primary_500</item>
+        <item name="searchInputBackgroundColor">@color/search_input_background</item>
 
-        <!-- Navigation - Light -->
-        <item name="bottomNavBackgroundColor">@color/light_nav_bg</item>
-        <item name="navItemActiveColor">@color/nav_item_active</item>
-        <item name="navItemInactiveColor">@color/light_nav_item_inactive</item>
+        <!-- Navigation -->
+        <item name="bottomNavBackgroundColor">@color/bottom_nav_bg</item>
+        <item name="navItemActiveColor">@color/primary_500</item>
+        <item name="navItemInactiveColor">@color/nav_item_inactive</item>
 
         <!-- Buttons -->
-        <item name="buttonPrimaryColor">@color/button_primary</item>
-        <item name="buttonSecondaryColor">@color/light_button_secondary</item>
+        <item name="buttonPrimaryColor">@color/primary_500</item>
+        <item name="buttonSecondaryColor">@color/button_secondary</item>
         <item name="buttonDangerColor">@color/button_danger</item>
 
-        <!-- Icons - Light -->
-        <item name="iconPrimaryColor">@color/light_icon_primary</item>
-        <item name="iconSecondaryColor">@color/light_icon_secondary</item>
-        <item name="iconAccentColor">@color/icon_accent</item>
-        <item name="iconTintColor">@color/light_icon_secondary</item>
+        <!-- Icons -->
+        <item name="iconPrimaryColor">@color/icon_primary</item>
+        <item name="iconSecondaryColor">@color/icon_secondary</item>
+        <item name="iconAccentColor">@color/primary_500</item>
+        <item name="iconTintColor">@color/icon_secondary</item>
 
-        <!-- Tags/Chips - Light -->
-        <item name="tagBackgroundColor">@color/light_tag_background</item>
-        <item name="tagTextColor">@color/light_tag_text</item>
-        <item name="chipBackgroundColor">@color/light_chip_background</item>
-        <item name="chipSelectedBackgroundColor">@color/chip_background_selected</item>
+        <!-- Tags/Chips -->
+        <item name="tagBackgroundColor">@color/tag_background</item>
+        <item name="tagTextColor">@color/tag_text</item>
+        <item name="chipBackgroundColor">@color/chip_background</item>
+        <item name="chipSelectedBackgroundColor">@color/primary_500</item>
 
         <!-- Status -->
         <item name="successColor">@color/success</item>
@@ -109,15 +108,15 @@
         <item name="warningColor">@color/warning</item>
         <item name="infoColor">@color/info</item>
 
-        <!-- Syntax Highlighting - Light Theme -->
-        <item name="syntaxKeywordColor">@color/light_syntax_keyword</item>
-        <item name="syntaxStringColor">@color/light_syntax_string</item>
-        <item name="syntaxNumberColor">@color/light_syntax_number</item>
-        <item name="syntaxCommentColor">@color/light_syntax_comment</item>
-        <item name="syntaxFunctionColor">@color/light_syntax_function</item>
-        <item name="syntaxTypeColor">@color/light_syntax_type</item>
-        <item name="syntaxOperatorColor">@color/light_syntax_operator</item>
-        <item name="syntaxVariableColor">@color/light_syntax_variable</item>
+        <!-- Syntax Highlighting -->
+        <item name="syntaxKeywordColor">@color/syntax_keyword</item>
+        <item name="syntaxStringColor">@color/syntax_string</item>
+        <item name="syntaxNumberColor">@color/syntax_number</item>
+        <item name="syntaxCommentColor">@color/syntax_comment</item>
+        <item name="syntaxFunctionColor">@color/syntax_function</item>
+        <item name="syntaxTypeColor">@color/syntax_type</item>
+        <item name="syntaxOperatorColor">@color/syntax_operator</item>
+        <item name="syntaxVariableColor">@color/syntax_variable</item>
 
         <!-- Component Styles -->
         <item name="snippetCardStyle">@style/Widget.SnippetApp.Card.Snippet</item>
@@ -133,37 +132,35 @@
         <item name="bottomNavigationStyle">@style/Widget.SnippetApp.BottomNavigation</item>
     </style>
 
-    <!-- Main App Theme (inherits from base) -->
+    <!-- Main App Theme -->
     <style name="Theme.Snippet_Sharing_App" parent="Base.Theme.SnippetApp" />
 
     <!-- ========== SPECIALIZED THEMES ========== -->
 
-    <!-- Auth Theme (Login, Register, etc.) - Same dark aesthetic -->
+    <!-- Auth Theme - immersive dark -->
     <style name="Theme.SnippetApp.Auth" parent="Base.Theme.SnippetApp">
-        <item name="android:statusBarColor">@color/app_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/app_background</item>
     </style>
 
-    <!-- Profile Theme - Inherits from base theme for proper light/dark support -->
-    <style name="Theme.Snippet_Sharing_App.Profile" parent="Base.Theme.SnippetApp">
-        <!-- No overrides - inherits all colors from base theme -->
-    </style>
+    <!-- Profile Theme -->
+    <style name="Theme.Snippet_Sharing_App.Profile" parent="Base.Theme.SnippetApp" />
 
-    <!-- Dark Auth Theme (legacy compatibility) -->
+    <!-- Legacy compatibility -->
     <style name="Theme.Snippet_Sharing_App.DarkAuth" parent="Base.Theme.SnippetApp" />
 
     <!-- ========== TEXT STYLES ========== -->
     <style name="TextAppearance.SnippetApp.HeadlineLarge">
         <item name="android:textSize">28sp</item>
         <item name="android:textColor">?attr/textPrimaryColor</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
         <item name="android:letterSpacing">-0.02</item>
     </style>
 
     <style name="TextAppearance.SnippetApp.HeadlineMedium">
         <item name="android:textSize">24sp</item>
         <item name="android:textColor">?attr/textPrimaryColor</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:fontFamily">sans-serif-bold</item>
     </style>
 
     <style name="TextAppearance.SnippetApp.HeadlineSmall">
@@ -233,7 +230,7 @@
         <item name="android:fontFamily">monospace</item>
     </style>
 
-    <!-- ========== LEGACY STYLES (for backward compatibility) ========== -->
+    <!-- ========== LEGACY STYLES ========== -->
     <style name="HeadingLarge" parent="TextAppearance.SnippetApp.HeadlineLarge" />
     <style name="HeadingMedium" parent="TextAppearance.SnippetApp.HeadlineMedium" />
     <style name="BodyText" parent="TextAppearance.SnippetApp.BodyLarge" />

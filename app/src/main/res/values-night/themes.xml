@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- ============================================== -->
-    <!-- NIGHT THEME - Code Dash                       -->
-    <!-- Space/Comet Theme with Pink/Orange accents    -->
-    <!-- Since the app is already dark-themed,         -->
-    <!-- night mode uses the same colors as day mode.  -->
+    <!-- NIGHT THEME - Identical to day (dark-only app) -->
     <!-- ============================================== -->
 
     <style name="Base.Theme.SnippetApp" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary Colors -->
         <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/surface</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorPrimaryContainer">@color/primary_950</item>
+        <item name="colorOnPrimaryContainer">@color/primary_400</item>
+
+        <!-- Secondary Colors -->
+        <item name="colorSecondary">@color/primary_600</item>
+        <item name="colorOnSecondary">@color/on_primary</item>
 
         <!-- Background & Surface -->
         <item name="android:colorBackground">@color/app_background</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorOnSurface">@color/text_primary</item>
 
-        <!-- System Bars - Match toolbar/app bar surface color -->
-        <item name="android:statusBarColor">@color/surface</item>
-        <item name="android:navigationBarColor">@color/surface</item>
+        <!-- Error -->
+        <item name="colorError">@color/error</item>
+        <item name="colorOnError">@color/white</item>
+
+        <!-- Outline -->
+        <item name="colorOutline">@color/border</item>
+        <item name="colorOutlineVariant">@color/divider</item>
+
+        <!-- System Bars -->
+        <item name="android:statusBarColor">@color/app_background</item>
+        <item name="android:navigationBarColor">@color/app_background</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
 
@@ -40,36 +51,36 @@
         <item name="textSecondaryColor">@color/text_secondary</item>
         <item name="textMutedColor">@color/text_muted</item>
         <item name="textHintColor">@color/text_hint</item>
-        <item name="textLinkColor">@color/text_link</item>
-        <item name="accentColor">@color/accent_pink</item>
-        <item name="accentVariantColor">@color/neon_pink</item>
+        <item name="textLinkColor">@color/primary_500</item>
+        <item name="accentColor">@color/primary_500</item>
+        <item name="accentVariantColor">@color/primary_400</item>
         <item name="dividerColor">@color/divider</item>
         <item name="borderColor">@color/border</item>
-        <item name="borderFocusColor">@color/border_focus</item>
+        <item name="borderFocusColor">@color/primary_500</item>
         <item name="inputBackgroundColor">@color/input_background</item>
         <item name="inputStrokeColor">@color/input_stroke</item>
-        <item name="inputStrokeFocusColor">@color/input_stroke_focused</item>
-        <item name="searchInputBackgroundColor">@color/card_surface</item>
-        <item name="bottomNavBackgroundColor">@color/surface</item>
-        <item name="navItemActiveColor">@color/nav_item_active</item>
+        <item name="inputStrokeFocusColor">@color/primary_500</item>
+        <item name="searchInputBackgroundColor">@color/search_input_background</item>
+        <item name="bottomNavBackgroundColor">@color/bottom_nav_bg</item>
+        <item name="navItemActiveColor">@color/primary_500</item>
         <item name="navItemInactiveColor">@color/nav_item_inactive</item>
-        <item name="buttonPrimaryColor">@color/button_primary</item>
+        <item name="buttonPrimaryColor">@color/primary_500</item>
         <item name="buttonSecondaryColor">@color/button_secondary</item>
         <item name="buttonDangerColor">@color/button_danger</item>
         <item name="iconPrimaryColor">@color/icon_primary</item>
         <item name="iconSecondaryColor">@color/icon_secondary</item>
-        <item name="iconAccentColor">@color/icon_accent</item>
+        <item name="iconAccentColor">@color/primary_500</item>
         <item name="iconTintColor">@color/icon_secondary</item>
         <item name="tagBackgroundColor">@color/tag_background</item>
         <item name="tagTextColor">@color/tag_text</item>
         <item name="chipBackgroundColor">@color/chip_background</item>
-        <item name="chipSelectedBackgroundColor">@color/chip_background_selected</item>
+        <item name="chipSelectedBackgroundColor">@color/primary_500</item>
         <item name="successColor">@color/success</item>
         <item name="errorColor">@color/error</item>
         <item name="warningColor">@color/warning</item>
         <item name="infoColor">@color/info</item>
 
-        <!-- Syntax Highlighting - Dark Theme (Dracula-inspired) -->
+        <!-- Syntax Highlighting -->
         <item name="syntaxKeywordColor">@color/syntax_keyword</item>
         <item name="syntaxStringColor">@color/syntax_string</item>
         <item name="syntaxNumberColor">@color/syntax_number</item>
@@ -80,15 +91,9 @@
         <item name="syntaxVariableColor">@color/syntax_variable</item>
     </style>
 
-    <!-- Main App Theme (inherits from base) -->
+    <!-- Main App Theme -->
     <style name="Theme.Snippet_Sharing_App" parent="Base.Theme.SnippetApp" />
-
-    <!-- Profile Theme - Same as base for dark mode -->
     <style name="Theme.Snippet_Sharing_App.Profile" parent="Base.Theme.SnippetApp" />
-
-    <!-- Auth Theme - Same as base for dark mode -->
     <style name="Theme.SnippetApp.Auth" parent="Base.Theme.SnippetApp" />
-
-    <!-- Dark Auth Theme (legacy compatibility) -->
     <style name="Theme.Snippet_Sharing_App.DarkAuth" parent="Base.Theme.SnippetApp" />
 </resources>
