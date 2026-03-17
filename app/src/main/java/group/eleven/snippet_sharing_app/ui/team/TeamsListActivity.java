@@ -132,6 +132,11 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
     }
 
     private void setupBottomNavigation() {
+        // Apply navigation bar insets
+        View bottomNavContainer = findViewById(R.id.bottomNavContainer);
+        BottomNavHelper.applyNavigationBarInsets(bottomNavContainer);
+        BottomNavHelper.applyFabNavigationBarInsets(findViewById(R.id.fab_create_team));
+
         // Set Teams as selected
         bottomNav.setSelectedItemId(R.id.nav_teams);
 

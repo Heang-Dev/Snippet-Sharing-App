@@ -21,6 +21,8 @@ import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityRegisterBinding;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.utils.FormValidator;
+import group.eleven.snippet_sharing_app.utils.GitHubOAuthHelper;
+import group.eleven.snippet_sharing_app.utils.GoogleSignInHelper;
 import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 
 /**
@@ -31,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
     private AuthRepository authRepository;
     private FormValidator formValidator;
+    private GoogleSignInHelper googleSignInHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         authRepository = new AuthRepository(this);
+        googleSignInHelper = new GoogleSignInHelper(this);
 
         // Setup keyboard dismiss on outside touch
         KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
@@ -85,6 +89,16 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Sign in link
         binding.tvSignIn.setOnClickListener(v -> finish());
+
+        // Google Sign-In
+        binding.btnGoogle.setOnClickListener(v -> attemptGoogleSignIn());
+
+        // GitHub Sign-In — redirect to LoginActivity which handles the deep link
+        binding.btnGithub.setOnClickListener(v -> GitHubOAuthHelper.launchGitHubAuth(this));
+
+        // Apple Sign-In (not implemented)
+        binding.btnApple.setOnClickListener(v ->
+                Toast.makeText(this, "Apple Sign-In coming soon", Toast.LENGTH_SHORT).show());
     }
 
     private void attemptRegister() {
@@ -121,6 +135,46 @@ public class RegisterActivity extends AppCompatActivity {
                         showError(resource.getMessage());
                     }
                 });
+    }
+
+    private void attemptGoogleSignIn() {
+        setLoading(true);
+        googleSignInHelper.signIn(new GoogleSignInHelper.GoogleSignInCallback() {
+            @Override
+            public void onSuccess(String idToken) {
+                runOnUiThread(() -> callSocialLoginApi("google", idToken));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                runOnUiThread(() -> {
+                    setLoading(false);
+                    showError(errorMessage);
+                });
+            }
+        });
+    }
+
+    private void callSocialLoginApi(String provider, String token) {
+        setLoading(true);
+        String deviceName = Build.MANUFACTURER + " " + Build.MODEL;
+
+        authRepository.socialLogin(provider, token, deviceName).observe(this, resource -> {
+            if (resource == null) return;
+
+            if (resource.isLoading()) {
+                return;
+            }
+
+            setLoading(false);
+
+            if (resource.isSuccess()) {
+                Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show();
+                navigateToHome();
+            } else {
+                showError(resource.getMessage());
+            }
+        });
     }
 
     private void setLoading(boolean isLoading) {

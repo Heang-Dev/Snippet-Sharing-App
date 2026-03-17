@@ -246,9 +246,9 @@
                 android:layout_height="@dimen/button_height_lg"
                 android:layout_marginHorizontal="@dimen/spacing_md"
                 android:background="@drawable/bg_social_button_themed"
-                android:src="@drawable/ic_facebook"
+                android:src="@drawable/ic_github"
                 android:scaleType="center"
-                android:contentDescription="Facebook" />
+                android:contentDescription="GitHub" />
         </LinearLayout>
 
         <!-- Spacer -->

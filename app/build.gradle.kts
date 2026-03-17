@@ -16,6 +16,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
         buildConfigField("String", "STORAGE_BASE_URL", "\"http://10.0.2.2:8000/\"")
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"YOUR_GOOGLE_WEB_CLIENT_ID\"")
+        buildConfigField("String", "GITHUB_CLIENT_ID", "\"YOUR_GITHUB_CLIENT_ID\"")
     }
 
     buildTypes {
@@ -67,6 +69,14 @@ dependencies {
 
     // Syntax Highlighting (JitPack - using master snapshot)
     implementation("com.github.tiagohm:CodeView:master-SNAPSHOT")
+
+    // Credential Manager (Google Sign-In)
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+    // Custom Chrome Tabs (GitHub OAuth)
+    implementation("androidx.browser:browser:1.8.0")
 
     // Testing
     testImplementation(libs.junit)

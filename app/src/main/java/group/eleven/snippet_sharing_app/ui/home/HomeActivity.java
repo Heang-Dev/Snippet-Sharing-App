@@ -467,6 +467,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         // Bottom Navigation
+        BottomNavHelper.applyNavigationBarInsets(binding.bottomNavContainer);
+        BottomNavHelper.applyFabNavigationBarInsets(binding.fab);
         binding.bottomNav.setSelectedItemId(R.id.nav_home);
         BottomNavHelper.setupProfileAvatar(this, binding.bottomNav, sessionManager);
 

@@ -14,6 +14,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -165,5 +168,41 @@ public class BottomNavHelper {
                                             BottomNavigationView bottomNav,
                                             SessionManager sessionManager) {
         setupProfileAvatar(context, bottomNav, sessionManager);
+    }
+
+    /**
+     * Apply system navigation bar insets as bottom padding to the bottom nav container.
+     * This prevents the bottom nav from being hidden behind the system gesture bar.
+     *
+     * @param bottomNavContainer The LinearLayout wrapping the BottomNavigationView
+     */
+    public static void applyNavigationBarInsets(View bottomNavContainer) {
+        if (bottomNavContainer == null) return;
+
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavContainer, (v, windowInsets) -> {
+            Insets navBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), navBarInsets.bottom);
+            return windowInsets;
+        });
+    }
+
+    /**
+     * Apply system navigation bar insets to a FAB's bottom margin.
+     * Adds the gesture bar height to the FAB's existing bottom margin so it stays above the bottom nav.
+     *
+     * @param fab The FloatingActionButton to adjust
+     */
+    public static void applyFabNavigationBarInsets(View fab) {
+        if (fab == null) return;
+
+        ViewCompat.setOnApplyWindowInsetsListener(fab, (v, windowInsets) -> {
+            Insets navBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            android.view.ViewGroup.MarginLayoutParams params =
+                    (android.view.ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            int baseMargin = dpToPx(v.getContext(), 96);
+            params.bottomMargin = baseMargin + navBarInsets.bottom;
+            v.setLayoutParams(params);
+            return windowInsets;
+        });
     }
 }

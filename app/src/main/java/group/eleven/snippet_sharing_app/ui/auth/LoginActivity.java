@@ -1,6 +1,7 @@
 package group.eleven.snippet_sharing_app.ui.auth;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -24,6 +25,8 @@ import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityLoginBinding;
 import group.eleven.snippet_sharing_app.ui.home.HomeActivity;
 import group.eleven.snippet_sharing_app.utils.FormValidator;
+import group.eleven.snippet_sharing_app.utils.GitHubOAuthHelper;
+import group.eleven.snippet_sharing_app.utils.GoogleSignInHelper;
 import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -38,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private AuthRepository authRepository;
     private SessionManager sessionManager;
     private FormValidator formValidator;
+    private GoogleSignInHelper googleSignInHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +67,17 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Initialize Google Sign-In helper
+        googleSignInHelper = new GoogleSignInHelper(this);
+
         // Setup keyboard dismiss on outside touch
         KeyboardUtils.setupKeyboardDismissOnOutsideTouch(this, binding.getRoot());
 
         setupFormValidation();
         setupClickListeners();
+
+        // Handle deep link if launched from GitHub OAuth callback
+        handleDeepLink(getIntent());
     }
 
     private void setupFormValidation() {
@@ -97,6 +107,16 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
         });
+
+        // Google Sign-In
+        binding.btnGoogle.setOnClickListener(v -> attemptGoogleSignIn());
+
+        // GitHub Sign-In
+        binding.btnGithub.setOnClickListener(v -> GitHubOAuthHelper.launchGitHubAuth(this));
+
+        // Apple Sign-In (not implemented)
+        binding.btnApple.setOnClickListener(v ->
+                Toast.makeText(this, "Apple Sign-In coming soon", Toast.LENGTH_SHORT).show());
     }
 
     private void attemptLogin() {
@@ -159,6 +179,78 @@ public class LoginActivity extends AppCompatActivity {
                 .setBackgroundTint(getColor(R.color.error))
                 .setTextColor(getColor(R.color.white))
                 .show();
+    }
+
+    private void attemptGoogleSignIn() {
+        setLoading(true);
+        googleSignInHelper.signIn(new GoogleSignInHelper.GoogleSignInCallback() {
+            @Override
+            public void onSuccess(String idToken) {
+                runOnUiThread(() -> callSocialLoginApi("google", idToken));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                runOnUiThread(() -> {
+                    setLoading(false);
+                    showError(errorMessage);
+                });
+            }
+        });
+    }
+
+    private void callSocialLoginApi(String provider, String token) {
+        setLoading(true);
+        String deviceName = Build.MANUFACTURER + " " + Build.MODEL;
+
+        authRepository.socialLogin(provider, token, deviceName).observe(this, resource -> {
+            if (resource == null) return;
+
+            switch (resource.getStatus()) {
+                case SUCCESS:
+                    setLoading(false);
+                    navigateToHome();
+                    break;
+
+                case ERROR:
+                    setLoading(false);
+                    showError(resource.getMessage());
+                    break;
+
+                case LOADING:
+                    break;
+            }
+        });
+    }
+
+    private void handleDeepLink(Intent intent) {
+        if (intent == null || intent.getData() == null) return;
+
+        Uri uri = intent.getData();
+        String scheme = uri.getScheme();
+        String host = uri.getHost();
+
+        if ("snippetapp".equals(scheme) && "auth".equals(host)) {
+            String error = GitHubOAuthHelper.parseCallbackError(uri);
+            if (error != null) {
+                showError("GitHub login failed: " + error);
+                return;
+            }
+
+            String token = GitHubOAuthHelper.parseCallbackToken(uri);
+            String provider = GitHubOAuthHelper.parseCallbackProvider(uri);
+
+            if (token != null && "github".equals(provider)) {
+                callSocialLoginApi("github", token);
+            }
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleDeepLink(intent);
     }
 
     private void navigateToHome() {

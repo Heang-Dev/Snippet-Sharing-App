@@ -202,7 +202,7 @@
         <item name="backgroundTint">?attr/accentColor</item>
         <item name="tint">@color/on_primary</item>
         <item name="fabCustomSize">@dimen/fab_size</item>
-        <item name="maxImageSize">@dimen/icon_lg</item>
+        <item name="maxImageSize">@dimen/icon_md</item>
         <item name="elevation">8dp</item>
         <item name="shapeAppearanceOverlay">@style/ShapeAppearance.SnippetApp.Sharp</item>
     </style>

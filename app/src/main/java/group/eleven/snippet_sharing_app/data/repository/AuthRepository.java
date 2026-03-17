@@ -170,6 +170,67 @@ public class AuthRepository {
     }
 
     /**
+     * Social login (Google / GitHub)
+     */
+    public LiveData<Resource<AuthResponse>> socialLogin(String provider, String token, String deviceName) {
+        MutableLiveData<Resource<AuthResponse>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading());
+
+        Map<String, String> data = new HashMap<>();
+        data.put("provider", provider);
+        data.put("token", token);
+        data.put("device_name", deviceName);
+
+        apiService.socialLogin(data).enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        AuthResponse authResponse = response.body();
+                        if (authResponse.isSuccess()) {
+                            String authToken = authResponse.getToken();
+                            User user = authResponse.getUser();
+
+                            if (authToken == null || authToken.isEmpty()) {
+                                result.setValue(Resource.error("Social login failed: No token received"));
+                                return;
+                            }
+
+                            if (user == null) {
+                                result.setValue(Resource.error("Social login failed: No user data received"));
+                                return;
+                            }
+
+                            boolean saved = sessionManager.createLoginSession(authToken, user);
+                            if (saved) {
+                                result.setValue(Resource.success(authResponse));
+                            } else {
+                                result.setValue(Resource.error("Social login failed: Could not save session"));
+                            }
+                        } else {
+                            String message = authResponse.getMessage();
+                            result.setValue(Resource.error(message != null ? message : "Social login failed"));
+                        }
+                    } else {
+                        result.setValue(Resource.error(parseError(response)));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    result.setValue(Resource.error("Social login error: " + e.getMessage()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                t.printStackTrace();
+                result.setValue(Resource.error(getNetworkError(t)));
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * Logout user
      */
     public LiveData<Resource<MessageResponse>> logout() {

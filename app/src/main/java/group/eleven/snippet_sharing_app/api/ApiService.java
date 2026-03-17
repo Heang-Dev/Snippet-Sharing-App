@@ -60,6 +60,12 @@ public interface ApiService {
     Call<AuthResponse> register(@Body Map<String, String> userData);
 
     /**
+     * Social login (Google / GitHub)
+     */
+    @POST("auth/social-login")
+    Call<AuthResponse> socialLogin(@Body Map<String, String> socialData);
+
+    /**
      * Logout current device
      */
     @POST("auth/logout")

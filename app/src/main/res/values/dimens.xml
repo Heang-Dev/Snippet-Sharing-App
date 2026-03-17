@@ -57,7 +57,7 @@
     <!-- ========== COMPONENT SPECIFIC ========== -->
     <!-- Navigation -->
     <dimen name="nav_header_height">200dp</dimen>
-    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="bottom_nav_height">80dp</dimen>
     <dimen name="toolbar_height">56dp</dimen>
 
     <!-- Cards -->
@@ -68,7 +68,7 @@
 
     <!-- FAB -->
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="fab_size">56dp</dimen>
+    <dimen name="fab_size">44dp</dimen>
 
     <!-- Sections -->
     <dimen name="section_spacing">24dp</dimen>

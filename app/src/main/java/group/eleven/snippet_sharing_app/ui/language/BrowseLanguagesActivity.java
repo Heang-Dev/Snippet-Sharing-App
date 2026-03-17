@@ -211,8 +211,14 @@ public class BrowseLanguagesActivity extends AppCompatActivity {
     }
 
     private void setupBottomNavigation() {
+        // Apply navigation bar insets
+        View bottomNavContainer = findViewById(R.id.bottomNavContainer);
+        group.eleven.snippet_sharing_app.utils.BottomNavHelper.applyNavigationBarInsets(bottomNavContainer);
+
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
         FloatingActionButton fab = findViewById(R.id.fab);
+
+        group.eleven.snippet_sharing_app.utils.BottomNavHelper.applyFabNavigationBarInsets(fab);
 
         if (bottomNav != null) {
             bottomNav.setOnItemSelectedListener(item -> {
