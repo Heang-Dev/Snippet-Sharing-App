@@ -16,27 +16,18 @@
         android:orderInCategory="2"
         app:showAsAction="ifRoom" />
 
-    <!-- EMPTY PLACEHOLDER for FAB -->
-    <item
-        android:id="@+id/placeholder"
-        android:title=""
-        android:enabled="false"
-        android:icon="@drawable/ic_transparent"
-        android:orderInCategory="3"
-        app:showAsAction="ifRoom" />
-
     <item
         android:id="@+id/nav_favorites"
         android:icon="@drawable/ic_star_filled"
         android:title="@string/nav_favorites"
-        android:orderInCategory="4"
+        android:orderInCategory="3"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_person"
         android:title="@string/nav_profile"
-        android:orderInCategory="5"
+        android:orderInCategory="4"
         app:showAsAction="ifRoom" />
 
 </menu>
