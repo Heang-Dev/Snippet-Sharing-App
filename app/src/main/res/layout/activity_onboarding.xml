@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/appBackgroundColor">
+    android:background="?attr/appBackgroundColor"
+    android:fitsSystemWindows="true">
 
     <!-- Skip Button -->
     <TextView
@@ -18,8 +19,8 @@
         android:clickable="true"
         android:focusable="true"
         android:background="?attr/selectableItemBackground"
-        android:layout_marginTop="@dimen/spacing_xl"
-        android:layout_marginEnd="@dimen/spacing_sm"
+        android:layout_marginTop="@dimen/spacing_base"
+        android:layout_marginEnd="@dimen/screen_padding_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/spacing_xl"
+        android:layout_marginBottom="@dimen/spacing_2xl"
         app:layout_constraintBottom_toTopOf="@id/btnNext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -52,7 +53,6 @@
         android:layout_height="@dimen/button_height_lg"
         android:text="@string/onboarding_next"
         android:textAllCaps="false"
-        app:cornerRadius="@dimen/radius_full"
         android:layout_marginHorizontal="@dimen/screen_padding_horizontal"
         android:layout_marginBottom="@dimen/spacing_2xl"
         app:layout_constraintBottom_toBottomOf="parent"

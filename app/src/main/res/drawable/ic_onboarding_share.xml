@@ -5,19 +5,19 @@
     android:viewportWidth="160"
     android:viewportHeight="160">
 
-    <!-- Background circle - Light pink (original size) -->
+    <!-- Background circle — neutral dark -->
     <path
         android:pathData="M80,80m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"
-        android:fillColor="#481F00"/>
+        android:fillColor="#1E1E1E"/>
 
-    <!-- Code window (smaller) -->
+    <!-- Code window -->
     <path
         android:pathData="M58,58 L102,58 L102,102 L58,102 Z"
-        android:fillColor="#FFFFFF"
+        android:fillColor="#2C2C2C"
         android:strokeWidth="2"
-        android:strokeColor="#FFBA0A"/>
+        android:strokeColor="#FFFFFF"/>
 
-    <!-- Window header bar -->
+    <!-- Window header bar — gold -->
     <path
         android:pathData="M58,58 L102,58 L102,67 L58,67 Z"
         android:fillColor="#FFBA0A"/>
@@ -25,38 +25,40 @@
     <!-- Window dots -->
     <path
         android:pathData="M64,62.5m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0"
-        android:fillColor="#FFFFFF"/>
+        android:fillColor="#121212"/>
     <path
         android:pathData="M70,62.5m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0"
-        android:fillColor="#FFFFFF"/>
+        android:fillColor="#121212"/>
     <path
         android:pathData="M76,62.5m-1.5,0a1.5,1.5 0,1 1,3 0a1.5,1.5 0,1 1,-3 0"
-        android:fillColor="#FFFFFF"/>
+        android:fillColor="#121212"/>
 
-    <!-- Code lines -->
+    <!-- Code line 1 -->
     <path
         android:pathData="M64,76 L80,76"
         android:strokeWidth="2.5"
-        android:strokeColor="#E28C00"
+        android:strokeColor="#6B6B6B"
         android:strokeLineCap="round"/>
 
+    <!-- Code line 2 — gold highlight -->
     <path
         android:pathData="M64,84 L94,84"
         android:strokeWidth="2.5"
         android:strokeColor="#FFBA0A"
         android:strokeLineCap="round"/>
 
+    <!-- Code line 3 -->
     <path
         android:pathData="M64,92 L75,92"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFD81B"
+        android:strokeColor="#6B6B6B"
         android:strokeLineCap="round"/>
 
-    <!-- Share arrow -->
+    <!-- Share arrow — white -->
     <path
         android:pathData="M108,80 L118,80 M118,80 L114,76 M118,80 L114,84"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFBA0A"
+        android:strokeColor="#FFFFFF"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"/>
 

@@ -5,45 +5,47 @@
     android:viewportWidth="160"
     android:viewportHeight="160">
 
-    <!-- Background circle - Light pink (original size) -->
+    <!-- Background circle — neutral dark -->
     <path
         android:pathData="M80,80m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"
-        android:fillColor="#481F00"/>
+        android:fillColor="#1E1E1E"/>
 
-    <!-- Magnifying glass circle (smaller) -->
+    <!-- Magnifying glass circle -->
     <path
         android:pathData="M72,70m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0"
-        android:fillColor="#FFFFFF"
+        android:fillColor="#2C2C2C"
         android:strokeWidth="3"
-        android:strokeColor="#FFBA0A"/>
+        android:strokeColor="#FFFFFF"/>
 
     <!-- Magnifying glass handle -->
     <path
         android:pathData="M88,86 L105,103"
         android:strokeWidth="5"
-        android:strokeColor="#FFBA0A"
+        android:strokeColor="#FFFFFF"
         android:strokeLineCap="round"/>
 
-    <!-- Code lines inside magnifier -->
+    <!-- Code line 1 -->
     <path
         android:pathData="M58,64 L74,64"
         android:strokeWidth="2.5"
-        android:strokeColor="#E28C00"
+        android:strokeColor="#6B6B6B"
         android:strokeLineCap="round"/>
 
+    <!-- Code line 2 — gold highlight -->
     <path
         android:pathData="M58,72 L84,72"
         android:strokeWidth="2.5"
         android:strokeColor="#FFBA0A"
         android:strokeLineCap="round"/>
 
+    <!-- Code line 3 -->
     <path
         android:pathData="M58,80 L68,80"
         android:strokeWidth="2.5"
-        android:strokeColor="#FFD81B"
+        android:strokeColor="#6B6B6B"
         android:strokeLineCap="round"/>
 
-    <!-- Plus/Sparkle -->
+    <!-- Plus/Sparkle — gold -->
     <path
         android:pathData="M112,50 L112,42 M108,46 L116,46"
         android:strokeWidth="2.5"
