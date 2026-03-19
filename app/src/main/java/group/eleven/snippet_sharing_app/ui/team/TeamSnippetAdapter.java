@@ -75,21 +75,22 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
         }
 
         public void bind(TeamSnippet teamSnippet, OnTeamSnippetClickListener listener) {
-            // Set language badge (abbreviate if needed)
-            String lang = teamSnippet.getLanguage();
-            if (lang != null && lang.length() > 4) {
-                tvLanguageBadge.setText(lang.substring(0, 4));
+            // Set language badge
+            String langName = teamSnippet.getLanguageName();
+            if (langName != null && langName.length() > 4) {
+                tvLanguageBadge.setText(langName.substring(0, 4));
             } else {
-                tvLanguageBadge.setText(lang != null ? lang : "");
+                tvLanguageBadge.setText(langName != null ? langName : "");
             }
 
             tvSnippetTitle.setText(teamSnippet.getTitle());
-            tvSnippetTime.setText(teamSnippet.getUpdatedAt());
+            tvSnippetTime.setText(teamSnippet.getTimeAgo());
 
             // Apply syntax highlighting to code
             String code = teamSnippet.getCode();
+            String langSlug = teamSnippet.getLanguage();
             if (code != null && !code.isEmpty()) {
-                SpannableString highlightedCode = syntaxHighlighter.highlightForLanguage(code, lang);
+                SpannableString highlightedCode = syntaxHighlighter.highlightForLanguage(code, langSlug);
                 tvCodePreview.setText(highlightedCode);
             } else {
                 tvCodePreview.setText("// No code preview");

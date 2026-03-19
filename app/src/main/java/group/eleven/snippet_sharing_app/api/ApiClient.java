@@ -2,7 +2,11 @@ package group.eleven.snippet_sharing_app.api;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import group.eleven.snippet_sharing_app.BuildConfig;
+import group.eleven.snippet_sharing_app.data.model.Snippet;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
 import java.util.concurrent.TimeUnit;
@@ -57,10 +61,14 @@ public class ApiClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .build();
 
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(Snippet.SnippetLanguage.class, new Snippet.SnippetLanguageDeserializer())
+                    .create();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retrofit;

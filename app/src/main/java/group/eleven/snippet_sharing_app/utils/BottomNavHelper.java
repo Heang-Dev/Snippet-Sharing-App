@@ -181,7 +181,7 @@ public class BottomNavHelper {
 
         ViewCompat.setOnApplyWindowInsetsListener(bottomNavContainer, (v, windowInsets) -> {
             Insets navBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
-            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), navBarInsets.bottom);
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), 0);
             return windowInsets;
         });
     }
@@ -200,7 +200,7 @@ public class BottomNavHelper {
             android.view.ViewGroup.MarginLayoutParams params =
                     (android.view.ViewGroup.MarginLayoutParams) v.getLayoutParams();
             int baseMargin = dpToPx(v.getContext(), 96);
-            params.bottomMargin = baseMargin + navBarInsets.bottom;
+            params.bottomMargin = baseMargin;
             v.setLayoutParams(params);
             return windowInsets;
         });

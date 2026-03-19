@@ -131,7 +131,7 @@ public class FavoritesActivity extends AppCompatActivity {
     private void setupBottomNavigation() {
         // Apply navigation bar insets
         BottomNavHelper.applyNavigationBarInsets(binding.bottomNavContainer);
-        BottomNavHelper.applyFabNavigationBarInsets(binding.fab);
+
 
         // Set Favorites as selected
         binding.bottomNav.setSelectedItemId(R.id.nav_favorites);
@@ -167,11 +167,6 @@ public class FavoritesActivity extends AppCompatActivity {
             return false;
         });
 
-        // FAB click
-        binding.fab.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CreateSnippetActivity.class);
-            startActivity(intent);
-        });
     }
 
     private void setupClickListeners() {

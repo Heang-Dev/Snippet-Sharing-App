@@ -72,9 +72,7 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
         setupViewModel();
         setupListeners();
 
-        // Fetch teams when the activity is created
-        fetchTeams();
-        fetchTeamInvitations();
+        // Teams fetched in onResume()
     }
 
     private void setupStatusBar() {
@@ -244,6 +242,13 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
         if (cardDiscoverTeams != null) {
             cardDiscoverTeams.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchTeams();
+        fetchTeamInvitations();
     }
 
     private void fetchTeams() {

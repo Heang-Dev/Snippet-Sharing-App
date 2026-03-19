@@ -1,7 +1,13 @@
 package group.eleven.snippet_sharing_app.data.model;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -60,9 +66,67 @@ public class Snippet {
     @SerializedName("is_featured")
     private boolean isFeatured;
 
-    // Language can be either a string or an object depending on the endpoint
+    // Language can be either a string (slug) or an object depending on the endpoint
+    // We use a nested class and custom deserializer to handle both formats
     @SerializedName("language")
-    private String languageString;
+    private SnippetLanguage language;
+
+    // Nested class for language (handles object format)
+    public static class SnippetLanguage {
+        @SerializedName("id")
+        String id;
+
+        @SerializedName("name")
+        String name;
+
+        @SerializedName("slug")
+        String slug;
+
+        @SerializedName("display_name")
+        String displayName;
+
+        @SerializedName("color")
+        String color;
+
+        // Constructor for string-only format
+        public SnippetLanguage(String slug) {
+            this.slug = slug;
+            this.name = slug;
+        }
+
+        public String getId() { return id; }
+        public String getName() { return name != null ? name : slug; }
+        public String getSlug() { return slug != null ? slug : name; }
+        public String getDisplayName() { return displayName != null ? displayName : getName(); }
+        public String getColor() { return color; }
+    }
+
+    /**
+     * Custom deserializer that handles "language" being either a string or object.
+     * Manually parses JSON object fields to avoid infinite recursion
+     * (context.deserialize would re-invoke this same deserializer).
+     */
+    public static class SnippetLanguageDeserializer implements JsonDeserializer<SnippetLanguage> {
+        @Override
+        public SnippetLanguage deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonPrimitive()) {
+                // "language": "javascript"
+                return new SnippetLanguage(json.getAsString());
+            } else if (json.isJsonObject()) {
+                // "language": {"id": "...", "name": "JavaScript", "slug": "javascript", ...}
+                JsonObject obj = json.getAsJsonObject();
+                SnippetLanguage lang = new SnippetLanguage(
+                        obj.has("slug") && !obj.get("slug").isJsonNull() ? obj.get("slug").getAsString() : null
+                );
+                if (obj.has("id") && !obj.get("id").isJsonNull()) lang.id = obj.get("id").getAsString();
+                if (obj.has("name") && !obj.get("name").isJsonNull()) lang.name = obj.get("name").getAsString();
+                if (obj.has("display_name") && !obj.get("display_name").isJsonNull()) lang.displayName = obj.get("display_name").getAsString();
+                if (obj.has("color") && !obj.get("color").isJsonNull()) lang.color = obj.get("color").getAsString();
+                return lang;
+            }
+            return new SnippetLanguage("unknown");
+        }
+    }
 
     @SerializedName("created_at")
     private String createdAt;
@@ -173,7 +237,10 @@ public class Snippet {
     public boolean isFeatured() { return isFeatured; }
     public String getCreatedAt() { return createdAt; }
     public String getUpdatedAt() { return updatedAt; }
-    public String getLanguageString() { return languageString; }
+    public SnippetLanguage getLanguage() { return language; }
+    public String getLanguageString() {
+        return language != null ? language.getSlug() : null;
+    }
     public SnippetCategory getCategory() { return category; }
     public List<SnippetTag> getTags() { return tags; }
     public SnippetUser getUser() { return user; }
@@ -184,17 +251,29 @@ public class Snippet {
      * Get language name or default
      */
     public String getLanguageName() {
-        return languageString != null && !languageString.isEmpty() ? languageString : "Unknown";
+        if (language != null) {
+            String name = language.getDisplayName();
+            return name != null && !name.isEmpty() ? name : "Unknown";
+        }
+        return "Unknown";
     }
 
     /**
      * Get language color for badge based on language name
      */
     public int getLanguageColor() {
-        if (languageString == null) return android.graphics.Color.parseColor("#6B7280");
+        // Use color from API if available
+        if (language != null && language.getColor() != null) {
+            try {
+                return android.graphics.Color.parseColor(language.getColor());
+            } catch (Exception ignored) {}
+        }
 
-        // Common language colors
-        switch (languageString.toLowerCase()) {
+        String slug = language != null ? language.getSlug() : null;
+        if (slug == null) return android.graphics.Color.parseColor("#6B7280");
+
+        // Fallback: common language colors
+        switch (slug.toLowerCase()) {
             case "javascript": case "js": return android.graphics.Color.parseColor("#F7DF1E");
             case "python": case "py": return android.graphics.Color.parseColor("#3776AB");
             case "java": return android.graphics.Color.parseColor("#ED8B00");
@@ -220,8 +299,8 @@ public class Snippet {
      * Get language badge text (first 2-3 chars)
      */
     public String getLanguageBadge() {
-        if (languageString != null && !languageString.isEmpty()) {
-            String name = languageString;
+        String name = language != null ? language.getSlug() : null;
+        if (name != null && !name.isEmpty()) {
             if (name.length() <= 3) return name.toUpperCase();
             return name.substring(0, 2).toUpperCase();
         }

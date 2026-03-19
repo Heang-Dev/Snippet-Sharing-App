@@ -86,15 +86,10 @@ public class CreateTeamActivity extends AppCompatActivity {
     private void setupToolbar() {
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+        toolbar.setNavigationOnClickListener(v -> finish());
     }
 
     private void setupViewModel() {
@@ -118,6 +113,7 @@ public class CreateTeamActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+        ivTeamAvatarPreview.setOnClickListener(v -> openImagePicker());
         btnUploadAvatar.setOnClickListener(v -> openImagePicker());
         btnCreateTeam.setOnClickListener(v -> createTeam());
         btnCancel.setOnClickListener(v -> finish());
@@ -131,8 +127,8 @@ public class CreateTeamActivity extends AppCompatActivity {
                         if (selectedImageUri != null) {
                             Glide.with(this)
                                     .load(selectedImageUri)
-                                    .placeholder(R.drawable.ic_collections) // Default placeholder
-                                    .error(R.drawable.ic_collections) // Error placeholder
+                                    .placeholder(R.drawable.ic_users) // Default placeholder
+                                    .error(R.drawable.ic_users) // Error placeholder
                                     .into(ivTeamAvatarPreview);
                         }
                     }

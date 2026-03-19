@@ -1,10 +1,9 @@
 package group.eleven.snippet_sharing_app.utils;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.credentials.ClearCredentialStateRequest;
 import androidx.credentials.Credential;
 import androidx.credentials.CredentialManager;
 import androidx.credentials.CredentialManagerCallback;
@@ -12,8 +11,10 @@ import androidx.credentials.CustomCredential;
 import androidx.credentials.GetCredentialRequest;
 import androidx.credentials.GetCredentialResponse;
 import androidx.credentials.exceptions.GetCredentialException;
+import androidx.credentials.exceptions.NoCredentialException;
 
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential;
 
 import java.util.concurrent.Executors;
@@ -21,42 +22,80 @@ import java.util.concurrent.Executors;
 import group.eleven.snippet_sharing_app.BuildConfig;
 
 /**
- * Helper class for Google Sign-In using Credential Manager API
+ * Helper class for Google Sign-In using Credential Manager API.
+ * Uses GetSignInWithGoogleOption (shows Google's Sign-In UI) as primary,
+ * falls back to GetGoogleIdOption for returning users.
  */
 public class GoogleSignInHelper {
 
     private static final String TAG = "GoogleSignInHelper";
     private final CredentialManager credentialManager;
-    private final Context context;
+    private final Activity activity;
 
     public interface GoogleSignInCallback {
         void onSuccess(String idToken);
         void onError(String errorMessage);
     }
 
-    public GoogleSignInHelper(Context context) {
-        this.context = context;
-        this.credentialManager = CredentialManager.create(context);
+    public GoogleSignInHelper(Activity activity) {
+        this.activity = activity;
+        this.credentialManager = CredentialManager.create(activity);
     }
 
     /**
-     * Launch Google Sign-In flow
+     * Launch Google Sign-In flow.
+     * First tries one-tap (returning users), then falls back to full Sign-In UI.
      */
     public void signIn(GoogleSignInCallback callback) {
-        GetGoogleIdOption googleIdOption = new GetGoogleIdOption.Builder()
-                .setFilterByAuthorizedAccounts(false)
+        // Try one-tap for returning users first
+        GetGoogleIdOption oneTapOption = new GetGoogleIdOption.Builder()
+                .setFilterByAuthorizedAccounts(true)
                 .setServerClientId(BuildConfig.GOOGLE_WEB_CLIENT_ID)
-                .setAutoSelectEnabled(false)
+                .setAutoSelectEnabled(true)
                 .build();
 
-        GetCredentialRequest request = new GetCredentialRequest.Builder()
-                .addCredentialOption(googleIdOption)
+        GetCredentialRequest oneTapRequest = new GetCredentialRequest.Builder()
+                .addCredentialOption(oneTapOption)
                 .build();
 
         credentialManager.getCredentialAsync(
-                context,
+                activity,
+                oneTapRequest,
+                null,
+                Executors.newSingleThreadExecutor(),
+                new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
+                    @Override
+                    public void onResult(GetCredentialResponse result) {
+                        handleSignInResult(result, callback);
+                    }
+
+                    @Override
+                    public void onError(@NonNull GetCredentialException e) {
+                        Log.d(TAG, "One-tap failed, launching full Sign-In UI", e);
+                        // Fall back to full Google Sign-In button/bottom sheet
+                        launchSignInWithGoogle(callback);
+                    }
+                }
+        );
+    }
+
+    /**
+     * Launch the full "Sign in with Google" bottom sheet UI.
+     * This is more reliable — only requires Web Client ID, no Android OAuth client needed.
+     */
+    private void launchSignInWithGoogle(GoogleSignInCallback callback) {
+        GetSignInWithGoogleOption signInOption = new GetSignInWithGoogleOption.Builder(
+                BuildConfig.GOOGLE_WEB_CLIENT_ID
+        ).build();
+
+        GetCredentialRequest request = new GetCredentialRequest.Builder()
+                .addCredentialOption(signInOption)
+                .build();
+
+        credentialManager.getCredentialAsync(
+                activity,
                 request,
-                null, // CancellationSignal
+                null,
                 Executors.newSingleThreadExecutor(),
                 new CredentialManagerCallback<GetCredentialResponse, GetCredentialException>() {
                     @Override
@@ -67,7 +106,13 @@ public class GoogleSignInHelper {
                     @Override
                     public void onError(@NonNull GetCredentialException e) {
                         Log.e(TAG, "Google Sign-In failed", e);
-                        callback.onError("Google Sign-In failed: " + e.getMessage());
+                        String message;
+                        if (e instanceof NoCredentialException) {
+                            message = "No Google account found. Please sign in to a Google account on this device first.";
+                        } else {
+                            message = "Google Sign-In failed: " + e.getMessage();
+                        }
+                        callback.onError(message);
                     }
                 }
         );
@@ -90,7 +135,7 @@ public class GoogleSignInHelper {
                     callback.onError("Failed to parse Google credential");
                 }
             } else {
-                callback.onError("Unexpected credential type");
+                callback.onError("Unexpected credential type: " + customCredential.getType());
             }
         } else {
             callback.onError("Unexpected credential type");

@@ -8,6 +8,12 @@ public class TeamSnippet {
     @SerializedName("id")
     private String id;
 
+    @SerializedName("user_id")
+    private String userId;
+
+    @SerializedName("team_id")
+    private String teamId;
+
     @SerializedName("title")
     private String title;
 
@@ -17,23 +23,18 @@ public class TeamSnippet {
     @SerializedName("code")
     private String code;
 
+    // Uses the same SnippetLanguage class + deserializer registered in ApiClient
     @SerializedName("language")
-    private String language;
+    private Snippet.SnippetLanguage language;
+
+    @SerializedName("privacy")
+    private String privacy;
 
     @SerializedName("tags")
-    private List<String> tags;
+    private List<Snippet.SnippetTag> tags;
 
-    @SerializedName("is_public")
-    private boolean isPublic;
-
-    @SerializedName("author_id")
-    private String authorId;
-
-    @SerializedName("author_username")
-    private String authorUsername;
-
-    @SerializedName("team_id")
-    private String teamId;
+    @SerializedName("user")
+    private Snippet.SnippetUser user;
 
     @SerializedName("created_at")
     private String createdAt;
@@ -41,118 +42,99 @@ public class TeamSnippet {
     @SerializedName("updated_at")
     private String updatedAt;
 
-    // Constructor
-    public TeamSnippet(String id, String title, String description, String code, String language,
-                       List<String> tags, boolean isPublic, String authorId, String authorUsername,
-                       String teamId, String createdAt, String updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.code = code;
-        this.language = language;
-        this.tags = tags;
-        this.isPublic = isPublic;
-        this.authorId = authorId;
-        this.authorUsername = authorUsername;
-        this.teamId = teamId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+    @SerializedName("view_count")
+    private int viewCount;
 
-    // Getters and Setters
-    public String getId() {
-        return id;
-    }
+    @SerializedName("favorite_count")
+    private int favoriteCount;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    @SerializedName("comment_count")
+    private int commentCount;
 
-    public String getTitle() {
-        return title;
-    }
+    // Getters
+    public String getId() { return id; }
+    public String getUserId() { return userId; }
+    public String getTeamId() { return teamId; }
+    public String getTitle() { return title; }
+    public String getDescription() { return description; }
+    public String getCode() { return code; }
+    public String getPrivacy() { return privacy; }
+    public String getCreatedAt() { return createdAt; }
+    public String getUpdatedAt() { return updatedAt; }
+    public int getViewCount() { return viewCount; }
+    public int getFavoriteCount() { return favoriteCount; }
+    public int getCommentCount() { return commentCount; }
+    public Snippet.SnippetUser getUser() { return user; }
+    public List<Snippet.SnippetTag> getTags() { return tags; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
+    /**
+     * Get language slug string (for syntax highlighting, backward compat)
+     */
     public String getLanguage() {
-        return language;
+        return language != null ? language.getSlug() : null;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    /**
+     * Get language display name
+     */
+    public String getLanguageName() {
+        return language != null ? language.getDisplayName() : "Unknown";
     }
 
-    public List<String> getTags() {
-        return tags;
+    /**
+     * Get language color from API or fallback
+     */
+    public String getLanguageColor() {
+        return language != null ? language.getColor() : null;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
-    }
-
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
-    }
-
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
+    /**
+     * Get author username from nested user object
+     */
     public String getAuthorUsername() {
-        return authorUsername;
+        return user != null ? user.getUsername() : null;
     }
 
-    public void setAuthorUsername(String authorUsername) {
-        this.authorUsername = authorUsername;
+    /**
+     * Get author display name
+     */
+    public String getAuthorName() {
+        if (user != null) {
+            String name = user.getFullName();
+            return (name != null && !name.isEmpty()) ? name : user.getUsername();
+        }
+        return null;
     }
 
-    public String getTeamId() {
-        return teamId;
+    /**
+     * Get author avatar URL
+     */
+    public String getAuthorAvatarUrl() {
+        return user != null ? user.getAvatarUrl() : null;
     }
 
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
+    /**
+     * Get formatted time ago string
+     */
+    public String getTimeAgo() {
+        if (updatedAt == null) return "";
+        try {
+            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'", java.util.Locale.US);
+            sdf.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+            java.util.Date date = sdf.parse(updatedAt);
+            if (date != null) {
+                long diff = System.currentTimeMillis() - date.getTime();
+                long minutes = diff / (1000 * 60);
+                long hours = diff / (1000 * 60 * 60);
+                long days = diff / (1000 * 60 * 60 * 24);
+                if (minutes < 1) return "just now";
+                if (minutes < 60) return minutes + "m ago";
+                if (hours < 24) return hours + "h ago";
+                if (days < 7) return days + "d ago";
+                return days / 7 + "w ago";
+            }
+        } catch (Exception ignored) {}
+        return "";
     }
 }

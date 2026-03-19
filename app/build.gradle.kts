@@ -16,7 +16,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
         buildConfigField("String", "STORAGE_BASE_URL", "\"http://10.0.2.2:8000/\"")
-        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"YOUR_GOOGLE_WEB_CLIENT_ID\"")
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"466414476005-105v5ep6pcr3pejk45dira84kl58cmcd.apps.googleusercontent.com\"")
         buildConfigField("String", "GITHUB_CLIENT_ID", "\"YOUR_GITHUB_CLIENT_ID\"")
     }
 
