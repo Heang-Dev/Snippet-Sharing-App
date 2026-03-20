@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,12 +16,17 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.data.model.User;
+import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.databinding.ActivityAccountSettingsBinding;
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
+import group.eleven.snippet_sharing_app.ui.onboarding.OnboardingActivity;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 import group.eleven.snippet_sharing_app.utils.ThemeManager;
 
@@ -28,9 +35,8 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private ActivityAccountSettingsBinding binding;
     private ThemeManager themeManager;
     private SessionManager sessionManager;
+    private AuthRepository authRepository;
 
-    private boolean isGoogleConnected = false;
-    private boolean isGithubConnected = false;
     private static final String PREFS_NAME = "UserProfile";
 
     @Override
@@ -84,6 +90,7 @@ public class AccountSettingsActivity extends AppCompatActivity {
     private void initManagers() {
         themeManager = ThemeManager.getInstance(this);
         sessionManager = new SessionManager(this);
+        authRepository = new AuthRepository(this);
     }
 
     private void loadSettings() {
@@ -104,10 +111,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         binding.swPushNotifications.setChecked(prefs.getBoolean("push_notifications", true));
         binding.swEmailNotifications.setChecked(prefs.getBoolean("email_notifications", true));
         binding.swCommentNotifications.setChecked(prefs.getBoolean("comment_notifications", true));
-
-        // Load social connection status
-        isGoogleConnected = prefs.getBoolean("google_connected", false);
-        isGithubConnected = prefs.getBoolean("github_connected", false);
 
         updateSocialUI();
     }
@@ -164,20 +167,12 @@ public class AccountSettingsActivity extends AppCompatActivity {
             if (buttonView.isPressed()) saveSettings();
         });
 
-        // Social connect buttons
-        binding.btnConnectGoogle.setOnClickListener(v -> {
-            isGoogleConnected = !isGoogleConnected;
-            updateSocialUI();
-            saveSettings();
-            Toast.makeText(this, isGoogleConnected ? "Google connected" : "Google disconnected", Toast.LENGTH_SHORT).show();
-        });
+        // Social connect/disconnect buttons
+        binding.btnConnectGoogle.setOnClickListener(v ->
+                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show());
 
-        binding.btnConnectGithub.setOnClickListener(v -> {
-            isGithubConnected = !isGithubConnected;
-            updateSocialUI();
-            saveSettings();
-            Toast.makeText(this, isGithubConnected ? "GitHub connected" : "GitHub disconnected", Toast.LENGTH_SHORT).show();
-        });
+        binding.btnConnectGithub.setOnClickListener(v ->
+                Toast.makeText(this, "Coming soon", Toast.LENGTH_SHORT).show());
 
         // Account action buttons
         binding.btnLogout.setOnClickListener(v -> showLogoutConfirmation());
@@ -300,15 +295,25 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     private void updateSocialUI() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        User user = sessionManager.getUser();
+        String provider = (user != null) ? user.getSocialProvider() : null;
 
-        binding.btnConnectGoogle.setText(isGoogleConnected ? getString(R.string.disconnect) : getString(R.string.connect));
-        String email = prefs.getString("email", "");
-        binding.tvGoogleEmail.setText(isGoogleConnected && !email.isEmpty() ? email : getString(R.string.not_connected));
+        boolean googleConnected = "google".equals(provider);
+        boolean githubConnected = "github".equals(provider);
 
-        binding.btnConnectGithub.setText(isGithubConnected ? getString(R.string.disconnect) : getString(R.string.connect));
-        String username = prefs.getString("username", "");
-        binding.tvGithubUsername.setText(isGithubConnected && !username.isEmpty() ? "@" + username : getString(R.string.not_connected));
+        binding.btnConnectGoogle.setText(googleConnected ? getString(R.string.disconnect) : getString(R.string.connect));
+        if (googleConnected && user != null && user.getEmail() != null) {
+            binding.tvGoogleEmail.setText(user.getEmail());
+        } else {
+            binding.tvGoogleEmail.setText(getString(R.string.not_connected));
+        }
+
+        binding.btnConnectGithub.setText(githubConnected ? getString(R.string.disconnect) : getString(R.string.connect));
+        if (githubConnected && user != null && user.getUsername() != null) {
+            binding.tvGithubUsername.setText("@" + user.getUsername());
+        } else {
+            binding.tvGithubUsername.setText(getString(R.string.not_connected));
+        }
     }
 
     private void showLogoutConfirmation() {
@@ -331,32 +336,63 @@ public class AccountSettingsActivity extends AppCompatActivity {
     }
 
     private void showDeleteConfirmation() {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.delete_account)
-                .setMessage(R.string.delete_account_confirm)
-                .setPositiveButton("Delete", (dialog, which) -> deleteAccount())
-                .setNegativeButton(R.string.cancel, null)
-                .show();
+        User user = sessionManager.getUser();
+        String provider = (user != null) ? user.getSocialProvider() : null;
+
+        if (provider != null) {
+            // Social login user — no password needed, just confirm
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.delete_account)
+                    .setMessage(R.string.delete_account_confirm)
+                    .setPositiveButton("Delete", (dialog, which) -> performDeleteAccount(null))
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
+        } else {
+            // Regular user — ask for password
+            View dialogView = getLayoutInflater().inflate(
+                    android.R.layout.simple_list_item_1, null);
+            EditText etPassword = new EditText(this);
+            etPassword.setHint("Enter your password");
+            etPassword.setInputType(android.text.InputType.TYPE_CLASS_TEXT |
+                    android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            int pad = (int) (16 * getResources().getDisplayMetrics().density);
+            etPassword.setPadding(pad, pad, pad, pad);
+
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(R.string.delete_account)
+                    .setMessage(R.string.delete_account_confirm)
+                    .setView(etPassword)
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        String pw = etPassword.getText().toString().trim();
+                        if (pw.isEmpty()) {
+                            Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        performDeleteAccount(pw);
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .show();
+        }
     }
 
-    private void deleteAccount() {
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+    private void performDeleteAccount(String password) {
+        binding.btnDeleteAccount.setEnabled(false);
 
-        String imagePath = prefs.getString("profile_image_path", null);
-        prefs.edit().clear().apply();
-        sessionManager.clearAll();
+        authRepository.deleteAccount(password).observe(this, resource -> {
+            if (resource == null || resource.isLoading()) return;
 
-        if (imagePath != null) {
-            File file = new File(imagePath);
-            if (file.exists()) file.delete();
-        }
+            binding.btnDeleteAccount.setEnabled(true);
 
-        Toast.makeText(this, "Account deleted successfully", Toast.LENGTH_LONG).show();
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
+            if (resource.isSuccess()) {
+                Toast.makeText(this, "Account deleted successfully", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, OnboardingActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+                Toast.makeText(this, resource.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void saveSettings() {
@@ -373,10 +409,6 @@ public class AccountSettingsActivity extends AppCompatActivity {
         editor.putBoolean("push_notifications", binding.swPushNotifications.isChecked());
         editor.putBoolean("email_notifications", binding.swEmailNotifications.isChecked());
         editor.putBoolean("comment_notifications", binding.swCommentNotifications.isChecked());
-
-        // Social
-        editor.putBoolean("google_connected", isGoogleConnected);
-        editor.putBoolean("github_connected", isGithubConnected);
 
         editor.apply();
     }

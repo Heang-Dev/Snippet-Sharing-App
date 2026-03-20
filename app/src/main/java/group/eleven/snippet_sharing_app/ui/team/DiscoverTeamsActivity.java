@@ -1,11 +1,15 @@
 package group.eleven.snippet_sharing_app.ui.team;
 
+import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -41,6 +45,7 @@ public class DiscoverTeamsActivity extends AppCompatActivity implements Discover
 
     private final Handler searchHandler = new Handler(Looper.getMainLooper());
     private Runnable searchRunnable;
+    private String currentQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +98,11 @@ public class DiscoverTeamsActivity extends AppCompatActivity implements Discover
                 } else {
                     rvTeams.setVisibility(View.GONE);
                     layoutEmpty.setVisibility(View.VISIBLE);
-                    tvEmptyMessage.setText("No public teams found");
+                    if (currentQuery.isEmpty()) {
+                        tvEmptyMessage.setText("No public teams available yet");
+                    } else {
+                        tvEmptyMessage.setText("No teams found for \"" + currentQuery + "\"");
+                    }
                 }
             } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
                 progressBar.setVisibility(View.GONE);
@@ -131,11 +140,29 @@ public class DiscoverTeamsActivity extends AppCompatActivity implements Discover
     }
 
     private void searchTeams(String query) {
+        currentQuery = query;
         Map<String, String> filters = new HashMap<>();
         if (!query.isEmpty()) {
             filters.put("search", query);
         }
         teamViewModel.discoverTeams(filters);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override

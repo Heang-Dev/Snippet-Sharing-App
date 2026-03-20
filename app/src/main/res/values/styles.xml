@@ -169,11 +169,11 @@
     </style>
 
     <style name="Widget.SnippetApp.BottomNavigation.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/primary_950</item>
+        <item name="android:color">@color/nav_indicator_bg</item>
     </style>
 
     <style name="Widget.SnippetApp.BottomNavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/primary_950</item>
+        <item name="android:color">@color/nav_indicator_bg</item>
         <item name="android:width">@dimen/spacing_4xl</item>
         <item name="android:height">@dimen/spacing_4xl</item>
         <item name="shapeAppearance">@style/ShapeAppearance.SnippetApp.BottomNavIndicator</item>

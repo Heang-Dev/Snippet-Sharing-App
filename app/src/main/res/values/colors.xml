@@ -73,6 +73,7 @@
     <color name="bottom_nav_bg">#FFFFFF</color>
     <color name="nav_item_active">@color/primary_500</color>
     <color name="nav_item_inactive">#9E9E9E</color>
+    <color name="nav_indicator_bg">@color/primary_100</color>
     <color name="drawer_background">#FFFFFF</color>
     <color name="drawer_item_selected">#FFF9C5</color>
 

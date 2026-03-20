@@ -179,10 +179,11 @@ public class BottomNavHelper {
     public static void applyNavigationBarInsets(View bottomNavContainer) {
         if (bottomNavContainer == null) return;
 
+        // Consume navigation bar insets so the BottomNavigationView inside
+        // does not add its own internal gesture-bar padding (which creates dead space).
         ViewCompat.setOnApplyWindowInsetsListener(bottomNavContainer, (v, windowInsets) -> {
-            Insets navBarInsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
             v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), 0);
-            return windowInsets;
+            return WindowInsetsCompat.CONSUMED;
         });
     }
 

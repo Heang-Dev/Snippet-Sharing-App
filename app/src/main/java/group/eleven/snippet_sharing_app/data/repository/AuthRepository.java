@@ -423,6 +423,43 @@ public class AuthRepository {
     }
 
     /**
+     * Delete account.
+     * Social users: pass null — backend receives {"confirm":"true"}.
+     * Regular users: pass their password — backend verifies it.
+     */
+    public LiveData<Resource<MessageResponse>> deleteAccount(String password) {
+        MutableLiveData<Resource<MessageResponse>> result = new MutableLiveData<>();
+        result.setValue(Resource.loading());
+
+        Map<String, String> data = new HashMap<>();
+        if (password == null) {
+            data.put("confirm", "true");
+        } else {
+            data.put("password", password);
+        }
+
+        apiService.deleteAccount(data).enqueue(new Callback<MessageResponse>() {
+            @Override
+            public void onResponse(Call<MessageResponse> call, Response<MessageResponse> response) {
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    sessionManager.logout();
+                    ApiClient.resetClient();
+                    result.setValue(Resource.success(response.body()));
+                } else {
+                    result.setValue(Resource.error(parseError(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageResponse> call, Throwable t) {
+                result.setValue(Resource.error(getNetworkError(t)));
+            }
+        });
+
+        return result;
+    }
+
+    /**
      * Get current user
      */
     public LiveData<Resource<UserResponse>> getCurrentUser() {

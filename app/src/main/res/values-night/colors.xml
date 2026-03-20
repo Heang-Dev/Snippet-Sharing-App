@@ -46,6 +46,7 @@
     <!-- ========== NAVIGATION ========== -->
     <color name="bottom_nav_bg">#121212</color>
     <color name="nav_item_inactive">#6B6B6B</color>
+    <color name="nav_indicator_bg">@color/primary_950</color>
     <color name="drawer_background">#121212</color>
     <color name="drawer_item_selected">#2C2C2C</color>
 
