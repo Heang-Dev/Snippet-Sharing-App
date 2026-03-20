@@ -275,9 +275,11 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
         private void updateSaveState(boolean isSaved) {
             if (ivSave != null) {
                 ivSave.setImageResource(isSaved ? R.drawable.ic_star_filled : R.drawable.ic_star_outline);
-                ivSave.setColorFilter(isSaved
-                        ? ContextCompat.getColor(context, R.color.selective_yellow)
-                        : null);
+                if (isSaved) {
+                    ivSave.setColorFilter(ContextCompat.getColor(context, R.color.selective_yellow));
+                } else {
+                    ivSave.clearColorFilter();
+                }
             }
             if (tvSave != null) {
                 tvSave.setText(isSaved ? "Saved" : "Save");
