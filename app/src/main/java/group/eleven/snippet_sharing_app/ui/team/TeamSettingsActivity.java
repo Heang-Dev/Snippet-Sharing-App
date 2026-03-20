@@ -21,6 +21,7 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsDangerZoneFragment;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsGeneralFragment;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsMembersFragment;
+import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsRequestsFragment;
 
 public class TeamSettingsActivity extends AppCompatActivity {
 
@@ -90,6 +91,9 @@ public class TeamSettingsActivity extends AppCompatActivity {
                             tab.setText("Members");
                             break;
                         case 2:
+                            tab.setText("Requests");
+                            break;
+                        case 3:
                             tab.setText("Danger Zone");
                             break;
                     }
@@ -102,7 +106,7 @@ public class TeamSettingsActivity extends AppCompatActivity {
 
     private static class TeamSettingsPagerAdapter extends FragmentStateAdapter {
 
-        private static final int NUM_TABS = 3;
+        private static final int NUM_TABS = 4;
 
         public TeamSettingsPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -117,6 +121,8 @@ public class TeamSettingsActivity extends AppCompatActivity {
                 case 1:
                     return new TeamSettingsMembersFragment();
                 case 2:
+                    return new TeamSettingsRequestsFragment();
+                case 3:
                     return new TeamSettingsDangerZoneFragment();
                 default:
                     return new TeamSettingsGeneralFragment();

@@ -346,8 +346,8 @@ public class ProfileActivity extends AppCompatActivity {
                 tvBio.setVisibility(View.GONE);
             }
 
-            // Avatar
-            String avatarUrl = user.getAvatarUrl();
+            // Avatar — use effective URL which falls back to OAuth provider avatar
+            String avatarUrl = user.getEffectiveAvatarUrl();
             if (avatarUrl != null && !avatarUrl.isEmpty()) {
                 Glide.with(this)
                         .load(avatarUrl)

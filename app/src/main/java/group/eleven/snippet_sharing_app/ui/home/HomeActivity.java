@@ -199,9 +199,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
 
             // Load avatar image
-            if (ivDrawerUserProfile != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
+            String drawerAvatarUrl = user.getEffectiveAvatarUrl();
+            if (ivDrawerUserProfile != null && drawerAvatarUrl != null && !drawerAvatarUrl.isEmpty()) {
                 Glide.with(this)
-                        .load(user.getAvatarUrl())
+                        .load(drawerAvatarUrl)
                         .placeholder(R.drawable.ic_user_avatar)
                         .error(R.drawable.ic_user_avatar)
                         .circleCrop()
@@ -261,12 +262,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void setupUserInfo() {
         // Load user avatar in create post card
         User user = sessionManager.getUser();
-        if (user != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
-            Glide.with(this)
-                    .load(user.getAvatarUrl())
-                    .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_person)
-                    .into(binding.ivUserAvatar);
+        if (user != null) {
+            String avatarUrl = user.getEffectiveAvatarUrl();
+            if (avatarUrl != null && !avatarUrl.isEmpty()) {
+                Glide.with(this)
+                        .load(avatarUrl)
+                        .placeholder(R.drawable.ic_person)
+                        .error(R.drawable.ic_person)
+                        .into(binding.ivUserAvatar);
+            }
         }
     }
 

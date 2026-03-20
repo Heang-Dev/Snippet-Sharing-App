@@ -79,6 +79,12 @@ public class TeamViewModel extends AndroidViewModel {
     private final MutableLiveData<AuthRepository.Resource<Object>> _requestJoinTeamResult = new MutableLiveData<>();
     public LiveData<AuthRepository.Resource<Object>> getRequestJoinTeamResult() { return _requestJoinTeamResult; }
 
+    private final MutableLiveData<AuthRepository.Resource<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> _joinRequestsResult = new MutableLiveData<>();
+    public LiveData<AuthRepository.Resource<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> getJoinRequestsResult() { return _joinRequestsResult; }
+
+    private final MutableLiveData<AuthRepository.Resource<Object>> _handleJoinRequestResult = new MutableLiveData<>();
+    public LiveData<AuthRepository.Resource<Object>> getHandleJoinRequestResult() { return _handleJoinRequestResult; }
+
 
     public TeamViewModel(@NonNull Application application) {
         super(application);
@@ -342,6 +348,34 @@ public class TeamViewModel extends AndroidViewModel {
             @Override
             public void onChanged(AuthRepository.Resource<Object> resource) {
                 _requestJoinTeamResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
+    }
+
+    public void loadJoinRequests(String teamId) {
+        LiveData<AuthRepository.Resource<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> source = teamRepository.getTeamJoinRequests(teamId);
+        source.observeForever(new Observer<AuthRepository.Resource<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>> resource) {
+                _joinRequestsResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
+    }
+
+    public void handleJoinRequest(String teamId, String requestId, String action) {
+        Map<String, String> body = new java.util.HashMap<>();
+        body.put("action", action);
+        LiveData<AuthRepository.Resource<Object>> source = teamRepository.handleJoinRequest(teamId, requestId, body);
+        source.observeForever(new Observer<AuthRepository.Resource<Object>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<Object> resource) {
+                _handleJoinRequestResult.setValue(resource);
                 if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
                     source.removeObserver(this);
                 }

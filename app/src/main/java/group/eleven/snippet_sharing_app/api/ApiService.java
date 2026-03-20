@@ -161,6 +161,22 @@ public interface ApiService {
     Call<ApiResponse<Object>> requestJoinTeam(@Path("id") String teamId, @Body Map<String, String> body);
 
     /**
+     * Get pending join requests for a team (owner/admin only).
+     */
+    @GET("teams/{id}/join-requests")
+    Call<ApiResponse<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> getTeamJoinRequests(@Path("id") String teamId);
+
+    /**
+     * Approve or reject a join request (owner/admin only).
+     * Body: {"action": "approve"} or {"action": "reject"}
+     */
+    @POST("teams/{id}/join-requests/{requestId}")
+    Call<ApiResponse<Object>> handleJoinRequest(
+            @Path("id") String teamId,
+            @Path("requestId") String requestId,
+            @Body Map<String, String> body);
+
+    /**
      * Create a new team.
      */
     @POST("teams")

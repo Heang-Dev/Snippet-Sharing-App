@@ -87,13 +87,16 @@ public class SearchActivity extends AppCompatActivity {
 
     private void loadProfileImage() {
         User user = sessionManager.getUser();
-        if (user != null && user.getAvatarUrl() != null && !user.getAvatarUrl().isEmpty()) {
-            Glide.with(this)
-                    .load(user.getAvatarUrl())
-                    .placeholder(R.drawable.ic_person)
-                    .error(R.drawable.ic_person)
-                    .circleCrop()
-                    .into(ivProfile);
+        if (user != null) {
+            String avatarUrl = user.getEffectiveAvatarUrl();
+            if (avatarUrl != null && !avatarUrl.isEmpty()) {
+                Glide.with(this)
+                        .load(avatarUrl)
+                        .placeholder(R.drawable.ic_person)
+                        .error(R.drawable.ic_person)
+                        .circleCrop()
+                        .into(ivProfile);
+            }
         }
     }
 

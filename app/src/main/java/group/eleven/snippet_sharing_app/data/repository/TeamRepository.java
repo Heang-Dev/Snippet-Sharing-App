@@ -717,6 +717,60 @@ public class TeamRepository {
         return result;
     }
 
+    public LiveData<AuthRepository.Resource<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> getTeamJoinRequests(String teamId) {
+        MutableLiveData<AuthRepository.Resource<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> result = new MutableLiveData<>();
+        result.setValue(AuthRepository.Resource.loading());
+
+        apiService.getTeamJoinRequests(teamId).enqueue(new Callback<ApiResponse<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> call, Response<ApiResponse<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        result.setValue(AuthRepository.Resource.success(apiResponse.getData()));
+                    } else {
+                        result.setValue(AuthRepository.Resource.error(apiResponse.getMessage()));
+                    }
+                } else {
+                    result.setValue(AuthRepository.Resource.error(parseError(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<group.eleven.snippet_sharing_app.data.model.TeamJoinRequest>>> call, Throwable t) {
+                result.setValue(AuthRepository.Resource.error(getNetworkError(t)));
+            }
+        });
+        return result;
+    }
+
+    public LiveData<AuthRepository.Resource<Object>> handleJoinRequest(String teamId, String requestId, Map<String, String> body) {
+        MutableLiveData<AuthRepository.Resource<Object>> result = new MutableLiveData<>();
+        result.setValue(AuthRepository.Resource.loading());
+
+        apiService.handleJoinRequest(teamId, requestId, body).enqueue(new Callback<ApiResponse<Object>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Object> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        result.setValue(AuthRepository.Resource.success(apiResponse.getData()));
+                    } else {
+                        result.setValue(AuthRepository.Resource.error(apiResponse.getMessage()));
+                    }
+                } else {
+                    result.setValue(AuthRepository.Resource.error(parseError(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Object>> call, Throwable t) {
+                result.setValue(AuthRepository.Resource.error(getNetworkError(t)));
+            }
+        });
+        return result;
+    }
+
     /**
      * Helper method to parse error response
      */
