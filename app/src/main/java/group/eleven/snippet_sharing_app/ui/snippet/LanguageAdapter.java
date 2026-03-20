@@ -2,6 +2,8 @@ package group.eleven.snippet_sharing_app.ui.snippet;
 
 import android.content.Context;
 import android.graphics.Color;
+import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +86,9 @@ public class LanguageAdapter extends BaseAdapter {
             ivCheck.setVisibility(View.VISIBLE);
             convertView.setBackgroundResource(R.drawable.bg_badge_draft);
             convertView
-                    .setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#26FFBA0A")));
+                    .setBackgroundTintList(android.content.res.ColorStateList.valueOf(
+                            androidx.core.graphics.ColorUtils.setAlphaComponent(
+                                    ThemeManager.getThemeColor(convertView.getContext(), R.attr.accentColor), 38)));
         } else {
             ivCheck.setVisibility(View.GONE);
             convertView.setBackground(null); // Or transparent

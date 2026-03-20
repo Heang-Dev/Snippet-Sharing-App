@@ -9,12 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.api.ApiClient;
 import group.eleven.snippet_sharing_app.data.model.TeamSnippet;
 import group.eleven.snippet_sharing_app.utils.SyntaxHighlighter;
 
@@ -57,6 +60,8 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
+        private final CircleImageView ivAuthorAvatar;
+        private final TextView tvAuthorName;
         private final TextView tvLanguageBadge;
         private final TextView tvSnippetTitle;
         private final TextView tvSnippetTime;
@@ -66,6 +71,8 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivAuthorAvatar = itemView.findViewById(R.id.ivAuthorAvatar);
+            tvAuthorName = itemView.findViewById(R.id.tvAuthorName);
             tvLanguageBadge = itemView.findViewById(R.id.tvLanguageBadge);
             tvSnippetTitle = itemView.findViewById(R.id.tvSnippetTitle);
             tvSnippetTime = itemView.findViewById(R.id.tvSnippetTime);
@@ -75,13 +82,26 @@ public class TeamSnippetAdapter extends RecyclerView.Adapter<TeamSnippetAdapter.
         }
 
         public void bind(TeamSnippet teamSnippet, OnTeamSnippetClickListener listener) {
-            // Set language badge
-            String langName = teamSnippet.getLanguageName();
-            if (langName != null && langName.length() > 4) {
-                tvLanguageBadge.setText(langName.substring(0, 4));
+            // Set author avatar
+            String avatarUrl = teamSnippet.getAuthorAvatarUrl();
+            if (avatarUrl != null && !avatarUrl.isEmpty()) {
+                String fullUrl = ApiClient.getFullStorageUrl(avatarUrl);
+                Glide.with(itemView.getContext())
+                        .load(fullUrl)
+                        .placeholder(R.drawable.ic_person)
+                        .error(R.drawable.ic_person)
+                        .into(ivAuthorAvatar);
             } else {
-                tvLanguageBadge.setText(langName != null ? langName : "");
+                ivAuthorAvatar.setImageResource(R.drawable.ic_person);
             }
+
+            // Set author name
+            String authorName = teamSnippet.getAuthorName();
+            tvAuthorName.setText(authorName != null ? authorName : "Unknown");
+
+            // Set language badge (full name in code header)
+            String langName = teamSnippet.getLanguageName();
+            tvLanguageBadge.setText(langName != null ? langName : "");
 
             tvSnippetTitle.setText(teamSnippet.getTitle());
             tvSnippetTime.setText(teamSnippet.getTimeAgo());

@@ -73,6 +73,12 @@ public class TeamViewModel extends AndroidViewModel {
     private final MutableLiveData<AuthRepository.Resource<MessageResponse>> _updateTeamMemberRoleResult = new MutableLiveData<>();
     private final MutableLiveData<AuthRepository.Resource<TeamSnippet>> _createTeamSnippetResult = new MutableLiveData<>();
 
+    private final MutableLiveData<AuthRepository.Resource<List<Team>>> _discoverTeamsResult = new MutableLiveData<>();
+    public LiveData<AuthRepository.Resource<List<Team>>> getDiscoverTeamsResult() { return _discoverTeamsResult; }
+
+    private final MutableLiveData<AuthRepository.Resource<Object>> _requestJoinTeamResult = new MutableLiveData<>();
+    public LiveData<AuthRepository.Resource<Object>> getRequestJoinTeamResult() { return _requestJoinTeamResult; }
+
 
     public TeamViewModel(@NonNull Application application) {
         super(application);
@@ -310,6 +316,32 @@ public class TeamViewModel extends AndroidViewModel {
             @Override
             public void onChanged(AuthRepository.Resource<Team> resource) {
                 _createTeamResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
+    }
+
+    public void discoverTeams(Map<String, String> filters) {
+        LiveData<AuthRepository.Resource<List<Team>>> source = teamRepository.discoverTeams(filters);
+        source.observeForever(new Observer<AuthRepository.Resource<List<Team>>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<List<Team>> resource) {
+                _discoverTeamsResult.setValue(resource);
+                if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
+                    source.removeObserver(this);
+                }
+            }
+        });
+    }
+
+    public void requestJoinTeam(String teamId, Map<String, String> body) {
+        LiveData<AuthRepository.Resource<Object>> source = teamRepository.requestJoinTeam(teamId, body);
+        source.observeForever(new Observer<AuthRepository.Resource<Object>>() {
+            @Override
+            public void onChanged(AuthRepository.Resource<Object> resource) {
+                _requestJoinTeamResult.setValue(resource);
                 if (resource.getStatus() != AuthRepository.Resource.Status.LOADING) {
                     source.removeObserver(this);
                 }

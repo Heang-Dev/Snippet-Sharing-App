@@ -146,7 +146,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 if (length > MAX_BIO_LENGTH) {
                     tvBioCharCount.setTextColor(getResources().getColor(R.color.error, getTheme()));
                 } else {
-                    tvBioCharCount.setTextColor(getResources().getColor(R.color.light_text_muted, getTheme()));
+                    tvBioCharCount.setTextColor(getResources().getColor(R.color.text_muted, getTheme()));
                 }
             }
 

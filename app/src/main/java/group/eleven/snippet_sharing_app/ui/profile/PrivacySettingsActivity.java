@@ -8,6 +8,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import group.eleven.snippet_sharing_app.R;
@@ -82,7 +84,7 @@ public class PrivacySettingsActivity extends AppCompatActivity {
     private void updateUI(boolean isPublic) {
         int activeColor = ContextCompat.getColor(this, R.color.profile_primary);
         int inactiveColor = ContextCompat.getColor(this, R.color.profile_text_muted);
-        int activeBg = android.graphics.Color.parseColor("#1A1400");
+        int activeBg = ThemeManager.getThemeColor(this, R.attr.cardSurfaceColor);
         int normalBg = ContextCompat.getColor(this, R.color.profile_card);
 
         if (isPublic) {

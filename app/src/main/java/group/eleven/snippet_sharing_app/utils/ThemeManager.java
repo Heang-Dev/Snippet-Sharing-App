@@ -111,45 +111,68 @@ public class ThemeManager {
         window.setStatusBarColor(Color.TRANSPARENT);
         window.setNavigationBarColor(Color.TRANSPARENT);
 
-        // Set appropriate icon colors based on theme
+        // Set icon colors based on current theme (light icons on dark, dark icons on light)
         WindowInsetsControllerCompat controller =
                 WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
-            // For dark theme, use light (white) icons
-            controller.setAppearanceLightStatusBars(false);
-            controller.setAppearanceLightNavigationBars(false);
+            boolean isDark = (activity.getResources().getConfiguration().uiMode
+                    & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+            controller.setAppearanceLightStatusBars(!isDark);
+            controller.setAppearanceLightNavigationBars(!isDark);
         }
     }
 
     /**
      * Apply standard dark status bar styling (non-edge-to-edge)
      */
-    public static void applyDarkStatusBar(Activity activity, int statusBarColor) {
+    public static void applyStatusBar(Activity activity, int statusBarColor) {
         Window window = activity.getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(statusBarColor);
 
-        // Light icons on dark background
         WindowInsetsControllerCompat controller =
                 WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
-            controller.setAppearanceLightStatusBars(false);
+            controller.setAppearanceLightStatusBars(isColorLight(statusBarColor));
         }
     }
 
     /**
-     * Apply standard dark navigation bar styling
+     * Apply theme-aware navigation bar styling
      */
-    public static void applyDarkNavigationBar(Activity activity, int navBarColor) {
+    public static void applyNavigationBar(Activity activity, int navBarColor) {
         Window window = activity.getWindow();
         window.setNavigationBarColor(navBarColor);
 
-        // Light icons on dark background
         WindowInsetsControllerCompat controller =
                 WindowCompat.getInsetsController(window, window.getDecorView());
         if (controller != null) {
-            controller.setAppearanceLightNavigationBars(false);
+            controller.setAppearanceLightNavigationBars(isColorLight(navBarColor));
         }
+    }
+
+    /**
+     * @deprecated Use {@link #applyStatusBar(Activity, int)} instead
+     */
+    @Deprecated
+    public static void applyDarkStatusBar(Activity activity, int statusBarColor) {
+        applyStatusBar(activity, statusBarColor);
+    }
+
+    /**
+     * @deprecated Use {@link #applyNavigationBar(Activity, int)} instead
+     */
+    @Deprecated
+    public static void applyDarkNavigationBar(Activity activity, int navBarColor) {
+        applyNavigationBar(activity, navBarColor);
+    }
+
+    /**
+     * Check if a color is light (for determining status/nav bar icon color)
+     */
+    private static boolean isColorLight(int color) {
+        double luminance = androidx.core.graphics.ColorUtils.calculateLuminance(color);
+        return luminance > 0.5;
     }
 
     /**

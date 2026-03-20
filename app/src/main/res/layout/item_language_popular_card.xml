@@ -10,7 +10,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="156dp"
         android:layout_height="140dp"
-        app:cardBackgroundColor="#0F1A15"
+        app:cardBackgroundColor="@color/surface"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp">
 
@@ -25,7 +25,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/bg_icon_circle"
-                android:backgroundTint="#080e0b"
+                android:backgroundTint="@color/code_background"
                 android:layout_marginBottom="16dp">
 
                 <TextView
@@ -34,7 +34,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="JS"
-                    android:textColor="#FFD600"
+                    android:textColor="@color/primary_500"
                     android:textSize="16sp"
                     android:fontFamily="sans-serif-black" />
             </FrameLayout>
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="JavaScript"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp"/>
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2,403 snippets"
-                android:textColor="#889990"
+                android:textColor="@color/text_muted"
                 android:textSize="12sp"/>
 
         </LinearLayout>

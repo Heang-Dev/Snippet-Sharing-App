@@ -41,7 +41,7 @@
                         android:layout_centerVertical="true"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_menu"
-                        app:tint="#FFFFFF"
+                        app:tint="@color/icon_primary"
                         android:contentDescription="Menu" />
 
                     <TextView

@@ -149,6 +149,18 @@ public interface ApiService {
     Call<ApiResponse<TeamsResponse>> getMyTeams();
 
     /**
+     * Discover public teams (browse/search).
+     */
+    @GET("teams/discover")
+    Call<ApiResponse<List<Team>>> discoverTeams(@QueryMap Map<String, String> filters);
+
+    /**
+     * Request to join a public team.
+     */
+    @POST("teams/{id}/join-requests")
+    Call<ApiResponse<Object>> requestJoinTeam(@Path("id") String teamId, @Body Map<String, String> body);
+
+    /**
      * Create a new team.
      */
     @POST("teams")

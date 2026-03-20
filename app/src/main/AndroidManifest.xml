@@ -27,6 +27,9 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".ui.team.DiscoverTeamsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.team.TeamChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

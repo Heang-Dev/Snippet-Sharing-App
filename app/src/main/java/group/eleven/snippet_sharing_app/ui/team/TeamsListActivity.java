@@ -238,9 +238,11 @@ public class TeamsListActivity extends AppCompatActivity implements TeamListAdap
             btnCreateTeam.setOnClickListener(createTeamListener);
         }
 
-        // Hide discover teams card - no backend endpoint for public team search yet
+        // Navigate to Discover Teams screen
         if (cardDiscoverTeams != null) {
-            cardDiscoverTeams.setVisibility(View.GONE);
+            cardDiscoverTeams.setOnClickListener(v -> {
+                startActivity(new Intent(TeamsListActivity.this, DiscoverTeamsActivity.class));
+            });
         }
     }
 

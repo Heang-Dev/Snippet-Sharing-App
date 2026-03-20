@@ -657,6 +657,65 @@ public class TeamRepository {
         return result;
     }
 
+    /**
+     * Discover public teams (browse/search).
+     */
+    public LiveData<AuthRepository.Resource<List<Team>>> discoverTeams(Map<String, String> filters) {
+        MutableLiveData<AuthRepository.Resource<List<Team>>> result = new MutableLiveData<>();
+        result.setValue(AuthRepository.Resource.loading());
+
+        apiService.discoverTeams(filters).enqueue(new Callback<ApiResponse<List<Team>>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<List<Team>>> call, Response<ApiResponse<List<Team>>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<List<Team>> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        result.setValue(AuthRepository.Resource.success(apiResponse.getData()));
+                    } else {
+                        result.setValue(AuthRepository.Resource.error(apiResponse.getMessage()));
+                    }
+                } else {
+                    result.setValue(AuthRepository.Resource.error(parseError(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<List<Team>>> call, Throwable t) {
+                result.setValue(AuthRepository.Resource.error(getNetworkError(t)));
+            }
+        });
+        return result;
+    }
+
+    /**
+     * Request to join a public team.
+     */
+    public LiveData<AuthRepository.Resource<Object>> requestJoinTeam(String teamId, Map<String, String> body) {
+        MutableLiveData<AuthRepository.Resource<Object>> result = new MutableLiveData<>();
+        result.setValue(AuthRepository.Resource.loading());
+
+        apiService.requestJoinTeam(teamId, body).enqueue(new Callback<ApiResponse<Object>>() {
+            @Override
+            public void onResponse(Call<ApiResponse<Object>> call, Response<ApiResponse<Object>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    ApiResponse<Object> apiResponse = response.body();
+                    if (apiResponse.isSuccess()) {
+                        result.setValue(AuthRepository.Resource.success(apiResponse.getData()));
+                    } else {
+                        result.setValue(AuthRepository.Resource.error(apiResponse.getMessage()));
+                    }
+                } else {
+                    result.setValue(AuthRepository.Resource.error(parseError(response)));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse<Object>> call, Throwable t) {
+                result.setValue(AuthRepository.Resource.error(getNetworkError(t)));
+            }
+        });
+        return result;
+    }
 
     /**
      * Helper method to parse error response

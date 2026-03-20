@@ -2,6 +2,8 @@ package group.eleven.snippet_sharing_app.ui.team;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -174,7 +176,7 @@ public class SelectTeamDialogFragment extends BottomSheetDialogFragment {
     }
 
     private int getDefaultTeamColor() {
-        return Color.parseColor("#FFBA0A");
+        return ThemeManager.getThemeColor(requireContext(), R.attr.accentColor);
     }
 
     private void showEmptyState() {

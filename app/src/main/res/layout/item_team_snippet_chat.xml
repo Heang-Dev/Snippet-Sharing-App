@@ -10,26 +10,15 @@
     android:paddingTop="3dp"
     android:paddingBottom="3dp">
 
-    <!-- Language Badge (small circle) -->
-    <com.google.android.material.card.MaterialCardView
+    <!-- Author Avatar -->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/ivAuthorAvatar"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginTop="3dp"
-        app:cardCornerRadius="0dp"
-        app:cardBackgroundColor="?attr/tagBackgroundColor"
-        app:cardElevation="0dp">
-
-        <TextView
-            android:id="@+id/tvLanguageBadge"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="JS"
-            android:textColor="?attr/accentColor"
-            android:textSize="10sp"
-            android:textStyle="bold" />
-
-    </com.google.android.material.card.MaterialCardView>
+        android:src="@drawable/ic_person"
+        app:civ_border_color="?attr/borderColor"
+        app:civ_border_width="1dp" />
 
     <!-- Snippet Content Bubble -->
     <com.google.android.material.card.MaterialCardView
@@ -48,7 +37,7 @@
             android:orientation="vertical"
             android:padding="8dp">
 
-            <!-- Title Row -->
+            <!-- Author Name Row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,16 +45,16 @@
                 android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/tvSnippetTitle"
+                    android:id="@+id/tvAuthorName"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Snippet Title"
-                    android:textColor="?attr/textPrimaryColor"
-                    android:textSize="13sp"
+                    android:textColor="?attr/accentColor"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     android:maxLines="1"
-                    android:ellipsize="end" />
+                    android:ellipsize="end"
+                    tools:text="John Doe" />
 
                 <ImageView
                     android:id="@+id/ivMore"
@@ -75,6 +64,19 @@
                     app:tint="?attr/textMutedColor" />
 
             </LinearLayout>
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvSnippetTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Snippet Title"
+                android:textColor="?attr/textPrimaryColor"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <!-- Time -->
             <TextView
@@ -103,12 +105,17 @@
                     <!-- Code Header -->
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="16dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="16dp"
                         android:orientation="horizontal"
-                        android:gravity="end|center_vertical"
+                        android:gravity="center_vertical"
+                        android:paddingStart="6dp"
                         android:paddingEnd="6dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
                         android:background="?attr/codeBlockHeaderBackground">
 
+                        <!-- Window Dots -->
                         <View
                             android:layout_width="6dp"
                             android:layout_height="6dp"
@@ -128,6 +135,26 @@
                             android:layout_marginStart="3dp"
                             android:background="@drawable/circle_dot"
                             android:backgroundTint="#27C93F" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <!-- Language Badge -->
+                        <TextView
+                            android:id="@+id/tvLanguageBadge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_language_badge"
+                            android:paddingStart="6dp"
+                            android:paddingTop="1dp"
+                            android:paddingEnd="6dp"
+                            android:paddingBottom="1dp"
+                            android:textColor="@android:color/white"
+                            android:textSize="9sp"
+                            android:textStyle="bold"
+                            tools:text="Bash" />
 
                     </LinearLayout>
 

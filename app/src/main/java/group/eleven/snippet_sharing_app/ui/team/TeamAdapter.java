@@ -2,6 +2,8 @@ package group.eleven.snippet_sharing_app.ui.team;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import group.eleven.snippet_sharing_app.R;
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
@@ -94,13 +96,13 @@ public class TeamAdapter extends RecyclerView.Adapter<TeamAdapter.TeamViewHolder
                 // Green border + faint green fill
                 rootView.setBackgroundResource(R.drawable.bg_team_item_selected);
                 ivSelection.setImageResource(R.drawable.ic_check_circle);
-                ivSelection.setColorFilter(Color.parseColor("#FFBA0A")); // Gold tint
+                ivSelection.setColorFilter(ThemeManager.getThemeColor(rootView.getContext(), R.attr.accentColor));
             } else {
                 // Transparent
                 rootView.setBackgroundResource(0); // or transparent
                 ivSelection.setImageResource(R.drawable.ic_radio_unchecked); // Need proper icon or shape
                 ivSelection.clearColorFilter();
-                ivSelection.setColorFilter(Color.parseColor("#6B6B6B")); // Grey tint
+                ivSelection.setColorFilter(ThemeManager.getThemeColor(rootView.getContext(), R.attr.iconSecondaryColor));
             }
         }
     }

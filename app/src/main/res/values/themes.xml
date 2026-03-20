@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- ============================================== -->
-    <!-- SNIPPET SHARING G11 - Dark-Only Theme          -->
-    <!-- Selective Yellow (#FFBA0A) + Pure Dark (#121212)-->
+    <!-- SNIPPET SHARING G11 - Light/Dark Theme         -->
+    <!-- Selective Yellow (#FFBA0A) brand accent         -->
+    <!-- Light mode below; Dark in values-night/         -->
     <!-- ============================================== -->
 
-    <!-- ========== BASE THEME (DARK-ONLY) ========== -->
-    <style name="Base.Theme.SnippetApp" parent="Theme.Material3.Dark.NoActionBar">
+    <!-- ========== BASE THEME (LIGHT MODE) ========== -->
+    <!-- Dark mode overrides in values-night/themes.xml -->
+    <style name="Base.Theme.SnippetApp" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary Colors - Selective Yellow -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorOnPrimary">@color/on_primary</item>
-        <item name="colorPrimaryContainer">@color/primary_950</item>
-        <item name="colorOnPrimaryContainer">@color/primary_400</item>
+        <item name="colorPrimaryContainer">@color/primary_100</item>
+        <item name="colorOnPrimaryContainer">@color/primary_800</item>
 
         <!-- Secondary Colors - Gold variants -->
         <item name="colorSecondary">@color/primary_600</item>
         <item name="colorSecondaryVariant">@color/primary_700</item>
         <item name="colorOnSecondary">@color/on_primary</item>
-        <item name="colorSecondaryContainer">@color/primary_950</item>
-        <item name="colorOnSecondaryContainer">@color/primary_500</item>
+        <item name="colorSecondaryContainer">@color/primary_100</item>
+        <item name="colorOnSecondaryContainer">@color/primary_700</item>
 
         <!-- Background & Surface -->
         <item name="android:colorBackground">@color/app_background</item>
@@ -42,8 +44,8 @@
         <!-- System Bars - Pure dark, immersive -->
         <item name="android:statusBarColor">@color/app_background</item>
         <item name="android:navigationBarColor">@color/app_background</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
 
         <!-- ========== CUSTOM THEME ATTRIBUTES ========== -->
         <!-- Backgrounds -->
@@ -226,7 +228,7 @@
 
     <style name="TextAppearance.SnippetApp.Code">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColor">?attr/codeTextColor</item>
         <item name="android:fontFamily">monospace</item>
     </style>
 

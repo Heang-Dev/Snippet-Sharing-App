@@ -30,6 +30,9 @@ public class Team {
     @SerializedName("user_role") // Role of the current user in this team
     private String userRole; // e.g., "owner", "admin", "member"
 
+    @SerializedName("has_pending_request")
+    private boolean hasPendingRequest;
+
     // Default constructor for Gson
     public Team() {}
 
@@ -117,5 +120,13 @@ public class Team {
 
     public void setUserRole(String userRole) {
         this.userRole = userRole;
+    }
+
+    public boolean hasPendingRequest() {
+        return hasPendingRequest;
+    }
+
+    public void setHasPendingRequest(boolean hasPendingRequest) {
+        this.hasPendingRequest = hasPendingRequest;
     }
 }
