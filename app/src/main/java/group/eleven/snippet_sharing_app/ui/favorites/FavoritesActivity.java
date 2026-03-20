@@ -125,6 +125,18 @@ public class FavoritesActivity extends AppCompatActivity {
         adapter.setOnSnippetClickListener(snippet -> {
             Toast.makeText(this, "Clicked: " + snippet.getTitle(), Toast.LENGTH_SHORT).show();
         });
+        // Tapping the star in Favorites removes the snippet from favorites
+        adapter.setOnFavoriteClickListener((snippet, position) -> {
+            favoritesRepository.removeFromFavorites(snippet.getId()).observe(this, r -> {
+                if (r.status == Resource.Status.SUCCESS) {
+                    allFavorites.removeIf(s -> s.getId() != null && s.getId().equals(snippet.getId()));
+                    updateUI();
+                    Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                } else if (r.status == Resource.Status.ERROR) {
+                    Toast.makeText(this, "Error: " + r.message, Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
         binding.rvFavorites.setAdapter(adapter);
     }
 

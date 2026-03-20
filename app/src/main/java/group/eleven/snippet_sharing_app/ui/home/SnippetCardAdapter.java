@@ -2,12 +2,15 @@ package group.eleven.snippet_sharing_app.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -91,6 +94,23 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
         void onSnippetClick(SnippetCard snippet);
     }
 
+    public interface OnFavoriteClickListener {
+        void onFavoriteClick(SnippetCard snippet, int position);
+    }
+
+    private OnFavoriteClickListener favoriteListener;
+
+    public void setOnFavoriteClickListener(OnFavoriteClickListener listener) {
+        this.favoriteListener = listener;
+    }
+
+    public void updateFavoriteState(int position, boolean isFavorited) {
+        if (position >= 0 && position < snippets.size()) {
+            snippets.get(position).setLiked(isFavorited);
+            notifyItemChanged(position, "favorite");
+        }
+    }
+
     public SnippetCardAdapter(List<SnippetCard> snippets) {
         this.snippets = snippets;
     }
@@ -129,7 +149,7 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         SnippetCard snippet = snippets.get(position);
-        holder.bind(snippet, listener);
+        holder.bind(snippet, listener, favoriteListener);
     }
 
     @Override
@@ -198,6 +218,7 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
         private final TextView tvTag2;
         private final CardView cardView;
         private final ImageButton btnShare;
+        private final ImageButton btnFavorite;
         private final SyntaxHighlighter syntaxHighlighter;
 
         public ViewHolder(@NonNull View itemView) {
@@ -211,10 +232,11 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
             tvTag1 = itemView.findViewById(R.id.tvTag1);
             tvTag2 = itemView.findViewById(R.id.tvTag2);
             btnShare = itemView.findViewById(R.id.btnShare);
+            btnFavorite = itemView.findViewById(R.id.btnFavorite);
             syntaxHighlighter = new SyntaxHighlighter(itemView.getContext());
         }
 
-        public void bind(SnippetCard snippet, OnSnippetClickListener listener) {
+        public void bind(SnippetCard snippet, OnSnippetClickListener listener, OnFavoriteClickListener favoriteListener) {
             // Show abbreviated language name in badge
             tvLanguageBadge.setText(getLanguageAbbreviation(snippet.getLanguageBadge()));
             tvSnippetTitle.setText(snippet.getTitle());
@@ -253,6 +275,22 @@ public class SnippetCardAdapter extends RecyclerView.Adapter<SnippetCardAdapter.
             } else {
                 if (tvTag1 != null) tvTag1.setVisibility(View.GONE);
                 if (tvTag2 != null) tvTag2.setVisibility(View.GONE);
+            }
+
+            // Favorite button state
+            if (btnFavorite != null) {
+                boolean favorited = snippet.isLiked();
+                btnFavorite.setImageResource(favorited ? R.drawable.ic_star_filled : R.drawable.ic_star_outline);
+                int tintColor = favorited
+                        ? ContextCompat.getColor(btnFavorite.getContext(), R.color.selective_yellow)
+                        : ContextCompat.getColor(btnFavorite.getContext(), android.R.color.darker_gray);
+                btnFavorite.setImageTintList(ColorStateList.valueOf(tintColor));
+
+                btnFavorite.setOnClickListener(v -> {
+                    if (favoriteListener != null) {
+                        favoriteListener.onFavoriteClick(snippet, getAdapterPosition());
+                    }
+                });
             }
 
             if (btnShare != null) {

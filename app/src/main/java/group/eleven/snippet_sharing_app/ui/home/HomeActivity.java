@@ -41,6 +41,7 @@ import group.eleven.snippet_sharing_app.ui.notification.NotificationsActivity;
 import group.eleven.snippet_sharing_app.ui.search.SearchActivity;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
 import group.eleven.snippet_sharing_app.utils.BottomNavHelper;
+import group.eleven.snippet_sharing_app.data.repository.FavoritesRepository;
 import group.eleven.snippet_sharing_app.utils.KeyboardUtils;
 import group.eleven.snippet_sharing_app.utils.Resource;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
@@ -59,6 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle drawerToggle;
 
     private FeedSnippetAdapter feedAdapter;
+    private FavoritesRepository favoritesRepository;
     private List<SnippetCard> snippetList = new ArrayList<>();
 
     // Drawer header views
@@ -82,6 +84,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             sessionManager = new SessionManager(this);
             dashboardRepository = new DashboardRepository(this);
             authRepository = new AuthRepository(this);
+            favoritesRepository = new FavoritesRepository(this);
 
             if (!sessionManager.isLoggedIn()) {
                 navigateToLogin();
@@ -326,6 +329,26 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onMoreOptionsClick(SnippetCard snippet, View anchor) {
                 showSnippetOptions(snippet, anchor);
+            }
+
+            @Override
+            public void onSaveClick(SnippetCard snippet, int position) {
+                boolean wasSaved = snippet.isLiked();
+                if (wasSaved) {
+                    favoritesRepository.removeFromFavorites(snippet.getId()).observe(HomeActivity.this, r -> {
+                        if (r.status == Resource.Status.SUCCESS) {
+                            feedAdapter.updateSaveState(position, false);
+                            Toast.makeText(HomeActivity.this, "Removed from favorites", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    favoritesRepository.addToFavorites(snippet.getId()).observe(HomeActivity.this, r -> {
+                        if (r.status == Resource.Status.SUCCESS) {
+                            feedAdapter.updateSaveState(position, true);
+                            Toast.makeText(HomeActivity.this, "Saved to favorites", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         });
         binding.rvRecentSnippets.setAdapter(feedAdapter);

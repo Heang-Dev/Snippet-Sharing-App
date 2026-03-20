@@ -2,6 +2,8 @@ package group.eleven.snippet_sharing_app.utils;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.browser.customtabs.CustomTabsIntent;
 
@@ -32,6 +34,9 @@ public class GitHubOAuthHelper {
                 .appendQueryParameter("scope", SCOPE)
                 .appendQueryParameter("state", state)
                 .build();
+
+        Log.d("GitHubOAuth", "Opening URL: " + authUri.toString());
+        Toast.makeText(context, "GitHub URL: " + authUri.toString(), Toast.LENGTH_LONG).show();
 
         CustomTabsIntent customTabsIntent = new CustomTabsIntent.Builder()
                 .setShowTitle(true)

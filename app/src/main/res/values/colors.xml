@@ -18,6 +18,8 @@
     <color name="primary_900">#7C3E0B</color>
     <color name="primary_950">#481F00</color>
 
+    <color name="selective_yellow">@color/primary_500</color>
+
     <!-- ========== SEMANTIC PRIMARY ALIASES ========== -->
     <color name="primary">@color/primary_500</color>
     <color name="primary_dark">@color/primary_600</color>

@@ -40,6 +40,7 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
         void onShareClick(SnippetCard snippet);
         void onAuthorClick(SnippetCard snippet);
         void onMoreOptionsClick(SnippetCard snippet, View anchor);
+        default void onSaveClick(SnippetCard snippet, int position) {}
     }
 
     public FeedSnippetAdapter(List<SnippetCard> snippets) {
@@ -88,9 +89,9 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
         LinearLayout tagsContainer;
         TextView tvTag1, tvTag2;
         TextView tvLikesCount, tvCommentsCount;
-        LinearLayout btnLike, btnComment, btnShare;
-        ImageView ivLike;
-        TextView tvLike;
+        LinearLayout btnLike, btnComment, btnShare, btnSave;
+        ImageView ivLike, ivSave;
+        TextView tvLike, tvSave;
         SyntaxHighlighter syntaxHighlighter;
 
         public ViewHolder(@NonNull View itemView) {
@@ -125,8 +126,11 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
             btnLike = itemView.findViewById(R.id.btnLike);
             btnComment = itemView.findViewById(R.id.btnComment);
             btnShare = itemView.findViewById(R.id.btnShare);
+            btnSave = itemView.findViewById(R.id.btnSave);
             ivLike = itemView.findViewById(R.id.ivLike);
             tvLike = itemView.findViewById(R.id.tvLike);
+            ivSave = itemView.findViewById(R.id.ivSave);
+            tvSave = itemView.findViewById(R.id.tvSave);
         }
 
         public void bind(SnippetCard snippet, int position) {
@@ -260,6 +264,27 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
             btnShare.setOnClickListener(v -> {
                 if (listener != null) listener.onShareClick(snippet);
             });
+
+            // Save (favorite) button
+            updateSaveState(snippet.isLiked());
+            btnSave.setOnClickListener(v -> {
+                if (listener != null) listener.onSaveClick(snippet, getAdapterPosition());
+            });
+        }
+
+        private void updateSaveState(boolean isSaved) {
+            if (ivSave != null) {
+                ivSave.setImageResource(isSaved ? R.drawable.ic_star_filled : R.drawable.ic_star_outline);
+                ivSave.setColorFilter(isSaved
+                        ? ContextCompat.getColor(context, R.color.selective_yellow)
+                        : null);
+            }
+            if (tvSave != null) {
+                tvSave.setText(isSaved ? "Saved" : "Save");
+                tvSave.setTextColor(isSaved
+                        ? ContextCompat.getColor(context, R.color.selective_yellow)
+                        : ContextCompat.getColor(context, android.R.color.darker_gray));
+            }
         }
 
         private void updateLikeState(boolean isLiked) {
@@ -273,6 +298,13 @@ public class FeedSnippetAdapter extends RecyclerView.Adapter<FeedSnippetAdapter.
                 ivLike.setColorFilter(null);
                 tvLike.setText("Like");
             }
+        }
+    }
+
+    public void updateSaveState(int position, boolean isSaved) {
+        if (position >= 0 && position < snippets.size()) {
+            snippets.get(position).setLiked(isSaved);
+            notifyItemChanged(position);
         }
     }
 
