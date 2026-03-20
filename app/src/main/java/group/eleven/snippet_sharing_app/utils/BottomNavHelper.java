@@ -65,7 +65,7 @@ public class BottomNavHelper {
         }
 
         User user = sessionManager.getUser();
-        String avatarUrl = user != null ? user.getAvatarUrl() : null;
+        String avatarUrl = user != null ? user.getEffectiveAvatarUrl() : null;
 
         Log.d(TAG, "setupProfileAvatar: User=" + (user != null ? user.getUsername() : "null") +
                 ", avatarUrl=" + avatarUrl);
