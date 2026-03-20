@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/appBackgroundColor"
+    android:fitsSystemWindows="true"
     tools:context=".ui.team.DiscoverTeamsActivity">
 
     <!-- Toolbar -->
@@ -52,7 +53,7 @@
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
-                android:hint="Search public teams..."
+                android:hint="Search by name or description..."
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"

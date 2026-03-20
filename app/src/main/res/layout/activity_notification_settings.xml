@@ -16,14 +16,14 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:navigationIconTint="@color/white">
+            app:navigationIconTint="@color/icon_primary">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Notification Settings"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -99,7 +99,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="New followers"
-                            android:textColor="@color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -151,7 +151,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Team invitations"
-                            android:textColor="@color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -203,7 +203,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Snippet comments"
-                            android:textColor="@color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -255,7 +255,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Snippet forks"
-                            android:textColor="@color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -307,7 +307,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Weekly digest"
-                            android:textColor="@color/white"
+                            android:textColor="@color/text_primary"
                             android:textSize="15sp"
                             android:textStyle="bold" />
 
@@ -390,7 +390,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        app:cardBackgroundColor="#0D110D"
+                        app:cardBackgroundColor="@color/input_background"
                         app:cardCornerRadius="0dp"
                         app:cardElevation="0dp">
                         <ImageView
@@ -407,7 +407,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:text="Mentions"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -442,7 +442,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        app:cardBackgroundColor="#0D110D"
+                        app:cardBackgroundColor="@color/input_background"
                         app:cardCornerRadius="0dp"
                         app:cardElevation="0dp">
                         <ImageView
@@ -459,7 +459,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:text="Code Reviews"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 
@@ -494,7 +494,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        app:cardBackgroundColor="#0D110D"
+                        app:cardBackgroundColor="@color/input_background"
                         app:cardCornerRadius="0dp"
                         app:cardElevation="0dp">
                         <ImageView
@@ -511,7 +511,7 @@
                         android:layout_marginStart="16dp"
                         android:layout_weight="1"
                         android:text="Security Alerts"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="15sp"
                         android:textStyle="bold" />
 

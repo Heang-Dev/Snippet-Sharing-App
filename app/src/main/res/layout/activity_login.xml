@@ -231,16 +231,6 @@
                 android:contentDescription="Google" />
 
             <ImageButton
-                android:id="@+id/btnApple"
-                android:layout_width="@dimen/button_height_lg"
-                android:layout_height="@dimen/button_height_lg"
-                android:layout_marginHorizontal="@dimen/spacing_md"
-                android:background="@drawable/bg_social_button_themed"
-                android:src="@drawable/ic_apple"
-                android:scaleType="center"
-                android:contentDescription="Apple" />
-
-            <ImageButton
                 android:id="@+id/btnGithub"
                 android:layout_width="@dimen/button_height_lg"
                 android:layout_height="@dimen/button_height_lg"
@@ -248,7 +238,8 @@
                 android:background="@drawable/bg_social_button_themed"
                 android:src="@drawable/ic_github"
                 android:scaleType="center"
-                android:contentDescription="GitHub" />
+                android:contentDescription="GitHub"
+                app:tint="?attr/textPrimaryColor" />
         </LinearLayout>
 
         <!-- Spacer -->

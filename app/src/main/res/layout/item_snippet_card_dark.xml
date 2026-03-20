@@ -31,7 +31,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="JS"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="10sp"
                     android:textStyle="bold" />
             </com.google.android.material.card.MaterialCardView>

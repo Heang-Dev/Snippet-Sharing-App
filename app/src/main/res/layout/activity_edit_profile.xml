@@ -200,7 +200,7 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="2dp"
                     android:text="Verified"
-                    android:textColor="@color/white"
+                    android:textColor="@color/text_primary"
                     android:textSize="10sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -369,7 +369,7 @@
                 android:layout_marginTop="32dp"
                 android:text="Save Changes"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/text_primary"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:backgroundTint="?attr/buttonPrimaryColor"

@@ -46,6 +46,8 @@
         <item name="android:navigationBarColor">@color/app_background</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <!-- Splash screen background matches app background (light mode) -->
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">@color/app_background</item>
 
         <!-- ========== CUSTOM THEME ATTRIBUTES ========== -->
         <!-- Backgrounds -->

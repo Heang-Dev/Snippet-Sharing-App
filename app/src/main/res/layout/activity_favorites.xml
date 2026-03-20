@@ -203,7 +203,7 @@
                         android:paddingStart="24dp"
                         android:paddingEnd="24dp"
                         android:text="Explore Snippets"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         app:backgroundTint="?attr/accentColor"
                         app:cornerRadius="0dp" />
 

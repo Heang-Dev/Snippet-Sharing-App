@@ -269,7 +269,7 @@
                                 android:paddingHorizontal="8dp"
                                 android:paddingVertical="2dp"
                                 android:text="✓"
-                                android:textColor="@color/white"
+                                android:textColor="@color/text_primary"
                                 android:textSize="10sp"
                                 android:textStyle="bold" />
 
@@ -410,7 +410,7 @@
                         android:paddingBottom="0dp"
                         android:text="Edit Profile"
                         android:textAllCaps="false"
-                        android:textColor="@color/white"
+                        android:textColor="@color/text_primary"
                         android:textSize="14sp"
                         android:textStyle="bold"
                         app:backgroundTint="?attr/buttonPrimaryColor"

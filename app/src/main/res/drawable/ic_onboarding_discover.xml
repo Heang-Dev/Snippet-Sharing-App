@@ -5,30 +5,30 @@
     android:viewportWidth="160"
     android:viewportHeight="160">
 
-    <!-- Background circle — neutral dark -->
+    <!-- Background square -->
     <path
-        android:pathData="M80,80m-60,0a60,60 0,1 1,120 0a60,60 0,1 1,-120 0"
-        android:fillColor="#1E1E1E"/>
+        android:pathData="M20,20 L140,20 L140,140 L20,140 Z"
+        android:fillColor="@color/border"/>
 
     <!-- Magnifying glass circle -->
     <path
         android:pathData="M72,70m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0"
-        android:fillColor="#2C2C2C"
+        android:fillColor="@color/card_surface"
         android:strokeWidth="3"
-        android:strokeColor="#FFFFFF"/>
+        android:strokeColor="@color/text_primary"/>
 
     <!-- Magnifying glass handle -->
     <path
         android:pathData="M88,86 L105,103"
         android:strokeWidth="5"
-        android:strokeColor="#FFFFFF"
+        android:strokeColor="@color/text_primary"
         android:strokeLineCap="round"/>
 
     <!-- Code line 1 -->
     <path
         android:pathData="M58,64 L74,64"
         android:strokeWidth="2.5"
-        android:strokeColor="#6B6B6B"
+        android:strokeColor="@color/text_muted"
         android:strokeLineCap="round"/>
 
     <!-- Code line 2 — gold highlight -->
@@ -42,7 +42,7 @@
     <path
         android:pathData="M58,80 L68,80"
         android:strokeWidth="2.5"
-        android:strokeColor="#6B6B6B"
+        android:strokeColor="@color/text_muted"
         android:strokeLineCap="round"/>
 
     <!-- Plus/Sparkle — gold -->

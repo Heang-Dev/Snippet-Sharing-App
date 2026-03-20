@@ -96,9 +96,6 @@ public class RegisterActivity extends AppCompatActivity {
         // GitHub Sign-In — redirect to LoginActivity which handles the deep link
         binding.btnGithub.setOnClickListener(v -> GitHubOAuthHelper.launchGitHubAuth(this));
 
-        // Apple Sign-In (not implemented)
-        binding.btnApple.setOnClickListener(v ->
-                Toast.makeText(this, "Apple Sign-In coming soon", Toast.LENGTH_SHORT).show());
     }
 
     private void attemptRegister() {

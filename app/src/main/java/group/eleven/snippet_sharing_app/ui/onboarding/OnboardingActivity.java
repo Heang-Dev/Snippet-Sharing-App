@@ -15,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.databinding.ActivityOnboardingBinding;
 import group.eleven.snippet_sharing_app.ui.auth.LoginActivity;
+import group.eleven.snippet_sharing_app.utils.ThemeManager;
 
 public class OnboardingActivity extends AppCompatActivity {
 
@@ -27,6 +28,8 @@ public class OnboardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ThemeManager.getInstance(this).applyEdgeToEdge(this);
 
         // Check if onboarding already completed
         if (isOnboardingCompleted()) {

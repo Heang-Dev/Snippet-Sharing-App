@@ -463,7 +463,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:text="import csv\ndef parse_csv(file_path):\n    with open(file_path, 'r') as f:\n        reader = csv.reader(f)\n        for row in reader:\n            print(row)"
-                            android:textColor="#A9B7C6"
+                            android:textColor="@color/code_text"
                             android:textSize="12sp"
                             android:lineSpacingExtra="4dp"/>
                     </LinearLayout>
@@ -606,7 +606,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="monospace"
                             android:text="export const useAuth = () => {\n  const [user, setUser] = useState(null);\n  useEffect(() => {\n    // Check local storage\n    const t = localStorage.getItem('token');"
-                            android:textColor="#A9B7C6"
+                            android:textColor="@color/code_text"
                             android:textSize="12sp"
                             android:lineSpacingExtra="4dp"/>
                     </LinearLayout>
@@ -659,7 +659,7 @@
                             android:layout_width="16dp"
                             android:layout_height="16dp"
                             android:src="@drawable/ic_star_filled"
-                            app:tint="#FFC107"
+                            app:tint="@color/accent_green"
                             android:contentDescription="Star"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -702,7 +702,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_terminal"
-                                app:tint="#FFA000"
+                                app:tint="@color/accent_orange"
                                 android:contentDescription="Icon"/>
                             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="82" android:textColor="@color/text_muted" android:textSize="10sp"/>
@@ -827,7 +827,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_code"
-                                app:tint="#FFC107"
+                                app:tint="@color/accent_green"
                                 android:contentDescription="Icon"/>
                             <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1"/>
                             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="48" android:textColor="@color/text_muted" android:textSize="10sp"/>
