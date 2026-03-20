@@ -2,7 +2,7 @@
 <resources>
     <!-- ============================================== -->
     <!-- DESIGN SYSTEM - Spacing & Sizing               -->
-    <!-- 4dp base grid system                           -->
+    <!-- Compact scale — FAB 44dp as reference unit     -->
     <!-- ============================================== -->
 
     <!-- ========== SPACING SCALE ========== -->
@@ -19,8 +19,8 @@
     <dimen name="spacing_5xl">64dp</dimen>
 
     <!-- ========== SCREEN PADDING ========== -->
-    <dimen name="screen_padding_horizontal">24dp</dimen>
-    <dimen name="screen_padding_vertical">16dp</dimen>
+    <dimen name="screen_padding_horizontal">16dp</dimen>
+    <dimen name="screen_padding_vertical">12dp</dimen>
 
     <!-- ========== CORNER RADII (Sharp / Binance style) ========== -->
     <dimen name="radius_xs">0dp</dimen>
@@ -32,60 +32,60 @@
     <dimen name="radius_full">0dp</dimen>
 
     <!-- ========== BUTTON SIZES ========== -->
-    <dimen name="button_height_sm">36dp</dimen>
-    <dimen name="button_height_md">48dp</dimen>
-    <dimen name="button_height_lg">56dp</dimen>
+    <dimen name="button_height_sm">32dp</dimen>
+    <dimen name="button_height_md">40dp</dimen>
+    <dimen name="button_height_lg">44dp</dimen>
 
     <!-- ========== INPUT SIZES ========== -->
-    <dimen name="input_height">52dp</dimen>
+    <dimen name="input_height">44dp</dimen>
     <dimen name="input_corner_radius">0dp</dimen>
 
     <!-- ========== ICON SIZES ========== -->
-    <dimen name="icon_xs">16dp</dimen>
-    <dimen name="icon_sm">20dp</dimen>
-    <dimen name="icon_md">24dp</dimen>
-    <dimen name="icon_lg">32dp</dimen>
-    <dimen name="icon_xl">48dp</dimen>
+    <dimen name="icon_xs">14dp</dimen>
+    <dimen name="icon_sm">18dp</dimen>
+    <dimen name="icon_md">20dp</dimen>
+    <dimen name="icon_lg">24dp</dimen>
+    <dimen name="icon_xl">32dp</dimen>
 
     <!-- ========== AVATAR SIZES ========== -->
-    <dimen name="avatar_sm">32dp</dimen>
-    <dimen name="avatar_md">40dp</dimen>
-    <dimen name="avatar_lg">56dp</dimen>
-    <dimen name="avatar_xl">72dp</dimen>
-    <dimen name="avatar_2xl">96dp</dimen>
+    <dimen name="avatar_sm">28dp</dimen>
+    <dimen name="avatar_md">36dp</dimen>
+    <dimen name="avatar_lg">44dp</dimen>
+    <dimen name="avatar_xl">56dp</dimen>
+    <dimen name="avatar_2xl">72dp</dimen>
 
     <!-- ========== COMPONENT SPECIFIC ========== -->
     <!-- Navigation -->
-    <dimen name="nav_header_height">200dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
     <dimen name="bottom_nav_height">80dp</dimen>
-    <dimen name="toolbar_height">56dp</dimen>
+    <dimen name="toolbar_height">48dp</dimen>
 
     <!-- Cards -->
-    <dimen name="card_spacing">12dp</dimen>
-    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_spacing">8dp</dimen>
+    <dimen name="card_padding">12dp</dimen>
     <dimen name="snippet_card_corner">0dp</dimen>
-    <dimen name="code_preview_height">100dp</dimen>
+    <dimen name="code_preview_height">80dp</dimen>
 
     <!-- FAB -->
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="fab_size">44dp</dimen>
 
     <!-- Sections -->
-    <dimen name="section_spacing">24dp</dimen>
-    <dimen name="section_title_margin_bottom">12dp</dimen>
+    <dimen name="section_spacing">16dp</dimen>
+    <dimen name="section_title_margin_bottom">8dp</dimen>
 
     <!-- Stat Cards -->
-    <dimen name="stat_card_height">100dp</dimen>
+    <dimen name="stat_card_height">80dp</dimen>
 
     <!-- OTP -->
-    <dimen name="otp_box_size">52dp</dimen>
+    <dimen name="otp_box_size">44dp</dimen>
     <dimen name="otp_box_spacing">8dp</dimen>
 
     <!-- Divider -->
     <dimen name="divider_height">1dp</dimen>
 
     <!-- Chip -->
-    <dimen name="chip_height">32dp</dimen>
+    <dimen name="chip_height">28dp</dimen>
     <dimen name="chip_corner_radius">0dp</dimen>
 
     <!-- Bottom Sheet -->

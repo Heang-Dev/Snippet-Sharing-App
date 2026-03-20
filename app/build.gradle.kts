@@ -17,7 +17,7 @@ android {
         buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8000/api/v1/\"")
         buildConfigField("String", "STORAGE_BASE_URL", "\"http://10.0.2.2:8000/\"")
         buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"689535238003-1prq7346m09f6qhd06g90ph6cra218ug.apps.googleusercontent.com\"")
-        buildConfigField("String", "GITHUB_CLIENT_ID", "\"YOUR_GITHUB_CLIENT_ID\"")
+        buildConfigField("String", "GITHUB_CLIENT_ID", "\"0v231i5yJSUunFhILS0i\"")
     }
 
     buildTypes {
