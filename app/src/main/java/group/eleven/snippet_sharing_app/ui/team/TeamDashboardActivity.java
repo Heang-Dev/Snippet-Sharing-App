@@ -24,12 +24,15 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.data.model.Team;
+import group.eleven.snippet_sharing_app.data.model.TeamJoinRequest;
 import group.eleven.snippet_sharing_app.data.model.TeamMember;
 import group.eleven.snippet_sharing_app.data.repository.AuthRepository;
+import group.eleven.snippet_sharing_app.ui.team.settings.JoinRequestAdapter;
 import group.eleven.snippet_sharing_app.ui.team.viewmodel.TeamViewModel;
 import group.eleven.snippet_sharing_app.utils.SessionManager;
 
@@ -37,7 +40,8 @@ import group.eleven.snippet_sharing_app.utils.SessionManager;
  * TeamDashboardActivity - Team Info page (like Telegram group info)
  * Accessed by clicking the header in TeamChatActivity
  */
-public class TeamDashboardActivity extends AppCompatActivity implements TeamMemberAdapter.OnItemClickListener {
+public class TeamDashboardActivity extends AppCompatActivity
+        implements TeamMemberAdapter.OnItemClickListener, JoinRequestAdapter.OnActionListener {
 
     public static final String EXTRA_TEAM_ID = "extra_team_id";
 
@@ -60,6 +64,7 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
 
     private TeamMemberAdapter teamMemberAdapter;
     private TeamSnippetAdapter teamSnippetAdapter;
+    private JoinRequestAdapter joinRequestAdapter;
 
     private TeamViewModel teamViewModel;
     private String teamId;
@@ -156,6 +161,8 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
         teamSnippetAdapter = new TeamSnippetAdapter(teamSnippet -> {
             Toast.makeText(this, "Snippet: " + teamSnippet.getTitle(), Toast.LENGTH_SHORT).show();
         });
+
+        joinRequestAdapter = new JoinRequestAdapter(this);
     }
 
     private void setupViewModel() {
@@ -208,6 +215,31 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
                 Toast.makeText(this, "Error leaving team: " + resource.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+        teamViewModel.getJoinRequestsResult().observe(this, resource -> {
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
+                List<TeamJoinRequest> requests = resource.getData();
+                joinRequestAdapter.setRequests(requests != null ? requests : new java.util.ArrayList<>());
+                // Update tab badge with pending count
+                int count = requests != null ? requests.size() : 0;
+                TabLayout.Tab tab = tabLayout.getTabAt(3);
+                if (tab != null) {
+                    tab.setText(count > 0 ? "Requests (" + count + ")" : "Requests");
+                }
+            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                Toast.makeText(this, "Error loading requests: " + resource.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        teamViewModel.getHandleJoinRequestResult().observe(this, resource -> {
+            if (resource.getStatus() == AuthRepository.Resource.Status.SUCCESS) {
+                Toast.makeText(this, "Done!", Toast.LENGTH_SHORT).show();
+                teamViewModel.loadJoinRequests(teamId);
+                teamViewModel.fetchTeamDetails(teamId); // refresh member count
+            } else if (resource.getStatus() == AuthRepository.Resource.Status.ERROR) {
+                Toast.makeText(this, "Error: " + resource.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupListeners() {
@@ -253,6 +285,10 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
                         break;
                     case 2:
                         Toast.makeText(TeamDashboardActivity.this, "Files coming soon", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        rvTeamMembers.setAdapter(joinRequestAdapter);
+                        teamViewModel.loadJoinRequests(teamId);
                         break;
                 }
             }
@@ -314,11 +350,23 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
         String memberText = memberCount == 1 ? "1 member" : memberCount + " members";
         tvMemberCountLabel.setText(memberText);
 
-        if (sessionManager.getCurrentUser() != null &&
-            team.getOwnerId().equals(sessionManager.getCurrentUser().getId())) {
+        boolean isOwnerOrAdmin = (sessionManager.getCurrentUser() != null &&
+                team.getOwnerId().equals(sessionManager.getCurrentUser().getId())) ||
+                "owner".equalsIgnoreCase(team.getUserRole()) ||
+                "admin".equalsIgnoreCase(team.getUserRole());
+
+        if (isOwnerOrAdmin) {
             btnLeaveTeam.setVisibility(View.GONE);
+            // Show Requests tab and load count badge
+            TabLayout.Tab requestsTab = tabLayout.getTabAt(3);
+            if (requestsTab != null) {
+                requestsTab.view.setVisibility(View.VISIBLE);
+                teamViewModel.loadJoinRequests(teamId);
+            }
         } else {
             btnLeaveTeam.setVisibility(View.VISIBLE);
+            TabLayout.Tab requestsTab = tabLayout.getTabAt(3);
+            if (requestsTab != null) requestsTab.view.setVisibility(View.GONE);
         }
     }
 
@@ -380,6 +428,34 @@ public class TeamDashboardActivity extends AppCompatActivity implements TeamMemb
                 .setMessage("Are you sure you want to remove " + member.getUsername() + " from this team?")
                 .setPositiveButton("Remove", (dialog, which) ->
                         teamViewModel.removeTeamMember(teamId, member.getUserId()))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    // ─── JoinRequestAdapter.OnActionListener ───────────────────────────────
+
+    @Override
+    public void onApprove(TeamJoinRequest request, int position) {
+        new AlertDialog.Builder(this)
+                .setTitle("Approve Request")
+                .setMessage("Add " + (request.getUser() != null ? request.getUser().getDisplayName() : "this user") + " to the team?")
+                .setPositiveButton("Approve", (d, w) -> {
+                    joinRequestAdapter.removeAt(position);
+                    teamViewModel.handleJoinRequest(teamId, request.getId(), "approve");
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    @Override
+    public void onReject(TeamJoinRequest request, int position) {
+        new AlertDialog.Builder(this)
+                .setTitle("Reject Request")
+                .setMessage("Reject " + (request.getUser() != null ? request.getUser().getDisplayName() : "this user") + "'s request?")
+                .setPositiveButton("Reject", (d, w) -> {
+                    joinRequestAdapter.removeAt(position);
+                    teamViewModel.handleJoinRequest(teamId, request.getId(), "reject");
+                })
                 .setNegativeButton("Cancel", null)
                 .show();
     }

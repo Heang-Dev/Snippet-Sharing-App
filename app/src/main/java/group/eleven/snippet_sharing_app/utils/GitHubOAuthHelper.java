@@ -14,7 +14,9 @@ import group.eleven.snippet_sharing_app.BuildConfig;
 public class GitHubOAuthHelper {
 
     private static final String GITHUB_AUTH_URL = "https://github.com/login/oauth/authorize";
-    private static final String REDIRECT_URI = BuildConfig.API_BASE_URL + "auth/github/callback/mobile";
+    // Must exactly match the GitHub OAuth App registered callback URL AND the backend GITHUB_REDIRECT_URI env var.
+    // Uses localhost:8000 — requires `adb reverse tcp:8000 tcp:8000` on the host for emulator access.
+    private static final String REDIRECT_URI = "http://localhost:8000/api/v1/auth/github/callback/mobile";
     private static final String SCOPE = "user:email";
 
     /**

@@ -21,7 +21,6 @@ import group.eleven.snippet_sharing_app.R;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsDangerZoneFragment;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsGeneralFragment;
 import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsMembersFragment;
-import group.eleven.snippet_sharing_app.ui.team.settings.TeamSettingsRequestsFragment;
 
 public class TeamSettingsActivity extends AppCompatActivity {
 
@@ -67,7 +66,7 @@ public class TeamSettingsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("Team Settings"); // Default title
+            getSupportActionBar().setTitle("Team Settings");
         }
     }
 
@@ -84,18 +83,9 @@ public class TeamSettingsActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     switch (position) {
-                        case 0:
-                            tab.setText("General");
-                            break;
-                        case 1:
-                            tab.setText("Members");
-                            break;
-                        case 2:
-                            tab.setText("Requests");
-                            break;
-                        case 3:
-                            tab.setText("Danger Zone");
-                            break;
+                        case 0: tab.setText("General"); break;
+                        case 1: tab.setText("Members"); break;
+                        case 2: tab.setText("Danger Zone"); break;
                     }
                 }).attach();
     }
@@ -106,7 +96,7 @@ public class TeamSettingsActivity extends AppCompatActivity {
 
     private static class TeamSettingsPagerAdapter extends FragmentStateAdapter {
 
-        private static final int NUM_TABS = 4;
+        private static final int NUM_TABS = 3;
 
         public TeamSettingsPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -116,16 +106,10 @@ public class TeamSettingsActivity extends AppCompatActivity {
         @Override
         public Fragment createFragment(int position) {
             switch (position) {
-                case 0:
-                    return new TeamSettingsGeneralFragment();
-                case 1:
-                    return new TeamSettingsMembersFragment();
-                case 2:
-                    return new TeamSettingsRequestsFragment();
-                case 3:
-                    return new TeamSettingsDangerZoneFragment();
-                default:
-                    return new TeamSettingsGeneralFragment();
+                case 0: return new TeamSettingsGeneralFragment();
+                case 1: return new TeamSettingsMembersFragment();
+                case 2: return new TeamSettingsDangerZoneFragment();
+                default: return new TeamSettingsGeneralFragment();
             }
         }
 
